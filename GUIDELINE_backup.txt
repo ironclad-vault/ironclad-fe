@@ -1,0 +1,49 @@
+=========================================
+PEDOMAN DESAIN: CITADEL LOCK (BRUTALISME)
+=========================================
+
+Tema ini berfokus pada fungsi, keamanan, dan kekuatan. Estetika yang dituju adalah solid, jujur, dan tanpa basa-basi, mencerminkan sifat "brankas" (vault) yang tidak bisa ditembus.
+
+---
+
+### 1. PALET WARNA (KONTRA_ TINGGI)
+
+* **Primer 01 (Latar):** Off-white (`#F9F9F9`) - Untuk latar belakang halaman utama.
+* **Primer 02 (Teks/Outline):** Hitam (`#000000`) - Untuk semua teks utama, border, dan outline.
+* **Sekunder (Struktur):** Abu-abu Beton (`#BEBEBE`) - Untuk latar belakang container/card/panel, memberikan struktur visual.
+* **Aksen (CTA/Status):** Oranye Bitcoin (`#F7931A`) - Digunakan *sangat hemat*. Hanya untuk tombol aksi utama dan status "LOCKED".
+
+---
+
+### 2. TIPOGRAFI (TEBAL & JELAS)
+
+* **Font Judul (Headings):** Gunakan font Sans-serif yang sangat tebal dan "kuat".
+    * **Rekomendasi:** Anton, Inter (Black/Bold), Oswald (Bold).
+    * **Gaya:** Selalu gunakan huruf kapital (ALL CAPS) untuk navigasi dan judul utama.
+* **Font Konten (Body/Labels):** Gunakan font Sans-serif yang bersih.
+    * **Rekomendasi:** Inter (Regular).
+* **Font Data (Monospace):** Gunakan font monospasi untuk angka (timer, jumlah BTC) dan alamat Bitcoin agar mudah dibaca.
+    * **Rekomendasi:** IBM Plex Mono, Space Mono.
+
+---
+
+### 3. BENTUK & STRUKTUR (KAKU & KOTAK)
+
+* **Sudut (Border Radius):** Nol. `border-radius: 0px;`. Semua elemen (tombol, input, card) harus memiliki sudut yang tajam.
+* **Garis (Borders):** Gunakan border `2px` solid `Hitam (#000000)` untuk memisahkan semua elemen fungsional (card, input field, tombol).
+* **Bayangan (Shadows):** Hindari penggunaan `box-shadow` untuk efek kedalaman. Gunakan `border` tebal untuk memisahkan elemen.
+
+---
+
+### 4. PENERAPAN ELEMEN UI SPESIFIK
+
+* **Judul Utama (H1):** Font tebal, ALL CAPS, Hitam. (Contoh: "CITADEL LOCK").
+* **Container / Card:** Latar belakang Abu-abu Beton (`#BEBEBE`), border `2px` Hitam.
+* **Tombol (Aksi Utama):**
+    * **Default:** Latar belakang Hitam (`#000000`), teks Putih (`#FFFFFF`), border `2px` Hitam.
+    * **Aksi Krusial (Deposit/Withdraw):** Latar belakang Oranye Bitcoin (`#F7931A`), teks Hitam (`#000000`).
+* **Input Field:** Latar belakang Putih (`#FFFFFF`), border `2px` Hitam, `border-radius: 0`. Teks di dalam menggunakan font Monospasi.
+* **Timer (Hitung Mundur):** Angka terbesar di layar. Gunakan font Monospasi, warna Oranye Bitcoin (`#F7931A`).
+* **Label Status:**
+    * **LOCKED:** Latar belakang Oranye Bitcoin (`#F7931A`), teks Hitam (`#000000`), font tebal, ALL CAPS.
+    * **UNLOCKED:** Latar belakang Hijau Terang (misal: `#00FF00`), teks Hitam (`#000000`), font tebal, ALL CAPS.
