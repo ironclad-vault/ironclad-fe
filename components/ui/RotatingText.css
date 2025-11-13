@@ -1,0 +1,78 @@
+.rotating-text {
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.text-rotate-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.rotating-word-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  text-align: center;
+}
+
+.rotating-word {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  left: 0 !important;
+  top: 0 !important;
+  text-transform: uppercase;
+  font-weight: 900;
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+/* Ensure proper text alignment and spacing */
+.hero-rotating-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 1em;
+  width: 100%;
+}
+
+/* Dynamic sizing for different word lengths */
+.rotating-word[data-length="short"] {
+  font-size: 0.9em;
+}
+
+.rotating-word[data-length="medium"] {
+  font-size: 1em;
+}
+
+.rotating-word[data-length="long"] {
+  font-size: 0.85em;
+}
+
+/* Smooth transitions for symmetrical appearance */
+.rotating-word {
+  transition: all 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .rotating-word-container {
+    width: 100%;
+    padding: 0 1rem;
+  }
+
+  .rotating-word {
+    font-size: clamp(1.2rem, 5vw, 2.5rem);
+    white-space: normal;
+    word-wrap: break-word;
+  }
+}

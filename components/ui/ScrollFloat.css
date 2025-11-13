@@ -1,0 +1,129 @@
+.scroll-float {
+  overflow: hidden;
+  display: inline-block;
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.scroll-float.high {
+  filter: drop-shadow(0 10px 30px rgba(247, 147, 26, 0.3));
+}
+
+.scroll-float.color-shift {
+  position: relative;
+}
+
+.scroll-float.color-shift::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg,
+    transparent,
+    rgba(247, 147, 26, 0.1),
+    transparent
+  );
+  animation: shimmer 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes shimmer {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.scroll-float-text {
+  display: inline-block;
+  font-size: clamp(1.6rem, 8vw, 10rem);
+  font-weight: 900;
+  text-align: center;
+  line-height: 1.5;
+  position: relative;
+  z-index: 2;
+  user-select: none;
+  cursor: default;
+}
+
+.char {
+  display: inline-block;
+  position: relative;
+  transition: color 0.3s ease, filter 0.3s ease;
+  will-change: transform, opacity, color, filter;
+}
+
+.char:hover {
+  z-index: 10;
+}
+
+.scroll-float.low .char {
+  animation: gentle-wave 4s ease-in-out infinite;
+}
+
+.scroll-float.medium .char {
+  animation: medium-wave 3s ease-in-out infinite;
+}
+
+.scroll-float.high .char {
+  animation: intense-wave 2s ease-in-out infinite;
+  text-shadow: 0 0 20px currentColor;
+}
+
+@keyframes gentle-wave {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-5px) rotate(1deg); }
+}
+
+@keyframes medium-wave {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-10px) rotate(-2deg); }
+  75% { transform: translateY(10px) rotate(2deg); }
+}
+
+@keyframes intense-wave {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  33% { transform: translateY(-15px) rotate(-3deg) scale(1.05); }
+  66% { transform: translateY(15px) rotate(3deg) scale(0.95); }
+}
+
+/* Enhanced hover states */
+.scroll-float:hover .char:nth-child(odd) {
+  animation: float-up 0.6s ease-in-out infinite alternate;
+}
+
+.scroll-float:hover .char:nth-child(even) {
+  animation: float-down 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-10px); }
+}
+
+@keyframes float-down {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(10px); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .scroll-float-text {
+    font-size: clamp(1.2rem, 6vw, 4rem);
+  }
+
+  .scroll-float.high .char {
+    text-shadow: 0 0 10px currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-float:hover .char:nth-child(odd),
+  .scroll-float:hover .char:nth-child(even),
+  .scroll-float.low .char,
+  .scroll-float.medium .char,
+  .scroll-float.high .char {
+    animation: none;
+  }
+}

@@ -1,0 +1,148 @@
+@import "tailwindcss";
+
+/* Brutalist Design System - Ironclad */
+:root {
+  /* Color Palette from GUIDELINE.txt */
+  --color-bg-primary: #F9F9F9;
+  --color-text-primary: #000000;
+  --color-structure: #BEBEBE;
+  --color-accent: #F7931A;
+  --color-text-white: #FFFFFF;
+  --color-bg-white: #FFFFFF;
+  --color-unlocked: #00FF00;
+
+  /* Typography */
+  --font-heading: anton, "Anton", sans-serif;
+  --font-body: inter, "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+
+  /* Border Styles */
+  --border-width: 2px;
+  --border-color: #000000;
+}
+
+@theme inline {
+  --color-background: var(--color-bg-primary);
+  --color-foreground: var(--color-text-primary);
+  --color-structure: var(--color-structure);
+  --color-accent: var(--color-accent);
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-heading);
+  --font-mono: var(--font-mono);
+}
+
+/* Brutalist Base Styles */
+* {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+body {
+  background: var(--color-bg-primary) !important;
+  color: var(--color-text-primary) !important;
+  font-family: var(--font-body) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Typography System */
+.heading-brutal {
+  font-family: var(--font-heading) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.body-brutal {
+  font-family: var(--font-body) !important;
+  font-weight: 400 !important;
+}
+
+.mono-brutal {
+  font-family: var(--font-mono) !important;
+  font-weight: 400 !important;
+}
+
+/* Border Styles */
+.brutal-border {
+  border: var(--border-width) solid var(--border-color) !important;
+}
+
+.brutal-border-accent {
+  border: var(--border-width) solid var(--color-accent) !important;
+}
+
+/* Component Styles */
+.card-brutal {
+  background: var(--color-structure) !important;
+  border: var(--border-width) solid var(--border-color) !important;
+  padding: 24px !important;
+}
+
+.button-brutal {
+  background: var(--color-text-primary) !important;
+  color: var(--color-text-white) !important;
+  border: var(--border-width) solid var(--border-color) !important;
+  padding: 16px 32px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.button-brutal:hover {
+  background: var(--color-text-primary) !important;
+}
+
+.button-brutal.accent {
+  background: var(--color-accent) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.button-brutal.accent:hover {
+  background: var(--color-accent) !important;
+}
+
+.input-brutal {
+  background: var(--color-bg-white) !important;
+  border: var(--border-width) solid var(--border-color) !important;
+  padding: 16px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 16px !important;
+  color: var(--color-text-primary) !important;
+  width: 100% !important;
+}
+
+.status-brutal {
+  padding: 8px 16px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  display: inline-block !important;
+}
+
+.status-brutal.locked {
+  background: var(--color-accent) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.status-brutal.unlocked {
+  background: var(--color-unlocked) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.timer-brutal {
+  font-family: var(--font-mono) !important;
+  font-size: 48px !important;
+  font-weight: 700 !important;
+  color: var(--color-accent) !important;
+  line-height: 1 !important;
+}
+
+/* Reset unwanted styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading) !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

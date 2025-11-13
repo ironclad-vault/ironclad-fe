@@ -1,0 +1,150 @@
+/* Timeline Path Animations */
+.timeline-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawPath 2s ease-in-out forwards;
+  will-change: stroke-dashoffset;
+}
+
+.main-timeline-path {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawMainPath 2.5s ease-in-out 0.3s forwards;
+  will-change: stroke-dashoffset;
+}
+
+@keyframes drawPath {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes drawMainPath {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Timeline Node Entrance Animation */
+.timeline-node {
+  animation: nodeEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  transform-origin: center;
+}
+
+@keyframes nodeEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0) rotate(180deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Timeline Node Stagger Animation */
+.timeline-node:nth-child(1) {
+  animation-delay: 0.6s;
+}
+
+.timeline-node:nth-child(2) {
+  animation-delay: 0.7s;
+}
+
+.timeline-node:nth-child(3) {
+  animation-delay: 0.8s;
+}
+
+/* Pulsing Effect for Active Timeline Nodes */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 20px rgba(247, 147, 26, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(247, 147, 26, 0.6);
+    transform: scale(1.05);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(247, 147, 26, 0.4);
+    transform: scale(1);
+  }
+}
+
+.timeline-node {
+  animation: nodeEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) backwards, 
+            pulse-glow 3s ease-in-out infinite 1s;
+}
+
+/* Card Floating Effect */
+.timeline-card {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Mobile Timeline Connector Animation */
+.mobile-connector {
+  animation: flowDown 2s ease-in infinite;
+}
+
+@keyframes flowDown {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+
+/* Responsive Timeline Adjustments */
+@media (max-width: 768px) {
+  .timeline-path {
+    stroke-width: 3;
+  }
+
+  .timeline-node {
+    animation-duration: 0.6s;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2.5s ease-in-out infinite 0.8s;
+  }
+}
+
+/* GPU Acceleration for Smooth Animations */
+.timeline-node,
+.timeline-path,
+.main-timeline-path {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Smooth Hover Effects on Timeline Nodes */
+.timeline-node {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.group:hover .timeline-node {
+  animation: nodeHover 0.6s ease-out forwards;
+}
+
+@keyframes nodeHover {
+  to {
+    transform: scale(1.3);
+    box-shadow: 0 0 50px rgba(247, 147, 26, 0.8) !important;
+  }
+}

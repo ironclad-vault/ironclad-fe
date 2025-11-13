@@ -1,5 +1,5 @@
 =========================================
-PEDOMAN DESAIN: CITADEL LOCK (BRUTALISME)
+PEDOMAN DESAIN: IRONCLAD (BRUTALISME)
 =========================================
 
 Tema ini berfokus pada fungsi, keamanan, dan kekuatan. Estetika yang dituju adalah solid, jujur, dan tanpa basa-basi, mencerminkan sifat "brankas" (vault) yang tidak bisa ditembus.
@@ -37,7 +37,7 @@ Tema ini berfokus pada fungsi, keamanan, dan kekuatan. Estetika yang dituju adal
 
 ### 4. PENERAPAN ELEMEN UI SPESIFIK
 
-* **Judul Utama (H1):** Font tebal, ALL CAPS, Hitam. (Contoh: "CITADEL LOCK").
+* **Judul Utama (H1):** Font tebal, ALL CAPS, Hitam. (Contoh: "IRONCLAD").
 * **Container / Card:** Latar belakang Abu-abu Beton (`#BEBEBE`), border `2px` Hitam.
 * **Tombol (Aksi Utama):**
     * **Default:** Latar belakang Hitam (`#000000`), teks Putih (`#FFFFFF`), border `2px` Hitam.
