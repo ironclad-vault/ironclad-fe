@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useWallet } from "@/components/wallet/useWallet";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { Vault } from "@/lib/ic/ironcladActor";
 
@@ -9,6 +10,7 @@ import type { Vault } from "@/lib/ic/ironcladActor";
  * Phase 1: Uses anonymous canister calls (no wallet identity)
  */
 export function useVaults() {
+  const { identity } = useWallet();
   const [vaults, setVaults] = useState<readonly Vault[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +20,7 @@ export function useVaults() {
     setError(null);
 
     try {
-      const data = await ironcladClient.vaults.getMyVaults();
+      const data = await ironcladClient.vaults.getMyVaults(identity ?? undefined);
       setVaults(data);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -27,7 +29,7 @@ export function useVaults() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [identity]);
 
   useEffect(() => {
     fetchVaults();

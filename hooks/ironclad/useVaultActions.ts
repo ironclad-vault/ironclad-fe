@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useWallet } from "@/components/wallet/useWallet";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { Vault } from "@/lib/ic/ironcladActor";
 
@@ -9,6 +10,7 @@ import type { Vault } from "@/lib/ic/ironcladActor";
  * Phase 1: Uses anonymous canister calls (no wallet identity)
  */
 export function useVaultActions() {
+  const { identity } = useWallet();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,7 +24,8 @@ export function useVaultActions() {
     try {
       const vault = await ironcladClient.vaults.create(
         BigInt(lockUntil),
-        expectedDeposit
+        expectedDeposit,
+        identity ?? undefined
       );
       return vault;
     } catch (err) {
@@ -43,7 +46,7 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const result = await ironcladClient.vaults.mockDeposit(vaultId, amount);
+      const result = await ironcladClient.vaults.mockDeposit(vaultId, amount, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return null;
@@ -64,7 +67,7 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const result = await ironcladClient.vaults.unlock(vaultId);
+      const result = await ironcladClient.vaults.unlock(vaultId, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return null;
@@ -88,7 +91,7 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const result = await ironcladClient.vaults.withdraw(vaultId, amount);
+      const result = await ironcladClient.vaults.withdraw(vaultId, amount, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return null;

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
 import { useMarketplace } from "@/hooks/ironclad/useMarketplace";
 import { useVaults } from "@/hooks/ironclad/useVaults";
-import type { MarketListing } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
+// import type { MarketListing } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 
 export default function MarketplaceMain() {
   const { isConnected, principal } = useWallet();

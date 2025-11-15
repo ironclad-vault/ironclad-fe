@@ -1,16 +1,23 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { AuthClient } from "@dfinity/auth-client";
+// identity type imported above
 import { Principal } from "@dfinity/principal";
 
 /**
  * Wallet Provider - Phase 1: UI-only wallet state management
- * 
+ *
  * This provider manages wallet connection UI state (connected/disconnected, principal display)
  * but does NOT influence canister calls. All ICP calls go through ironcladClient directly
  * using anonymous actors.
- * 
+ *
  * Phase 2 will integrate wallet identity into canister calls.
  */
 
@@ -24,7 +31,9 @@ interface WalletContextType {
   isInitializing: boolean;
   connect: (type: WalletType) => Promise<void>;
   disconnect: () => Promise<void>;
+  identity?: Identity | null;
 }
+import type { Identity } from "@dfinity/agent";
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
 
@@ -38,6 +47,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
   const [walletType, setWalletType] = useState<WalletType>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [authClient, setAuthClient] = useState<AuthClient | null>(null);
+  const [identity, setIdentity] = useState<Identity | null>(null);
 
   // Initialize AuthClient on mount
   useEffect(() => {
@@ -62,7 +72,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
     const restoreSession = async () => {
       try {
-        const savedWalletType = localStorage.getItem(WALLET_TYPE_KEY) as WalletType;
+        const savedWalletType = localStorage.getItem(
+          WALLET_TYPE_KEY
+        ) as WalletType;
         const savedPrincipal = localStorage.getItem(PRINCIPAL_KEY);
 
         if (!savedWalletType || !savedPrincipal) {
@@ -70,7 +82,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        console.log("[Wallet] Restoring session:", { savedWalletType, savedPrincipal });
+        console.log("[Wallet] Restoring session:", {
+          savedWalletType,
+          savedPrincipal,
+        });
 
         if (savedWalletType === "ii") {
           const isAuthenticated = await authClient.isAuthenticated();
@@ -82,6 +97,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
             setPrincipal(principal);
             setPrincipalText(principal.toString());
             setWalletType("ii");
+
+            // expose identity for signed canister calls
+            setIdentity(identity);
             console.log("[Wallet] II session restored (UI only)");
           } else {
             // Session expired, clear storage
@@ -106,6 +124,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     async (type: WalletType) => {
       if (!type) throw new Error("Wallet type is required");
 
+            // expose identity for signed canister calls
+            setIdentity(identity);
+
       try {
         console.log("[Wallet] Connecting to:", type);
 
@@ -113,22 +134,16 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           if (!authClient) throw new Error("AuthClient not initialized");
 
           // Internet Identity login
-          const isLocalHost =
-            window.location.hostname === "localhost" ||
-            window.location.hostname === "127.0.0.1";
+          // Check if we're on localhost or canister
+          // For mainnet use the official identity provider URL (force mainnet)
+          const identityProvider = "https://identity.ic0.app/#authorize";
 
-          const icHost = process.env.NEXT_PUBLIC_IC_HOST || "http://127.0.0.1:4943";
-          const iiCanisterId = process.env.NEXT_PUBLIC_INTERNET_IDENTITY_CANISTER_ID || "rdmx6-jaaaa-aaaaa-aaadq-cai";
+          // IMPORTANT: Use window.location.origin to ensure correct redirect
+          // This works for both localhost dev server and canister URLs
+          const origin = window.location.origin;
 
-          const identityProvider = isLocalHost
-            ? `${icHost}?canisterId=${iiCanisterId}#authorize`
-            : "https://identity.ic0.app";
-          
-          // For local development, ensure we're using the correct redirect origin
-          const frontendOrigin = process.env.NEXT_PUBLIC_CANISTER_ORIGIN;
-          const origin = isLocalHost && frontendOrigin
-            ? frontendOrigin
-            : window.location.origin;
+          console.log("[Wallet] Identity Provider:", identityProvider);
+          console.log("[Wallet] Redirect Origin:", origin);
 
           // Use Promise wrapper to handle async properly
           return new Promise<void>((resolve, reject) => {
@@ -138,7 +153,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
               // For local development, ensure we're using the correct redirect origin
               derivationOrigin: origin,
               // Try popup first, fallback to redirect if blocked
-              windowOpenerFeatures: 
+              windowOpenerFeatures:
                 "toolbar=0,location=0,menubar=0,width=500,height=600,left=100,top=100",
               onSuccess: async () => {
                 try {
@@ -149,11 +164,16 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
                   setPrincipal(principal);
                   setPrincipalText(principal.toString());
                   setWalletType("ii");
+                  // expose identity for signed canister calls
+                  setIdentity(identity);
 
                   localStorage.setItem(WALLET_TYPE_KEY, "ii");
                   localStorage.setItem(PRINCIPAL_KEY, principal.toString());
 
-                  console.log("[Wallet] II connected (UI only):", principal.toString());
+                  console.log(
+                    "[Wallet] II connected (UI only):",
+                    principal.toString()
+                  );
                   resolve();
                 } catch (error) {
                   reject(error);
@@ -176,7 +196,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
         throw error;
       }
     },
-    [authClient]
+    [authClient, setIdentity, identity]
   );
 
   const disconnect = useCallback(async () => {
@@ -191,6 +211,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       setPrincipal(null);
       setPrincipalText(null);
       setWalletType(null);
+      setIdentity(null);
 
       localStorage.removeItem(WALLET_TYPE_KEY);
       localStorage.removeItem(PRINCIPAL_KEY);
@@ -208,6 +229,7 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
     principalText,
     walletType,
     isInitializing,
+    identity,
     connect,
     disconnect,
   };

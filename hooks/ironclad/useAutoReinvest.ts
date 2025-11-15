@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useWallet } from "@/components/wallet/useWallet";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { AutoReinvestConfig, Vault } from "@/lib/ic/ironcladActor";
 
@@ -9,6 +10,7 @@ import type { AutoReinvestConfig, Vault } from "@/lib/ic/ironcladActor";
  * Phase 1: Uses anonymous canister calls (no wallet identity)
  */
 export function useAutoReinvest() {
+  const { identity } = useWallet();
   const [configs, setConfigs] = useState<readonly AutoReinvestConfig[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +20,7 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const data = await ironcladClient.autoReinvest.getMyConfigs();
+      const data = await ironcladClient.autoReinvest.getMyConfigs(identity ?? undefined);
       setConfigs(data);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
@@ -27,7 +29,7 @@ export function useAutoReinvest() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [identity]);
 
   useEffect(() => {
     fetchConfigs();
@@ -41,7 +43,7 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const result = await ironcladClient.autoReinvest.schedule(vaultId, newLockDuration);
+      const result = await ironcladClient.autoReinvest.schedule(vaultId, newLockDuration, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return false;
@@ -63,7 +65,7 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const result = await ironcladClient.autoReinvest.cancel(vaultId);
+      const result = await ironcladClient.autoReinvest.cancel(vaultId, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return false;
@@ -85,7 +87,7 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const result = await ironcladClient.autoReinvest.execute(vaultId);
+      const result = await ironcladClient.autoReinvest.execute(vaultId, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return null;

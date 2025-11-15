@@ -7,12 +7,14 @@ import { usePageTransition } from "@/components/page/PageTransitionProvider";
 interface TransitionButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
   children: ReactNode;
+  suppressTransition?: boolean;
 }
 
 export default function TransitionButton({
   href,
   onClick,
   children,
+  suppressTransition = false,
   ...props
 }: TransitionButtonProps) {
   const router = useRouter();
@@ -23,14 +25,19 @@ export default function TransitionButton({
       e.preventDefault();
       e.stopPropagation();
       
-      console.log(`Starting curtain reveal transition to ${href}`);
-      startTransition();
-      
-      // Navigate when overlay has fully covered the screen
-      setTimeout(() => {
-        console.log(`Navigating to ${href}`);
+      if (suppressTransition) {
+        // Direct navigation without transition
         router.push(href);
-      }, 1500); // After overlay slides in (1.5s)
+      } else {
+        console.log(`Starting curtain reveal transition to ${href}`);
+        startTransition();
+        
+        // Navigate when overlay has fully covered the screen
+        setTimeout(() => {
+          console.log(`Navigating to ${href}`);
+          router.push(href);
+        }, 1500); // After overlay slides in (1.5s)
+      }
     }
     
     if (onClick) {

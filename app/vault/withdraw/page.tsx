@@ -1,5 +1,29 @@
+"use client";
+
+import { Suspense } from "react";
+import VaultHeader from "@/components/layout/VaultHeader";
+import Footer from "@/components/layout/Footer";
 import WithdrawMain from "./_components/WithdrawMain";
+import TransitionWrapper from "../../transition-wrapper";
 
 export default function WithdrawPage() {
-  return <WithdrawMain />;
+  return (
+    <div className="min-h-screen flex flex-col bg-background">
+      <TransitionWrapper>
+        <VaultHeader currentPath="/vault/withdraw" />
+
+        <section className="flex flex-col items-stretch min-h-screen">
+          <main className="pt-24 pb-16 flex-1">
+            <div className="container mx-auto px-6">
+              <Suspense fallback={<div className="card-brutal p-8"><p className="text-gray-600">Loading...</p></div>}>
+                <WithdrawMain />
+              </Suspense>
+            </div>
+          </main>
+
+          <Footer />
+        </section>
+      </TransitionWrapper>
+    </div>
+  );
 }

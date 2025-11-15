@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
-import type { Vault } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
+import VaultHeader from "@/components/layout/VaultHeader";
+
+// import type { Vault } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 
 export default function DepositForm() {
   const router = useRouter();
   const { createVault, mockDeposit, loading, error } = useVaultActions();
-  
+
   const [lockDuration, setLockDuration] = useState<string>("6");
   const [depositAmount, setDepositAmount] = useState<string>("100000");
   const [createdVault, setCreatedVault] = useState<{
@@ -18,7 +20,8 @@ export default function DepositForm() {
 
   const handleCreateVault = async () => {
     const lockMonths = parseInt(lockDuration);
-    const lockUntil = Math.floor(Date.now() / 1000) + lockMonths * 30 * 24 * 60 * 60; // months to seconds
+    const lockUntil =
+      Math.floor(Date.now() / 1000) + lockMonths * 30 * 24 * 60 * 60; // months to seconds
     const expectedDeposit = BigInt(depositAmount);
 
     const vault = await createVault(lockUntil, expectedDeposit);
@@ -33,7 +36,10 @@ export default function DepositForm() {
   const handleMockDeposit = async () => {
     if (!createdVault) return;
 
-    const vault = await mockDeposit(createdVault.vaultId, createdVault.expectedDeposit);
+    const vault = await mockDeposit(
+      createdVault.vaultId,
+      createdVault.expectedDeposit
+    );
     if (vault) {
       // Redirect to dashboard after successful deposit
       router.push("/vault");
@@ -42,6 +48,7 @@ export default function DepositForm() {
 
   return (
     <div className="card-brutal flex flex-col gap-8">
+      <VaultHeader currentPath="/vault/deposit" />
       <h3 className="heading-brutal text-xl">CREATE NEW VAULT</h3>
 
       {error && (
@@ -127,7 +134,8 @@ export default function DepositForm() {
             </p>
             <p className="body-brutal text-sm text-yellow-700">
               In production, you would send Bitcoin to a generated address. For
-              development, click "Mock Deposit" above to simulate the deposit.
+              development, click &apos;Mock Deposit&apos; above to simulate the
+              deposit.
             </p>
           </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useWallet } from "@/components/wallet/useWallet";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { MarketListing } from "@/lib/ic/ironcladActor";
 
@@ -14,14 +15,16 @@ export function useMarketplace() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const { identity } = useWallet();
+
   const fetchListings = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
       const [allListings, ownListings] = await Promise.all([
-        ironcladClient.marketplace.getActiveListings(),
-        ironcladClient.marketplace.getMyListings(),
+        ironcladClient.marketplace.getActiveListings(identity ?? undefined),
+        ironcladClient.marketplace.getMyListings(identity ?? undefined),
       ]);
       setListings(allListings);
       setMyListings(ownListings);
@@ -32,7 +35,7 @@ export function useMarketplace() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [identity]);
 
   useEffect(() => {
     fetchListings();
@@ -43,7 +46,7 @@ export function useMarketplace() {
     setError(null);
 
     try {
-      const result = await ironcladClient.marketplace.create(vaultId, priceSats);
+      const result = await ironcladClient.marketplace.create(vaultId, priceSats, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return false;
@@ -65,7 +68,7 @@ export function useMarketplace() {
     setError(null);
 
     try {
-      const result = await ironcladClient.marketplace.cancel(listingId);
+      const result = await ironcladClient.marketplace.cancel(listingId, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return false;
@@ -87,7 +90,7 @@ export function useMarketplace() {
     setError(null);
 
     try {
-      const result = await ironcladClient.marketplace.buy(listingId);
+      const result = await ironcladClient.marketplace.buy(listingId, identity ?? undefined);
       if ("Err" in result) {
         setError(result.Err);
         return false;

@@ -88,6 +88,7 @@ function VaultCard({ vault }: { vault: Vault }) {
         {getVaultStatus(vault) === "Unlockable" && (
           <TransitionButton
             href="/vault/withdraw"
+            suppressTransition
             className="flex-1 button-brutal py-2 text-sm bg-green-600 text-white hover:bg-green-700"
           >
             WITHDRAW
@@ -96,6 +97,7 @@ function VaultCard({ vault }: { vault: Vault }) {
         {getVaultStatus(vault) === "PendingDeposit" && (
           <TransitionButton
             href="/vault/deposit"
+            suppressTransition
             className="flex-1 button-brutal py-2 text-sm bg-blue-600 text-white hover:bg-blue-700"
           >
             COMPLETE DEPOSIT
@@ -103,6 +105,7 @@ function VaultCard({ vault }: { vault: Vault }) {
         )}
         <TransitionButton
           href={`/vault/history?vaultId=${vault.id.toString()}`}
+          suppressTransition
           className="flex-1 button-brutal py-2 text-sm border-2 border-gray-300 hover:bg-gray-50"
         >
           VIEW HISTORY
@@ -183,6 +186,7 @@ export default function VaultPage() {
 
                     <TransitionButton
                       href="/vault/deposit"
+                      suppressTransition
                       className="button-brutal w-full py-3 bg-blue-600 text-white hover:bg-blue-700"
                     >
                       + CREATE NEW VAULT
@@ -219,6 +223,7 @@ export default function VaultPage() {
                       </p>
                       <TransitionButton
                         href="/vault/deposit"
+                        suppressTransition
                         className="button-brutal px-6 py-3 bg-blue-600 text-white hover:bg-blue-700"
                       >
                         CREATE VAULT

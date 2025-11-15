@@ -6,6 +6,7 @@
  */
 
 import { createIroncladActor } from './ironcladActor';
+import type { Identity } from '@dfinity/agent';
 import type { Vault, VaultEvent, AutoReinvestConfig, MarketListing } from './ironcladActor';
 
 /**
@@ -18,14 +19,14 @@ export const ironcladClient = {
    */
   vaults: {
     /** Get all vaults owned by the caller */
-    async getMyVaults(): Promise<ReadonlyArray<Vault>> {
-      const actor = await createIroncladActor();
+    async getMyVaults(identity?: Identity): Promise<ReadonlyArray<Vault>> {
+      const actor = await createIroncladActor(identity);
       return actor.get_my_vaults();
     },
 
     /** Get a specific vault by ID */
-    async getVault(vaultId: bigint): Promise<Vault | null> {
-      const actor = await createIroncladActor();
+    async getVault(vaultId: bigint, identity?: Identity): Promise<Vault | null> {
+      const actor = await createIroncladActor(identity);
       const result = await actor.get_vault(vaultId);
       return result.length > 0 ? result[0]! : null;
     },
@@ -34,8 +35,8 @@ export const ironcladClient = {
     async create(
       lockUntil: bigint,
       expectedDeposit: bigint
-    ): Promise<Vault> {
-      const actor = await createIroncladActor();
+    , identity?: Identity): Promise<Vault> {
+      const actor = await createIroncladActor(identity);
       return actor.create_vault(lockUntil, expectedDeposit);
     },
 
@@ -43,44 +44,44 @@ export const ironcladClient = {
     async mockDeposit(
       vaultId: bigint,
       amount: bigint
-    ): Promise<{ Ok: Vault } | { Err: string }> {
-      const actor = await createIroncladActor();
+    , identity?: Identity): Promise<{ Ok: Vault } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.mock_deposit_vault(vaultId, amount);
     },
 
     /** Get all unlockable vaults */
-    async getUnlockable(): Promise<ReadonlyArray<Vault>> {
-      const actor = await createIroncladActor();
+    async getUnlockable(identity?: Identity): Promise<ReadonlyArray<Vault>> {
+      const actor = await createIroncladActor(identity);
       return actor.get_unlockable_vaults();
     },
 
     /** Get all withdrawable vaults */
-    async getWithdrawable(): Promise<ReadonlyArray<Vault>> {
-      const actor = await createIroncladActor();
+    async getWithdrawable(identity?: Identity): Promise<ReadonlyArray<Vault>> {
+      const actor = await createIroncladActor(identity);
       return actor.get_withdrawable_vaults();
     },
 
     /** Check if a vault is unlockable */
     async isUnlockable(
       vaultId: bigint
-    ): Promise<{ Ok: boolean } | { Err: string }> {
-      const actor = await createIroncladActor();
+    , identity?: Identity): Promise<{ Ok: boolean } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.is_vault_unlockable(vaultId);
     },
 
     /** Unlock a vault */
     async unlock(
       vaultId: bigint
-    ): Promise<{ Ok: Vault } | { Err: string }> {
-      const actor = await createIroncladActor();
+    , identity?: Identity): Promise<{ Ok: Vault } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.unlock_vault(vaultId);
     },
 
     /** Preview withdrawal amount */
     async previewWithdraw(
       vaultId: bigint
-    ): Promise<{ Ok: bigint } | { Err: string }> {
-      const actor = await createIroncladActor();
+    , identity?: Identity): Promise<{ Ok: bigint } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.preview_withdraw(vaultId);
     },
 
@@ -88,14 +89,14 @@ export const ironcladClient = {
     async withdraw(
       vaultId: bigint,
       amount: bigint
-    ): Promise<{ Ok: Vault } | { Err: string }> {
-      const actor = await createIroncladActor();
+    , identity?: Identity): Promise<{ Ok: Vault } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.withdraw_vault(vaultId, amount);
     },
 
     /** Get event history for a vault */
-    async getEvents(vaultId: bigint): Promise<ReadonlyArray<VaultEvent>> {
-      const actor = await createIroncladActor();
+    async getEvents(vaultId: bigint, identity?: Identity): Promise<ReadonlyArray<VaultEvent>> {
+      const actor = await createIroncladActor(identity);
       return actor.get_vault_events(vaultId);
     },
   },
@@ -105,14 +106,14 @@ export const ironcladClient = {
    */
   autoReinvest: {
     /** Get all auto-reinvest configs for the caller */
-    async getMyConfigs(): Promise<ReadonlyArray<AutoReinvestConfig>> {
-      const actor = await createIroncladActor();
+    async getMyConfigs(identity?: Identity): Promise<ReadonlyArray<AutoReinvestConfig>> {
+      const actor = await createIroncladActor(identity);
       return actor.get_my_auto_reinvest_configs();
     },
 
     /** Get auto-reinvest config for a specific vault */
-    async getConfig(vaultId: bigint): Promise<AutoReinvestConfig | null> {
-      const actor = await createIroncladActor();
+    async getConfig(vaultId: bigint, identity?: Identity): Promise<AutoReinvestConfig | null> {
+      const actor = await createIroncladActor(identity);
       const result = await actor.get_auto_reinvest_config(vaultId);
       return result.length > 0 ? result[0]! : null;
     },
@@ -121,20 +122,20 @@ export const ironcladClient = {
     async schedule(
       vaultId: bigint,
       newLockDuration: bigint
-    ): Promise<{ Ok: AutoReinvestConfig } | { Err: string }> {
-      const actor = await createIroncladActor();
+    , identity?: Identity): Promise<{ Ok: AutoReinvestConfig } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.schedule_auto_reinvest(vaultId, newLockDuration);
     },
 
     /** Cancel auto-reinvest for a vault */
-    async cancel(vaultId: bigint): Promise<{ Ok: null } | { Err: string }> {
-      const actor = await createIroncladActor();
+    async cancel(vaultId: bigint, identity?: Identity): Promise<{ Ok: null } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.cancel_auto_reinvest(vaultId);
     },
 
     /** Execute auto-reinvest manually */
-    async execute(vaultId: bigint): Promise<{ Ok: Vault } | { Err: string }> {
-      const actor = await createIroncladActor();
+    async execute(vaultId: bigint, identity?: Identity): Promise<{ Ok: Vault } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.execute_auto_reinvest(vaultId);
     },
   },
@@ -144,14 +145,14 @@ export const ironcladClient = {
    */
   marketplace: {
     /** Get all active listings */
-    async getActiveListings(): Promise<ReadonlyArray<MarketListing>> {
-      const actor = await createIroncladActor();
+    async getActiveListings(identity?: Identity): Promise<ReadonlyArray<MarketListing>> {
+      const actor = await createIroncladActor(identity);
       return actor.get_active_listings();
     },
 
     /** Get caller's listings */
-    async getMyListings(): Promise<ReadonlyArray<MarketListing>> {
-      const actor = await createIroncladActor();
+    async getMyListings(identity?: Identity): Promise<ReadonlyArray<MarketListing>> {
+      const actor = await createIroncladActor(identity);
       return actor.get_my_listings();
     },
 
@@ -159,20 +160,20 @@ export const ironcladClient = {
     async create(
       vaultId: bigint,
       priceSats: bigint
-    ): Promise<{ Ok: MarketListing } | { Err: string }> {
-      const actor = await createIroncladActor();
+    , identity?: Identity): Promise<{ Ok: MarketListing } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.create_listing(vaultId, priceSats);
     },
 
     /** Cancel a listing */
-    async cancel(listingId: bigint): Promise<{ Ok: MarketListing } | { Err: string }> {
-      const actor = await createIroncladActor();
+    async cancel(listingId: bigint, identity?: Identity): Promise<{ Ok: MarketListing } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.cancel_listing(listingId);
     },
 
     /** Buy a listing */
-    async buy(listingId: bigint): Promise<{ Ok: Vault } | { Err: string }> {
-      const actor = await createIroncladActor();
+    async buy(listingId: bigint, identity?: Identity): Promise<{ Ok: Vault } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
       return actor.buy_listing(listingId);
     },
   },

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import TransitionButton from "@/components/navigation/TransitionButton";
 import { ConnectWalletButton } from "@/components/wallet/ConnectWalletButton";
@@ -74,24 +73,27 @@ export default function VaultHeader({
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link
+            <TransitionButton
               href="/vault"
+              suppressTransition
               className={
                 isLinkActive("/vault") ? activeLinkClass : baseLinkClass
               }
             >
               STATUS
-            </Link>
-            <Link
+            </TransitionButton>
+            <TransitionButton
               href="/vault/deposit"
+              suppressTransition
               className={
                 isLinkActive("/vault/deposit") ? activeLinkClass : baseLinkClass
               }
             >
               DEPOSIT
-            </Link>
-            <Link
+            </TransitionButton>
+            <TransitionButton
               href="/vault/withdraw"
+              suppressTransition
               className={
                 isLinkActive("/vault/withdraw")
                   ? activeLinkClass
@@ -99,23 +101,25 @@ export default function VaultHeader({
               }
             >
               WITHDRAW
-            </Link>
-            <Link
+            </TransitionButton>
+            <TransitionButton
               href="/vault/history"
+              suppressTransition
               className={
                 isLinkActive("/vault/history") ? activeLinkClass : baseLinkClass
               }
             >
               HISTORY
-            </Link>
-            <Link
+            </TransitionButton>
+            <TransitionButton
               href="/vault/access"
+              suppressTransition
               className={
                 isLinkActive("/vault/access") ? activeLinkClass : baseLinkClass
               }
             >
               ACCESS
-            </Link>
+            </TransitionButton>
           </nav>
 
           {/* Connect Wallet Button (desktop) */}
@@ -163,17 +167,19 @@ export default function VaultHeader({
             }`}
           >
             <div className="flex flex-col space-y-3">
-              <Link
+              <TransitionButton
                 href="/vault"
+                suppressTransition
                 className={
                   isLinkActive("/vault") ? activeLinkClass : baseLinkClass
                 }
                 onClick={handleMenuToggle}
               >
                 STATUS
-              </Link>
-              <Link
+              </TransitionButton>
+              <TransitionButton
                 href="/vault/deposit"
+                suppressTransition
                 className={
                   isLinkActive("/vault/deposit")
                     ? activeLinkClass
@@ -182,9 +188,10 @@ export default function VaultHeader({
                 onClick={handleMenuToggle}
               >
                 DEPOSIT
-              </Link>
-              <Link
+              </TransitionButton>
+              <TransitionButton
                 href="/vault/withdraw"
+                suppressTransition
                 className={
                   isLinkActive("/vault/withdraw")
                     ? activeLinkClass
@@ -193,9 +200,10 @@ export default function VaultHeader({
                 onClick={handleMenuToggle}
               >
                 WITHDRAW
-              </Link>
-              <Link
+              </TransitionButton>
+              <TransitionButton
                 href="/vault/history"
+                suppressTransition
                 className={
                   isLinkActive("/vault/history")
                     ? activeLinkClass
@@ -204,9 +212,10 @@ export default function VaultHeader({
                 onClick={handleMenuToggle}
               >
                 HISTORY
-              </Link>
-              <Link
+              </TransitionButton>
+              <TransitionButton
                 href="/vault/access"
+                suppressTransition
                 className={
                   isLinkActive("/vault/access")
                     ? activeLinkClass
@@ -215,7 +224,7 @@ export default function VaultHeader({
                 onClick={handleMenuToggle}
               >
                 ACCESS
-              </Link>
+              </TransitionButton>
             </div>
             {/* Connect Wallet Button (mobile) */}
             <div className="pt-2">

@@ -7,6 +7,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useWallet } from '@/components/wallet/useWallet';
 import { ironcladClient } from '@/lib/ic/ironcladClient';
 import type { Vault } from '@/lib/ic/ironcladActor';
 
@@ -22,6 +23,7 @@ interface UseMyVaultsReturn {
  * Uses anonymous identity by default (no wallet connection required)
  */
 export function useMyVaults(): UseMyVaultsReturn {
+  const { identity } = useWallet();
   const [data, setData] = useState<ReadonlyArray<Vault> | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -31,7 +33,7 @@ export function useMyVaults(): UseMyVaultsReturn {
     setError(null);
 
     try {
-      const result = await ironcladClient.vaults.getMyVaults();
+      const result = await ironcladClient.vaults.getMyVaults(identity ?? undefined);
       setData(result);
     } catch (err) {
       setError(err instanceof Error ? err : new Error(String(err)));
@@ -45,7 +47,7 @@ export function useMyVaults(): UseMyVaultsReturn {
 
     async function run() {
       try {
-        const result = await ironcladClient.vaults.getMyVaults();
+        const result = await ironcladClient.vaults.getMyVaults(identity ?? undefined);
         if (!cancelled) {
           setData(result);
         }
@@ -65,7 +67,7 @@ export function useMyVaults(): UseMyVaultsReturn {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [identity]);
 
   return { data, loading, error, refetch: fetchVaults };
 }

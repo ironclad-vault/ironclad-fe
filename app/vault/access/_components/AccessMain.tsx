@@ -4,11 +4,17 @@ import { useState } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
 import { useAutoReinvest } from "@/hooks/ironclad/useAutoReinvest";
 import { useVaults } from "@/hooks/ironclad/useVaults";
-import type { AutoReinvestConfig } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 
 export default function AccessMain() {
   const { isConnected } = useWallet();
-  const { configs, loading: configsLoading, error: configsError, schedule, cancel, execute } = useAutoReinvest();
+  const {
+    configs,
+    loading: configsLoading,
+    error: configsError,
+    schedule,
+    cancel,
+    execute,
+  } = useAutoReinvest();
   const { vaults, loading: vaultsLoading } = useVaults();
 
   const [selectedVaultId, setSelectedVaultId] = useState<string>("");
@@ -24,7 +30,10 @@ export default function AccessMain() {
     setScheduling(true);
     setSuccessMessage(null);
     try {
-      const success = await schedule(BigInt(selectedVaultId), BigInt(newLockDuration));
+      const success = await schedule(
+        BigInt(selectedVaultId),
+        BigInt(newLockDuration)
+      );
       if (success) {
         setSuccessMessage("Auto-reinvest scheduled successfully!");
         setSelectedVaultId("");
@@ -38,7 +47,9 @@ export default function AccessMain() {
   };
 
   const handleCancel = async (vaultId: bigint) => {
-    if (!confirm("Are you sure you want to cancel auto-reinvest for this vault?")) {
+    if (
+      !confirm("Are you sure you want to cancel auto-reinvest for this vault?")
+    ) {
       return;
     }
 
@@ -46,7 +57,11 @@ export default function AccessMain() {
   };
 
   const handleExecute = async (vaultId: bigint) => {
-    if (!confirm("Are you sure you want to execute auto-reinvest for this vault now?")) {
+    if (
+      !confirm(
+        "Are you sure you want to execute auto-reinvest for this vault now?"
+      )
+    ) {
       return;
     }
 
@@ -55,72 +70,75 @@ export default function AccessMain() {
 
   if (!isConnected) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="border-2 border-black p-8 bg-white">
-          <h2 className="text-2xl font-bold mb-4">Wallet Not Connected</h2>
-          <p className="text-gray-600">Please connect your wallet to manage auto-reinvest.</p>
-        </div>
+      <div className="card-brutal p-8 text-center">
+        <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
+        <p className="body-brutal text-lg text-gray-600">
+          Please connect your wallet to manage auto-reinvest.
+        </p>
       </div>
     );
   }
 
   if (configsLoading || vaultsLoading) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="border-2 border-black p-8 bg-white">
-          <p className="text-gray-600">Loading auto-reinvest configurations...</p>
-        </div>
+      <div className="card-brutal p-8 text-center">
+        <p className="body-brutal text-lg text-gray-600">
+          Loading auto-reinvest configurations...
+        </p>
       </div>
     );
   }
 
   if (configsError) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="border-2 border-black p-8 bg-white">
-          <h2 className="text-2xl font-bold mb-4 text-red-600">Error</h2>
-          <p className="text-gray-600">{configsError}</p>
-        </div>
+      <div className="card-brutal p-8 bg-red-50 border-red-300">
+        <h2 className="heading-brutal text-lg text-red-900 mb-2">ERROR</h2>
+        <p className="body-brutal text-sm text-red-800">{configsError}</p>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <div className="space-y-8 max-w-4xl">
       {/* Success Message */}
       {successMessage && (
-        <div className="border-2 border-green-500 p-4 bg-green-50">
-          <p className="text-green-800 font-bold">{successMessage}</p>
+        <div className="card-brutal p-4 bg-green-50 border-green-300">
+          <p className="body-brutal font-bold text-green-800">{successMessage}</p>
         </div>
       )}
 
       {/* Schedule New Auto-Reinvest */}
-      <div className="border-2 border-black p-8 bg-white">
-        <h1 className="text-3xl font-bold mb-6">Schedule Auto-Reinvest</h1>
+      <div className="card-brutal p-8">
+        <h1 className="heading-brutal text-3xl mb-6">SCHEDULE AUTO-REINVEST</h1>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-bold mb-2">Select Vault</label>
+            <label className="body-brutal text-sm font-bold mb-2 block">
+              SELECT VAULT
+            </label>
             <select
               value={selectedVaultId}
               onChange={(e) => setSelectedVaultId(e.target.value)}
-              className="w-full border-2 border-black px-4 py-2 bg-white"
+              className="input-brutal"
             >
               <option value="">-- Select a vault --</option>
               {vaults.map((vault) => (
                 <option key={vault.id.toString()} value={vault.id.toString()}>
-                  Vault {vault.id.toString().slice(0, 8)} - {Number(vault.balance) / 100_000_000} BTC
+                  Vault {vault.id.toString().slice(0, 8)} -{" "}
+                  {Number(vault.balance) / 100_000_000} BTC
                 </option>
               ))}
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-bold mb-2">New Lock Duration</label>
+            <label className="body-brutal text-sm font-bold mb-2 block">
+              NEW LOCK DURATION
+            </label>
             <select
               value={newLockDuration}
               onChange={(e) => setNewLockDuration(e.target.value)}
-              className="w-full border-2 border-black px-4 py-2 bg-white"
+              className="input-brutal"
             >
               <option value="2592000">30 days (2.5% APY)</option>
               <option value="7776000">90 days (5% APY)</option>
@@ -132,33 +150,45 @@ export default function AccessMain() {
           <button
             onClick={handleSchedule}
             disabled={!selectedVaultId || scheduling}
-            className="w-full bg-black text-white px-6 py-3 font-bold border-2 border-black hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed"
+            className="button-brutal accent w-full"
           >
-            {scheduling ? "Scheduling..." : "Schedule Auto-Reinvest"}
+            {scheduling ? "SCHEDULING..." : "SCHEDULE AUTO-REINVEST"}
           </button>
         </div>
       </div>
 
       {/* Active Configurations */}
-      <div className="border-2 border-black p-8 bg-white">
-        <h2 className="text-2xl font-bold mb-6">Active Auto-Reinvest Configs</h2>
+      <div className="card-brutal p-8">
+        <h2 className="heading-brutal text-2xl mb-6">
+          ACTIVE AUTO-REINVEST CONFIGS
+        </h2>
 
         {configs.length === 0 ? (
-          <p className="text-gray-600">No active auto-reinvest configurations.</p>
+          <p className="body-brutal text-gray-600">
+            No active auto-reinvest configurations.
+          </p>
         ) : (
           <div className="space-y-4">
             {configs.map((config) => (
-              <div key={config.vault_id.toString()} className="border-2 border-black p-4 bg-gray-50">
+              <div
+                key={config.vault_id.toString()}
+                className="card-brutal p-4 bg-gray-50"
+              >
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <p className="font-bold">Vault ID: {config.vault_id.toString()}</p>
-                    <p className="text-sm text-gray-600">
-                      New Lock Duration: {Number(config.new_lock_duration) / 86400} days
+                    <p className="body-brutal font-bold">
+                      Vault ID: {config.vault_id.toString()}
+                    </p>
+                    <p className="body-brutal text-sm text-gray-600">
+                      New Lock Duration:{" "}
+                      {Number(config.new_lock_duration) / 86400} days
                     </p>
                   </div>
-                  <span className={`px-3 py-1 text-xs font-bold border-2 border-black ${
-                    config.enabled ? "bg-green-200" : "bg-gray-200"
-                  }`}>
+                  <span
+                    className={`px-3 py-1 text-xs font-bold border-2 border-black ${
+                      config.enabled ? "bg-green-200" : "bg-gray-200"
+                    }`}
+                  >
                     {config.enabled ? "ACTIVE" : "INACTIVE"}
                   </span>
                 </div>
@@ -167,15 +197,15 @@ export default function AccessMain() {
                   <button
                     onClick={() => handleExecute(config.vault_id)}
                     disabled={!config.enabled}
-                    className="flex-1 bg-blue-600 text-white px-4 py-2 font-bold border-2 border-black hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                    className="flex-1 button-brutal bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-300"
                   >
-                    Execute Now
+                    EXECUTE NOW
                   </button>
                   <button
                     onClick={() => handleCancel(config.vault_id)}
-                    className="flex-1 bg-red-600 text-white px-4 py-2 font-bold border-2 border-black hover:bg-red-700"
+                    className="flex-1 button-brutal bg-red-600 text-white hover:bg-red-700"
                   >
-                    Cancel
+                    CANCEL
                   </button>
                 </div>
               </div>
