@@ -1,49 +1,94 @@
-=========================================
-PEDOMAN DESAIN: IRONCLAD (BRUTALISME)
-=========================================
+I have a Next.js 15 App Router project (client-only, output: "export" for ICP asset canister hosting) that integrates with an ICP Rust canister backend (ironclad_vault_backend). The backend implements a full vault system, auto-reinvest automation, and marketplace. The frontend is already partially integrated with ICP + wallet support, but I want you to:
 
-Tema ini berfokus pada fungsi, keamanan, dan kekuatan. Estetika yang dituju adalah solid, jujur, dan tanpa basa-basi, mencerminkan sifat "brankas" (vault) yang tidak bisa ditembus.
+Fix all ICP-related edge cases (404 canister not found, wrong host/canister usage)
 
----
+Ensure the service layer matches the real Candid types
 
-### 1. PALET WARNA (KONTRA_ TINGGI)
+Tighten React hooks + pages per “module”
 
-* **Primer 01 (Latar):** Off-white (`#F9F9F9`) - Untuk latar belakang halaman utama.
-* **Primer 02 (Teks/Outline):** Hitam (`#000000`) - Untuk semua teks utama, border, dan outline.
-* **Sekunder (Struktur):** Abu-abu Beton (`#BEBEBE`) - Untuk latar belakang container/card/panel, memberikan struktur visual.
-* **Aksen (CTA/Status):** Oranye Bitcoin (`#F7931A`) - Digunakan *sangat hemat*. Hanya untuk tombol aksi utama dan status "LOCKED".
+Keep the brutal-minimal UI (no glass, no gradient, no blur)
 
----
+Backend Contract (Source of Truth)
 
-### 2. TIPOGRAFI (TEBAL & JELAS)
+Use the following Candid interface as the only truth for return types (plain vs variant { Ok; Err }) and structures:
 
-* **Font Judul (Headings):** Gunakan font Sans-serif yang sangat tebal dan "kuat".
-    * **Rekomendasi:** Anton, Inter (Black/Bold), Oswald (Bold).
-    * **Gaya:** Selalu gunakan huruf kapital (ALL CAPS) untuk navigasi dan judul utama.
-* **Font Konten (Body/Labels):** Gunakan font Sans-serif yang bersih.
-    * **Rekomendasi:** Inter (Regular).
-* **Font Data (Monospace):** Gunakan font monospasi untuk angka (timer, jumlah BTC) dan alamat Bitcoin agar mudah dibaca.
-    * **Rekomendasi:** IBM Plex Mono, Space Mono.
+type VaultStatus = variant {
+  PendingDeposit;
+  ActiveLocked;
+  Unlockable;
+  Withdrawn;
+};
 
----
+type Vault = record {
+  id: nat64;
+  owner: principal;
+  btc_address: text;
+  expected_deposit: nat64;
+  btc_deposit_txid: opt text;
+  btc_withdraw_txid: opt text;
+  lock_until: nat64;
+  status: VaultStatus;
+  balance: nat64;
+  created_at: nat64;
+  updated_at: nat64;
+};
 
-### 3. BENTUK & STRUKTUR (KAKU & KOTAK)
+type VaultEvent = record {
+  vault_id: nat64;
+  action: text;
+  timestamp: nat64;
+  notes: text;
+};
 
-* **Sudut (Border Radius):** Nol. `border-radius: 0px;`. Semua elemen (tombol, input, card) harus memiliki sudut yang tajam.
-* **Garis (Borders):** Gunakan border `2px` solid `Hitam (#000000)` untuk memisahkan semua elemen fungsional (card, input field, tombol).
-* **Bayangan (Shadows):** Hindari penggunaan `box-shadow` untuk efek kedalaman. Gunakan `border` tebal untuk memisahkan elemen.
+type AutoReinvestConfig = record {
+  vault_id: nat64;
+  owner: principal;
+  new_lock_duration: nat64;
+  enabled: bool;
+  created_at: nat64;
+  updated_at: nat64;
+};
 
----
+type ListingStatus = variant {
+  Active;
+  Cancelled;
+  Filled;
+};
 
-### 4. PENERAPAN ELEMEN UI SPESIFIK
+type MarketListing = record {
+  id: nat64;
+  vault_id: nat64;
+  seller: principal;
+  buyer: opt principal;
+  price_sats: nat64;
+  status: ListingStatus;
+  created_at: nat64;
+  updated_at: nat64;
+};
 
-* **Judul Utama (H1):** Font tebal, ALL CAPS, Hitam. (Contoh: "IRONCLAD").
-* **Container / Card:** Latar belakang Abu-abu Beton (`#BEBEBE`), border `2px` Hitam.
-* **Tombol (Aksi Utama):**
-    * **Default:** Latar belakang Hitam (`#000000`), teks Putih (`#FFFFFF`), border `2px` Hitam.
-    * **Aksi Krusial (Deposit/Withdraw):** Latar belakang Oranye Bitcoin (`#F7931A`), teks Hitam (`#000000`).
-* **Input Field:** Latar belakang Putih (`#FFFFFF`), border `2px` Hitam, `border-radius: 0`. Teks di dalam menggunakan font Monospasi.
-* **Timer (Hitung Mundur):** Angka terbesar di layar. Gunakan font Monospasi, warna Oranye Bitcoin (`#F7931A`).
-* **Label Status:**
-    * **LOCKED:** Latar belakang Oranye Bitcoin (`#F7931A`), teks Hitam (`#000000`), font tebal, ALL CAPS.
-    * **UNLOCKED:** Latar belakang Hijau Terang (misal: `#00FF00`), teks Hitam (`#000000`), font tebal, ALL CAPS.
+service : {
+  create_vault: (nat64, nat64) -> (Vault);
+  get_my_vaults: () -> (vec Vault) query;
+  get_vault: (nat64) -> (opt Vault) query;
+  get_vault_events: (nat64) -> (vec VaultEvent) query;
+  mock_deposit_vault: (nat64, nat64) -> (variant { Ok: Vault; Err: text });
+  is_vault_unlockable: (nat64) -> (variant { Ok: bool; Err: text }) query;
+  unlock_vault: (nat64) -> (variant { Ok: Vault; Err: text });
+  get_unlockable_vaults: () -> (vec Vault) query;
+  preview_withdraw: (nat64) -> (variant { Ok: nat64; Err: text }) query;
+  withdraw_vault: (nat64, nat64) -> (variant { Ok: Vault; Err: text });
+  get_withdrawable_vaults: () -> (vec Vault) query;
+
+  schedule_auto_reinvest: (nat64, nat64) -> (variant { Ok: AutoReinvestConfig; Err: text });
+  cancel_auto_reinvest: (nat64) -> (variant { Ok: null; Err: text });
+  get_auto_reinvest_config: (nat64) -> (opt AutoReinvestConfig) query;
+  get_my_auto_reinvest_configs: () -> (vec AutoReinvestConfig) query;
+  execute_auto_reinvest: (nat64) -> (variant { Ok: Vault; Err: text });
+
+  create_listing: (nat64, nat64) -> (variant { Ok: MarketListing; Err: text });
+  cancel_listing: (nat64) -> (variant { Ok: MarketListing; Err: text });
+  get_active_listings: () -> (vec MarketListing) query;
+  get_my_listings: () -> (vec MarketListing) query;
+  buy_listing: (nat64) -> (variant { Ok: Vault; Err: text });
+}
+

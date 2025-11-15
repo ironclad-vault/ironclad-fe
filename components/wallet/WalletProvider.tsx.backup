@@ -1,0 +1,267 @@
+"use client";
+
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { AuthClient } from "@dfinity/auth-client";
+import { HttpAgent } from "@dfinity/agent";
+import { Principal } from "@dfinity/principal";
+
+/**
+ * Wallet Provider - Phase 1: UI-only wallet state management
+ * 
+ * This provider manages wallet connection UI state (connected/disconnected, principal display)
+ * but does NOT influence canister calls. All ICP calls go through ironcladClient directly
+ * using anonymous actors.
+ * 
+ * Phase 2 will integrate wallet identity into canister calls.
+ */
+
+export type WalletType = "ii" | "plug" | "nfid" | null;
+
+interface WalletContextType {
+  isConnected: boolean;
+  principal: Principal | null;
+  principalText: string | null;
+  walletType: WalletType;
+  isInitializing: boolean;
+  connect: (type: WalletType) => Promise<void>;
+  disconnect: () => Promise<void>;
+}
+
+const WalletContext = createContext<WalletContextType | undefined>(undefined);
+
+const WALLET_TYPE_KEY = "ironclad_wallet_type";
+const PRINCIPAL_KEY = "ironclad_principal";
+
+// Plug wallet interface
+interface PlugWallet {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Plug wallet external API
+  requestConnect: (options?: { whitelist?: string[] }) => Promise<any>;
+  isConnected: () => Promise<boolean>;
+  disconnect: () => Promise<void>;
+  agent: HttpAgent;
+  getPrincipal: () => Promise<Principal>;
+  sessionManager: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Plug wallet session data format
+    sessionData: any;
+  };
+}
+
+declare global {
+  interface Window {
+    ic?: {
+      plug?: PlugWallet;
+    };
+  }
+}
+
+export function WalletProvider({ children }: { children: React.ReactNode }) {
+  const [isConnected, setIsConnected] = useState(false);
+  const [principal, setPrincipal] = useState<Principal | null>(null);
+  const [principalText, setPrincipalText] = useState<string | null>(null);
+  const [walletType, setWalletType] = useState<WalletType>(null);
+  const [actor, setActor] = useState<IroncladActor | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [authClient, setAuthClient] = useState<AuthClient | null>(null);
+
+  // Initialize AuthClient on mount
+  useEffect(() => {
+    const initAuthClient = async () => {
+      const client = await AuthClient.create({
+        idleOptions: {
+          disableIdle: true,
+        },
+      });
+      setAuthClient(client);
+    };
+    initAuthClient();
+  }, []);
+
+  // Restore session on mount
+  useEffect(() => {
+    if (!authClient) return;
+
+    const restoreSession = async () => {
+      try {
+        const savedWalletType = localStorage.getItem(WALLET_TYPE_KEY) as WalletType;
+        const savedPrincipal = localStorage.getItem(PRINCIPAL_KEY);
+
+        if (!savedWalletType || !savedPrincipal) {
+          setIsInitializing(false);
+          return;
+        }
+
+        console.log("[Wallet] Restoring session:", { savedWalletType, savedPrincipal });
+
+        if (savedWalletType === "ii") {
+          const isAuthenticated = await authClient.isAuthenticated();
+          if (isAuthenticated) {
+            const identity = authClient.getIdentity();
+            const principal = identity.getPrincipal();
+            const actorInstance = await getIroncladActor(identity);
+
+            setIsConnected(true);
+            setPrincipal(principal);
+            setPrincipalText(principal.toString());
+            setWalletType("ii");
+            setActor(actorInstance);
+            console.log("[Wallet] II session restored");
+          } else {
+            // Session expired, clear storage
+            localStorage.removeItem(WALLET_TYPE_KEY);
+            localStorage.removeItem(PRINCIPAL_KEY);
+          }
+        } else if (savedWalletType === "plug") {
+          if (window.ic?.plug) {
+            const connected = await window.ic.plug.isConnected();
+            if (connected) {
+              const principal = await window.ic.plug.getPrincipal();
+              const actorInstance = await getIroncladActor();
+
+              setIsConnected(true);
+              setPrincipal(principal);
+              setPrincipalText(principal.toString());
+              setWalletType("plug");
+              setActor(actorInstance);
+              console.log("[Wallet] Plug session restored");
+            } else {
+              localStorage.removeItem(WALLET_TYPE_KEY);
+              localStorage.removeItem(PRINCIPAL_KEY);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("[Wallet] Failed to restore session:", error);
+        localStorage.removeItem(WALLET_TYPE_KEY);
+        localStorage.removeItem(PRINCIPAL_KEY);
+      } finally {
+        setIsInitializing(false);
+      }
+    };
+
+    restoreSession();
+  }, [authClient]);
+
+  const connect = useCallback(
+    async (type: WalletType) => {
+      if (!type) throw new Error("Wallet type is required");
+
+      try {
+        console.log("[Wallet] Connecting to:", type);
+
+        if (type === "ii") {
+          if (!authClient) throw new Error("AuthClient not initialized");
+
+          const identityProvider = isLocal()
+            ? `${IC_CONFIG.host}?canisterId=${IC_CONFIG.internetIdentityCanisterId}`
+            : "https://identity.ic0.app";
+
+          await authClient.login({
+            identityProvider,
+            maxTimeToLive: BigInt(7 * 24 * 60 * 60 * 1000 * 1000 * 1000), // 7 days
+            onSuccess: async () => {
+              const identity = authClient.getIdentity();
+              const principal = identity.getPrincipal();
+              const actorInstance = await getIroncladActor(identity);
+
+              setIsConnected(true);
+              setPrincipal(principal);
+              setPrincipalText(principal.toString());
+              setWalletType("ii");
+              setActor(actorInstance);
+
+              localStorage.setItem(WALLET_TYPE_KEY, "ii");
+              localStorage.setItem(PRINCIPAL_KEY, principal.toString());
+
+              console.log("[Wallet] II connected:", principal.toString());
+            },
+            onError: (error) => {
+              console.error("[Wallet] II login failed:", error);
+              throw error;
+            },
+          });
+        } else if (type === "plug") {
+          if (!window.ic?.plug) {
+            throw new Error("Plug wallet not detected. Please install Plug extension.");
+          }
+
+          const whitelist = [IC_CONFIG.ironcladCanisterId];
+
+          await window.ic.plug.requestConnect({ whitelist });
+
+          const connected = await window.ic.plug.isConnected();
+          if (!connected) {
+            throw new Error("Failed to connect to Plug wallet");
+          }
+
+          const principal = await window.ic.plug.getPrincipal();
+          const actorInstance = await getIroncladActor();
+
+          setIsConnected(true);
+          setPrincipal(principal);
+          setPrincipalText(principal.toString());
+          setWalletType("plug");
+          setActor(actorInstance);
+
+          localStorage.setItem(WALLET_TYPE_KEY, "plug");
+          localStorage.setItem(PRINCIPAL_KEY, principal.toString());
+
+          console.log("[Wallet] Plug connected:", principal.toString());
+        } else if (type === "nfid") {
+          // NFID implementation (stub for now)
+          throw new Error("NFID wallet support coming soon");
+        }
+      } catch (error) {
+        console.error("[Wallet] Connection failed:", error);
+        throw error;
+      }
+    },
+    [authClient]
+  );
+
+  const disconnect = useCallback(async () => {
+    try {
+      console.log("[Wallet] Disconnecting from:", walletType);
+
+      if (walletType === "ii" && authClient) {
+        await authClient.logout();
+      } else if (walletType === "plug" && window.ic?.plug) {
+        await window.ic.plug.disconnect();
+      }
+
+      setIsConnected(false);
+      setPrincipal(null);
+      setPrincipalText(null);
+      setWalletType(null);
+      setActor(null);
+
+      localStorage.removeItem(WALLET_TYPE_KEY);
+      localStorage.removeItem(PRINCIPAL_KEY);
+
+      console.log("[Wallet] Disconnected");
+    } catch (error) {
+      console.error("[Wallet] Disconnect failed:", error);
+      throw error;
+    }
+  }, [walletType, authClient]);
+
+  const value: WalletContextType = {
+    isConnected,
+    principal,
+    principalText,
+    walletType,
+    actor,
+    isInitializing,
+    connect,
+    disconnect,
+  };
+
+  return <WalletContext.Provider value={value}>{children}</WalletContext.Provider>;
+}
+
+export function useWallet() {
+  const context = useContext(WalletContext);
+  if (context === undefined) {
+    throw new Error("useWallet must be used within a WalletProvider");
+  }
+  return context;
+}

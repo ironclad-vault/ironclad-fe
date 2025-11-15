@@ -4,15 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import TransitionButton from "@/components/navigation/TransitionButton";
+import { ConnectWalletButton } from "@/components/wallet/ConnectWalletButton";
 
 interface VaultHeaderProps {
   currentPath: string;
-  principalId?: string;
 }
 
 export default function VaultHeader({
   currentPath,
-  principalId,
 }: VaultHeaderProps) {
   const [open, setOpen] = useState(false);
   const [animating, setAnimating] = useState(false);
@@ -119,12 +118,10 @@ export default function VaultHeader({
             </Link>
           </nav>
 
-          {/* Principal ID (desktop) */}
-          {principalId && (
-            <div className="hidden md:block mono-brutal text-sm">
-              ID: {principalId.substring(0, 8)}...
-            </div>
-          )}
+          {/* Connect Wallet Button (desktop) */}
+          <div className="hidden md:block">
+            <ConnectWalletButton />
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -220,14 +217,10 @@ export default function VaultHeader({
                 ACCESS
               </Link>
             </div>
-            {principalId && (
-              <div
-                className="mono-brutal text-xs transform transition-transform duration-500 origin-top"
-                style={{ animationDelay: "100ms" }}
-              >
-                ID: {principalId}
-              </div>
-            )}
+            {/* Connect Wallet Button (mobile) */}
+            <div className="pt-2">
+              <ConnectWalletButton />
+            </div>
           </div>
         </div>
       )}

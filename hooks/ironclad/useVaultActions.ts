@@ -1,0 +1,115 @@
+"use client";
+
+import { useState } from "react";
+import { ironcladClient } from "@/lib/ic/ironcladClient";
+import type { Vault } from "@/lib/ic/ironcladActor";
+
+/**
+ * Hook for vault actions (create, deposit, unlock, withdraw)
+ * Phase 1: Uses anonymous canister calls (no wallet identity)
+ */
+export function useVaultActions() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleCreateVault = async (
+    lockUntil: number,
+    expectedDeposit: bigint
+  ): Promise<Vault | null> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const vault = await ironcladClient.vaults.create(
+        BigInt(lockUntil),
+        expectedDeposit
+      );
+      return vault;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+      console.error("[useVaultActions] Create failed:", msg);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMockDeposit = async (
+    vaultId: bigint,
+    amount: bigint
+  ): Promise<Vault | null> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await ironcladClient.vaults.mockDeposit(vaultId, amount);
+      if ("Err" in result) {
+        setError(result.Err);
+        return null;
+      }
+      return result.Ok;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+      console.error("[useVaultActions] Mock deposit failed:", msg);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUnlockVault = async (vaultId: bigint): Promise<Vault | null> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await ironcladClient.vaults.unlock(vaultId);
+      if ("Err" in result) {
+        setError(result.Err);
+        return null;
+      }
+      return result.Ok;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+      console.error("[useVaultActions] Unlock failed:", msg);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleWithdrawVault = async (
+    vaultId: bigint,
+    amount: bigint
+  ): Promise<Vault | null> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await ironcladClient.vaults.withdraw(vaultId, amount);
+      if ("Err" in result) {
+        setError(result.Err);
+        return null;
+      }
+      return result.Ok;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+      console.error("[useVaultActions] Withdraw failed:", msg);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    createVault: handleCreateVault,
+    mockDeposit: handleMockDeposit,
+    unlockVault: handleUnlockVault,
+    withdrawVault: handleWithdrawVault,
+    loading,
+    error,
+  };
+}
