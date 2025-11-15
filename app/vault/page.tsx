@@ -8,6 +8,7 @@ import { useWallet } from "@/components/wallet/useWallet";
 import { VaultStatusTS } from "@/lib/ironclad-service";
 import type { Vault } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 import TransitionButton from "@/components/navigation/TransitionButton";
+import { Hourglass, Lock } from "lucide-react";
 
 function VaultCard({ vault }: { vault: Vault }) {
   // Convert VaultStatus to VaultStatusTS
@@ -142,7 +143,7 @@ export default function VaultPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <TransitionWrapper>
-        <VaultHeader currentPath="/vault" />
+        <VaultHeader />
 
         {/* Main Content */}
         <section className="flex flex-col items-stretch min-h-screen">
@@ -253,9 +254,10 @@ export default function VaultPage() {
 
                       {/* Active Locked Vaults */}
                       {activeVaults.length > 0 && (
-                        <div className="mb-8">
-                          <h2 className="heading-brutal text-xl mb-4">
-                            🔒 ACTIVE LOCKED ({activeVaults.length})
+                        <div className="mb-8 flex flex-col gap-3">
+                          <h2 className="heading-brutal text-xl flex flex-row gap-2 justify-start items-center mb-4">
+                            <Lock className="inline-block" /> ACTIVE LOCKED (
+                            {activeVaults.length})
                           </h2>
                           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {activeVaults.map((vault) => (
@@ -270,9 +272,10 @@ export default function VaultPage() {
 
                       {/* Pending Deposits */}
                       {pendingVaults.length > 0 && (
-                        <div className="mb-8">
-                          <h2 className="heading-brutal text-xl mb-4">
-                            ⏳ PENDING DEPOSIT ({pendingVaults.length})
+                        <div className="mb-8 flex flex-col gap-3">
+                          <h2 className="heading-brutal text-xl flex flex-row gap-2 justify-start items-center mb-4">
+                            <Hourglass className="inline-block" /> PENDING
+                            DEPOSIT ({pendingVaults.length})
                           </h2>
                           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {pendingVaults.map((vault) => (

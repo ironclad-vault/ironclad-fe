@@ -10,7 +10,7 @@ export default function HistoryPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <TransitionWrapper>
-        <VaultHeader currentPath="/vault/history" />
+        <VaultHeader />
 
         <section className="flex flex-col items-stretch min-h-screen">
           <main className="pt-24 pb-16 flex-1">

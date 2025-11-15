@@ -48,7 +48,7 @@ export default function DepositForm() {
 
   return (
     <div className="card-brutal flex flex-col gap-8">
-      <VaultHeader currentPath="/vault/deposit" />
+      <VaultHeader />
       <h3 className="heading-brutal text-xl">CREATE NEW VAULT</h3>
 
       {error && (

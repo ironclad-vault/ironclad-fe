@@ -114,7 +114,7 @@ export default function TestPage() {
     <div className="min-h-screen bg-white">
       <RootKeyWarning />
       <TransitionWrapper>
-        <VaultHeader currentPath="/vault/test" />
+        <VaultHeader />
 
         <main className="pt-24 pb-16">
           <div className="container mx-auto px-6 max-w-6xl">

@@ -53,7 +53,12 @@ export default function AccessMain() {
       return;
     }
 
-    await cancel(vaultId);
+    try {
+      await cancel(vaultId);
+      setSuccessMessage("Auto-reinvest cancelled successfully!");
+    } catch (err) {
+      console.error("Cancel failed:", err);
+    }
   };
 
   const handleExecute = async (vaultId: bigint) => {
@@ -65,7 +70,14 @@ export default function AccessMain() {
       return;
     }
 
-    await execute(vaultId);
+    try {
+      const result = await execute(vaultId);
+      if (result !== null) {
+        setSuccessMessage("Auto-reinvest executed successfully!");
+      }
+    } catch (err) {
+      console.error("Execute failed:", err);
+    }
   };
 
   if (!isConnected) {
@@ -99,7 +111,7 @@ export default function AccessMain() {
   }
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-8 max-w-4xl mx-auto">
       {/* Success Message */}
       {successMessage && (
         <div className="card-brutal p-4 bg-green-50 border-green-300">

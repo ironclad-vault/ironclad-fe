@@ -13,7 +13,7 @@ export default function DepositPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <TransitionWrapper>
-        <VaultHeader currentPath="/vault/deposit" />
+        <VaultHeader />
 
         <section className="flex flex-col items-stretch min-h-screen">
           <main className="pt-24 pb-16 flex-1">
