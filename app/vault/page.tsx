@@ -85,7 +85,7 @@ function VaultCard({ vault }: { vault: Vault }) {
       </div>
 
       {/* Action Buttons */}
-      <div className="mt-4 flex gap-2">
+      <div className="mt-4 flex gap-2 flex-wrap">
         {getVaultStatus(vault) === "Unlockable" && (
           <TransitionButton
             href="/vault/withdraw"
@@ -102,6 +102,15 @@ function VaultCard({ vault }: { vault: Vault }) {
             className="flex-1 button-brutal py-2 text-sm bg-blue-600 text-white hover:bg-blue-700"
           >
             COMPLETE DEPOSIT
+          </TransitionButton>
+        )}
+        {(getVaultStatus(vault) === "ActiveLocked" || getVaultStatus(vault) === "Unlockable") && (
+          <TransitionButton
+            href="/vault/timelock"
+            suppressTransition
+            className="flex-1 button-brutal py-2 text-sm border-2 border-purple-300 text-purple-900 hover:bg-purple-50"
+          >
+            TIMELOCK
           </TransitionButton>
         )}
         <TransitionButton
