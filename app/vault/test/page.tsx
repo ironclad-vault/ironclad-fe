@@ -11,9 +11,14 @@ import TransitionWrapper from "../../transition-wrapper";
 import { RootKeyWarning } from "@/components/wallet/RootKeyWarning";
 
 export default function TestPage() {
-  const { isConnected, principal, walletType, actor } = useWallet();
-  const { vaults, loading: vaultsLoading, error: vaultsError, refetch } = useVaults();
-  
+  const { isConnected, principal, walletType } = useWallet();
+  const {
+    vaults,
+    loading: vaultsLoading,
+    error: vaultsError,
+    refetch,
+  } = useVaults();
+
   const {
     createVault,
     mockDeposit,
@@ -48,7 +53,10 @@ export default function TestPage() {
     try {
       const result = await createVault(lockDays, BigInt(depositAmount));
       if (result) {
-        addResult("createVault", `✅ Success: Vault ID ${result.id.toString()}`);
+        addResult(
+          "createVault",
+          `✅ Success: Vault ID ${result.id.toString()}`
+        );
         refetch();
       } else {
         addResult("createVault", `❌ Failed: No vault returned`);
@@ -62,7 +70,10 @@ export default function TestPage() {
     try {
       const result = await mockDeposit(vaultId, amount);
       if (result) {
-        addResult("mockDeposit", `✅ Success: Deposited ${amount} sats to vault ${vaultId}`);
+        addResult(
+          "mockDeposit",
+          `✅ Success: Deposited ${amount} sats to vault ${vaultId}`
+        );
         refetch();
       } else {
         addResult("mockDeposit", `❌ Failed: No result returned`);
@@ -72,10 +83,16 @@ export default function TestPage() {
     }
   };
 
-  const testScheduleReinvest = async (vaultId: bigint, lockDuration: bigint) => {
+  const testScheduleReinvest = async (
+    vaultId: bigint,
+    lockDuration: bigint
+  ) => {
     try {
       const result = await schedule(vaultId, lockDuration);
-      addResult("scheduleReinvest", result ? `✅ Scheduled for vault ${vaultId}` : `❌ Failed`);
+      addResult(
+        "scheduleReinvest",
+        result ? `✅ Scheduled for vault ${vaultId}` : `❌ Failed`
+      );
     } catch (err) {
       addResult("scheduleReinvest", `❌ Error: ${err}`);
     }
@@ -84,7 +101,10 @@ export default function TestPage() {
   const testCreateListing = async (vaultId: bigint, price: bigint) => {
     try {
       const result = await createListing(vaultId, price);
-      addResult("createListing", result ? `✅ Listing created for vault ${vaultId}` : `❌ Failed`);
+      addResult(
+        "createListing",
+        result ? `✅ Listing created for vault ${vaultId}` : `❌ Failed`
+      );
     } catch (err) {
       addResult("createListing", `❌ Error: ${err}`);
     }
@@ -95,18 +115,26 @@ export default function TestPage() {
       <RootKeyWarning />
       <TransitionWrapper>
         <VaultHeader currentPath="/vault/test" />
-        
+
         <main className="pt-24 pb-16">
           <div className="container mx-auto px-6 max-w-6xl">
-            <h1 className="heading-brutal text-4xl mb-8">🧪 FEATURE TESTING DASHBOARD</h1>
+            <h1 className="heading-brutal text-4xl mb-8">
+              🧪 FEATURE TESTING DASHBOARD
+            </h1>
 
             {/* Connection Status */}
             <div className="card-brutal mb-6 p-6">
-              <h2 className="heading-brutal text-2xl mb-4">CONNECTION STATUS</h2>
+              <h2 className="heading-brutal text-2xl mb-4">
+                CONNECTION STATUS
+              </h2>
               <div className="grid grid-cols-2 gap-4 body-brutal">
                 <div>
                   <p className="text-gray-600">Status:</p>
-                  <p className={`text-lg font-bold ${isConnected ? "text-green-600" : "text-red-600"}`}>
+                  <p
+                    className={`text-lg font-bold ${
+                      isConnected ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
                     {isConnected ? "✅ Connected" : "❌ Not Connected"}
                   </p>
                 </div>
@@ -116,18 +144,24 @@ export default function TestPage() {
                 </div>
                 <div className="col-span-2">
                   <p className="text-gray-600">Principal:</p>
-                  <p className="text-sm font-mono">{principal?.toString() || "N/A"}</p>
+                  <p className="text-sm font-mono">
+                    {principal?.toString() || "N/A"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-gray-600">Actor:</p>
-                  <p className="text-lg font-bold">{actor ? "✅ Ready" : "❌ Not Ready"}</p>
+                  <p className="text-lg font-bold">
+                    Anonymous (Phase 1)
+                  </p>
                 </div>
               </div>
             </div>
 
             {!isConnected ? (
               <div className="card-brutal p-8 text-center">
-                <p className="body-brutal text-lg">Please connect your wallet to test features</p>
+                <p className="body-brutal text-lg">
+                  Please connect your wallet to test features
+                </p>
               </div>
             ) : (
               <>
@@ -143,25 +177,41 @@ export default function TestPage() {
                       {vaultsLoading ? "Loading..." : "Refresh"}
                     </button>
                   </div>
-                  {vaultsError && <p className="text-red-600 mb-2">{vaultsError}</p>}
+                  {vaultsError && (
+                    <p className="text-red-600 mb-2">{vaultsError}</p>
+                  )}
                   <div className="body-brutal">
                     <p className="mb-2">Total Vaults: {vaults.length}</p>
                     {vaults.length > 0 && (
                       <div className="space-y-2">
                         {vaults.map((vault) => (
-                          <div key={vault.id.toString()} className="p-3 bg-gray-50 border border-gray-200 rounded">
-                            <p className="font-bold">Vault #{vault.id.toString()}</p>
-                            <p className="text-sm">Status: {vault.status}</p>
-                            <p className="text-sm">Balance: {vault.balance.toString()} sats</p>
+                          <div
+                            key={vault.id.toString()}
+                            className="p-3 bg-gray-50 border border-gray-200 rounded"
+                          >
+                            <p className="font-bold">
+                              Vault #{vault.id.toString()}
+                            </p>
+                            <p className="text-sm">Status: {vault.status.toString()}</p>
+                            <p className="text-sm">
+                              Balance: {vault.balance.toString()} sats
+                            </p>
                             <div className="mt-2 flex gap-2">
                               <button
-                                onClick={() => testMockDeposit(vault.id, BigInt(50000))}
+                                onClick={() =>
+                                  testMockDeposit(vault.id, BigInt(50000))
+                                }
                                 className="button-brutal px-3 py-1 text-xs bg-blue-600 text-white"
                               >
                                 Mock Deposit (50k sats)
                               </button>
                               <button
-                                onClick={() => testScheduleReinvest(vault.id, BigInt(7 * 24 * 3600))}
+                                onClick={() =>
+                                  testScheduleReinvest(
+                                    vault.id,
+                                    BigInt(7 * 24 * 3600)
+                                  )
+                                }
                                 className="button-brutal px-3 py-1 text-xs bg-green-600 text-white"
                               >
                                 Schedule Reinvest (7d)
@@ -176,10 +226,14 @@ export default function TestPage() {
 
                 {/* Create Vault Test */}
                 <div className="card-brutal mb-6 p-6">
-                  <h2 className="heading-brutal text-2xl mb-4">🔐 TEST CREATE VAULT</h2>
+                  <h2 className="heading-brutal text-2xl mb-4">
+                    🔐 TEST CREATE VAULT
+                  </h2>
                   <div className="space-y-4">
                     <div>
-                      <label className="block body-brutal mb-2">Lock Days:</label>
+                      <label className="block body-brutal mb-2">
+                        Lock Days:
+                      </label>
                       <input
                         type="number"
                         value={lockDays}
@@ -188,11 +242,15 @@ export default function TestPage() {
                       />
                     </div>
                     <div>
-                      <label className="block body-brutal mb-2">Expected Deposit (sats):</label>
+                      <label className="block body-brutal mb-2">
+                        Expected Deposit (sats):
+                      </label>
                       <input
                         type="number"
                         value={depositAmount}
-                        onChange={(e) => setDepositAmount(Number(e.target.value))}
+                        onChange={(e) =>
+                          setDepositAmount(Number(e.target.value))
+                        }
                         className="w-full p-2 border-2 border-gray-300"
                       />
                     </div>
@@ -203,54 +261,86 @@ export default function TestPage() {
                     >
                       {actionLoading ? "Creating..." : "Create Vault"}
                     </button>
-                    {actionError && <p className="text-red-600 text-sm">{actionError}</p>}
+                    {actionError && (
+                      <p className="text-red-600 text-sm">{actionError}</p>
+                    )}
                   </div>
                 </div>
 
                 {/* Auto-Reinvest Test */}
                 <div className="card-brutal mb-6 p-6">
-                  <h2 className="heading-brutal text-2xl mb-4">♻️ AUTO-REINVEST CONFIGS</h2>
+                  <h2 className="heading-brutal text-2xl mb-4">
+                    ♻️ AUTO-REINVEST CONFIGS
+                  </h2>
                   <div className="body-brutal mb-4">
                     {autoReinvestLoading && <p>Loading configs...</p>}
-                    {autoReinvestError && <p className="text-red-600">{autoReinvestError}</p>}
+                    {autoReinvestError && (
+                      <p className="text-red-600">{autoReinvestError}</p>
+                    )}
                     <p className="mb-2">Active Configs: {configs.length}</p>
                     {configs.length > 0 && (
                       <div className="space-y-2">
                         {configs.map((config) => (
-                          <div key={config.vaultId.toString()} className="p-3 bg-gray-50 border border-gray-200 rounded">
-                            <p className="font-bold">Vault #{config.vaultId.toString()}</p>
-                            <p className="text-sm">Enabled: {config.enabled ? "✅" : "❌"}</p>
-                            <p className="text-sm">New Lock Duration: {config.newLockDuration.toString()}s</p>
-                            <button
-                              onClick={() => cancelReinvest(config.vaultId)}
-                              className="button-brutal mt-2 px-3 py-1 text-xs bg-red-600 text-white"
-                            >
-                              Cancel
-                            </button>
+                          <div
+                            key={config.vault_id.toString()}
+                            className="p-3 bg-gray-50 border border-gray-200 rounded"
+                          >
+                            <p className="font-bold">
+                              Vault #{config.vault_id.toString()}
+                            </p>
+                            <p className="text-sm">
+                              Enabled: {config.enabled ? "✅" : "❌"}
+                            </p>
+                            <p className="text-sm">
+                              New Lock Duration:{" "}
+                              {config.new_lock_duration.toString()}s
+                            </p>
+                              <button
+                                onClick={() => cancelReinvest(config.vault_id)}
+                                className="button-brutal mt-2 px-3 py-1 text-xs bg-red-600 text-white"
+                              >
+                                Cancel
+                              </button>
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
-                  <p className="body-brutal text-sm text-gray-600">Use the &ldquo;Schedule Reinvest&rdquo; button on individual vaults above</p>
+                  <p className="body-brutal text-sm text-gray-600">
+                    Use the &ldquo;Schedule Reinvest&rdquo; button on individual
+                    vaults above
+                  </p>
                 </div>
 
                 {/* Marketplace Test */}
                 <div className="card-brutal mb-6 p-6">
-                  <h2 className="heading-brutal text-2xl mb-4">🏪 TEST MARKETPLACE</h2>
+                  <h2 className="heading-brutal text-2xl mb-4">
+                    🏪 TEST MARKETPLACE
+                  </h2>
                   <div className="body-brutal mb-4">
                     {marketplaceLoading && <p>Loading listings...</p>}
-                    {marketplaceError && <p className="text-red-600">{marketplaceError}</p>}
+                    {marketplaceError && (
+                      <p className="text-red-600">{marketplaceError}</p>
+                    )}
                     <p>Active Listings: {listings.length}</p>
                     {listings.length > 0 && (
                       <div className="space-y-2 mt-2">
                         {listings.map((listing) => (
-                          <div key={listing.id.toString()} className="p-3 bg-gray-50 border border-gray-200 rounded">
-                            <p className="font-bold">Listing #{listing.id.toString()}</p>
-                            <p className="text-sm">Vault: #{listing.vaultId.toString()}</p>
-                            <p className="text-sm">Price: {listing.priceSats.toString()} sats</p>
-                            <p className="text-sm">Seller: {listing.seller}</p>
-                            <p className="text-sm">Status: {listing.status}</p>
+                          <div
+                            key={listing.id.toString()}
+                            className="p-3 bg-gray-50 border border-gray-200 rounded"
+                          >
+                            <p className="font-bold">
+                              Listing #{listing.id.toString()}
+                            </p>
+                            <p className="text-sm">
+                              Vault: #{listing.vault_id.toString()}
+                            </p>
+                            <p className="text-sm">
+                              Price: {listing.price_sats.toString()} sats
+                            </p>
+                            <p className="text-sm">Seller: {listing.seller.toString()}</p>
+                            <p className="text-sm">Status: {listing.status.toString()}</p>
                           </div>
                         ))}
                       </div>
@@ -258,7 +348,9 @@ export default function TestPage() {
                   </div>
                   {vaults.length > 0 && (
                     <button
-                      onClick={() => testCreateListing(vaults[0].id, BigInt(1000000))}
+                      onClick={() =>
+                        testCreateListing(vaults[0].id, BigInt(1000000))
+                      }
                       className="button-brutal w-full py-2 bg-purple-600 text-white"
                     >
                       Create Test Listing (First Vault, 1M sats)
@@ -268,13 +360,18 @@ export default function TestPage() {
 
                 {/* Test Results */}
                 <div className="card-brutal p-6">
-                  <h2 className="heading-brutal text-2xl mb-4">📊 TEST RESULTS</h2>
+                  <h2 className="heading-brutal text-2xl mb-4">
+                    📊 TEST RESULTS
+                  </h2>
                   <div className="body-brutal space-y-2">
                     {Object.keys(testResults).length === 0 ? (
                       <p className="text-gray-600">No tests run yet</p>
                     ) : (
                       Object.entries(testResults).map(([test, result]) => (
-                        <div key={test} className="p-3 bg-gray-50 border border-gray-200 rounded">
+                        <div
+                          key={test}
+                          className="p-3 bg-gray-50 border border-gray-200 rounded"
+                        >
                           <p className="font-bold">{test}:</p>
                           <p className="text-sm">{result}</p>
                         </div>

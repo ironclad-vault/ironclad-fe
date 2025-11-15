@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
 import { useMarketplace } from "@/hooks/ironclad/useMarketplace";
 import { useVaults } from "@/hooks/ironclad/useVaults";
+import type { MarketListing } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 
 export default function MarketplaceMain() {
   const { isConnected, principal } = useWallet();
@@ -167,26 +168,26 @@ export default function MarketplaceMain() {
                       </div>
                       <div className="mb-3">
                         <p className="text-xs text-gray-600">Vault ID</p>
-                        <p className="font-mono text-sm">{listing.vaultId.toString()}</p>
+                        <p className="font-mono text-sm">{listing.vault_id.toString()}</p>
                       </div>
                       <div className="mb-3">
                         <p className="text-xs text-gray-600">Price</p>
                         <p className="text-2xl font-bold">
-                          {Number(listing.priceSats) / 100_000_000} BTC
+                          {Number(listing.price_sats) / 100_000_000} BTC
                         </p>
                       </div>
                       <div className="mb-3">
                         <p className="text-xs text-gray-600">Seller</p>
                         <p className="font-mono text-xs truncate">
-                          {listing.seller}
+                          {listing.seller.toString()}
                         </p>
                       </div>
                       <button
-                        onClick={() => handleBuyListing(listing.id, listing.priceSats)}
-                        disabled={listing.seller === principal?.toString()}
+                        onClick={() => handleBuyListing(listing.id, listing.price_sats)}
+                        disabled={listing.seller.toString() === principal?.toString()}
                         className="w-full bg-green-600 text-white px-4 py-2 font-bold border-2 border-black hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
                       >
-                        {listing.seller === principal?.toString() ? "Your Listing" : "Buy Now"}
+                        {listing.seller.toString() === principal?.toString() ? "Your Listing" : "Buy Now"}
                       </button>
                     </div>
                   ))}
@@ -208,12 +209,12 @@ export default function MarketplaceMain() {
                       </div>
                       <div className="mb-3">
                         <p className="text-xs text-gray-600">Vault ID</p>
-                        <p className="font-mono text-sm">{listing.vaultId.toString()}</p>
+                        <p className="font-mono text-sm">{listing.vault_id.toString()}</p>
                       </div>
                       <div className="mb-3">
                         <p className="text-xs text-gray-600">Price</p>
                         <p className="text-2xl font-bold">
-                          {Number(listing.priceSats) / 100_000_000} BTC
+                          {Number(listing.price_sats) / 100_000_000} BTC
                         </p>
                       </div>
                       <button

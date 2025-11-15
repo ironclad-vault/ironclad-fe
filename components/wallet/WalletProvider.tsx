@@ -117,15 +117,26 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
             window.location.hostname === "localhost" ||
             window.location.hostname === "127.0.0.1";
 
+          const icHost = process.env.NEXT_PUBLIC_IC_HOST || "http://127.0.0.1:4943";
+          const iiCanisterId = process.env.NEXT_PUBLIC_INTERNET_IDENTITY_CANISTER_ID || "rdmx6-jaaaa-aaaaa-aaadq-cai";
+
           const identityProvider = isLocalHost
-            ? "http://127.0.0.1:4943?canisterId=rdmx6-jaaaa-aaaaa-aaadq-cai"
+            ? `${icHost}?canisterId=${iiCanisterId}#authorize`
             : "https://identity.ic0.app";
+          
+          // For local development, ensure we're using the correct redirect origin
+          const frontendOrigin = process.env.NEXT_PUBLIC_CANISTER_ORIGIN;
+          const origin = isLocalHost && frontendOrigin
+            ? frontendOrigin
+            : window.location.origin;
 
           // Use Promise wrapper to handle async properly
           return new Promise<void>((resolve, reject) => {
             authClient.login({
               identityProvider,
               maxTimeToLive: BigInt(7 * 24 * 60 * 60 * 1000 * 1000 * 1000), // 7 days
+              // For local development, ensure we're using the correct redirect origin
+              derivationOrigin: origin,
               // Try popup first, fallback to redirect if blocked
               windowOpenerFeatures: 
                 "toolbar=0,location=0,menubar=0,width=500,height=600,left=100,top=100",

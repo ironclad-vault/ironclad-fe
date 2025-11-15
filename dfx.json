@@ -1,0 +1,19 @@
+{
+  "canisters": {
+    "ironclad_vault_frontend": {
+      "entrypoint": "out/index.html",
+      "source": [
+        "out"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
+import type { Vault } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 
 export default function DepositForm() {
   const router = useRouter();
@@ -24,7 +25,7 @@ export default function DepositForm() {
     if (vault) {
       setCreatedVault({
         vaultId: vault.id,
-        expectedDeposit: vault.expectedDeposit || expectedDeposit,
+        expectedDeposit: vault.expected_deposit || expectedDeposit,
       });
     }
   };
