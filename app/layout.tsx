@@ -3,6 +3,7 @@ import { Inter, Anton, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import AnimatedRouter from "@/components/navigation/AnimatedRouter";
 import AppWrapper from "./wrapper";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,12 +34,48 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${anton.variable} ${ibmPlexMono.variable}`}>
+      <body
+        suppressHydrationWarning
+        className={`${inter.variable} ${anton.variable} ${ibmPlexMono.variable}`}
+      >
         <AppWrapper>
-          <AnimatedRouter>
-            {children}
-          </AnimatedRouter>
+          <AnimatedRouter>{children}</AnimatedRouter>
         </AppWrapper>
+        <Toaster
+          position="top-right"
+          reverseOrder={false}
+          gutter={8}
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: "#000",
+              color: "#fff",
+              border: "1px solid #fff",
+              padding: "16px",
+              fontFamily: "var(--font-ibm-plex-mono)",
+            },
+            success: {
+              duration: 3000,
+              iconTheme: {
+                primary: "#0f0",
+                secondary: "#000",
+              },
+            },
+            error: {
+              duration: 5000,
+              iconTheme: {
+                primary: "#f00",
+                secondary: "#000",
+              },
+            },
+            loading: {
+              iconTheme: {
+                primary: "#fff",
+                secondary: "#000",
+              },
+            },
+          }}
+        />
       </body>
     </html>
   );

@@ -1,22 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useWallet } from "@/components/wallet/useWallet";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
-import { getWithdrawableVaults, previewWithdraw } from "@/lib/ironclad-service";
-import type { VaultDTO } from "@/lib/ironclad-service";
+import { useVaults } from "@/hooks/ironclad/useVaults";
+import { isVaultUnlockable } from "@/lib/vaultUtils";
+import { previewWithdraw } from "@/lib/ironclad-service";
 import InfoBox from "@/app/vault/_components/InfoBox";
 import { ArrowDownRight, AlertCircle, CheckCircle } from "lucide-react";
 
 export default function WithdrawMain() {
   const router = useRouter();
-  const { isConnected, principal } = useWallet();
-  const { withdrawVault, loading: withdrawing } = useVaultActions();
+  const { isConnected } = useWallet();
+  const { withdrawVault, loading: actionLoading } = useVaultActions();
+  const { vaults, loading: vaultsLoading, error: vaultsError } = useVaults();
 
-  const [vaults, setVaults] = useState<VaultDTO[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const withdrawableVaults = useMemo(
+    () => vaults?.filter((vault) => isVaultUnlockable(vault)) || [],
+    [vaults]
+  );
+
   const [selectedVaultId, setSelectedVaultId] = useState<string>("");
   const [withdrawAmount, setWithdrawAmount] = useState<string>("");
   const [previewAmount, setPreviewAmount] = useState<bigint | null>(null);
@@ -25,30 +29,15 @@ export default function WithdrawMain() {
   const [showConfirm, setShowConfirm] = useState(false);
 
   useEffect(() => {
-    if (!isConnected || !principal) {
-      setLoading(false);
+    if (!selectedVaultId) {
       return;
     }
 
-    const fetchVaults = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const withdrawableVaults = await getWithdrawableVaults();
-        setVaults(withdrawableVaults);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch vaults");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchVaults();
-  }, [isConnected, principal]);
-
-  useEffect(() => {
-    if (!selectedVaultId) {
-      setPreviewAmount(null);
+    // Check if vault is actually unlockable in backend
+    const selectedVault = withdrawableVaults.find(
+      (v) => v.id.toString() === selectedVaultId
+    );
+    if (!selectedVault) {
       return;
     }
 
@@ -65,7 +54,7 @@ export default function WithdrawMain() {
     };
 
     fetchPreview();
-  }, [selectedVaultId]);
+  }, [selectedVaultId, withdrawableVaults]);
 
   const handleWithdrawClick = () => {
     setValidationError(null);
@@ -136,24 +125,26 @@ export default function WithdrawMain() {
     );
   }
 
-  if (loading) {
+  if (vaultsLoading) {
     return (
       <div className="card-brutal p-8 text-center">
-        <p className="body-brutal text-lg text-gray-600">Loading withdrawable vaults...</p>
+        <p className="body-brutal text-lg text-gray-600">
+          Loading withdrawable vaults...
+        </p>
       </div>
     );
   }
 
-  if (error) {
+  if (vaultsError) {
     return (
       <div className="card-brutal p-8 bg-red-50 border-red-300">
         <h2 className="heading-brutal text-lg text-red-900 mb-2">ERROR</h2>
-        <p className="body-brutal text-sm text-red-800">{error}</p>
+        <p className="body-brutal text-sm text-red-800">{vaultsError}</p>
       </div>
     );
   }
 
-  if (vaults.length === 0) {
+  if (withdrawableVaults.length === 0) {
     return (
       <div className="card-brutal p-8 text-center">
         <h2 className="heading-brutal text-2xl mb-4">NO WITHDRAWABLE VAULTS</h2>
@@ -165,7 +156,7 @@ export default function WithdrawMain() {
   }
 
   return (
-    <div className="space-y-8 max-w-2xl mx-auto">
+    <div className="space-y-8 mx-auto">
       {/* Success Message */}
       {successMessage && (
         <div className="card-brutal p-6 bg-green-50 border-green-300">
@@ -214,7 +205,7 @@ export default function WithdrawMain() {
               className="input-brutal w-full"
             >
               <option value="">-- Select a vault --</option>
-              {vaults.map((vault) => (
+              {withdrawableVaults.map((vault) => (
                 <option key={vault.id.toString()} value={vault.id.toString()}>
                   Vault {vault.id.toString().slice(0, 8)} -{" "}
                   {(Number(vault.balance) / 100_000_000).toFixed(8)} BTC
@@ -261,10 +252,10 @@ export default function WithdrawMain() {
           {/* Withdraw Button */}
           <button
             onClick={handleWithdrawClick}
-            disabled={!selectedVaultId || !withdrawAmount || withdrawing}
+            disabled={!selectedVaultId || !withdrawAmount || actionLoading}
             className="button-brutal accent w-full py-3 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {withdrawing ? "PROCESSING..." : "WITHDRAW"}
+            {actionLoading ? "PROCESSING..." : "WITHDRAW"}
           </button>
         </div>
       </div>
@@ -293,9 +284,7 @@ export default function WithdrawMain() {
                 <p className="body-brutal text-xs text-gray-600 uppercase mb-1">
                   Amount
                 </p>
-                <p className="heading-brutal text-2xl">
-                  {withdrawAmount} BTC
-                </p>
+                <p className="heading-brutal text-2xl">{withdrawAmount} BTC</p>
               </div>
               <p className="body-brutal text-sm">
                 Are you sure you want to withdraw {withdrawAmount} BTC from this

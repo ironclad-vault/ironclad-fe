@@ -6,6 +6,7 @@ import { useMarketplace } from "@/hooks/ironclad/useMarketplace";
 import { useVaults } from "@/hooks/ironclad/useVaults";
 import InfoBox from "@/app/vault/_components/InfoBox";
 import { TrendingUp, ShoppingCart, Tag } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function MarketplaceMain() {
   const { isConnected, principal } = useWallet();
@@ -13,7 +14,6 @@ export default function MarketplaceMain() {
     listings,
     myListings,
     loading,
-    error,
     createListing,
     cancelListing,
     buyListing,
@@ -22,13 +22,12 @@ export default function MarketplaceMain() {
   // Ensure we use 'listings' to fix unused warning
   const { vaults, loading: vaultsLoading } = useVaults();
 
-  const [activeTab, setActiveTab] = useState<"browse" | "create" | "my-listings">(
-    "browse"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "browse" | "create" | "my-listings"
+  >("browse");
   const [selectedVaultId, setSelectedVaultId] = useState<string>("");
   const [priceBTC, setPriceBTC] = useState<string>("");
   const [creating, setCreating] = useState(false);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleCreateListing = async () => {
     if (!selectedVaultId || !priceBTC) {
@@ -36,18 +35,20 @@ export default function MarketplaceMain() {
     }
 
     setCreating(true);
-    setSuccessMessage(null);
     try {
       // Convert BTC to satoshis (1 BTC = 100,000,000 satoshis)
       const priceSats = BigInt(Math.floor(parseFloat(priceBTC) * 100_000_000));
       const success = await createListing(BigInt(selectedVaultId), priceSats);
       if (success) {
-        setSuccessMessage("Listing created successfully!");
+        toast.success("Listing created successfully!");
         setSelectedVaultId("");
         setPriceBTC("");
         setActiveTab("my-listings");
       }
     } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to create listing";
+      toast.error(errorMsg);
       console.error("Create listing failed:", err);
     } finally {
       setCreating(false);
@@ -61,8 +62,11 @@ export default function MarketplaceMain() {
 
     try {
       await cancelListing(listingId);
-      setSuccessMessage("Listing cancelled successfully!");
+      toast.success("Listing cancelled successfully!");
     } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to cancel listing";
+      toast.error(errorMsg);
       console.error("Cancel listing failed:", err);
     }
   };
@@ -71,7 +75,9 @@ export default function MarketplaceMain() {
     const priceBTC = Number(priceSats) / 100_000_000;
     if (
       !confirm(
-        `Are you sure you want to purchase this vault for ${priceBTC.toFixed(8)} BTC?`
+        `Are you sure you want to purchase this vault for ${priceBTC.toFixed(
+          8
+        )} BTC?`
       )
     ) {
       return;
@@ -80,22 +86,27 @@ export default function MarketplaceMain() {
     try {
       const success = await buyListing(listingId);
       if (success) {
-        setSuccessMessage("Vault purchased successfully!");
+        toast.success("Vault purchased successfully!");
         setActiveTab("browse");
       }
     } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : "Purchase failed";
+      if (errorMsg.includes("Cannot buy your own listing")) {
+        toast.error("Cannot buy your own listing");
+      } else {
+        toast.error(errorMsg);
+      }
       console.error("Buy listing failed:", err);
     }
   };
 
   const handleTabChange = (tab: "browse" | "create" | "my-listings") => {
     setActiveTab(tab);
-    setSuccessMessage(null);
   };
 
   if (!isConnected) {
     return (
-      <div className="card-brutal p-8 text-center max-w-2xl mx-auto">
+      <div className="card-brutal p-8 text-center  mx-auto">
         <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
         <p className="body-brutal text-lg text-gray-600">
           Please connect your wallet to access the marketplace.
@@ -106,30 +117,16 @@ export default function MarketplaceMain() {
 
   if (loading || vaultsLoading) {
     return (
-      <div className="card-brutal p-8 text-center max-w-2xl mx-auto">
-        <p className="body-brutal text-lg text-gray-600">Loading marketplace...</p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="card-brutal p-8 bg-red-50 border-red-300 max-w-2xl mx-auto">
-        <h2 className="heading-brutal text-lg text-red-900 mb-2">ERROR</h2>
-        <p className="body-brutal text-sm text-red-800">{error}</p>
+      <div className="card-brutal p-8 text-center  mx-auto">
+        <p className="body-brutal text-lg text-gray-600">
+          Loading marketplace...
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
-      {/* Success Message */}
-      {successMessage && (
-        <div className="card-brutal p-4 bg-green-50 border-green-300">
-          <p className="body-brutal font-bold text-green-800">{successMessage}</p>
-        </div>
-      )}
-
+    <div className="space-y-8 mx-auto">
       {/* Tabs Navigation */}
       <div className="card-brutal">
         <div className="flex border-b-2 border-black">
@@ -220,9 +217,9 @@ export default function MarketplaceMain() {
                                 Vault Balance
                               </p>
                               <p className="heading-brutal text-lg">
-                                {(Number(vaultDetails.balance) / 100_000_000).toFixed(
-                                  8
-                                )}{" "}
+                                {(
+                                  Number(vaultDetails.balance) / 100_000_000
+                                ).toFixed(8)}{" "}
                                 BTC
                               </p>
                             </div>
@@ -233,7 +230,10 @@ export default function MarketplaceMain() {
                               Price
                             </p>
                             <p className="heading-brutal text-2xl">
-                              {(Number(listing.price_sats) / 100_000_000).toFixed(8)} BTC
+                              {(
+                                Number(listing.price_sats) / 100_000_000
+                              ).toFixed(8)}{" "}
+                              BTC
                             </p>
                           </div>
 
@@ -270,7 +270,7 @@ export default function MarketplaceMain() {
 
           {/* Create Listing Tab */}
           {activeTab === "create" && (
-            <div className="space-y-6 max-w-2xl">
+            <div className="space-y-6 ">
               <h1 className="heading-brutal text-3xl">CREATE LISTING</h1>
 
               <div className="card-brutal p-8 space-y-4">
@@ -285,7 +285,10 @@ export default function MarketplaceMain() {
                   >
                     <option value="">-- Select a vault --</option>
                     {vaults.map((vault) => (
-                      <option key={vault.id.toString()} value={vault.id.toString()}>
+                      <option
+                        key={vault.id.toString()}
+                        value={vault.id.toString()}
+                      >
                         Vault {vault.id.toString().slice(0, 8)} -{" "}
                         {(Number(vault.balance) / 100_000_000).toFixed(8)} BTC
                       </option>
@@ -382,9 +385,9 @@ export default function MarketplaceMain() {
                                 Vault Balance
                               </p>
                               <p className="heading-brutal text-lg">
-                                {(Number(vaultDetails.balance) / 100_000_000).toFixed(
-                                  8
-                                )}{" "}
+                                {(
+                                  Number(vaultDetails.balance) / 100_000_000
+                                ).toFixed(8)}{" "}
                                 BTC
                               </p>
                             </div>
@@ -395,7 +398,10 @@ export default function MarketplaceMain() {
                               Price
                             </p>
                             <p className="heading-brutal text-2xl">
-                              {(Number(listing.price_sats) / 100_000_000).toFixed(8)} BTC
+                              {(
+                                Number(listing.price_sats) / 100_000_000
+                              ).toFixed(8)}{" "}
+                              BTC
                             </p>
                           </div>
 
@@ -408,15 +414,15 @@ export default function MarketplaceMain() {
                                 "Active" in listing.status
                                   ? "bg-green-200 text-green-900"
                                   : "Filled" in listing.status
-                                    ? "bg-blue-200 text-blue-900"
-                                    : "bg-gray-200 text-gray-900"
+                                  ? "bg-blue-200 text-blue-900"
+                                  : "bg-gray-200 text-gray-900"
                               }`}
                             >
                               {"Active" in listing.status
                                 ? "ACTIVE"
                                 : "Filled" in listing.status
-                                  ? "SOLD"
-                                  : "CANCELLED"}
+                                ? "SOLD"
+                                : "CANCELLED"}
                             </span>
                           </div>
                         </div>
@@ -430,7 +436,9 @@ export default function MarketplaceMain() {
                               : "bg-red-600 text-white hover:bg-red-700"
                           }`}
                         >
-                          {!("Active" in listing.status) ? "LISTING CLOSED" : "CANCEL LISTING"}
+                          {!("Active" in listing.status)
+                            ? "LISTING CLOSED"
+                            : "CANCEL LISTING"}
                         </button>
                       </div>
                     );

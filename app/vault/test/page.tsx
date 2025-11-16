@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
+import { getVaultStatusLabel } from "@/lib/vaultUtils";
 import { useVaults } from "@/hooks/ironclad/useVaults";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
 import { useAutoReinvest } from "@/hooks/ironclad/useAutoReinvest";
@@ -192,7 +193,7 @@ export default function TestPage() {
                             <p className="font-bold">
                               Vault #{vault.id.toString()}
                             </p>
-                            <p className="text-sm">Status: {vault.status.toString()}</p>
+                            <p className="text-sm">Status: {getVaultStatusLabel(vault)}</p>
                             <p className="text-sm">
                               Balance: {vault.balance.toString()} sats
                             </p>

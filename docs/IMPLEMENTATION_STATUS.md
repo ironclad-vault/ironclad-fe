@@ -6,7 +6,7 @@ _Last updated: 2025-11-16_
 
 | Module / Feature         | Frontend Status | Backend Status | Network Integration |
 |-------------------------|-----------------|---------------|---------------------|
-| 1. Setup & Basic Vault  | ✅ 95%          | ✅ 100%        | Local, Testnet      |
+| 1. Setup & Basic Vault  | ✅ 100%         | ✅ 100%        | Local, Testnet      |
 | 2. Timelock & Unlock    | ✅ 100%         | ✅ 100%        | Local, Testnet      |
 | 3. Withdraw Flow        | ✅ 100%         | ✅ 100%        | Local, Testnet      |
 | 4. Auto-Reinvest        | ✅ 100%         | ✅ 100%        | Local, Testnet      |
@@ -20,6 +20,7 @@ _Last updated: 2025-11-16_
 - **Network**: Semua fitur sudah teruji di local dan testnet. Belum deploy ke mainnet.
 
 ## Progress Notes
+- Module 1 (Setup & Basic Vault) sudah 100% FE/BE dengan fitur complete deposit untuk vault PendingDeposit.
 - Auto-Reinvest (Module 4) sudah 100% terintegrasi FE/BE dan jaringan testnet.
 - Marketplace (Module 5) sudah 100% FE/BE, semua fitur (browse, create, buy, cancel, my listings) sudah teruji di testnet.
 - Withdraw flow sudah 100% FE/BE, validasi, konfirmasi, dan success/error state sudah lengkap.

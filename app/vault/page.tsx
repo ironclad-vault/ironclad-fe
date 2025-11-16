@@ -5,52 +5,30 @@ import Footer from "@/components/layout/Footer";
 import TransitionWrapper from "../transition-wrapper";
 import { useVaults } from "@/hooks/ironclad/useVaults";
 import { useWallet } from "@/components/wallet/useWallet";
-import { VaultStatusTS } from "@/lib/ironclad-service";
 import type { Vault } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 import TransitionButton from "@/components/navigation/TransitionButton";
 import { Hourglass, Lock } from "lucide-react";
+import { 
+  getVaultStatus, 
+  getVaultStatusLabel, 
+  getVaultStatusColor,
+  formatVaultDate,
+  formatSats
+} from "@/lib/vaultUtils";
 
 function VaultCard({ vault }: { vault: Vault }) {
-  // Convert VaultStatus to VaultStatusTS
-  const getVaultStatus = (vault: Vault): VaultStatusTS => {
-    if ("ActiveLocked" in vault.status) return "ActiveLocked";
-    if ("Unlockable" in vault.status) return "Unlockable";
-    if ("Withdrawn" in vault.status) return "Withdrawn";
-    if ("PendingDeposit" in vault.status) return "PendingDeposit";
-    return "PendingDeposit"; // fallback
-  };
-
-  const getStatusColor = (status: VaultStatusTS) => {
-    switch (status) {
-      case "ActiveLocked":
-        return "bg-blue-100 text-blue-900 border-blue-300";
-      case "Unlockable":
-        return "bg-green-100 text-green-900 border-green-300";
-      case "Withdrawn":
-        return "bg-gray-100 text-gray-900 border-gray-300";
-      default:
-        return "bg-yellow-100 text-yellow-900 border-yellow-300";
-    }
-  };
-
-  const formatDate = (timestamp: number) => {
-    return new Date(timestamp * 1000).toLocaleString();
-  };
-
-  const formatSats = (sats: bigint) => {
-    return sats.toLocaleString() + " sats";
-  };
+  const status = getVaultStatus(vault);
+  const statusLabel = getVaultStatusLabel(vault);
+  const statusColor = getVaultStatusColor(vault);
 
   return (
     <div className="card-brutal p-6 hover:shadow-lg transition-shadow">
       <div className="flex justify-between items-start mb-4">
         <h3 className="heading-brutal text-xl">VAULT #{vault.id.toString()}</h3>
         <span
-          className={`px-3 py-1 text-xs font-bold border-2 rounded ${getStatusColor(
-            getVaultStatus(vault)
-          )}`}
+          className={`px-3 py-1 text-xs font-bold border-2 rounded ${statusColor}`}
         >
-          {getVaultStatus(vault)}
+          {statusLabel}
         </span>
       </div>
 
@@ -72,7 +50,7 @@ function VaultCard({ vault }: { vault: Vault }) {
         <div className="flex justify-between">
           <span className="text-gray-600">Lock Until:</span>
           <span className="font-bold">
-            {formatDate(Number(vault.lock_until))}
+            {formatVaultDate(Number(vault.lock_until))}
           </span>
         </div>
 
@@ -86,7 +64,7 @@ function VaultCard({ vault }: { vault: Vault }) {
 
       {/* Action Buttons */}
       <div className="mt-4 flex gap-2 flex-wrap">
-        {getVaultStatus(vault) === "Unlockable" && (
+        {status === "Unlockable" && (
           <TransitionButton
             href="/vault/withdraw"
             suppressTransition
@@ -95,16 +73,16 @@ function VaultCard({ vault }: { vault: Vault }) {
             WITHDRAW
           </TransitionButton>
         )}
-        {getVaultStatus(vault) === "PendingDeposit" && (
+        {status === "PendingDeposit" && (
           <TransitionButton
-            href="/vault/deposit"
+            href={`/vault/deposit?vaultId=${vault.id.toString()}`}
             suppressTransition
             className="flex-1 button-brutal py-2 text-sm bg-blue-600 text-white hover:bg-blue-700"
           >
             COMPLETE DEPOSIT
           </TransitionButton>
         )}
-        {(getVaultStatus(vault) === "ActiveLocked" || getVaultStatus(vault) === "Unlockable") && (
+        {(status === "ActiveLocked" || status === "Unlockable") && (
           <TransitionButton
             href="/vault/timelock"
             suppressTransition
@@ -129,24 +107,15 @@ export default function VaultPage() {
   const { isConnected } = useWallet();
   const { vaults, loading, error, refetch } = useVaults();
 
-  // Helper function to get status string for filtering
-  const getVaultStatusStr = (vault: Vault): string => {
-    if ("ActiveLocked" in vault.status) return "ActiveLocked";
-    if ("Unlockable" in vault.status) return "Unlockable";
-    if ("Withdrawn" in vault.status) return "Withdrawn";
-    if ("PendingDeposit" in vault.status) return "PendingDeposit";
-    return "PendingDeposit";
-  };
-
   // Filter vaults by status
   const activeVaults = vaults.filter(
-    (v) => getVaultStatusStr(v) === "ActiveLocked"
+    (v) => getVaultStatus(v) === "ActiveLocked"
   );
   const unlockableVaults = vaults.filter(
-    (v) => getVaultStatusStr(v) === "Unlockable"
+    (v) => getVaultStatus(v) === "Unlockable"
   );
   const pendingVaults = vaults.filter(
-    (v) => getVaultStatusStr(v) === "PendingDeposit"
+    (v) => getVaultStatus(v) === "PendingDeposit"
   );
 
   return (

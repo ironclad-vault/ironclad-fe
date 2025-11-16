@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { Vault } from "@/lib/ic/ironcladActor";
+import toast from "react-hot-toast";
+import { getErrorMessage } from "@/lib/toastUtils";
 
 /**
  * Hook for vault actions (create, deposit, unlock, withdraw)
@@ -22,10 +24,17 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const vault = await ironcladClient.vaults.create(
-        BigInt(lockUntil),
-        expectedDeposit,
-        identity ?? undefined
+      const vault = await toast.promise(
+        ironcladClient.vaults.create(
+          BigInt(lockUntil),
+          expectedDeposit,
+          identity ?? undefined
+        ),
+        {
+          loading: 'Creating vault...',
+          success: 'Vault created successfully!',
+          error: (err) => `Failed to create vault: ${getErrorMessage(err)}`,
+        }
       );
       return vault;
     } catch (err) {
@@ -46,7 +55,20 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const result = await ironcladClient.vaults.mockDeposit(vaultId, amount, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.vaults.mockDeposit(vaultId, amount, identity ?? undefined),
+        {
+          loading: 'Processing deposit...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Deposit successful!';
+          },
+          error: (err) => `Deposit failed: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return null;
@@ -67,7 +89,20 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const result = await ironcladClient.vaults.unlock(vaultId, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.vaults.unlock(vaultId, identity ?? undefined),
+        {
+          loading: 'Unlocking vault...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Vault unlocked successfully!';
+          },
+          error: (err) => `Unlock failed: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return null;
@@ -91,7 +126,20 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const result = await ironcladClient.vaults.withdraw(vaultId, amount, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.vaults.withdraw(vaultId, amount, identity ?? undefined),
+        {
+          loading: 'Processing withdrawal...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Withdrawal successful!';
+          },
+          error: (err) => `Withdrawal failed: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return null;

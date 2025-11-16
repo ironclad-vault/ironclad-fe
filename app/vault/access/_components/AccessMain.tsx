@@ -111,11 +111,13 @@ export default function AccessMain() {
   }
 
   return (
-    <div className="space-y-8 max-w-4xl mx-auto">
+    <div className="space-y-8 mx-auto">
       {/* Success Message */}
       {successMessage && (
         <div className="card-brutal p-4 bg-green-50 border-green-300">
-          <p className="body-brutal font-bold text-green-800">{successMessage}</p>
+          <p className="body-brutal font-bold text-green-800">
+            {successMessage}
+          </p>
         </div>
       )}
 

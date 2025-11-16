@@ -25,7 +25,7 @@ export default function VaultHeader() {
   }, [open]);
 
   const menuItems = [
-    { href: "/vault", label: "STATUS" },
+    { href: "/vault", label: "MY VAULT" },
     { href: "/vault/deposit", label: "DEPOSIT" },
     { href: "/vault/timelock", label: "TIMELOCK" },
     { href: "/vault/withdraw", label: "WITHDRAW" },

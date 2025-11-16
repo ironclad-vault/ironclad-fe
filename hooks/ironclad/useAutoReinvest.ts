@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { AutoReinvestConfig, Vault } from "@/lib/ic/ironcladActor";
+import toast from "react-hot-toast";
+import { getErrorMessage } from "@/lib/toastUtils";
 
 /**
  * Hook for managing auto-reinvest configurations
@@ -43,7 +45,20 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const result = await ironcladClient.autoReinvest.schedule(vaultId, newLockDuration, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.autoReinvest.schedule(vaultId, newLockDuration, identity ?? undefined),
+        {
+          loading: 'Scheduling auto-reinvest...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Auto-reinvest scheduled successfully!';
+          },
+          error: (err) => `Failed to schedule: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return false;
@@ -65,7 +80,20 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const result = await ironcladClient.autoReinvest.cancel(vaultId, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.autoReinvest.cancel(vaultId, identity ?? undefined),
+        {
+          loading: 'Cancelling auto-reinvest...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Auto-reinvest cancelled successfully!';
+          },
+          error: (err) => `Failed to cancel: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return false;
@@ -87,7 +115,20 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const result = await ironcladClient.autoReinvest.execute(vaultId, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.autoReinvest.execute(vaultId, identity ?? undefined),
+        {
+          loading: 'Executing auto-reinvest...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Auto-reinvest executed successfully!';
+          },
+          error: (err) => `Execution failed: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return null;

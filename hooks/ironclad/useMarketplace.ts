@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { MarketListing } from "@/lib/ic/ironcladActor";
+import toast from "react-hot-toast";
+import { getErrorMessage } from "@/lib/toastUtils";
 
 /**
  * Hook for managing marketplace listings
@@ -46,7 +48,20 @@ export function useMarketplace() {
     setError(null);
 
     try {
-      const result = await ironcladClient.marketplace.create(vaultId, priceSats, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.marketplace.create(vaultId, priceSats, identity ?? undefined),
+        {
+          loading: 'Creating marketplace listing...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Listing created successfully!';
+          },
+          error: (err) => `Failed to create listing: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return false;
@@ -68,7 +83,20 @@ export function useMarketplace() {
     setError(null);
 
     try {
-      const result = await ironcladClient.marketplace.cancel(listingId, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.marketplace.cancel(listingId, identity ?? undefined),
+        {
+          loading: 'Cancelling listing...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Listing cancelled successfully!';
+          },
+          error: (err) => `Failed to cancel listing: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return false;
@@ -90,7 +118,20 @@ export function useMarketplace() {
     setError(null);
 
     try {
-      const result = await ironcladClient.marketplace.buy(listingId, identity ?? undefined);
+      const result = await toast.promise(
+        ironcladClient.marketplace.buy(listingId, identity ?? undefined),
+        {
+          loading: 'Purchasing vault...',
+          success: (res) => {
+            if ("Err" in res) {
+              throw new Error(res.Err);
+            }
+            return 'Vault purchased successfully!';
+          },
+          error: (err) => `Purchase failed: ${getErrorMessage(err)}`,
+        }
+      );
+      
       if ("Err" in result) {
         setError(result.Err);
         return false;
