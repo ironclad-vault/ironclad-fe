@@ -1,202 +1,316 @@
-# 🏰 IRONCLAD VAULT
+# 🏰 **IRONCLAD VAULT**
 
-## Enterprise-Grade Bitcoin Vault with Time-Locked Security
+### **Bitcoin Savings Vault with Auto-Reinvest Engine — Powered by ICP, ckBTC & Threshold ECDSA**
 
-Brutalist Design • Uncompromising Security • Autonomous Operations
+Brutalist UI • Real Bitcoin Integration • Fully Typed (0 `any`)
+Production Ready • Hackathon Grade • Ultra-Secure
 
 ![IRONCLAD VAULT Logo](public/ironclad-vault-logo.png)
 
 ---
 
-## What is IRONCLAD VAULT?
+# 🚀 **Overview**
 
-**IRONCLAD VAULT** is a revolutionary time-locked Bitcoin custody solution engineered for individuals and institutions who demand absolute control over their digital assets. Built on brutalist principles of stripped-down essentials and uncompromising security, IRONCLAD VAULT empowers users to create cryptographically-secured vaults with configurable lock timers, enabling autonomous wealth preservation without intermediaries.
+**IRONCLAD VAULT** adalah sistem **Bitcoin Savings Vault** non-custodial yang memungkinkan pengguna:
 
-### Core Value Proposition
+* Menyimpan Bitcoin via **ckBTC** ke dalam vault
+* Mengaktifkan **auto-reinvest engine**
+* Meningkatkan posisi vault secara otomatis
+* Membuktikan deposit/withdraw menggunakan **Bitcoin transaction proofs**
+* Menandatangani pesan Bitcoin via **threshold ECDSA**
+* Menjual vault melalui **on-chain marketplace**
 
-- **🔐 Time-Locked Security** — Set precise lock timers on Bitcoin deposits with cryptographic enforcement
-- **🎯 Zero Trust Architecture** — Your private keys, your vault, your rules—no middlemen
-- **⚡ Autonomous Operations** — Smart contracts handle execution, eliminating counterparty risk
-- **🛡️ Institutional Grade** — Built for professional traders, funds, and high-net-worth individuals
-- **🌐 On-Chain Transparency** — Every transaction recorded immutably on the blockchain
-## Project Structure & Documentation
-```txt
-ironclad-fe/
-├── app/                  # Next.js App Router pages & layouts
-│   ├── landing/          # Interactive landing page
-│   ├── vault/            # Vault dashboard, detail, marketplace, withdraw
-│   ├── settings/         # Network mode & system settings
-│   └── ...               # Other feature pages
-├── components/           # Reusable UI, layout, wallet, navigation
-├── public/               # Static assets (logo, manifest, etc)
-├── docs/                 # Documentation (see below)
-├── package.json          # Project dependencies
-└── tsconfig.json         # TypeScript configuration
+Project ini dibangun dengan pendekatan production-grade, **Next.js + TypeScript strict**, dan integrasi menyeluruh ke seluruh lifecycle vault.
+
+Tujuannya sederhana:
+**transformasikan Bitcoin menjadi produk savings yang aman, otomatis, dan programmable**.
+
+---
+
+# 💎 **Key Features**
+
+## 🔐 **1. Bitcoin Savings Vaults**
+
+* Create vaults dengan target deposit & lock duration
+* Deposit ckBTC → vault terkunci → status real-time
+* Unlock & withdraw saat durasi berakhir
+* Event history profesional (icons, filtering, timeline)
+
+## 🔁 **2. Auto-Reinvest Engine**
+
+* Enable/disable auto reinvest
+* Settings:
+
+  * Frequency (hour/day)
+  * Percentage to reinvest
+  * Minimum reinvest threshold
+* Execution count, next run timestamp, plan status
+* Manual reinvest & forced reinvest
+
+## 🧾 **3. Bitcoin Transaction Proofs**
+
+* Deposit & withdrawal proofs
+* Proof card:
+
+  * TxID (copyable)
+  * Confirmations count
+  * Status badges (Pending / Confirmed)
+  * Error & loading states
+* Real Bitcoin network data
+
+## 🧠 **4. Threshold ECDSA (Advanced Mode)**
+
+* Sign Bitcoin messages directly via canister
+* Output:
+
+  * Hex signature
+  * Base64 signature
+* Copy & download `.sig`
+* UI includes technical explainer (curve, hash, key)
+
+## 🛒 **5. Vault Marketplace**
+
+* List vaults for sale
+* Buy vaults from other users
+* Owner-aware UI, safe actions
+* Unlock conditions required before listing
+
+## 🛰️ **6. Network Mode Switching**
+
+* Mock mode (free, safe for dev)
+* ckBTC Mainnet mode (real Bitcoin, cycle costs)
+* Warning banners + confirmation dialogs
+* Controlled via settings page
+
+## 🧩 **7. Fully Typed & Stable Architecture**
+
+* Zero `any` types
+* Strict DTOs, enums, and actor types
+* Unified client via `ironcladClient`
+* Comprehensive service layer
+
+---
+
+# 🏗️ **System Architecture**
+
 ```
-### 📚 Documentation (Simplified)
-All technical and implementation docs are now consolidated into just 3 files:
-- [`docs/INTEGRATION_COMPLETE.md`](docs/INTEGRATION_COMPLETE.md) — Full integration summary, architecture, deployment checklist
-- [`docs/IMPLEMENTATION_JOURNAL.md`](docs/IMPLEMENTATION_JOURNAL.md) — Development log, changelog, technical decisions
-- [`docs/PROJECT_SUMMARY.txt`](docs/PROJECT_SUMMARY.txt) — Visual summary, achievements, impact, and final result
-All other legacy docs have been removed for clarity and maintainability.
-- **Professional Aesthetics** — Brutalist UI framework with no unnecessary flourishes
-## Key Features & Achievements
-- **Enterprise-Grade Security** — Type-safe, auditable codebase with zero `any` types
-- **Lightning Performance** — Next.js 16 with Turbopack, SSR, and optimized asset delivery
-- **Fluid Animations** — GSAP + ScrollTrigger + Lenis for 60fps smooth interactions
-- **Responsive Design** — Tailwind CSS 4 with custom design system for all breakpoints
-- **Professional Aesthetics** — Brutalist UI framework, Lucide React icons, minimal navigation
-- **Full TypeScript Support** — Robust, maintainable, type-safe development throughout
-- **Complete Vault Lifecycle** — Create, deposit, lock, unlock, withdraw, auto-reinvest, marketplace
-- **Bitcoin & ckBTC Integration** — Transaction proofs, threshold ECDSA signing, subaccount display
-- **Settings Page** — Network mode toggle (Mock/Mainnet), warning banners
-- **Zero Technical Debt** — All lint/type errors resolved, production ready
-| **Framework** | Next.js | 16.0.2 |
-| **Runtime** | React | 19.2.0 |
-| **Styling** | Tailwind CSS | 4.0 |
-| **Language** | TypeScript | 5.x |
-| **Animation** | GSAP + Lenis | Latest |
-| **Icons** | Lucide React | 0.553.0 |
-## Build & Type Safety Status
-- **Build:** `npm run build` — ✅ Passing, all pages generated
-- **TypeScript:** Zero `any` types, strict mode enforced
-- **Lint:** All warnings resolved
-- **SSR:** All pages statically generated or server-side rendered
-│   ├── vault/            # Vault interface
-│   ├── layout.tsx        # Root layout with metadata
-│   ├── page.tsx          # Entry point
-│   └── globals.css       # Global styling
-├── components/           # Reusable React components
-├── public/               # Static assets
-├── package.json          # Project dependencies
-└── tsconfig.json         # TypeScript configuration
-## Deployment
-- **Vercel:** Recommended for instant Next.js hosting
-- **Docker/Self-Hosted:** Supported via production build
-- **Serverless:** Compatible with AWS Lambda, Netlify, etc
-See [`docs/INTEGRATION_COMPLETE.md`](docs/INTEGRATION_COMPLETE.md) for full deployment checklist and environment config.
+Frontend
+  ↓
+Hooks
+  - useVaults
+  - useVaultActions
+  - useCkbtcSync
+  - useMarketplace
+  - useAutoReinvest
+  - useNetworkMode
+  ↓
+ironcladClient   (service abstraction)
+  ↓
+ironcladActor    (typed ICP actor)
+  ↓
+Motoko Backend   (vault / reinvest / signing / proofs / market)
+```
+
+Every interaction:
+✔ Strong typed
+✔ Error-handled
+✔ UI-friendly states (loading, error, empty)
+
+---
+
+# 📁 **Folder Structure**
+
+```
+├── app
+│   ├── landing
+│   ├── vault
+│   │   ├── [id]
+│   │   │   ├── _components
+│   │   │   │   ├── VaultDetailMain.tsx
+│   │   │   │   └── VaultDetailSection.tsx
+│   │   │   └── page.tsx
+│   │   ├── create-vault
+│   │   ├── marketplace
+│   │   ├── withdraw-vaults
+│   │   ├── test
+│   │   └── page.tsx
+│   ├── settings
+│   ├── dashboard
+│   ├── vault-debug
+│   └── layout.tsx
+│
+├── components
+│   ├── layout
+│   ├── navigation
+│   ├── ui
+│   └── wallet
+│
+├── hooks
+│   ├── ironclad
+│   └── useMyVaults.ts (removed)
+│
+├── lib
+│   ├── ic
+│   │   ├── config.ts
+│   │   ├── ironcladActor.ts
+│   │   └── ironcladClient.ts
+│   ├── ironclad-service.ts
+│   ├── toastUtils.ts
+│   └── vaultUtils.ts
+│
+├── declarations
+│   ├── ironclad_vault_backend
+│   └── internet_identity
+│
+├── docs
+│   ├── ICP_INTEGRATION_COMPLETE.md
+│   ├── MODULE-*.md
+│   ├── IMPLEMENTATION_STATUS.md
+│   └── TESTING_CHECKLIST.md
+```
+
+---
+
+# ⚙️ **Technical Highlights**
+
+### ✔ Zero `any`
+
+Semua komponen, hooks, services **Full TypeScript Strict**.
+
+### ✔ Service Layer
+
+`ironcladClient.ts` ensures:
+
+* typed responses
+* normalized errors
+* uniform UX state handling
+
+### ✔ Typed Actor API
+
+Semua calls (vault, marketplace, reinvest, proofs, signatures) → didefinisikan di `.did.d.ts`.
+
+### ✔ Brutalist Design System
+
+* Hard borders
+* Monochrome palettes
+* Sharp UI
+* Event colors mapping
+* Iconography powered by lucide
+
+---
+
+# 🔗 **How ckBTC Integration Works**
+
+1. User creates a vault
+2. Backend generates ckBTC subaccount
+3. UI shows full hex, copyable
+4. User sends ckBTC → Ledger finalizes
+5. Backend verifies → event created
+6. Proof visible in TransactionProofCard
+7. Vault balance updated via `sync_ckbtc_balance`
+
+---
+
+# 🔑 **How Threshold ECDSA Works**
+
+Ironclad uses ICP’s **chain-key ECDSA**:
+
+* Private key split across subnet
+* User submits a message
+* Canister requests signature via `request_btc_signature`
+* Signature assembled from node shares
+* UI displays hex + base64
+* Downloadable `.sig`
+
+**No private key ever exists in one place.**
+
+---
+
+# 🧪 **Development Setup**
+
+### Install dependencies
 
 ```bash
-## License & Support
-This project is proprietary and confidential.
-For issues, questions, or feature requests, see the docs or contact the development team.
+npm install
 ```
 
-**IRONCLAD VAULT** — *Brutalist Bitcoin Vault*
-Built with precision. Designed for security. Made to last.
-
-Start the development server:
+### Run dev server
 
 ```bash
 npm run dev
 ```
 
-Alternatively:
+Visit: **[http://localhost:3000](http://localhost:3000)**
 
-```bash
-yarn dev
-pnpm dev
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser. The application will auto-refresh as you make changes to the source files.
-
-## Available Scripts
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Create optimized production build |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint to check code quality |
-
-## Development Workflow
-
-### Code Editing
-
-Start by modifying files in the `app/` directory:
-
-- **Landing Page**: `app/landing/page.tsx`
-- **Vault Interface**: `app/vault/page.tsx`
-- **Global Styles**: `app/globals.css`
-
-The development server supports hot module replacement (HMR) for instant feedback.
-
-### Font Optimization
-
-This project uses `next/font` to automatically optimize and load custom fonts (Inter, Anton, IBM Plex Mono) from Google Fonts, ensuring optimal performance and zero Cumulative Layout Shift (CLS).
-
-## Production Build
-
-Create an optimized production build:
+### Build production
 
 ```bash
 npm run build
 ```
 
-This generates a `.next` directory with optimized static files and server-side rendering artifacts.
-
-## Deployment
-
-### Deploy on Vercel (Recommended)
-
-Vercel, the creators of Next.js, provides the optimal hosting platform:
-
-1. Push your repository to GitHub, GitLab, or Bitbucket
-2. Connect your repository to [Vercel](https://vercel.com)
-3. Vercel will automatically detect Next.js and configure the build settings
-4. Deploy with a single click
-
-For detailed deployment instructions, see the [Next.js Deployment Documentation](https://nextjs.org/docs/app/building-your-application/deploying).
-
-### Alternative Deployment Options
-
-- **Docker**: Containerize the application for flexible deployment
-- **Self-Hosted**: Deploy to your own infrastructure using the production build
-- **Serverless**: Deploy on platforms like AWS Lambda, Google Cloud Functions, or Netlify
-
-## Learning Resources
-
-- [Next.js Documentation](https://nextjs.org/docs) — Comprehensive Next.js feature and API reference
-- [React Documentation](https://react.dev) — Learn React fundamentals and hooks
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs) — Utility-first CSS framework guide
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/) — TypeScript language reference
-- [GSAP Documentation](https://gsap.com/docs) — Animation library reference
-
-## Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/your-feature`)
-3. Commit your changes with clear messages
-4. Push to your branch
-5. Open a Pull Request with a detailed description
-
-## Code Quality
-
-Ensure code quality before submitting changes:
-
-```bash
-npm run lint
-```
-
-Fix linting issues automatically where possible:
-
-```bash
-npm run lint -- --fix
-```
-
-## License
-
-This project is proprietary and confidential.
-
-## Support
-
-For issues, questions, or feature requests, please open an issue in the repository or contact the development team.
+✔ 0 TypeScript errors
+✔ All pages generated
+✔ Stable build
 
 ---
 
-**IRONCLAD VAULT** — *Brutalist Bitcoin Vault*
+# 🧷 **Environment Variables**
 
-Built with precision. Designed for security. Made to last.
+```
+NEXT_PUBLIC_IC_HOST=https://ic0.app
+NEXT_PUBLIC_CANISTER_ID_IRONCLAD_VAULT_BACKEND=<your-backend-id>
+```
+
+---
+
+# 📦 **Scripts**
+
+| Command         | Description              |
+| --------------- | ------------------------ |
+| `npm run dev`   | Start development server |
+| `npm run build` | Build production output  |
+| `npm run start` | Run production           |
+| `npm run lint`  | Lint code                |
+
+---
+
+# 🛡 **Security Model**
+
+* Vaults are non-custodial
+* Users control identity (Internet Identity)
+* Bitcoin locked via ckBTC ledger
+* All signatures generated via threshold ECDSA
+* Auto-reinvest uses on-chain strategy logic
+* Marketplace requires vault unlock conditions
+
+---
+
+# 📚 **Documentation**
+
+All in `/docs`:
+
+* **ICP_INTEGRATION_COMPLETE.md**
+* **MODULE-1 → MODULE-5**
+* **IMPLEMENTATION_STATUS.md**
+* **TESTING_CHECKLIST.md**
+
+---
+
+# 🏁 **Conclusion**
+
+**IRONCLAD VAULT** is a full-stack Bitcoin savings product with:
+
+* Time-locked ckBTC vaults
+* Auto-reinvest system
+* Live Bitcoin proofs
+* Threshold ECDSA signing
+* Marketplace trading
+* Zero `any`, fully typed
+* Brutalist pro-grade UI
+* Production ready
+
+Built with precision.
+Designed for security.
+Made for real users.
+
+---
