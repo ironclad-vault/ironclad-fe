@@ -19,41 +19,49 @@ Brutalist Design • Uncompromising Security • Autonomous Operations
 - **⚡ Autonomous Operations** — Smart contracts handle execution, eliminating counterparty risk
 - **🛡️ Institutional Grade** — Built for professional traders, funds, and high-net-worth individuals
 - **🌐 On-Chain Transparency** — Every transaction recorded immutably on the blockchain
-- **💎 Brutalist Elegance** — Minimal interface, maximum clarity—no unnecessary UI flourishes
-
-## Technical Architecture
-
-IRONCLAD VAULT's frontend delivers exceptional performance and user experience through cutting-edge modern web technologies. The sophisticated stack combines **Next.js 16**, **React 19**, **TypeScript**, and premium animation libraries (GSAP + Lenis), providing instant responsiveness, seamless interactions, and an unmatched visual experience across all devices.
-
-**Design Philosophy:** Brutalist minimalism meets enterprise-grade functionality. Every pixel serves a purpose. Every interaction communicates intent.
-
-## Key Features
-
+## Project Structure & Documentation
+```txt
+ironclad-fe/
+├── app/                  # Next.js App Router pages & layouts
+│   ├── landing/          # Interactive landing page
+│   ├── vault/            # Vault dashboard, detail, marketplace, withdraw
+│   ├── settings/         # Network mode & system settings
+│   └── ...               # Other feature pages
+├── components/           # Reusable UI, layout, wallet, navigation
+├── public/               # Static assets (logo, manifest, etc)
+├── docs/                 # Documentation (see below)
+├── package.json          # Project dependencies
+└── tsconfig.json         # TypeScript configuration
+```
+### 📚 Documentation (Simplified)
+All technical and implementation docs are now consolidated into just 3 files:
+- [`docs/INTEGRATION_COMPLETE.md`](docs/INTEGRATION_COMPLETE.md) — Full integration summary, architecture, deployment checklist
+- [`docs/IMPLEMENTATION_JOURNAL.md`](docs/IMPLEMENTATION_JOURNAL.md) — Development log, changelog, technical decisions
+- [`docs/PROJECT_SUMMARY.txt`](docs/PROJECT_SUMMARY.txt) — Visual summary, achievements, impact, and final result
+All other legacy docs have been removed for clarity and maintainability.
+- **Professional Aesthetics** — Brutalist UI framework with no unnecessary flourishes
+## Key Features & Achievements
 - **Enterprise-Grade Security** — Type-safe, auditable codebase with zero `any` types
 - **Lightning Performance** — Next.js 16 with Turbopack, SSR, and optimized asset delivery
 - **Fluid Animations** — GSAP + ScrollTrigger + Lenis for 60fps smooth interactions
 - **Responsive Design** — Tailwind CSS 4 with custom design system for all breakpoints
-- **Professional Aesthetics** — Brutalist UI framework with no unnecessary flourishes
+- **Professional Aesthetics** — Brutalist UI framework, Lucide React icons, minimal navigation
 - **Full TypeScript Support** — Robust, maintainable, type-safe development throughout
-
-## Tech Stack
-
-| Layer | Technology | Version |
-|-------|-----------|----------|
+- **Complete Vault Lifecycle** — Create, deposit, lock, unlock, withdraw, auto-reinvest, marketplace
+- **Bitcoin & ckBTC Integration** — Transaction proofs, threshold ECDSA signing, subaccount display
+- **Settings Page** — Network mode toggle (Mock/Mainnet), warning banners
+- **Zero Technical Debt** — All lint/type errors resolved, production ready
 | **Framework** | Next.js | 16.0.2 |
 | **Runtime** | React | 19.2.0 |
 | **Styling** | Tailwind CSS | 4.0 |
 | **Language** | TypeScript | 5.x |
 | **Animation** | GSAP + Lenis | Latest |
 | **Icons** | Lucide React | 0.553.0 |
-| **Linting** | ESLint | 9.x |
-
-## Project Structure
-
-```txt
-citadel-fe/
-├── app/
-│   ├── landing/          # Landing page component
+## Build & Type Safety Status
+- **Build:** `npm run build` — ✅ Passing, all pages generated
+- **TypeScript:** Zero `any` types, strict mode enforced
+- **Lint:** All warnings resolved
+- **SSR:** All pages statically generated or server-side rendered
 │   ├── vault/            # Vault interface
 │   ├── layout.tsx        # Root layout with metadata
 │   ├── page.tsx          # Entry point
@@ -62,26 +70,20 @@ citadel-fe/
 ├── public/               # Static assets
 ├── package.json          # Project dependencies
 └── tsconfig.json         # TypeScript configuration
-```
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 18 or higher
-- npm, yarn, pnpm, or bun package manager
-
-### Installation
-
-Clone the repository and install dependencies:
+## Deployment
+- **Vercel:** Recommended for instant Next.js hosting
+- **Docker/Self-Hosted:** Supported via production build
+- **Serverless:** Compatible with AWS Lambda, Netlify, etc
+See [`docs/INTEGRATION_COMPLETE.md`](docs/INTEGRATION_COMPLETE.md) for full deployment checklist and environment config.
 
 ```bash
-git clone <repository-url>
-cd citadel-fe
-npm install
+## License & Support
+This project is proprietary and confidential.
+For issues, questions, or feature requests, see the docs or contact the development team.
 ```
 
-### Development Server
+**IRONCLAD VAULT** — *Brutalist Bitcoin Vault*
+Built with precision. Designed for security. Made to last.
 
 Start the development server:
 

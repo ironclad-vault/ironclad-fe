@@ -1,146 +1,176 @@
 /**
  * Vault Debug Page
- * Smoke test for ICP connection and actor creation
- * Temporary page for testing - can be deleted after verification
+ * ICP Bitcoin integration testing panel
  */
 
-'use client';
+"use client";
 
-import React from 'react';
-import { useMyVaults } from '@/hooks/useMyVaults';
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
+import { useNetworkMode } from "@/hooks/ironclad/useNetworkMode";
+import { useCkbtcSync } from "@/hooks/ironclad/useCkbtcSync";
+import { useVaults } from "@/hooks/ironclad/useVaults";
 
 export default function VaultDebugPage() {
-  const { data, loading, error, refetch } = useMyVaults();
+  const {
+    mode,
+    loading: modeLoading,
+    error: modeError,
+    switchToMock,
+    switchToCkbtc,
+  } = useNetworkMode();
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center">
-          <div className="animate-pulse mb-4">
-            <div className="w-16 h-16 border-4 border-black border-t-transparent rounded-full animate-spin mx-auto"></div>
-          </div>
-          <p className="text-lg font-medium">Loading vaults from ICP...</p>
-          <p className="text-sm text-gray-600 mt-2">Connecting to canister...</p>
-        </div>
-      </div>
-    );
-  }
+  const { vaults, loading: vaultsLoading } = useVaults();
+  const [vaultIdInput, setVaultIdInput] = useState("0");
+  const vaultId = BigInt(vaultIdInput || "0");
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-red-50 p-4">
-        <div className="max-w-2xl w-full">
-          <div className="border-4 border-red-600 bg-white p-8">
-            <h1 className="text-3xl font-bold text-red-600 mb-4">❌ Connection Error</h1>
-            <div className="bg-red-100 border-2 border-red-600 p-4 mb-4">
-              <p className="font-mono text-sm text-red-900">{error.message}</p>
-            </div>
-            <button
-              onClick={() => refetch()}
-              className="px-6 py-3 bg-red-600 text-white font-bold hover:bg-red-700 border-2 border-black transition-colors"
-            >
-              Retry Connection
-            </button>
-            <div className="mt-6 text-sm space-y-2 text-gray-700">
-              <p className="font-bold">Troubleshooting:</p>
-              <ul className="list-disc list-inside space-y-1">
-                <li>Check if dfx replica is running: <code className="bg-gray-200 px-2 py-1">dfx start --background</code></li>
-                <li>Verify backend canister is deployed: <code className="bg-gray-200 px-2 py-1">dfx deploy ironclad_vault_backend</code></li>
-                <li>Check environment variables in <code className="bg-gray-200 px-2 py-1">.env.local</code></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const {
+    sync,
+    loading: syncLoading,
+    error: syncError,
+    lastResult,
+  } = useCkbtcSync(vaultId);
+
+  // Auto-set first vault ID if available
+  useEffect(() => {
+    if (vaults && vaults.length > 0 && vaultIdInput === "0") {
+      setVaultIdInput(vaults[0]!.id.toString());
+    }
+  }, [vaults, vaultIdInput]);
 
   return (
-    <div className="min-h-screen bg-white p-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="border-4 border-black bg-white p-8 mb-6">
-          <h1 className="text-4xl font-bold mb-2">🧪 ICP Connection Test</h1>
-          <p className="text-gray-600">
-            Successfully connected to Ironclad Vault Backend canister
+    <div className="min-h-screen bg-slate-950 text-slate-50 p-8 space-y-8">
+      <h1 className="text-3xl font-bold mb-4">Ironclad / ICP Debug Panel</h1>
+
+      <section className="border border-slate-700 rounded-2xl p-5 space-y-3">
+        <h2 className="text-lg font-semibold">Network Mode</h2>
+        <p className="text-sm text-slate-300">
+          Current mode:{" "}
+          <span className="font-mono text-emerald-400">
+            {mode
+              ? "Mock" in mode
+                ? "Mock"
+                : "CkBTCMainnet" in mode
+                ? "CkBTCMainnet"
+                : JSON.stringify(mode)
+              : modeLoading
+              ? "Loading..."
+              : "Unknown"}
+          </span>
+        </p>
+        {modeError && (
+          <p className="text-xs text-red-400 whitespace-pre-wrap">
+            {modeError}
           </p>
+        )}
+        <div className="flex gap-3 mt-2">
+          <button
+            onClick={switchToMock}
+            disabled={modeLoading}
+            className="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-sm disabled:opacity-50"
+          >
+            Use Mock
+          </button>
+          <button
+            onClick={switchToCkbtc}
+            disabled={modeLoading}
+            className="px-3 py-1 rounded bg-emerald-600 hover:bg-emerald-500 text-sm disabled:opacity-50"
+          >
+            Use ckBTC Mainnet
+          </button>
         </div>
+      </section>
 
-        <div className="border-4 border-black bg-green-50 p-6 mb-6">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl">✅</span>
-            <div>
-              <h2 className="text-xl font-bold text-green-900">Connection Successful</h2>
-              <p className="text-sm text-green-700">Actor created and canister is responsive</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <p className="font-bold text-gray-700">Vaults Found:</p>
-              <p className="text-2xl font-bold text-green-900">{data?.length ?? 0}</p>
-            </div>
-            <div>
-              <p className="font-bold text-gray-700">Status:</p>
-              <p className="text-lg font-bold text-green-900">CONNECTED</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-4 border-black bg-white p-6">
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-2xl font-bold">Vault Data</h2>
-            <button
-              onClick={() => refetch()}
-              className="px-4 py-2 bg-blue-600 text-white font-bold hover:bg-blue-700 border-2 border-black transition-colors"
-            >
-              Refresh
-            </button>
-          </div>
-          
-          {data && data.length > 0 ? (
-            <div className="space-y-4">
-              {Array.from(data).map((vault, index) => (
-                <div
-                  key={index}
-                  className="border-2 border-gray-300 bg-gray-50 p-4"
+      <section className="border border-slate-700 rounded-2xl p-5 space-y-3">
+        <h2 className="text-lg font-semibold">Your Vaults</h2>
+        {vaultsLoading ? (
+          <p className="text-sm text-slate-400">Loading vaults...</p>
+        ) : vaults && vaults.length > 0 ? (
+          <div className="space-y-2">
+            <p className="text-sm text-slate-300">
+              Found {vaults.length} vault{vaults.length !== 1 ? 's' : ''}:
+            </p>
+            <div className="grid grid-cols-1 gap-2">
+              {vaults.map((vault) => (
+                <button
+                  key={vault.id.toString()}
+                  onClick={() => setVaultIdInput(vault.id.toString())}
+                  className={`text-left p-3 rounded border ${
+                    vaultIdInput === vault.id.toString()
+                      ? 'border-emerald-500 bg-emerald-950'
+                      : 'border-slate-700 bg-slate-900 hover:bg-slate-800'
+                  }`}
                 >
-                  <div className="grid grid-cols-2 gap-2 text-sm">
+                  <div className="flex justify-between items-start">
                     <div>
-                      <span className="font-bold">ID:</span> {vault.id.toString()}
+                      <p className="text-xs text-slate-400">Vault ID</p>
+                      <p className="font-mono text-sm">{vault.id.toString()}</p>
                     </div>
                     <div>
-                      <span className="font-bold">Balance:</span> {vault.balance.toString()} sats
+                      <p className="text-xs text-slate-400">Balance</p>
+                      <p className="font-mono text-sm">{vault.balance.toString()} sats</p>
                     </div>
                     <div>
-                      <span className="font-bold">Status:</span>{' '}
-                      {Object.keys(vault.status)[0]}
-                    </div>
-                    <div>
-                      <span className="font-bold">Owner:</span>{' '}
-                      {vault.owner.toString().slice(0, 10)}...
+                      <p className="text-xs text-slate-400">Status</p>
+                      <p className="text-xs">{Object.keys(vault.status)[0]}</p>
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              <p className="text-lg mb-2">No vaults found</p>
-              <p className="text-sm">Create your first vault to see data here</p>
-            </div>
-          )}
+          </div>
+        ) : (
+          <div className="bg-yellow-900/20 border border-yellow-700 rounded p-3">
+            <p className="text-sm text-yellow-400">⚠️ No vaults found</p>
+            <p className="text-xs text-yellow-300 mt-1">
+              Create a vault first at <Link href="/vault" className="underline">/vault</Link>
+            </p>
+          </div>
+        )}
+      </section>
 
-          <pre className="mt-6 border-2 border-black p-4 text-xs overflow-auto bg-gray-900 text-green-400 font-mono max-h-96">
-            {JSON.stringify(data, (_, v) => typeof v === 'bigint' ? v.toString() : v, 2)}
-          </pre>
+      <section className="border border-slate-700 rounded-2xl p-5 space-y-3">
+        <h2 className="text-lg font-semibold">ckBTC Sync (by Vault ID)</h2>
+        <div className="flex items-center gap-3">
+          <input
+            value={vaultIdInput}
+            onChange={(e) => setVaultIdInput(e.target.value.replace(/[^0-9]/g, ""))}
+            className="px-3 py-1 rounded bg-slate-900 border border-slate-700 text-sm font-mono w-28"
+            placeholder="0"
+          />
+          <button
+            onClick={sync}
+            disabled={syncLoading || !vaultIdInput || vaultIdInput === "0"}
+            className="px-3 py-1 rounded bg-blue-600 hover:bg-blue-500 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {syncLoading ? "Syncing..." : "Sync from ckBTC"}
+          </button>
         </div>
-
-        <div className="mt-6 border-4 border-yellow-600 bg-yellow-50 p-4">
-          <p className="text-sm text-yellow-900">
-            <span className="font-bold">Note:</span> This is a debug page for testing ICP connectivity.
-            Delete <code className="bg-yellow-200 px-2 py-1">/app/vault-debug/page.tsx</code> after verification.
-          </p>
-        </div>
-      </div>
+        {!vaultIdInput || vaultIdInput === "0" ? (
+          <p className="text-xs text-yellow-400">⚠️ Select a vault from above or enter a valid vault ID</p>
+        ) : null}
+        {syncError && (
+          <div className="bg-red-900/20 border border-red-700 rounded p-3">
+            <p className="text-xs text-red-400 font-bold">Error:</p>
+            <p className="text-xs text-red-300 mt-1">{syncError}</p>
+            {syncError.includes("not found") && (
+              <p className="text-xs text-red-200 mt-2">
+                💡 Tip: Vault ID {vaultIdInput} does not exist or you do not own it
+              </p>
+            )}
+          </div>
+        )}
+        {lastResult && (
+          <div className="space-y-2">
+            <p className="text-sm text-emerald-400 font-bold">✓ Sync successful!</p>
+            <pre className="text-xs bg-slate-900 rounded p-3 overflow-x-auto">
+              {JSON.stringify(lastResult, (_, value) => 
+                typeof value === 'bigint' ? value.toString() : value
+              , 2)}
+            </pre>
+          </div>
+        )}
+      </section>
     </div>
   );
 }

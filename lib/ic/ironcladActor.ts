@@ -24,6 +24,10 @@ export type {
   PlanStatusResponse,
   MarketListing,
   ListingStatus,
+  NetworkMode,
+  CkbtcSyncResult,
+  BitcoinTxProof,
+  SignatureResponse,
 } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 
 export type IroncladActor = ActorSubclass<_SERVICE>;

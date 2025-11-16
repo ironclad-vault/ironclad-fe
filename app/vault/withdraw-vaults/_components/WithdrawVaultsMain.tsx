@@ -185,7 +185,7 @@ export default function WithdrawVaultsMain() {
   }
 
   return (
-    <div className="container mx-auto px-6">
+    <div className="container mx-auto px-6 bg-gray-50 min-h-screen">
       <div>
         {/* Main Withdraw Card */}
         <div className="card-brutal p-8">

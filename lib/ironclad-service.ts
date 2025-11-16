@@ -9,6 +9,10 @@ import {
   PlanStatusResponse,
   MarketListing,
   ListingStatus,
+  NetworkMode,
+  CkbtcSyncResult,
+  BitcoinTxProof,
+  SignatureResponse,
 } from "./ic/ironcladActor";
 
 // Define Result type locally (Candid pattern)
@@ -38,6 +42,11 @@ export interface VaultDTO {
   btcAddress: string;
   btcDepositTxid: string | null;
   btcWithdrawTxid: string | null;
+  /**
+   * ckBTC subaccount derived for this vault.
+   * Represented as a 0x-prefixed hex string or null if not present.
+   */
+  ckbtcSubaccountHex?: string | null;
 }
 
 export interface VaultEventDTO {
@@ -78,6 +87,29 @@ export interface MarketListingDTO {
   updatedAt: number;
 }
 
+// ============================================================================
+// Bitcoin Feature DTOs
+// ============================================================================
+
+export type NetworkModeTS = "Mock" | "CkBTCMainnet";
+
+export interface CkbtcSyncResultDTO {
+  mode: NetworkModeTS;
+  syncedBalance: bigint;
+  vault: VaultDTO;
+}
+
+export interface BitcoinTxProofDTO {
+  txid: string;
+  confirmations: number;
+  confirmed: boolean;
+}
+
+export interface SignatureResponseDTO {
+  signatureHex: string;
+  messageHex: string;
+}
+
 // Mapping functions (snake_case Candid → camelCase TypeScript)
 function mapVaultStatus(status: VaultStatus): VaultStatusTS {
   if ("PendingDeposit" in status) return "PendingDeposit";
@@ -113,6 +145,15 @@ function mapAutoReinvestPlanStatus(raw: AutoReinvestPlanStatus | undefined | nul
 }
 
 function mapVault(raw: Vault): VaultDTO {
+  // Map ckBTC subaccount (optional vec nat8)
+  let ckbtcSubaccountHex: string | null = null;
+  if (raw.ckbtc_subaccount.length > 0 && raw.ckbtc_subaccount[0] !== undefined) {
+    const bytes = raw.ckbtc_subaccount[0] instanceof Uint8Array 
+      ? raw.ckbtc_subaccount[0] 
+      : new Uint8Array(raw.ckbtc_subaccount[0]);
+    ckbtcSubaccountHex = "0x" + Array.from(bytes).map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
   return {
     id: raw.id,
     owner: raw.owner.toString(),
@@ -125,6 +166,7 @@ function mapVault(raw: Vault): VaultDTO {
     btcAddress: raw.btc_address,
     btcDepositTxid: raw.btc_deposit_txid.length > 0 ? raw.btc_deposit_txid[0]! : null,
     btcWithdrawTxid: raw.btc_withdraw_txid.length > 0 ? raw.btc_withdraw_txid[0]! : null,
+    ckbtcSubaccountHex,
   };
 }
 
@@ -138,18 +180,25 @@ function mapVaultEvent(raw: VaultEvent): VaultEventDTO {
 }
 
 function mapConfig(raw: AutoReinvestConfig): AutoReinvestConfigDTO {
-  // Safely access potentially missing fields (for backward compatibility)
-  const rawAny = raw as any;
+  // Type guard for accessing potentially undefined fields (backward compatibility)
+  type RawConfigWithOptionalFields = AutoReinvestConfig & {
+    plan_status?: AutoReinvestPlanStatus;
+    error_message?: string[];
+    next_cycle_timestamp?: bigint;
+    execution_count?: bigint;
+  };
+  
+  const rawConfig = raw as RawConfigWithOptionalFields;
   
   return {
     vaultId: raw.vault_id,
     owner: raw.owner.toString(),
     newLockDuration: raw.new_lock_duration,
     enabled: raw.enabled,
-    planStatus: mapAutoReinvestPlanStatus(rawAny.plan_status),
-    errorMessage: rawAny.error_message && rawAny.error_message.length > 0 ? rawAny.error_message[0] : null,
-    nextCycleTimestamp: rawAny.next_cycle_timestamp ? Number(rawAny.next_cycle_timestamp) : 0,
-    executionCount: rawAny.execution_count ? rawAny.execution_count : BigInt(0),
+    planStatus: mapAutoReinvestPlanStatus(rawConfig.plan_status),
+    errorMessage: rawConfig.error_message && rawConfig.error_message.length > 0 ? rawConfig.error_message[0]! : null,
+    nextCycleTimestamp: rawConfig.next_cycle_timestamp ? Number(rawConfig.next_cycle_timestamp) : 0,
+    executionCount: rawConfig.execution_count ? rawConfig.execution_count : BigInt(0),
     createdAt: Number(raw.created_at),
     updatedAt: Number(raw.updated_at),
   };
@@ -174,6 +223,46 @@ function mapListing(raw: MarketListing): MarketListingDTO {
     status: mapListingStatus(raw.status),
     createdAt: Number(raw.created_at),
     updatedAt: Number(raw.updated_at),
+  };
+}
+
+// ============================================================================
+// Bitcoin Feature Mappers
+// ============================================================================
+
+function mapNetworkMode(raw: NetworkMode): NetworkModeTS {
+  if ("Mock" in raw) return "Mock";
+  if ("CkBTCMainnet" in raw) return "CkBTCMainnet";
+  return "Mock"; // fallback
+}
+
+function mapCkbtcSyncResult(raw: CkbtcSyncResult): CkbtcSyncResultDTO {
+  return {
+    mode: mapNetworkMode(raw.mode),
+    syncedBalance: raw.synced_balance,
+    vault: mapVault(raw.vault),
+  };
+}
+
+function mapBitcoinTxProof(raw: BitcoinTxProof): BitcoinTxProofDTO {
+  return {
+    txid: raw.txid,
+    confirmations: raw.confirmations,
+    confirmed: raw.confirmed,
+  };
+}
+
+function mapSignatureResponse(raw: SignatureResponse): SignatureResponseDTO {
+  const sigBytes = raw.signature instanceof Uint8Array 
+    ? raw.signature 
+    : new Uint8Array(raw.signature);
+  const msgBytes = raw.message instanceof Uint8Array 
+    ? raw.message 
+    : new Uint8Array(raw.message);
+  
+  return {
+    signatureHex: "0x" + Array.from(sigBytes).map(b => b.toString(16).padStart(2, "0")).join(""),
+    messageHex: "0x" + Array.from(msgBytes).map(b => b.toString(16).padStart(2, "0")).join(""),
   };
 }
 
@@ -550,4 +639,114 @@ export async function buyListing({
   const actorInstance = await getActorOrThrow(actor);
   const result = await actorInstance.buy_listing(listingId);
   unwrapResult(result);
+}
+
+// ============================================================================
+// Network Mode Service Functions
+// ============================================================================
+
+/**
+ * Get current network mode
+ */
+export async function getNetworkMode(actor?: IroncladActor): Promise<NetworkModeTS> {
+  const actorInstance = await getActorOrThrow(actor);
+  const raw = await actorInstance.get_mode_query();
+  return mapNetworkMode(raw);
+}
+
+/**
+ * Set network mode to Mock
+ */
+export async function setNetworkModeMock(actor?: IroncladActor): Promise<void> {
+  const actorInstance = await getActorOrThrow(actor);
+  await actorInstance.set_mode_mock();
+}
+
+/**
+ * Set network mode to ckBTC Mainnet
+ */
+export async function setNetworkModeCkbtcMainnet(actor?: IroncladActor): Promise<void> {
+  const actorInstance = await getActorOrThrow(actor);
+  await actorInstance.set_mode_ckbtc_mainnet();
+}
+
+// ============================================================================
+// ckBTC Integration Service Functions
+// ============================================================================
+
+/**
+ * Sync vault balance from ckBTC ledger
+ */
+export async function syncVaultBalanceFromCkbtc({
+  vaultId,
+  actor,
+}: {
+  vaultId: bigint;
+  actor?: IroncladActor;
+}): Promise<CkbtcSyncResultDTO> {
+  const actorInstance = await getActorOrThrow(actor);
+  const result = await actorInstance.sync_vault_balance_from_ckbtc(vaultId);
+  const raw = unwrapResult(result);
+  return mapCkbtcSyncResult(raw);
+}
+
+// ============================================================================
+// Bitcoin Proof Service Functions
+// ============================================================================
+
+/**
+ * Get deposit proof for a vault
+ */
+export async function getDepositProof({
+  vaultId,
+  actor,
+}: {
+  vaultId: bigint;
+  actor?: IroncladActor;
+}): Promise<BitcoinTxProofDTO> {
+  const actorInstance = await getActorOrThrow(actor);
+  const result = await actorInstance.get_deposit_proof(vaultId);
+  const raw = unwrapResult(result);
+  return mapBitcoinTxProof(raw);
+}
+
+/**
+ * Get withdraw proof for a vault
+ */
+export async function getWithdrawProof({
+  vaultId,
+  actor,
+}: {
+  vaultId: bigint;
+  actor?: IroncladActor;
+}): Promise<BitcoinTxProofDTO> {
+  const actorInstance = await getActorOrThrow(actor);
+  const result = await actorInstance.get_withdraw_proof(vaultId);
+  const raw = unwrapResult(result);
+  return mapBitcoinTxProof(raw);
+}
+
+// ============================================================================
+// BTC Threshold Signing Service Functions
+// ============================================================================
+
+/**
+ * Request BTC signature for a vault
+ */
+export async function requestBtcSignature({
+  vaultId,
+  message,
+  actor,
+}: {
+  vaultId: bigint;
+  message: Uint8Array;
+  actor?: IroncladActor;
+}): Promise<SignatureResponseDTO> {
+  const actorInstance = await getActorOrThrow(actor);
+  const result = await actorInstance.request_btc_signature(
+    vaultId,
+    Array.from(message),
+  );
+  const raw = unwrapResult(result);
+  return mapSignatureResponse(raw);
 }

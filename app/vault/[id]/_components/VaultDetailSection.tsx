@@ -7,7 +7,21 @@ import type { VaultDTO, VaultEventDTO } from "@/lib/ironclad-service";
 import { formatVaultDate, formatSats } from "@/lib/vaultUtils";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
 import { useAutoReinvest } from "@/hooks/ironclad/useAutoReinvest";
-import { ArrowLeft, FileWarning, Timer } from "lucide-react";
+import { TransactionProofCard } from "@/components/ui/TransactionProofCard";
+import { AdvancedActionsSection } from "./AdvancedActionsSection";
+import {
+  ArrowLeft,
+  FileWarning,
+  Timer,
+  Plus,
+  Lock,
+  Unlock,
+  TrendingUp,
+  ShoppingCart,
+  AlertCircle,
+  CheckCircle,
+  Calendar,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
@@ -69,10 +83,11 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
   const [events, setEvents] = useState<VaultEventDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"overview" | "history" | "config">(
-    "overview"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "history" | "config" | "advanced"
+  >("overview");
   const [newLockDuration, setNewLockDuration] = useState<string>("2592000"); // 30 days default
+  const [eventFilter, setEventFilter] = useState<string>("all"); // Event filter state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -355,7 +370,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
             </button>
             <button
               onClick={() => setActiveTab("config")}
-              className={`flex-1 px-6 py-4 font-bold heading-brutal transition-colors ${
+              className={`flex-1 px-6 py-4 font-bold heading-brutal border-r-2 border-black transition-colors ${
                 activeTab === "config"
                   ? "bg-black text-white"
                   : "bg-white hover:bg-gray-100"
@@ -363,13 +378,23 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
             >
               AUTO-REINVEST
             </button>
+            <button
+              onClick={() => setActiveTab("advanced")}
+              className={`flex-1 px-6 py-4 font-bold heading-brutal transition-colors ${
+                activeTab === "advanced"
+                  ? "bg-black text-white"
+                  : "bg-white hover:bg-gray-100"
+              }`}
+            >
+              ADVANCED
+            </button>
           </div>
 
           <div className="p-8">
             {activeTab === "overview" && (
               <div className="space-y-6">
                 <div>
-                  <h3 className="heading-brutal text-lg mb-4">
+                  <h3 className="heading-brutal text-lg mb-4!">
                     VAULT INFORMATION
                   </h3>
                   <div className="space-y-4">
@@ -425,6 +450,33 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                         {vault.btcAddress}
                       </span>
                     </div>
+                    {vault.ckbtcSubaccountHex && (
+                      <div className="border-b pb-4">
+                        <span className="body-brutal text-gray-600 block mb-2">
+                          ckBTC Subaccount:
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <code className="body-brutal font-mono text-xs bg-gray-100 p-2 rounded flex-1 overflow-x-auto">
+                            {vault.ckbtcSubaccountHex}
+                          </code>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(
+                                vault.ckbtcSubaccountHex!
+                              );
+                              toast.success("ckBTC subaccount copied!");
+                            }}
+                            className="button-brutal py-2 px-3 text-xs whitespace-nowrap"
+                            title="Copy to clipboard"
+                          >
+                            COPY
+                          </button>
+                        </div>
+                        <p className="body-brutal text-xs text-gray-500 mt-1">
+                          Send ckBTC to this subaccount to fund the vault
+                        </p>
+                      </div>
+                    )}
                     {vault.btcDepositTxid && (
                       <div className="flex justify-between border-b pb-2">
                         <span className="body-brutal text-gray-600">
@@ -447,36 +499,161 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                     )}
                   </div>
                 </div>
+
+                {/* Bitcoin Transaction Proofs */}
+                <div>
+                  <h3 className="heading-brutal text-lg mb-4!">
+                    TRANSACTION PROOFS
+                  </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <TransactionProofCard
+                      vaultId={BigInt(vault.id)}
+                      proofType="deposit"
+                    />
+                    <TransactionProofCard
+                      vaultId={BigInt(vault.id)}
+                      proofType="withdraw"
+                    />
+                  </div>
+                </div>
               </div>
             )}
 
             {activeTab === "history" && (
-              <div>
-                <h3 className="heading-brutal text-lg pb-3!">VAULT HISTORY</h3>
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h3 className="heading-brutal text-lg">VAULT HISTORY</h3>
+
+                  {/* Event Filter */}
+                  <select
+                    value={eventFilter}
+                    onChange={(e) => setEventFilter(e.target.value)}
+                    className="input-brutal text-sm px-3 py-2"
+                  >
+                    <option value="all">All Events</option>
+                    <option value="VAULT_CREATED">Created</option>
+                    <option value="DEPOSITED">Deposited</option>
+                    <option value="LOCKED">Locked</option>
+                    <option value="UNLOCK_READY">Unlocked</option>
+                    <option value="WITHDRAW_REQUESTED">Withdrawn</option>
+                    <option value="AUTO_REINVEST">Auto-Reinvest</option>
+                    <option value="VAULT_LISTED">Marketplace</option>
+                  </select>
+                </div>
+
                 {events.length === 0 ? (
-                  <p className="body-brutal text-gray-600">No events yet</p>
+                  <div className="card-brutal p-8 text-center bg-gray-50">
+                    <p className="body-brutal text-gray-600">No events yet</p>
+                  </div>
                 ) : (
-                  <div className="space-y-4">
-                    {events.map((event, idx) => (
-                      <div
-                        key={idx}
-                        className="card-brutal p-4 border-l-4 border-blue-500"
-                      >
-                        <div className="flex justify-between mb-2">
-                          <p className="body-brutal font-bold">
-                            {event.action}
-                          </p>
-                          <p className="body-brutal text-xs text-gray-600">
-                            {formatVaultDate(event.timestamp)}
-                          </p>
-                        </div>
-                        {event.notes && (
-                          <p className="body-brutal text-sm text-gray-700">
-                            {event.notes}
-                          </p>
-                        )}
-                      </div>
-                    ))}
+                  <div className="space-y-3">
+                    {events
+                      .filter(
+                        (event) =>
+                          eventFilter === "all" ||
+                          event.action.includes(eventFilter)
+                      )
+                      .map((event, idx) => {
+                        // Determine icon and color based on action type
+                        const getEventIcon = (action: string) => {
+                          if (action.includes("CREATE"))
+                            return <Plus className="w-5 h-5" />;
+                          if (action.includes("DEPOSITED"))
+                            return <Plus className="w-5 h-5" />;
+                          if (action.includes("LOCKED"))
+                            return <Lock className="w-5 h-5" />;
+                          if (action.includes("UNLOCK"))
+                            return <Unlock className="w-5 h-5" />;
+                          if (action.includes("WITHDRAW"))
+                            return <TrendingUp className="w-5 h-5" />;
+                          if (action.includes("AUTO_REINVEST"))
+                            return <TrendingUp className="w-5 h-5" />;
+                          if (
+                            action.includes("VAULT_LISTED") ||
+                            action.includes("VAULT_SOLD")
+                          )
+                            return <ShoppingCart className="w-5 h-5" />;
+                          if (
+                            action.includes("ERROR") ||
+                            action.includes("FAILED")
+                          )
+                            return <AlertCircle className="w-5 h-5" />;
+                          return <CheckCircle className="w-5 h-5" />;
+                        };
+
+                        const getEventColor = (action: string) => {
+                          if (action.includes("CREATE"))
+                            return "border-green-500 bg-green-50";
+                          if (action.includes("DEPOSITED"))
+                            return "border-blue-500 bg-blue-50";
+                          if (action.includes("LOCKED"))
+                            return "border-purple-500 bg-purple-50";
+                          if (action.includes("UNLOCK"))
+                            return "border-green-500 bg-green-50";
+                          if (action.includes("WITHDRAW"))
+                            return "border-orange-500 bg-orange-50";
+                          if (action.includes("AUTO_REINVEST"))
+                            return "border-blue-500 bg-blue-50";
+                          if (
+                            action.includes("VAULT_LISTED") ||
+                            action.includes("VAULT_SOLD")
+                          )
+                            return "border-indigo-500 bg-indigo-50";
+                          if (
+                            action.includes("ERROR") ||
+                            action.includes("FAILED")
+                          )
+                            return "border-red-500 bg-red-50";
+                          return "border-gray-500 bg-gray-50";
+                        };
+
+                        // Calculate relative time
+                        const getRelativeTime = (timestamp: number) => {
+                          const now = Math.floor(Date.now() / 1000);
+                          const diff = now - timestamp;
+                          if (diff < 60) return `${diff}s ago`;
+                          if (diff < 3600)
+                            return `${Math.floor(diff / 60)}m ago`;
+                          if (diff < 86400)
+                            return `${Math.floor(diff / 3600)}h ago`;
+                          return `${Math.floor(diff / 86400)}d ago`;
+                        };
+
+                        return (
+                          <div
+                            key={idx}
+                            className={`card-brutal p-4 border-l-4 ${getEventColor(
+                              event.action
+                            )}`}
+                          >
+                            <div className="flex gap-4">
+                              <div className="shrink-0">
+                                {getEventIcon(event.action)}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex justify-between items-start mb-2">
+                                  <p className="body-brutal font-bold">
+                                    {event.action.replace(/_/g, " ")}
+                                  </p>
+                                  <div className="text-right">
+                                    <p className="body-brutal text-xs text-gray-600">
+                                      {getRelativeTime(event.timestamp)}
+                                    </p>
+                                    <p className="body-brutal text-xs text-gray-500">
+                                      {formatVaultDate(event.timestamp)}
+                                    </p>
+                                  </div>
+                                </div>
+                                {event.notes && (
+                                  <p className="body-brutal text-sm text-gray-700">
+                                    {event.notes}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
                   </div>
                 )}
               </div>
@@ -648,8 +825,9 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       </div>
                     ) : (
                       <div className="card-brutal p-6 bg-gray-50 border-gray-300">
-                        <p className="body-brutal text-sm text-gray-700 font-bold mb-2">
-                          📋 NO PLAN YET
+                        <p className="body-brutal text-sm text-gray-700 font-bold mb-2 flex items-center">
+                          <Calendar className="w-5 h-5 inline-block mr-2" /> NO
+                          PLAN YET
                         </p>
                         <p className="body-brutal text-sm text-gray-600">
                           Create a plan below to enable automatic multi-cycle
@@ -712,6 +890,10 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                   </>
                 )}
               </div>
+            )}
+
+            {activeTab === "advanced" && (
+              <AdvancedActionsSection vaultId={BigInt(vault.id)} />
             )}
           </div>
         </div>

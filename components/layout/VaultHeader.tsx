@@ -36,6 +36,7 @@ export default function VaultHeader() {
     { href: "/vault/create-vault", label: "CREATE VAULT" },
     { href: "/vault/withdraw-vaults", label: "WITHDRAW" },
     { href: "/vault/marketplace", label: "MARKETPLACE" },
+    { href: "/settings", label: "SETTINGS" },
   ];
 
   const isRouteActive = (href: string): boolean => {

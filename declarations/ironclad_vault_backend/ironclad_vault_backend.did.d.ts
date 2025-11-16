@@ -18,6 +18,16 @@ export type AutoReinvestPlanStatus = { 'Error' : null } |
   { 'Paused' : null } |
   { 'Active' : null } |
   { 'Cancelled' : null };
+export interface BitcoinTxProof {
+  'confirmations' : number,
+  'txid' : string,
+  'confirmed' : boolean,
+}
+export interface CkbtcSyncResult {
+  'synced_balance' : bigint,
+  'vault' : Vault,
+  'mode' : NetworkMode,
+}
 export type ListingStatus = { 'Active' : null } |
   { 'Filled' : null } |
   { 'Cancelled' : null };
@@ -31,11 +41,17 @@ export interface MarketListing {
   'buyer' : [] | [Principal],
   'price_sats' : bigint,
 }
+export type NetworkMode = { 'Mock' : null } |
+  { 'CkBTCMainnet' : null };
 export interface PlanStatusResponse {
   'next_cycle_timestamp' : bigint,
   'error_message' : [] | [string],
   'plan_status' : AutoReinvestPlanStatus,
   'execution_count' : bigint,
+}
+export interface SignatureResponse {
+  'signature' : Uint8Array | number[],
+  'message' : Uint8Array | number[],
 }
 export interface Vault {
   'id' : bigint,
@@ -49,6 +65,7 @@ export interface Vault {
   'lock_until' : bigint,
   'expected_deposit' : bigint,
   'btc_address' : string,
+  'ckbtc_subaccount' : [] | [Uint8Array | number[]],
 }
 export interface VaultEvent {
   'action' : string,
@@ -85,6 +102,12 @@ export interface _SERVICE {
   >,
   'get_active_listings' : ActorMethod<[], Array<MarketListing>>,
   'get_auto_reinvest_config' : ActorMethod<[bigint], [] | [AutoReinvestConfig]>,
+  'get_deposit_proof' : ActorMethod<
+    [bigint],
+    { 'Ok' : BitcoinTxProof } |
+      { 'Err' : string }
+  >,
+  'get_mode_query' : ActorMethod<[], NetworkMode>,
   'get_my_auto_reinvest_configs' : ActorMethod<[], Array<AutoReinvestConfig>>,
   'get_my_listings' : ActorMethod<[], Array<MarketListing>>,
   'get_my_vaults' : ActorMethod<[], Array<Vault>>,
@@ -96,6 +119,11 @@ export interface _SERVICE {
   'get_unlockable_vaults' : ActorMethod<[], Array<Vault>>,
   'get_vault' : ActorMethod<[bigint], [] | [Vault]>,
   'get_vault_events' : ActorMethod<[bigint], Array<VaultEvent>>,
+  'get_withdraw_proof' : ActorMethod<
+    [bigint],
+    { 'Ok' : BitcoinTxProof } |
+      { 'Err' : string }
+  >,
   'get_withdrawable_vaults' : ActorMethod<[], Array<Vault>>,
   'is_vault_unlockable' : ActorMethod<
     [bigint],
@@ -112,6 +140,11 @@ export interface _SERVICE {
     { 'Ok' : bigint } |
       { 'Err' : string }
   >,
+  'request_btc_signature' : ActorMethod<
+    [bigint, Uint8Array | number[]],
+    { 'Ok' : SignatureResponse } |
+      { 'Err' : string }
+  >,
   'retry_failed_plan' : ActorMethod<
     [bigint],
     { 'Ok' : AutoReinvestConfig } |
@@ -120,6 +153,13 @@ export interface _SERVICE {
   'schedule_auto_reinvest' : ActorMethod<
     [bigint, bigint],
     { 'Ok' : AutoReinvestConfig } |
+      { 'Err' : string }
+  >,
+  'set_mode_ckbtc_mainnet' : ActorMethod<[], undefined>,
+  'set_mode_mock' : ActorMethod<[], undefined>,
+  'sync_vault_balance_from_ckbtc' : ActorMethod<
+    [bigint],
+    { 'Ok' : CkbtcSyncResult } |
       { 'Err' : string }
   >,
   'unlock_vault' : ActorMethod<[bigint], { 'Ok' : Vault } | { 'Err' : string }>,

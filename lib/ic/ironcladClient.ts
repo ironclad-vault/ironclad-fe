@@ -7,7 +7,16 @@
 
 import { createIroncladActor } from './ironcladActor';
 import type { Identity } from '@dfinity/agent';
-import type { Vault, VaultEvent, AutoReinvestConfig, MarketListing } from './ironcladActor';
+import type { 
+  Vault, 
+  VaultEvent, 
+  AutoReinvestConfig, 
+  MarketListing,
+  NetworkMode,
+  CkbtcSyncResult,
+  BitcoinTxProof,
+  SignatureResponse,
+} from './ironcladActor';
 
 /**
  * Client wrapper for Ironclad Vault Backend
@@ -175,6 +184,81 @@ export const ironcladClient = {
     async buy(listingId: bigint, identity?: Identity): Promise<{ Ok: Vault } | { Err: string }> {
       const actor = await createIroncladActor(identity);
       return actor.buy_listing(listingId);
+    },
+  },
+
+  /**
+   * Network Mode Operations
+   */
+  network: {
+    /** Get current network mode */
+    async getMode(identity?: Identity): Promise<NetworkMode> {
+      const actor = await createIroncladActor(identity);
+      return actor.get_mode_query();
+    },
+
+    /** Set network mode to Mock */
+    async setMock(identity?: Identity): Promise<void> {
+      const actor = await createIroncladActor(identity);
+      await actor.set_mode_mock();
+    },
+
+    /** Set network mode to ckBTC Mainnet */
+    async setCkbtcMainnet(identity?: Identity): Promise<void> {
+      const actor = await createIroncladActor(identity);
+      await actor.set_mode_ckbtc_mainnet();
+    },
+  },
+
+  /**
+   * ckBTC Integration Operations
+   */
+  ckbtc: {
+    /** Sync vault balance from ckBTC ledger */
+    async syncVault(
+      vaultId: bigint,
+      identity?: Identity,
+    ): Promise<{ Ok: CkbtcSyncResult } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
+      return actor.sync_vault_balance_from_ckbtc(vaultId);
+    },
+  },
+
+  /**
+   * Bitcoin Proof Operations
+   */
+  bitcoinProofs: {
+    /** Get deposit proof for a vault */
+    async getDepositProof(
+      vaultId: bigint,
+      identity?: Identity,
+    ): Promise<{ Ok: BitcoinTxProof } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
+      return actor.get_deposit_proof(vaultId);
+    },
+
+    /** Get withdraw proof for a vault */
+    async getWithdrawProof(
+      vaultId: bigint,
+      identity?: Identity,
+    ): Promise<{ Ok: BitcoinTxProof } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
+      return actor.get_withdraw_proof(vaultId);
+    },
+  },
+
+  /**
+   * BTC Threshold Signing Operations
+   */
+  btcSigning: {
+    /** Request BTC signature for a vault */
+    async requestSignature(
+      vaultId: bigint,
+      message: Uint8Array,
+      identity?: Identity,
+    ): Promise<{ Ok: SignatureResponse } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
+      return actor.request_btc_signature(vaultId, Array.from(message));
     },
   },
 };

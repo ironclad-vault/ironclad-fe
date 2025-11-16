@@ -17,6 +17,7 @@ export const idlFactory = ({ IDL }) => {
     'lock_until' : IDL.Nat64,
     'expected_deposit' : IDL.Nat64,
     'btc_address' : IDL.Text,
+    'ckbtc_subaccount' : IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
   const ListingStatus = IDL.Variant({
     'Active' : IDL.Null,
@@ -51,6 +52,15 @@ export const idlFactory = ({ IDL }) => {
     'enabled' : IDL.Bool,
     'new_lock_duration' : IDL.Nat64,
   });
+  const BitcoinTxProof = IDL.Record({
+    'confirmations' : IDL.Nat32,
+    'txid' : IDL.Text,
+    'confirmed' : IDL.Bool,
+  });
+  const NetworkMode = IDL.Variant({
+    'Mock' : IDL.Null,
+    'CkBTCMainnet' : IDL.Null,
+  });
   const PlanStatusResponse = IDL.Record({
     'next_cycle_timestamp' : IDL.Nat64,
     'error_message' : IDL.Opt(IDL.Text),
@@ -62,6 +72,15 @@ export const idlFactory = ({ IDL }) => {
     'vault_id' : IDL.Nat64,
     'notes' : IDL.Text,
     'timestamp' : IDL.Nat64,
+  });
+  const SignatureResponse = IDL.Record({
+    'signature' : IDL.Vec(IDL.Nat8),
+    'message' : IDL.Vec(IDL.Nat8),
+  });
+  const CkbtcSyncResult = IDL.Record({
+    'synced_balance' : IDL.Nat64,
+    'vault' : Vault,
+    'mode' : NetworkMode,
   });
   return IDL.Service({
     'buy_listing' : IDL.Func(
@@ -96,6 +115,12 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Opt(AutoReinvestConfig)],
         ['query'],
       ),
+    'get_deposit_proof' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : BitcoinTxProof, 'Err' : IDL.Text })],
+        ['query'],
+      ),
+    'get_mode_query' : IDL.Func([], [NetworkMode], ['query']),
     'get_my_auto_reinvest_configs' : IDL.Func(
         [],
         [IDL.Vec(AutoReinvestConfig)],
@@ -115,6 +140,11 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(VaultEvent)],
         ['query'],
       ),
+    'get_withdraw_proof' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : BitcoinTxProof, 'Err' : IDL.Text })],
+        ['query'],
+      ),
     'get_withdrawable_vaults' : IDL.Func([], [IDL.Vec(Vault)], ['query']),
     'is_vault_unlockable' : IDL.Func(
         [IDL.Nat64],
@@ -131,6 +161,11 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Variant({ 'Ok' : IDL.Nat64, 'Err' : IDL.Text })],
         ['query'],
       ),
+    'request_btc_signature' : IDL.Func(
+        [IDL.Nat64, IDL.Vec(IDL.Nat8)],
+        [IDL.Variant({ 'Ok' : SignatureResponse, 'Err' : IDL.Text })],
+        [],
+      ),
     'retry_failed_plan' : IDL.Func(
         [IDL.Nat64],
         [IDL.Variant({ 'Ok' : AutoReinvestConfig, 'Err' : IDL.Text })],
@@ -139,6 +174,13 @@ export const idlFactory = ({ IDL }) => {
     'schedule_auto_reinvest' : IDL.Func(
         [IDL.Nat64, IDL.Nat64],
         [IDL.Variant({ 'Ok' : AutoReinvestConfig, 'Err' : IDL.Text })],
+        [],
+      ),
+    'set_mode_ckbtc_mainnet' : IDL.Func([], [], []),
+    'set_mode_mock' : IDL.Func([], [], []),
+    'sync_vault_balance_from_ckbtc' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : CkbtcSyncResult, 'Err' : IDL.Text })],
         [],
       ),
     'unlock_vault' : IDL.Func(
