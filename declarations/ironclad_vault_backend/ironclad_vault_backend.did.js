@@ -33,13 +33,29 @@ export const idlFactory = ({ IDL }) => {
     'buyer' : IDL.Opt(IDL.Principal),
     'price_sats' : IDL.Nat64,
   });
+  const AutoReinvestPlanStatus = IDL.Variant({
+    'Error' : IDL.Null,
+    'Paused' : IDL.Null,
+    'Active' : IDL.Null,
+    'Cancelled' : IDL.Null,
+  });
   const AutoReinvestConfig = IDL.Record({
+    'next_cycle_timestamp' : IDL.Nat64,
     'updated_at' : IDL.Nat64,
     'owner' : IDL.Principal,
+    'error_message' : IDL.Opt(IDL.Text),
     'vault_id' : IDL.Nat64,
     'created_at' : IDL.Nat64,
+    'plan_status' : AutoReinvestPlanStatus,
+    'execution_count' : IDL.Nat64,
     'enabled' : IDL.Bool,
     'new_lock_duration' : IDL.Nat64,
+  });
+  const PlanStatusResponse = IDL.Record({
+    'next_cycle_timestamp' : IDL.Nat64,
+    'error_message' : IDL.Opt(IDL.Text),
+    'plan_status' : AutoReinvestPlanStatus,
+    'execution_count' : IDL.Nat64,
   });
   const VaultEvent = IDL.Record({
     'action' : IDL.Text,
@@ -87,6 +103,11 @@ export const idlFactory = ({ IDL }) => {
       ),
     'get_my_listings' : IDL.Func([], [IDL.Vec(MarketListing)], ['query']),
     'get_my_vaults' : IDL.Func([], [IDL.Vec(Vault)], ['query']),
+    'get_plan_status' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : PlanStatusResponse, 'Err' : IDL.Text })],
+        ['query'],
+      ),
     'get_unlockable_vaults' : IDL.Func([], [IDL.Vec(Vault)], ['query']),
     'get_vault' : IDL.Func([IDL.Nat64], [IDL.Opt(Vault)], ['query']),
     'get_vault_events' : IDL.Func(
@@ -109,6 +130,11 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Nat64],
         [IDL.Variant({ 'Ok' : IDL.Nat64, 'Err' : IDL.Text })],
         ['query'],
+      ),
+    'retry_failed_plan' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : AutoReinvestConfig, 'Err' : IDL.Text })],
+        [],
       ),
     'schedule_auto_reinvest' : IDL.Func(
         [IDL.Nat64, IDL.Nat64],

@@ -1,15 +1,22 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { ConnectWalletButton } from "@/components/wallet/ConnectWalletButton";
 
 export default function VaultHeader() {
+  const rawPathname = usePathname();
+
+  const pathname =
+    rawPathname.endsWith("/") && rawPathname !== "/"
+      ? rawPathname.slice(0, -1)
+      : rawPathname;
+
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -25,14 +32,25 @@ export default function VaultHeader() {
   }, [open]);
 
   const menuItems = [
-    { href: "/vault", label: "MY VAULT" },
-    { href: "/vault/deposit", label: "DEPOSIT" },
-    { href: "/vault/timelock", label: "TIMELOCK" },
-    { href: "/vault/withdraw", label: "WITHDRAW" },
-    { href: "/vault/history", label: "HISTORY" },
-    { href: "/vault/access", label: "ACCESS" },
+    { href: "/vault", label: "MY VAULTS" },
+    { href: "/vault/create-vault", label: "CREATE VAULT" },
+    { href: "/vault/withdraw-vaults", label: "WITHDRAW" },
     { href: "/vault/marketplace", label: "MARKETPLACE" },
   ];
+
+  const isRouteActive = (href: string): boolean => {
+    if (pathname === href) {
+      return true;
+    }
+
+    if (href === "/vault" && pathname.startsWith("/vault/")) {
+      const afterVault = pathname.substring(6);
+      const isNumeric = /^\d+$/.test(afterVault);
+      return isNumeric;
+    }
+
+    return false;
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-(--color-bg-white) brutal-border-b z-50">
@@ -61,34 +79,48 @@ export default function VaultHeader() {
 
           {/* Navbar menu horizontal */}
           <nav className="hidden md:flex items-center gap-6">
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="heading-brutal text-sm px-1 py-0 text-black hover:underline hover:text-accent transition-colors duration-150"
-              >
-                {item.label}
-              </Link>
-            ))}
-              <div className="px-2 py-1 text-sm brutal-border inline-block">
-                <ConnectWalletButton />
-              </div>
+            {menuItems.map((item) => {
+              const isActive = isRouteActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`heading-brutal text-sm px-1 py-0 transition-colors duration-150 ${
+                    isActive
+                      ? "text-accent underline font-bold"
+                      : "text-black hover:underline hover:text-accent"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+            <div className="px-2 py-1 text-sm brutal-border inline-block">
+              <ConnectWalletButton />
+            </div>
           </nav>
 
           {/* Mobile menu: tampilkan menu vertikal minimalis */}
           <nav className="md:hidden flex flex-col gap-2 mt-2">
-            {menuItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="heading-brutal text-sm px-1 py-2 text-black hover:underline hover:text-accent transition-colors duration-150"
-              >
-                {item.label}
-              </Link>
-            ))}
-              <div className="px-2 py-1 text-sm brutal-border inline-block">
-                <ConnectWalletButton />
-              </div>
+            {menuItems.map((item) => {
+              const isActive = isRouteActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`heading-brutal text-sm px-1 py-2 transition-colors duration-150 ${
+                    isActive
+                      ? "text-accent underline font-bold"
+                      : "text-black hover:underline hover:text-accent"
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+            <div className="px-2 py-1 text-sm brutal-border inline-block">
+              <ConnectWalletButton />
+            </div>
           </nav>
         </div>
       </div>

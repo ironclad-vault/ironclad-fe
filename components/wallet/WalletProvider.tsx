@@ -82,10 +82,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           return;
         }
 
-        console.log("[Wallet] Restoring session:", {
-          savedWalletType,
-          savedPrincipal,
-        });
+        // console.log("[Wallet] Restoring session:", {
+        //   savedWalletType,
+        //   savedPrincipal,
+        // });
 
         if (savedWalletType === "ii") {
           const isAuthenticated = await authClient.isAuthenticated();
@@ -142,8 +142,8 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           // This works for both localhost dev server and canister URLs
           const origin = window.location.origin;
 
-          console.log("[Wallet] Identity Provider:", identityProvider);
-          console.log("[Wallet] Redirect Origin:", origin);
+          // console.log("[Wallet] Identity Provider:", identityProvider);
+          // console.log("[Wallet] Redirect Origin:", origin);
 
           // Use Promise wrapper to handle async properly
           return new Promise<void>((resolve, reject) => {

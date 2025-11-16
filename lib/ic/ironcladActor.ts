@@ -20,6 +20,8 @@ export type {
   VaultStatus,
   VaultEvent,
   AutoReinvestConfig,
+  AutoReinvestPlanStatus,
+  PlanStatusResponse,
   MarketListing,
   ListingStatus,
 } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";

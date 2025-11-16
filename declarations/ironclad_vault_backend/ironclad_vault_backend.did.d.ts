@@ -3,13 +3,21 @@ import type { ActorMethod } from '@dfinity/agent';
 import type { IDL } from '@dfinity/candid';
 
 export interface AutoReinvestConfig {
+  'next_cycle_timestamp' : bigint,
   'updated_at' : bigint,
   'owner' : Principal,
+  'error_message' : [] | [string],
   'vault_id' : bigint,
   'created_at' : bigint,
+  'plan_status' : AutoReinvestPlanStatus,
+  'execution_count' : bigint,
   'enabled' : boolean,
   'new_lock_duration' : bigint,
 }
+export type AutoReinvestPlanStatus = { 'Error' : null } |
+  { 'Paused' : null } |
+  { 'Active' : null } |
+  { 'Cancelled' : null };
 export type ListingStatus = { 'Active' : null } |
   { 'Filled' : null } |
   { 'Cancelled' : null };
@@ -22,6 +30,12 @@ export interface MarketListing {
   'seller' : Principal,
   'buyer' : [] | [Principal],
   'price_sats' : bigint,
+}
+export interface PlanStatusResponse {
+  'next_cycle_timestamp' : bigint,
+  'error_message' : [] | [string],
+  'plan_status' : AutoReinvestPlanStatus,
+  'execution_count' : bigint,
 }
 export interface Vault {
   'id' : bigint,
@@ -74,6 +88,11 @@ export interface _SERVICE {
   'get_my_auto_reinvest_configs' : ActorMethod<[], Array<AutoReinvestConfig>>,
   'get_my_listings' : ActorMethod<[], Array<MarketListing>>,
   'get_my_vaults' : ActorMethod<[], Array<Vault>>,
+  'get_plan_status' : ActorMethod<
+    [bigint],
+    { 'Ok' : PlanStatusResponse } |
+      { 'Err' : string }
+  >,
   'get_unlockable_vaults' : ActorMethod<[], Array<Vault>>,
   'get_vault' : ActorMethod<[bigint], [] | [Vault]>,
   'get_vault_events' : ActorMethod<[bigint], Array<VaultEvent>>,
@@ -91,6 +110,11 @@ export interface _SERVICE {
   'preview_withdraw' : ActorMethod<
     [bigint],
     { 'Ok' : bigint } |
+      { 'Err' : string }
+  >,
+  'retry_failed_plan' : ActorMethod<
+    [bigint],
+    { 'Ok' : AutoReinvestConfig } |
       { 'Err' : string }
   >,
   'schedule_auto_reinvest' : ActorMethod<

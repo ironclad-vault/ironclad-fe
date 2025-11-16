@@ -1,19 +1,29 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useWallet } from "@/components/wallet/useWallet";
-import { ironcladClient } from "@/lib/ic/ironcladClient";
-import type { AutoReinvestConfig, Vault } from "@/lib/ic/ironcladActor";
+import type { Vault } from "@/lib/ic/ironcladActor";
+import type { AutoReinvestConfigDTO } from "@/lib/ironclad-service";
+import { 
+  getMyAutoReinvestConfigs,
+  getPlanStatus, 
+  retryFailedPlan,
+  scheduleAutoReinvest,
+  cancelAutoReinvest,
+  executeAutoReinvest,
+} from "@/lib/ironclad-service";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "@/lib/toastUtils";
 
+type PlanStatus = "Active" | "Cancelled" | "Error" | "Paused";
+
 /**
- * Hook for managing auto-reinvest configurations
- * Phase 1: Uses anonymous canister calls (no wallet identity)
+ * Hook for managing auto-reinvest configurations with multi-cycle support
+ * Tracks plan status (Active, Cancelled, Error), next cycles, and execution count
  */
 export function useAutoReinvest() {
-  const { identity } = useWallet();
-  const [configs, setConfigs] = useState<readonly AutoReinvestConfig[]>([]);
+  const [configs, setConfigs] = useState<readonly AutoReinvestConfigDTO[]>([]);
+  const [planStatuses, setPlanStatuses] = useState<Map<bigint, PlanStatus>>(new Map());
+  const [nextCycles, setNextCycles] = useState<Map<bigint, number>>(new Map());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,8 +32,20 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const data = await ironcladClient.autoReinvest.getMyConfigs(identity ?? undefined);
+      const data = await getMyAutoReinvestConfigs();
       setConfigs(data);
+      
+      // Update plan statuses and next cycles from configs
+      const newStatuses = new Map<bigint, PlanStatus>();
+      const newCycles = new Map<bigint, number>();
+      
+      data.forEach(config => {
+        newStatuses.set(config.vaultId, config.planStatus);
+        newCycles.set(config.vaultId, config.nextCycleTimestamp);
+      });
+      
+      setPlanStatuses(newStatuses);
+      setNextCycles(newCycles);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       setError(msg);
@@ -31,7 +53,49 @@ export function useAutoReinvest() {
     } finally {
       setLoading(false);
     }
-  }, [identity]);
+  }, []);
+
+  // Poll plan status every 10 seconds if there are active plans
+  useEffect(() => {
+    if (configs.length === 0) return;
+
+    const activePlans = configs.filter(c => c.planStatus === "Active");
+    if (activePlans.length === 0) return;
+
+    const interval = setInterval(async () => {
+      try {
+        // Poll all active plans
+        const statusUpdates = await Promise.all(
+          activePlans.map(config => getPlanStatus({ vaultId: config.vaultId }))
+        );
+
+        // Update states with new data
+        const newStatuses = new Map(planStatuses);
+        const newCycles = new Map(nextCycles);
+        
+        statusUpdates.forEach((status, idx) => {
+          const vaultId = activePlans[idx]!.vaultId;
+          newStatuses.set(vaultId, status.planStatus);
+          newCycles.set(vaultId, status.nextCycleTimestamp);
+        });
+        
+        setPlanStatuses(newStatuses);
+        setNextCycles(newCycles);
+        
+        // Refresh configs if any status changed to Error
+        const hasNewErrors = statusUpdates.some((s, idx) => 
+          s.planStatus === "Error" && activePlans[idx]!.planStatus !== "Error"
+        );
+        if (hasNewErrors) {
+          fetchConfigs();
+        }
+      } catch (err) {
+        console.error("[useAutoReinvest] Polling error:", err);
+      }
+    }, 10000); // 10 second interval
+
+    return () => clearInterval(interval);
+  }, [configs, planStatuses, nextCycles, fetchConfigs]);
 
   useEffect(() => {
     fetchConfigs();
@@ -45,24 +109,15 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const result = await toast.promise(
-        ironcladClient.autoReinvest.schedule(vaultId, newLockDuration, identity ?? undefined),
+      await toast.promise(
+        scheduleAutoReinvest({ vaultId, newLockDuration }),
         {
-          loading: 'Scheduling auto-reinvest...',
-          success: (res) => {
-            if ("Err" in res) {
-              throw new Error(res.Err);
-            }
-            return 'Auto-reinvest scheduled successfully!';
-          },
+          loading: 'Scheduling auto-reinvest plan...',
+          success: 'Auto-reinvest plan scheduled successfully!',
           error: (err) => `Failed to schedule: ${getErrorMessage(err)}`,
         }
       );
       
-      if ("Err" in result) {
-        setError(result.Err);
-        return false;
-      }
       await fetchConfigs();
       return true;
     } catch (err) {
@@ -80,24 +135,15 @@ export function useAutoReinvest() {
     setError(null);
 
     try {
-      const result = await toast.promise(
-        ironcladClient.autoReinvest.cancel(vaultId, identity ?? undefined),
+      await toast.promise(
+        cancelAutoReinvest({ vaultId }),
         {
-          loading: 'Cancelling auto-reinvest...',
-          success: (res) => {
-            if ("Err" in res) {
-              throw new Error(res.Err);
-            }
-            return 'Auto-reinvest cancelled successfully!';
-          },
+          loading: 'Cancelling auto-reinvest plan...',
+          success: 'Auto-reinvest plan cancelled successfully!',
           error: (err) => `Failed to cancel: ${getErrorMessage(err)}`,
         }
       );
       
-      if ("Err" in result) {
-        setError(result.Err);
-        return false;
-      }
       await fetchConfigs();
       return true;
     } catch (err) {
@@ -116,25 +162,16 @@ export function useAutoReinvest() {
 
     try {
       const result = await toast.promise(
-        ironcladClient.autoReinvest.execute(vaultId, identity ?? undefined),
+        executeAutoReinvest({ vaultId }),
         {
-          loading: 'Executing auto-reinvest...',
-          success: (res) => {
-            if ("Err" in res) {
-              throw new Error(res.Err);
-            }
-            return 'Auto-reinvest executed successfully!';
-          },
+          loading: 'Executing auto-reinvest plan...',
+          success: 'Plan executed successfully! Next cycle scheduled.',
           error: (err) => `Execution failed: ${getErrorMessage(err)}`,
         }
       );
       
-      if ("Err" in result) {
-        setError(result.Err);
-        return null;
-      }
       await fetchConfigs();
-      return result.Ok;
+      return result as unknown as Vault | null;
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       setError(msg);
@@ -145,13 +182,43 @@ export function useAutoReinvest() {
     }
   };
 
+  // NEW: Retry failed plan
+  const retryPlan = async (vaultId: bigint): Promise<boolean> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      await toast.promise(
+        retryFailedPlan({ vaultId }),
+        {
+          loading: 'Retrying auto-reinvest plan...',
+          success: 'Plan retry successful! Next cycle scheduled.',
+          error: (err) => `Failed to retry: ${getErrorMessage(err)}`,
+        }
+      );
+      
+      await fetchConfigs();
+      return true;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+      console.error("[useAutoReinvest] Retry failed:", msg);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     configs,
+    planStatuses,
+    nextCycles,
     loading,
     error,
     refetch: fetchConfigs,
     schedule,
     cancel,
     execute,
+    retryPlan,
   };
 }

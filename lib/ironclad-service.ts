@@ -5,6 +5,8 @@ import {
   VaultEvent,
   VaultStatus,
   AutoReinvestConfig,
+  AutoReinvestPlanStatus,
+  PlanStatusResponse,
   MarketListing,
   ListingStatus,
 } from "./ic/ironcladActor";
@@ -50,8 +52,19 @@ export interface AutoReinvestConfigDTO {
   owner: string;
   newLockDuration: bigint;
   enabled: boolean;
+  planStatus: "Active" | "Cancelled" | "Error" | "Paused";
+  errorMessage: string | null;
+  nextCycleTimestamp: number;
+  executionCount: bigint;
   createdAt: number;
   updatedAt: number;
+}
+
+export interface PlanStatusResponseDTO {
+  planStatus: "Active" | "Cancelled" | "Error" | "Paused";
+  errorMessage: string | null;
+  nextCycleTimestamp: number;
+  executionCount: bigint;
 }
 
 export interface MarketListingDTO {
@@ -81,6 +94,24 @@ function mapListingStatus(status: ListingStatus): ListingStatusTS {
   return "Active"; // fallback
 }
 
+function mapAutoReinvestPlanStatus(raw: AutoReinvestPlanStatus | undefined | null): "Active" | "Cancelled" | "Error" | "Paused" {
+  // Handle undefined/null (old backend data or not yet deployed)
+  if (!raw) {
+    console.warn("[mapAutoReinvestPlanStatus] Received undefined/null, defaulting to Active");
+    return "Active";
+  }
+  
+  // Handle Candid variant types
+  if (typeof raw === 'object') {
+    if ("Active" in raw) return "Active";
+    if ("Cancelled" in raw) return "Cancelled";
+    if ("Error" in raw) return "Error";
+    if ("Paused" in raw) return "Paused";
+  }
+  
+  return "Active"; // fallback
+}
+
 function mapVault(raw: Vault): VaultDTO {
   return {
     id: raw.id,
@@ -107,13 +138,29 @@ function mapVaultEvent(raw: VaultEvent): VaultEventDTO {
 }
 
 function mapConfig(raw: AutoReinvestConfig): AutoReinvestConfigDTO {
+  // Safely access potentially missing fields (for backward compatibility)
+  const rawAny = raw as any;
+  
   return {
     vaultId: raw.vault_id,
     owner: raw.owner.toString(),
     newLockDuration: raw.new_lock_duration,
     enabled: raw.enabled,
+    planStatus: mapAutoReinvestPlanStatus(rawAny.plan_status),
+    errorMessage: rawAny.error_message && rawAny.error_message.length > 0 ? rawAny.error_message[0] : null,
+    nextCycleTimestamp: rawAny.next_cycle_timestamp ? Number(rawAny.next_cycle_timestamp) : 0,
+    executionCount: rawAny.execution_count ? rawAny.execution_count : BigInt(0),
     createdAt: Number(raw.created_at),
     updatedAt: Number(raw.updated_at),
+  };
+}
+
+function mapPlanStatus(raw: PlanStatusResponse): PlanStatusResponseDTO {
+  return {
+    planStatus: mapAutoReinvestPlanStatus(raw.plan_status),
+    errorMessage: raw.error_message.length > 0 ? raw.error_message[0]! : null,
+    nextCycleTimestamp: Number(raw.next_cycle_timestamp),
+    executionCount: raw.execution_count,
   };
 }
 
@@ -395,6 +442,40 @@ export async function getMyAutoReinvestConfigs(
   const actorInstance = await getActorOrThrow(actor);
   const configs = await actorInstance.get_my_auto_reinvest_configs();
   return configs.map(mapConfig);
+}
+
+/**
+ * Get plan status for a specific vault
+ * Uses get_plan_status backend method (lightweight query for polling)
+ * Returns: PlanStatusResponseDTO with status, error, next_cycle, execution_count
+ */
+export async function getPlanStatus({
+  vaultId,
+  actor,
+}: {
+  vaultId: bigint;
+  actor?: IroncladActor;
+}): Promise<PlanStatusResponseDTO> {
+  const actorInstance = await getActorOrThrow(actor);
+  const result = await actorInstance.get_plan_status(vaultId);
+  return mapPlanStatus(unwrapResult(result));
+}
+
+/**
+ * Retry failed auto-reinvest plan
+ * Resets plan from Error state back to Active
+ * Returns: Updated AutoReinvestConfigDTO
+ */
+export async function retryFailedPlan({
+  vaultId,
+  actor,
+}: {
+  vaultId: bigint;
+  actor?: IroncladActor;
+}): Promise<AutoReinvestConfigDTO> {
+  const actorInstance = await getActorOrThrow(actor);
+  const result = await actorInstance.retry_failed_plan(vaultId);
+  return mapConfig(unwrapResult(result));
 }
 
 // ============================================================================

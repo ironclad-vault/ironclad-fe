@@ -283,21 +283,24 @@ export default function TestPage() {
                       <div className="space-y-2">
                         {configs.map((config) => (
                           <div
-                            key={config.vault_id.toString()}
+                            key={config.vaultId.toString()}
                             className="p-3 bg-gray-50 border border-gray-200 rounded"
                           >
                             <p className="font-bold">
-                              Vault #{config.vault_id.toString()}
+                              Vault #{config.vaultId.toString()}
                             </p>
                             <p className="text-sm">
                               Enabled: {config.enabled ? "✅" : "❌"}
                             </p>
                             <p className="text-sm">
                               New Lock Duration:{" "}
-                              {config.new_lock_duration.toString()}s
+                              {config.newLockDuration.toString()}s
+                            </p>
+                            <p className="text-sm">
+                              Status: {config.planStatus}
                             </p>
                               <button
-                                onClick={() => cancelReinvest(config.vault_id)}
+                                onClick={() => cancelReinvest(config.vaultId)}
                                 className="button-brutal mt-2 px-3 py-1 text-xs bg-red-600 text-white"
                               >
                                 Cancel

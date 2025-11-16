@@ -1,13 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
 import { useVaults } from "@/hooks/ironclad/useVaults";
-import VaultHeader from "@/components/layout/VaultHeader";
 import { getVaultStatus } from "@/lib/vaultUtils";
 
-export default function DepositForm() {
+function CreateVaultFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const vaultIdParam = searchParams.get("vaultId");
@@ -15,7 +14,9 @@ export default function DepositForm() {
   const { vaults, refetch: refetchVaults } = useVaults();
 
   const [lockDuration, setLockDuration] = useState<string>("6");
-  const [durationUnit, setDurationUnit] = useState<"months" | "seconds">("months");
+  const [durationUnit, setDurationUnit] = useState<"months" | "seconds">(
+    "months"
+  );
   const [depositAmount, setDepositAmount] = useState<string>("100000");
   const [createdVault, setCreatedVault] = useState<{
     vaultId: bigint;
@@ -27,7 +28,7 @@ export default function DepositForm() {
     if (vaultIdParam) {
       const vaultId = BigInt(vaultIdParam);
       const vault = vaults.find((v) => v.id === vaultId);
-      
+
       if (vault && getVaultStatus(vault) === "PendingDeposit") {
         return {
           existingVault: vault,
@@ -55,7 +56,7 @@ export default function DepositForm() {
   const handleCreateVault = async () => {
     const lockValue = parseInt(lockDuration);
     let lockUntil: number;
-    
+
     if (durationUnit === "seconds") {
       // For testing: lock duration in seconds
       lockUntil = Math.floor(Date.now() / 1000) + lockValue;
@@ -63,7 +64,7 @@ export default function DepositForm() {
       // Normal: lock duration in months
       lockUntil = Math.floor(Date.now() / 1000) + lockValue * 30 * 24 * 60 * 60;
     }
-    
+
     const expectedDeposit = BigInt(depositAmount);
 
     const vault = await createVault(lockUntil, expectedDeposit);
@@ -80,11 +81,10 @@ export default function DepositForm() {
 
     const amount = BigInt(depositAmount);
     const vault = await mockDeposit(createdVault.vaultId, amount);
-    
+
     if (vault) {
-      // Refetch vaults to update status
       await refetchVaults();
-      // Redirect to dashboard after successful deposit
+
       setTimeout(() => {
         router.push("/vault");
       }, 1500);
@@ -96,9 +96,8 @@ export default function DepositForm() {
   };
 
   return (
-    <div className="card-brutal flex flex-col gap-8">
-      <VaultHeader />
-      <h3 className="heading-brutal text-xl">
+    <div className="card-brutal p-8 flex flex-col gap-6">
+      <h3 className="heading-brutal text-3xl">
         {mode === "complete" ? "COMPLETE DEPOSIT" : "CREATE NEW VAULT"}
       </h3>
 
@@ -108,10 +107,27 @@ export default function DepositForm() {
             VAULT #{existingVault.id.toString()}
           </p>
           <div className="body-brutal text-sm text-blue-800 space-y-1">
-            <p>Status: <span className="font-bold">Pending Deposit</span></p>
-            <p>Expected: <span className="font-bold">{existingVault.expected_deposit.toLocaleString()} sats</span></p>
-            <p>Lock Until: <span className="font-bold">{formatDate(existingVault.lock_until)}</span></p>
-            <p>BTC Address: <span className="font-mono text-xs">{existingVault.btc_address}</span></p>
+            <p>
+              Status: <span className="font-bold">Pending Deposit</span>
+            </p>
+            <p>
+              Expected:{" "}
+              <span className="font-bold">
+                {existingVault.expected_deposit.toLocaleString()} sats
+              </span>
+            </p>
+            <p>
+              Lock Until:{" "}
+              <span className="font-bold">
+                {formatDate(existingVault.lock_until)}
+              </span>
+            </p>
+            <p>
+              BTC Address:{" "}
+              <span className="font-mono text-xs">
+                {existingVault.btc_address}
+              </span>
+            </p>
           </div>
         </div>
       )}
@@ -191,7 +207,8 @@ export default function DepositForm() {
                   ✓ Vault ID: {createdVault.vaultId.toString()}
                 </p>
                 <p className="body-brutal text-sm text-green-700">
-                  Expected Deposit: {createdVault.expectedDeposit.toString()} sats
+                  Expected Deposit: {createdVault.expectedDeposit.toString()}{" "}
+                  sats
                 </p>
               </div>
             </div>
@@ -225,7 +242,11 @@ export default function DepositForm() {
             onClick={handleMockDeposit}
             disabled={loading || parseInt(depositAmount || "0") <= 0}
           >
-            {loading ? "DEPOSITING..." : mode === "complete" ? "COMPLETE DEPOSIT" : "MOCK DEPOSIT (DEV ONLY)"}
+            {loading
+              ? "DEPOSITING..."
+              : mode === "complete"
+              ? "COMPLETE DEPOSIT"
+              : "MOCK DEPOSIT (DEV ONLY)"}
           </button>
 
           {mode === "create" && (
@@ -235,9 +256,9 @@ export default function DepositForm() {
                   DEVELOPMENT MODE
                 </p>
                 <p className="body-brutal text-sm text-yellow-700">
-                  In production, you would send Bitcoin to a generated address. For
-                  development, click &apos;Mock Deposit&apos; above to simulate the
-                  deposit.
+                  In production, you would send Bitcoin to a generated address.
+                  For development, click &apos;Mock Deposit&apos; above to
+                  simulate the deposit.
                 </p>
               </div>
 
@@ -256,18 +277,40 @@ export default function DepositForm() {
                 📍 DEPOSIT INSTRUCTIONS
               </p>
               <div className="body-brutal text-sm text-yellow-700 space-y-2">
-                <p>1. Send exactly <span className="font-bold">{createdVault.expectedDeposit.toLocaleString()} sats</span> to:</p>
+                <p>
+                  1. Send exactly{" "}
+                  <span className="font-bold">
+                    {createdVault.expectedDeposit.toLocaleString()} sats
+                  </span>{" "}
+                  to:
+                </p>
                 <p className="font-mono text-xs bg-white p-2 border border-yellow-300 break-all">
                   {existingVault.btc_address}
                 </p>
                 <p>2. Wait for blockchain confirmation</p>
-                <p>3. Vault status will change to <span className="font-bold">Locked</span></p>
-                <p className="text-xs mt-2 text-yellow-600">⚠️ For development: Use &quot;COMPLETE DEPOSIT&quot; button above to simulate</p>
+                <p>
+                  3. Vault status will change to{" "}
+                  <span className="font-bold">Locked</span>
+                </p>
+                <p className="text-xs mt-2 text-yellow-600">
+                  ⚠️ For development: Use &quot;COMPLETE DEPOSIT&quot; button
+                  above to simulate
+                </p>
               </div>
             </div>
           )}
         </div>
       ) : null}
     </div>
+  );
+}
+
+export default function CreateVaultForm() {
+  return (
+    <Suspense
+      fallback={<div className="card-brutal p-8 text-center">Loading...</div>}
+    >
+      <CreateVaultFormContent />
+    </Suspense>
   );
 }

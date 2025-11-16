@@ -6,7 +6,7 @@ import { useMarketplace } from "@/hooks/ironclad/useMarketplace";
 import { useVaults } from "@/hooks/ironclad/useVaults";
 import InfoBox from "@/app/vault/_components/InfoBox";
 import { TrendingUp, ShoppingCart, Tag } from "lucide-react";
-import toast from "react-hot-toast";
+import { getVaultStatus } from "@/lib/vaultUtils";
 
 export default function MarketplaceMain() {
   const { isConnected, principal } = useWallet();
@@ -19,7 +19,6 @@ export default function MarketplaceMain() {
     buyListing,
   } = useMarketplace();
 
-  // Ensure we use 'listings' to fix unused warning
   const { vaults, loading: vaultsLoading } = useVaults();
 
   const [activeTab, setActiveTab] = useState<
@@ -36,19 +35,14 @@ export default function MarketplaceMain() {
 
     setCreating(true);
     try {
-      // Convert BTC to satoshis (1 BTC = 100,000,000 satoshis)
       const priceSats = BigInt(Math.floor(parseFloat(priceBTC) * 100_000_000));
       const success = await createListing(BigInt(selectedVaultId), priceSats);
       if (success) {
-        toast.success("Listing created successfully!");
         setSelectedVaultId("");
         setPriceBTC("");
         setActiveTab("my-listings");
       }
     } catch (err) {
-      const errorMsg =
-        err instanceof Error ? err.message : "Failed to create listing";
-      toast.error(errorMsg);
       console.error("Create listing failed:", err);
     } finally {
       setCreating(false);
@@ -62,11 +56,7 @@ export default function MarketplaceMain() {
 
     try {
       await cancelListing(listingId);
-      toast.success("Listing cancelled successfully!");
     } catch (err) {
-      const errorMsg =
-        err instanceof Error ? err.message : "Failed to cancel listing";
-      toast.error(errorMsg);
       console.error("Cancel listing failed:", err);
     }
   };
@@ -86,16 +76,9 @@ export default function MarketplaceMain() {
     try {
       const success = await buyListing(listingId);
       if (success) {
-        toast.success("Vault purchased successfully!");
         setActiveTab("browse");
       }
     } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : "Purchase failed";
-      if (errorMsg.includes("Cannot buy your own listing")) {
-        toast.error("Cannot buy your own listing");
-      } else {
-        toast.error(errorMsg);
-      }
       console.error("Buy listing failed:", err);
     }
   };
@@ -170,7 +153,7 @@ export default function MarketplaceMain() {
           {/* Browse Listings Tab */}
           {activeTab === "browse" && (
             <div className="space-y-6">
-              <h1 className="heading-brutal text-3xl">MARKETPLACE</h1>
+              <h1 className="heading-brutal text-3xl mb-3!">MARKETPLACE</h1>
 
               {listings.length === 0 ? (
                 <div className="card-brutal p-8 text-center">
@@ -271,7 +254,7 @@ export default function MarketplaceMain() {
           {/* Create Listing Tab */}
           {activeTab === "create" && (
             <div className="space-y-6 ">
-              <h1 className="heading-brutal text-3xl">CREATE LISTING</h1>
+              <h1 className="heading-brutal text-3xl mb-3!">CREATE LISTING</h1>
 
               <div className="card-brutal p-8 space-y-4">
                 <div>
@@ -284,15 +267,17 @@ export default function MarketplaceMain() {
                     className="input-brutal w-full"
                   >
                     <option value="">-- Select a vault --</option>
-                    {vaults.map((vault) => (
-                      <option
-                        key={vault.id.toString()}
-                        value={vault.id.toString()}
-                      >
-                        Vault {vault.id.toString().slice(0, 8)} -{" "}
-                        {(Number(vault.balance) / 100_000_000).toFixed(8)} BTC
-                      </option>
-                    ))}
+                    {vaults
+                      .filter((vault) => getVaultStatus(vault) !== "Withdrawn")
+                      .map((vault) => (
+                        <option
+                          key={vault.id.toString()}
+                          value={vault.id.toString()}
+                        >
+                          Vault {vault.id.toString().slice(0, 8)} -{" "}
+                          {(Number(vault.balance) / 100_000_000).toFixed(8)} BTC
+                        </option>
+                      ))}
                   </select>
                 </div>
 
@@ -340,7 +325,7 @@ export default function MarketplaceMain() {
           {/* My Listings Tab */}
           {activeTab === "my-listings" && (
             <div className="space-y-6">
-              <h1 className="heading-brutal text-3xl">MY LISTINGS</h1>
+              <h1 className="heading-brutal text-3xl mb-3!">MY LISTINGS</h1>
 
               {myListings.length === 0 ? (
                 <div className="card-brutal p-8 text-center">

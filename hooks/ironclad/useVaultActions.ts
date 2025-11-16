@@ -126,23 +126,12 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const result = await toast.promise(
-        ironcladClient.vaults.withdraw(vaultId, amount, identity ?? undefined),
-        {
-          loading: 'Processing withdrawal...',
-          success: (res) => {
-            if ("Err" in res) {
-              throw new Error(res.Err);
-            }
-            return 'Withdrawal successful!';
-          },
-          error: (err) => `Withdrawal failed: ${getErrorMessage(err)}`,
-        }
-      );
+      const result = await ironcladClient.vaults.withdraw(vaultId, amount, identity ?? undefined);
       
       if ("Err" in result) {
-        setError(result.Err);
-        return null;
+        const errMsg = result.Err;
+        setError(errMsg);
+        throw new Error(errMsg);
       }
       return result.Ok;
     } catch (err) {
