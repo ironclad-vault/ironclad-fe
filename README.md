@@ -1,99 +1,102 @@
 # 🏰 **IRONCLAD VAULT**
 
-### **Bitcoin Savings Vault with Auto-Reinvest Engine — Powered by ICP, ckBTC & Threshold ECDSA**
+## **Bitcoin Savings Vault with Auto-Reinvest Engine — Powered by ICP, ckBTC & Threshold ECDSA**
 
 Brutalist UI • Real Bitcoin Integration • Fully Typed (0 `any`)
-Production Ready • Hackathon Grade • Ultra-Secure
+Production Ready • Secured
 
 ![IRONCLAD VAULT Logo](public/ironclad-vault-logo.png)
 
 ---
 
-# 🚀 **Overview**
+## 🚀 **Overview**
 
-**IRONCLAD VAULT** adalah sistem **Bitcoin Savings Vault** non-custodial yang memungkinkan pengguna:
+**IRONCLAD VAULT** is a non-custodial Bitcoin Savings Vault platform that enables users to:
 
-* Menyimpan Bitcoin via **ckBTC** ke dalam vault
-* Mengaktifkan **auto-reinvest engine**
-* Meningkatkan posisi vault secara otomatis
-* Membuktikan deposit/withdraw menggunakan **Bitcoin transaction proofs**
-* Menandatangani pesan Bitcoin via **threshold ECDSA**
-* Menjual vault melalui **on-chain marketplace**
+- Deposit Bitcoin (via **ckBTC**) into vaults
+- Enable the **Auto-Reinvest Engine** to compound returns
+- Automatically grow a vault position through configured strategies
+- Verify deposits and withdrawals using **Bitcoin transaction proofs**
+- Sign Bitcoin messages using **threshold ECDSA**
+- List and sell vaults via a decentralized **on-chain marketplace**
 
-Project ini dibangun dengan pendekatan production-grade, **Next.js + TypeScript strict**, dan integrasi menyeluruh ke seluruh lifecycle vault.
+This project is built with production-grade principles using **Next.js** and **strict TypeScript**, with end-to-end integration across the entire vault lifecycle.
 
-Tujuannya sederhana:
-**transformasikan Bitcoin menjadi produk savings yang aman, otomatis, dan programmable**.
+The mission is simple:
+**Transform Bitcoin into a secure, automated, and programmable savings product.**
 
 ---
 
-# 💎 **Key Features**
+## 💎 **Key Features**
 
 ## 🔐 **1. Bitcoin Savings Vaults**
 
-* Create vaults dengan target deposit & lock duration
-* Deposit ckBTC → vault terkunci → status real-time
-* Unlock & withdraw saat durasi berakhir
-* Event history profesional (icons, filtering, timeline)
+- Create vaults with deposit targets and configurable lock durations
+- Deposit ckBTC and lock funds with real-time status
+- Unlock and withdraw once the lock period ends
+- Professional event history with icons, filters, and timeline
 
 ## 🔁 **2. Auto-Reinvest Engine**
 
-* Enable/disable auto reinvest
-* Settings:
+- Enable/disable auto-reinvest
+- Configurable parameters:
 
-  * Frequency (hour/day)
-  * Percentage to reinvest
-  * Minimum reinvest threshold
-* Execution count, next run timestamp, plan status
-* Manual reinvest & forced reinvest
+  - Frequency: hourly / daily
+  - Percentage to reinvest
+  - Minimum threshold to trigger reinvest
+
+- Shows execution counts, next run timestamps, and plan status
+- Supports manual and forced reinvest execution
 
 ## 🧾 **3. Bitcoin Transaction Proofs**
 
-* Deposit & withdrawal proofs
-* Proof card:
+- Deposit & withdrawal proofs
+- Proof card:
 
-  * TxID (copyable)
-  * Confirmations count
-  * Status badges (Pending / Confirmed)
-  * Error & loading states
-* Real Bitcoin network data
+  - TxID (copyable)
+  - Confirmations count
+  - Status badges (Pending / Confirmed)
+  - Error & loading states
+
+- Real Bitcoin network data
 
 ## 🧠 **4. Threshold ECDSA (Advanced Mode)**
 
-* Sign Bitcoin messages directly via canister
-* Output:
+- Sign Bitcoin messages via the canister (threshold ECDSA)
+- Output formats:
 
-  * Hex signature
-  * Base64 signature
-* Copy & download `.sig`
-* UI includes technical explainer (curve, hash, key)
+  - Hex signature
+  - Base64 signature
+
+- Copy and download `.sig` files
+- Includes a technical explainer describing the curve, hash function, and key usage
 
 ## 🛒 **5. Vault Marketplace**
 
-* List vaults for sale
-* Buy vaults from other users
-* Owner-aware UI, safe actions
-* Unlock conditions required before listing
+- List vaults for sale
+- Buy vaults from other users
+- Owner-aware UI, safe actions
+- Unlock conditions required before listing
 
 ## 🛰️ **6. Network Mode Switching**
 
-* Mock mode (free, safe for dev)
-* ckBTC Mainnet mode (real Bitcoin, cycle costs)
-* Warning banners + confirmation dialogs
-* Controlled via settings page
+- Mock mode (free, safe for dev)
+- ckBTC Mainnet mode (real Bitcoin, cycle costs)
+- Warning banners + confirmation dialogs
+- Controlled via settings page
 
 ## 🧩 **7. Fully Typed & Stable Architecture**
 
-* Zero `any` types
-* Strict DTOs, enums, and actor types
-* Unified client via `ironcladClient`
-* Comprehensive service layer
+- Strict TypeScript (no loose typing)
+- Strict DTOs, enums, and generated actor types
+- Unified client via `ironcladClient`
+- Comprehensive service layer
 
 ---
 
-# 🏗️ **System Architecture**
+## 🏗️ **System Architecture**
 
-```
+```text
 Frontend
   ↓
 Hooks
@@ -111,16 +114,16 @@ ironcladActor    (typed ICP actor)
 Motoko Backend   (vault / reinvest / signing / proofs / market)
 ```
 
-Every interaction:
-✔ Strong typed
-✔ Error-handled
-✔ UI-friendly states (loading, error, empty)
+Every interaction is:
+✔ Strongly typed
+✔ Properly error-handled
+✔ UI-friendly (loading, error, and empty states)
 
 ---
 
-# 📁 **Folder Structure**
+## 📁 **Folder Structure**
 
-```
+```text
 ├── app
 │   ├── landing
 │   ├── vault
@@ -171,19 +174,19 @@ Every interaction:
 
 ---
 
-# ⚙️ **Technical Highlights**
+## ⚙️ **Technical Highlights**
 
-### ✔ Zero `any`
+### ✔ Strict TypeScript
 
-Semua komponen, hooks, services **Full TypeScript Strict**.
+All components, hooks, and services enforce strict TypeScript.
 
 ### ✔ Service Layer
 
 `ironcladClient.ts` ensures:
 
-* typed responses
-* normalized errors
-* uniform UX state handling
+- typed responses
+- normalized errors
+- uniform UX state handling
 
 ### ✔ Typed Actor API
 
@@ -191,15 +194,15 @@ Semua calls (vault, marketplace, reinvest, proofs, signatures) → didefinisikan
 
 ### ✔ Brutalist Design System
 
-* Hard borders
-* Monochrome palettes
-* Sharp UI
-* Event colors mapping
-* Iconography powered by lucide
+- Hard borders
+- Monochrome palettes
+- Sharp UI
+- Event colors mapping
+- Iconography powered by lucide
 
 ---
 
-# 🔗 **How ckBTC Integration Works**
+## 🔗 **How ckBTC Integration Works**
 
 1. User creates a vault
 2. Backend generates ckBTC subaccount
@@ -211,22 +214,22 @@ Semua calls (vault, marketplace, reinvest, proofs, signatures) → didefinisikan
 
 ---
 
-# 🔑 **How Threshold ECDSA Works**
+## 🔑 **How Threshold ECDSA Works**
 
 Ironclad uses ICP’s **chain-key ECDSA**:
 
-* Private key split across subnet
-* User submits a message
-* Canister requests signature via `request_btc_signature`
-* Signature assembled from node shares
-* UI displays hex + base64
-* Downloadable `.sig`
+- Private key split across subnet
+- User submits a message
+- Canister requests signature via `request_btc_signature`
+- Signature assembled from node shares
+- UI displays hex + base64
+- Downloadable `.sig`
 
 **No private key ever exists in one place.**
 
 ---
 
-# 🧪 **Development Setup**
+## 🧪 **Development Setup**
 
 ### Install dependencies
 
@@ -254,16 +257,16 @@ npm run build
 
 ---
 
-# 🧷 **Environment Variables**
+## 🧷 **Environment Variables**
 
-```
+```bash
 NEXT_PUBLIC_IC_HOST=https://ic0.app
 NEXT_PUBLIC_CANISTER_ID_IRONCLAD_VAULT_BACKEND=<your-backend-id>
 ```
 
 ---
 
-# 📦 **Scripts**
+## 📦 **Scripts**
 
 | Command         | Description              |
 | --------------- | ------------------------ |
@@ -274,40 +277,39 @@ NEXT_PUBLIC_CANISTER_ID_IRONCLAD_VAULT_BACKEND=<your-backend-id>
 
 ---
 
-# 🛡 **Security Model**
+## 🛡 **Security Model**
 
-* Vaults are non-custodial
-* Users control identity (Internet Identity)
-* Bitcoin locked via ckBTC ledger
-* All signatures generated via threshold ECDSA
-* Auto-reinvest uses on-chain strategy logic
-* Marketplace requires vault unlock conditions
+- Vaults are non-custodial
+- Users control identity (Internet Identity)
+- Bitcoin locked via ckBTC ledger
+- All signatures generated via threshold ECDSA
+- Auto-reinvest uses on-chain strategy logic
+- Marketplace requires vault unlock conditions
 
 ---
 
-# 📚 **Documentation**
+## 📚 **Documentation**
 
 All in `/docs`:
 
-* **ICP_INTEGRATION_COMPLETE.md**
-* **MODULE-1 → MODULE-5**
-* **IMPLEMENTATION_STATUS.md**
-* **TESTING_CHECKLIST.md**
+- **INTEGRATION_COMPLETE.md** — Integration summary and deployment checklist
+- **IMPLEMENTATION_JOURNAL.md** — Development journal and changelog
+- **PROJECT_SUMMARY.txt** — High-level summary, achievements, and impact
 
 ---
 
-# 🏁 **Conclusion**
+## 🏁 **Conclusion**
 
 **IRONCLAD VAULT** is a full-stack Bitcoin savings product with:
 
-* Time-locked ckBTC vaults
-* Auto-reinvest system
-* Live Bitcoin proofs
-* Threshold ECDSA signing
-* Marketplace trading
-* Zero `any`, fully typed
-* Brutalist pro-grade UI
-* Production ready
+- Time-locked ckBTC vaults
+- Auto-reinvest system
+- Live Bitcoin proofs
+- Threshold ECDSA signing
+- Marketplace trading
+- Zero `any`, fully typed
+- Brutalist pro-grade UI
+- Production ready
 
 Built with precision.
 Designed for security.
