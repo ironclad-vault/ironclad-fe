@@ -127,7 +127,7 @@ export default function HowItWorks() {
 
     const sectionElement = sectionRef.current;
     const ctx = gsap.context(() => {
-      // Animate main timeline path
+      // Animate main timeline path - smooth stroke animation
       const mainPath = sectionElement.querySelector(".main-timeline-path");
 
       if (mainPath) {
@@ -136,9 +136,9 @@ export default function HowItWorks() {
           { strokeDashoffset: 1000 },
           {
             strokeDashoffset: 0,
-            duration: 2.5,
+            duration: 2,
             delay: 0.6,
-            ease: "power2.inOut",
+            ease: "cubic.inOut",
             scrollTrigger: {
               trigger: sectionElement,
               start: "top 70%",
