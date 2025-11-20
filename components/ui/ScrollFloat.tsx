@@ -125,14 +125,14 @@ export default function ScrollFloat({
           const mouseX = e.clientX - centerX
           const mouseY = e.clientY - centerY
 
-          const angleX = (mouseY / centerY) * -10
-          const angleY = (mouseX / centerX) * 10
+          const angleX = (mouseY / centerY) * -12
+          const angleY = (mouseX / centerX) * 12
 
           gsap.to(containerRef.current, {
             rotationX: angleX,
             rotationY: angleY,
-            duration: 0.5,
-            ease: 'power2.out'
+            duration: 0.6,
+            ease: 'cubic.out'
           })
         }
 
