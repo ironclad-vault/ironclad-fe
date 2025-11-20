@@ -77,63 +77,71 @@ export default function HeroSection() {
           speed={0.4}
           className="absolute bottom-20 right-10 opacity-10"
         />
+        <div className="absolute top-0 right-0 w-96 h-96 border-4 border-accent opacity-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 border-4 border-accent opacity-10 pointer-events-none" />
       </div>
 
-      <div className="text-center max-w-6xl mx-auto px-6 relative z-10">
-        <div className="flex flex-col gap-16">
-          <div className="flex flex-col items-center gap-6">
-            <h1 className="heading-brutal text-4xl md:text-6xl mx-auto text-center">
+      <div className="text-center max-w-7xl mx-auto px-6 relative z-10">
+        <div className="flex flex-col gap-12">
+          <div className="flex flex-col items-center gap-8 mb-8">
+            <h1 className="heading-brutal text-5xl md:text-7xl lg:text-8xl mx-auto text-center leading-tight">
               <span className="hero-word inline-block">LOCK YOUR</span>
-              <span className="hero-word inline-block mx-3">BTC WITH</span>
+              <br />
+              <span className="hero-word inline-block">BTC WITH</span>
             </h1>
 
             <div className="hero-rotating-text w-full flex justify-center">
-              <RotatingText
-                words={rotatingWords}
-                duration={2500}
-                className="text-5xl md:text-7xl text-center inline-block min-w-[200px] md:min-w-[300px]"
-                splitText="LOCK YOUR BTC WITH"
-              />
+              <div className="brutal-border border-4 px-8 py-6 md:px-12 md:py-8 bg-accent">
+                <RotatingText
+                  words={rotatingWords}
+                  duration={2500}
+                  className="heading-brutal text-5xl md:text-6xl lg:text-7xl text-center inline-block min-w-[180px] md:min-w-[280px] text-text-primary"
+                  splitText="LOCK YOUR BTC WITH"
+                />
+              </div>
             </div>
 
-            <h2 className="heading-brutal text-4xl md:text-6xl mx-auto text-center">
+            <h2 className="heading-brutal text-4xl md:text-6xl lg:text-7xl mx-auto text-center leading-tight">
               <span className="hero-word inline-block">SECURE YOUR</span>
-              <span className="hero-word inline-block mx-3">VAULT</span>
+              <br />
+              <span className="hero-word inline-block">VAULT</span>
             </h2>
           </div>
 
           <div className="hero-subcontent flex flex-col gap-12 max-w-4xl mx-auto">
-            <p className="body-brutal text-xl md:text-2xl leading-relaxed">
-              Experience{" "}
-              <span className="heading-brutal text-accent">
-                time-locked security
-              </span>
-              <br />{" "}
-              <span className="heading-brutal text-accent">
-                trustless autonomy
-              </span>
-              , and{" "}
-              <span className="heading-brutal text-accent">
-                brutalist protection
-              </span>{" "}
-              for your digital assets.
-            </p>
+            <div className="brutal-border border-2 bg-structure px-6 md:px-8 py-6 md:py-8">
+              <p className="body-brutal text-lg md:text-xl leading-relaxed">
+                Experience{" "}
+                <span className="heading-brutal text-accent font-black">
+                  time-locked security
+                </span>
+                <br />{" "}
+                <span className="heading-brutal text-accent font-black">
+                  trustless autonomy
+                </span>
+                , and{" "}
+                <span className="heading-brutal text-accent font-black">
+                  brutalist protection
+                </span>{" "}
+                for your digital assets.
+              </p>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <TransitionButton
                 href="/vault"
-                className="button-brutal accent flex items-center space-x-2 text-lg px-10 py-6"
+                className="button-brutal accent flex items-center space-x-2 text-lg px-10 py-6 hover:lift font-bold"
               >
                 <span>LOCK YOUR ASSETS</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </TransitionButton>
 
               <Link
                 href="#how-it-works"
-                className="button-brutal flex items-center space-x-2 text-lg px-10 py-6"
+                className="button-brutal flex items-center space-x-2 text-lg px-10 py-6 hover-lift font-bold"
               >
                 <span>LEARN MORE</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
           </div>
