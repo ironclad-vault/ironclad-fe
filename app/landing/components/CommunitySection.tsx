@@ -133,23 +133,25 @@ export default function CommunitySection() {
 
           {/* Title with glitch effect */}
           <div ref={titleRef} className="w-full text-center">
-            <GlitchText
-              text="Ironclad"
-              className="heading-brutal text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight"
-              glitchIntensity="high"
-              duration={3}
-            />
+            <div className="brutal-border border-4 bg-accent py-6 px-8 inline-block">
+              <GlitchText
+                text="Ironclad"
+                className="heading-brutal text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight text-black"
+                glitchIntensity="high"
+                duration={3}
+              />
+            </div>
           </div>
 
           {/* Tagline */}
           <div
             ref={taglineRef}
-            className="w-full text-center max-w-3xl mx-auto"
+            className="w-full text-center max-w-3xl mx-auto brutal-border border-2 py-8 px-6"
           >
-            <p className="body-brutal text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed px-4">
+            <p className="body-brutal text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
               Join the revolution in Bitcoin security. Build your digital
               fortress with
-              <span className="text-accent font-bold">
+              <span className="heading-brutal text-accent font-black">
                 {" "}
                 time-locked autonomy
               </span>
@@ -161,7 +163,7 @@ export default function CommunitySection() {
           <div ref={ctaRef} className="w-full flex justify-center">
             <TransitionButton
               href="/vault"
-              className="cta-primary button-brutal accent inline-flex items-center space-x-3 sm:space-x-4 text-base sm:text-lg md:text-xl px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 hover:scale-105 transition-transform duration-300 whitespace-nowrap"
+              className="cta-primary button-brutal accent inline-flex items-center space-x-3 sm:space-x-4 text-base sm:text-lg md:text-xl px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 hover-lift whitespace-nowrap font-bold"
             >
               <span className="heading-brutal">LAUNCH VAULT</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
@@ -170,13 +172,13 @@ export default function CommunitySection() {
 
           {/* Secondary CTA */}
           <div className="w-full text-center space-y-4">
-            <p className="body-brutal text-xs sm:text-sm md:text-base text-gray-500">
+            <p className="body-brutal text-xs sm:text-sm md:text-base text-gray-600">
               Curious? Explore how it works
             </p>
             <div>
               <a
                 href="#how-it-works"
-                className="button-brutal inline-block text-base sm:text-lg md:text-xl px-6 sm:px-8 py-3 sm:py-4 hover:scale-105 hover:shadow-lg transition-all duration-300"
+                className="button-brutal inline-block text-base sm:text-lg md:text-xl px-6 sm:px-8 py-3 sm:py-4 hover-lift font-bold"
               >
                 EXPLORE
               </a>
