@@ -150,20 +150,22 @@ export default function ScrollFloat({
         }
       }
 
-      // Add entrance animation
+      // Add entrance animation - smooth and fluid
       gsap.fromTo(charElements,
         {
-          y: 100,
+          y: 80,
           opacity: 0,
-          rotation: 20
+          rotation: 15,
+          scale: 0.8
         },
         {
           y: (index: number) => index % 2 === 0 ? -initialY : initialY,
           opacity: 0.8,
           rotation: (index: number) => (index % 2 === 0 ? -rotationIntensity : rotationIntensity),
-          duration: 1,
-          stagger: 0.05,
-          ease: 'back.out(1.7)',
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.04,
+          ease: 'elastic.out(0.8, 0.5)',
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top 80%',
