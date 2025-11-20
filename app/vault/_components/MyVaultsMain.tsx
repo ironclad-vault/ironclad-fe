@@ -455,9 +455,9 @@ export default function MyVaultsMain() {
 
               {/* Unlockable Vaults */}
               {unlockableVaults.length > 0 && (
-                <div className="mb-8 flex flex-col gap-3">
-                  <h2 className="heading-brutal text-xl mb-4 flex items-center gap-2">
-                    <Unlock className="w-6 h-6 text-green-600" /> UNLOCKABLE (
+                <div className="mb-12">
+                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                    <Unlock className="w-8 h-8 text-green-600" /> UNLOCKABLE (
                     {unlockableVaults.length})
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -475,9 +475,9 @@ export default function MyVaultsMain() {
 
               {/* Active Locked Vaults */}
               {activeVaults.length > needsUnlockVaults.length && (
-                <div className="mb-8 flex flex-col gap-3">
-                  <h2 className="heading-brutal text-xl flex items-center gap-2 mb-4">
-                    <Lock className="w-6 h-6" /> ACTIVE LOCKED (
+                <div className="mb-12">
+                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                    <Lock className="w-8 h-8" /> ACTIVE LOCKED (
                     {activeVaults.length - needsUnlockVaults.length})
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
