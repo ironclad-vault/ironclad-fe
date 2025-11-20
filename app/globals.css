@@ -74,8 +74,18 @@ body {
   border: var(--border-width) solid var(--color-accent) !important;
 }
 
+.brutal-border-b {
+  border-bottom: var(--border-width) solid var(--border-color) !important;
+}
+
 /* Component Styles */
 .card-brutal {
+  background: var(--color-bg-white) !important;
+  border: var(--border-width) solid var(--border-color) !important;
+  padding: 24px !important;
+}
+
+.card-brutal-dark {
   background: var(--color-structure) !important;
   border: var(--border-width) solid var(--border-color) !important;
   padding: 24px !important;
@@ -89,20 +99,29 @@ body {
   font-weight: 700 !important;
   text-transform: uppercase !important;
   cursor: pointer !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 .button-brutal:hover {
   background: var(--color-text-primary) !important;
+  transform: translate(-2px, -2px) !important;
+}
+
+.button-brutal:active {
+  transform: translate(0, 0) !important;
 }
 
 .button-brutal.accent {
   background: var(--color-accent) !important;
   color: var(--color-text-primary) !important;
+  font-weight: 700 !important;
 }
 
 .button-brutal.accent:hover {
   background: var(--color-accent) !important;
+  transform: translate(-2px, -2px) !important;
 }
 
 .input-brutal {
