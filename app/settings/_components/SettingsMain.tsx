@@ -208,7 +208,7 @@ export default function SettingsMain() {
               <button
                 onClick={handleSwitchToCkbtc}
                 disabled={loading || !!isCkbtcMode}
-                className="button-brutal accent w-full py-3 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`button-brutal ${isCkbtcMode ? 'accent' : ''} w-full py-4 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isCkbtcMode ? "ACTIVE" : "SWITCH TO CKBTC"}
               </button>
@@ -217,7 +217,7 @@ export default function SettingsMain() {
 
           {/* Warning Banner for ckBTC Mode */}
           {isCkbtcMode && (
-            <div className="card-brutal p-6 bg-orange-50 border-orange-300 mt-6">
+            <div className="card-brutal brutal-border border-2 border-orange-400 p-8 bg-orange-50 mt-8">
               <div className="flex gap-3">
                 <div>
                   <h4 className="heading-brutal text-sm font-bold text-orange-900 mb-2! flex flex-row items-center gap-2">
