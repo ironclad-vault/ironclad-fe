@@ -132,7 +132,7 @@ export default function TestimonialStackSection() {
           >
             {/* Base Card - Bottom card in the stack */}
             <div
-              className="testimonial-card absolute brutal-border bg-structure p-12 md:p-16 flex flex-col justify-center items-center text-center"
+              className="testimonial-card absolute brutal-border border-2 bg-structure p-12 md:p-16 flex flex-col justify-center items-center text-center"
               style={{
                 left: "50%",
                 top: "50%",
@@ -148,11 +148,11 @@ export default function TestimonialStackSection() {
               <blockquote className="heading-brutal text-2xl md:text-4xl leading-tight mb-10">
                 &ldquo;{testimonials[testimonials.length - 1].content}&rdquo;
               </blockquote>
-              <div className="mt-auto">
+              <div className="mt-auto border-t-2 border-accent pt-6 w-full">
                 <h3 className="heading-brutal text-2xl md:text-3xl mb-2">
                   {testimonials[testimonials.length - 1].name}
                 </h3>
-                <p className="body-brutal text-sm uppercase tracking-wider">
+                <p className="body-brutal text-sm uppercase tracking-wider text-accent font-bold">
                   {testimonials[testimonials.length - 1].role}
                 </p>
               </div>
@@ -166,7 +166,7 @@ export default function TestimonialStackSection() {
               {testimonials.slice(0, -1).map((testimonial, index) => (
                 <div
                   key={index}
-                  className="testimonial-card absolute brutal-border bg-(--color-bg-white) p-12 md:p-16 flex flex-col justify-center items-center text-center"
+                  className="testimonial-card absolute brutal-border border-2 bg-white p-12 md:p-16 flex flex-col justify-center items-center text-center hover-lift"
                   style={{
                     left: "50%",
                     top: "50%",
@@ -182,11 +182,11 @@ export default function TestimonialStackSection() {
                   <blockquote className="heading-brutal text-2xl md:text-4xl leading-tight mb-10">
                     &ldquo;{testimonial.content}&rdquo;
                   </blockquote>
-                  <div className="mt-auto">
+                  <div className="mt-auto border-t-2 border-accent pt-6 w-full">
                     <h3 className="heading-brutal text-2xl md:text-3xl mb-2">
                       {testimonial.name}
                     </h3>
-                    <p className="body-brutal text-sm uppercase tracking-wider">
+                    <p className="body-brutal text-sm uppercase tracking-wider text-accent font-bold">
                       {testimonial.role}
                     </p>
                   </div>
