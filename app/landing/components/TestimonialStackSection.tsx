@@ -69,20 +69,20 @@ export default function TestimonialStackSection() {
       });
     });
 
-    // Create timeline with ScrollTrigger
+    // Create timeline with ScrollTrigger - smooth scrub animation
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: pinRefElement,
         start: "top top",
         end: `+=${scrollDuration}`,
-        scrub: 1.2,
+        scrub: 0.8,
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
       },
     });
 
-    // Animate each card to form a stack
+    // Animate each card to form a stack with fluid easing
     cards.forEach((card, index) => {
       timeline.to(
         card,
@@ -91,9 +91,9 @@ export default function TestimonialStackSection() {
           rotate: cardRotations[index % cardRotations.length],
           scale: 1,
           opacity: 1,
-          ease: "power2.inOut",
+          ease: "cubic.inOut",
         },
-        index * 0.15
+        index * 0.12
       );
     });
 
