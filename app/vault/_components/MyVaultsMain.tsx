@@ -410,15 +410,15 @@ export default function MyVaultsMain() {
 
           {/* Empty State */}
           {!loading && vaults.length === 0 && !error && (
-            <div className="card-brutal p-8 text-center">
-              <h2 className="heading-brutal text-2xl mb-4">NO VAULTS YET</h2>
-              <p className="body-brutal text-lg text-gray-600 mb-6">
+            <div className="card-brutal brutal-border border-2 p-12 text-center">
+              <h2 className="heading-brutal text-4xl mb-4">NO VAULTS YET</h2>
+              <p className="body-brutal text-lg text-gray-700 mb-8">
                 Create your first vault to start securing your Bitcoin
               </p>
               <TransitionButton
                 href="/vault/create-vault"
                 suppressTransition
-                className="button-brutal px-6 py-3 bg-blue-600 text-white hover:bg-blue-700"
+                className="button-brutal accent px-8 py-4 text-lg font-bold hover-lift"
               >
                 CREATE VAULT
               </TransitionButton>
