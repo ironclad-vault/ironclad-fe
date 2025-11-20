@@ -74,34 +74,32 @@ function FeatureCard({
   return (
     <div
       ref={cardRef}
-      className="brutal-border bg-(--color-bg-white) p-8 h-full flex flex-col hover:border-accent transition-all duration-500 group hover:scale-105 hover:-translate-y-2 relative overflow-hidden"
+      className="brutal-border border-2 bg-white p-8 h-full flex flex-col hover:border-accent transition-all duration-500 group hover:scale-105 hover:-translate-y-2 relative overflow-hidden hover-lift"
     >
-      {/* Background gradient for better contrast */}
-      <div className="absolute inset-0 bg-linear-to-br from-white via-(--color-bg-white) to-gray-50 opacity-90 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute top-0 right-0 w-16 h-16 border-2 border-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      {/* Icon with enhanced animation */}
-      <div className="relative z-10 w-16 h-16 bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 brutal-border">
-        <Icon className="w-8 h-8 text-white drop-shadow-sm" />
+      <div className="relative z-10 w-20 h-20 bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 brutal-border border-2">
+        <Icon className="w-10 h-10 text-white font-bold" />
       </div>
 
-      <h3 className="relative z-10 heading-brutal text-xl mb-4 text-foreground font-black group-hover:text-accent transition-colors duration-300">
+      <h3 className="relative z-10 heading-brutal text-2xl mb-3 text-foreground group-hover:text-accent transition-colors duration-300">
         {feature.title}
       </h3>
 
-      <p className="relative z-10 body-brutal text-sm mb-6 leading-relaxed text-gray-800 font-medium">
+      <p className="relative z-10 body-brutal text-sm mb-6 leading-relaxed text-gray-800">
         {feature.description}
       </p>
 
-      <div className="relative z-10 mt-auto">
-        <div className="space-y-3">
+      <div className="relative z-10 mt-auto border-t-2 border-accent pt-4">
+        <div className="space-y-2">
           {feature.benefits.map((benefit, benefitIndex) => (
             <div
               key={benefitIndex}
               className="flex items-center gap-3 group-hover:translate-x-2 transition-transform duration-300"
               style={{ transitionDelay: `${benefitIndex * 50}ms` }}
             >
-              <div className="w-3 h-3 bg-accent rounded-full shrink-0 group-hover:scale-150 transition-transform duration-300 shadow-sm" />
-              <span className="body-brutal text-xs uppercase tracking-wider text-gray-700 font-semibold group-hover:text-accent transition-colors duration-300">
+              <div className="w-2 h-2 bg-accent flex-shrink-0 group-hover:scale-150 transition-transform duration-300" />
+              <span className="body-brutal text-xs uppercase font-bold text-gray-700 group-hover:text-accent transition-colors duration-300">
                 {benefit}
               </span>
             </div>
