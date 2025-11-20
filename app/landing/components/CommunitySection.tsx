@@ -192,24 +192,24 @@ export default function CommunitySection() {
           >
             <a
               href="#"
-              className="social-link brutal-border w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover:shadow-brutal"
+              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
               aria-label="Discord"
             >
-              <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-gray-900 group-hover:text-white transition-colors" />
+              <MessageCircle className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
             </a>
             <a
               href="#"
-              className="social-link brutal-border w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover:shadow-brutal"
+              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
               aria-label="Twitter"
             >
-              <Twitter className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-gray-900 group-hover:text-white transition-colors" />
+              <Twitter className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
             </a>
             <a
               href="#"
-              className="social-link brutal-border w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover:shadow-brutal"
+              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
               aria-label="GitHub"
             >
-              <Github className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-gray-900 group-hover:text-white transition-colors" />
+              <Github className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
             </a>
           </div>
         </div>
