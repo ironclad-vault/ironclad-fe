@@ -166,7 +166,7 @@ export default function SettingsMain() {
               <button
                 onClick={handleSwitchToMock}
                 disabled={loading || !!isMockMode}
-                className="button-brutal w-full py-3 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`button-brutal w-full py-4 font-bold text-lg ${isMockMode ? 'accent' : ''} disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isMockMode ? "ACTIVE" : "SWITCH TO MOCK"}
               </button>
@@ -174,11 +174,11 @@ export default function SettingsMain() {
 
             {/* ckBTC Mainnet Mode */}
             <div
-              className={`card-brutal p-6 ${
-                isCkbtcMode ? "bg-green-50 border-green-300" : "bg-white"
+              className={`card-brutal brutal-border border-2 p-8 ${
+                isCkbtcMode ? "bg-green-50 border-green-400" : "bg-white hover-lift"
               }`}
             >
-              <h3 className="heading-brutal text-lg mb-3">CKBTC MAINNET</h3>
+              <h3 className="heading-brutal text-2xl mb-4">CKBTC MAINNET</h3>
               <div className="space-y-3 mb-4">
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
