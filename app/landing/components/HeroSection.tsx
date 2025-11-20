@@ -95,7 +95,7 @@ export default function HeroSection() {
                 <RotatingText
                   words={rotatingWords}
                   duration={2500}
-                  className="heading-brutal text-5xl md:text-6xl lg:text-7xl text-center inline-block min-w-[180px] md:min-w-[280px] text-text-primary"
+                  className="heading-brutal text-5xl md:text-6xl lg:text-7xl text-center inline-block min-w-[180px] md:min-w-[280px] text-black font-black"
                   splitText="LOCK YOUR BTC WITH"
                 />
               </div>
