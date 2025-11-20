@@ -189,11 +189,11 @@ export default function HowItWorks() {
 
       <div className="container mx-auto px-6 h-full relative z-10">
         {/* Section Title */}
-        <div ref={titleRef} className="text-center mb-20">
-          <h2 className="heading-brutal text-4xl md:text-6xl mb-6">
+        <div ref={titleRef} className="text-center mb-20 brutal-border border-2 border-accent py-12 px-6">
+          <h2 className="heading-brutal text-5xl md:text-7xl mb-4">
             HOW IT WORKS
           </h2>
-          <p className="body-brutal text-lg max-w-3xl mx-auto text-gray-600">
+          <p className="body-brutal text-lg max-w-3xl mx-auto text-gray-700">
             Three simple steps to secure your Bitcoin with Ironclad&apos;s
             time-based vault system.
           </p>
