@@ -279,16 +279,16 @@ export default function WithdrawVaultsMain() {
         {/* Confirmation Modal */}
         {showConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="card-brutal bg-white p-8 max-w-md w-full">
-              <h2 className="heading-brutal text-2xl mb-4">
+            <div className="card-brutal brutal-border border-2 bg-white p-8 max-w-md w-full">
+              <h2 className="heading-brutal text-3xl mb-6">
                 CONFIRM WITHDRAWAL
               </h2>
-              <div className="space-y-4 mb-6">
-                <div className="card-brutal p-4 bg-gray-50">
-                  <p className="body-brutal text-xs text-gray-600 uppercase mb-1">
+              <div className="space-y-4 mb-8">
+                <div className="card-brutal brutal-border border-2 p-6 bg-gray-50">
+                  <p className="body-brutal text-xs text-gray-600 uppercase mb-2 font-bold">
                     Amount
                   </p>
-                  <p className="heading-brutal text-2xl">
+                  <p className="heading-brutal text-3xl">
                     {withdrawAmount} BTC
                   </p>
                 </div>
