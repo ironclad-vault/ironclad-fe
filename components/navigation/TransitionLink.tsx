@@ -21,15 +21,13 @@ export default function TransitionLink({
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    console.log(`Starting curtain reveal transition to ${href}`);
+
     startTransition();
-    
-    // Navigate when overlay has fully covered the screen
+
+    // Navigate when overlay has fully covered the screen (0.6s)
     setTimeout(() => {
-      console.log(`Navigating to ${href}`);
       router.push(href);
-    }, 1500); // After overlay slides in (1.5s)
+    }, 600);
   };
 
   return (
