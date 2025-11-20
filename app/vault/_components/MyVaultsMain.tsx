@@ -430,9 +430,9 @@ export default function MyVaultsMain() {
             <>
               {/* Needs Unlock */}
               {needsUnlockVaults.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="heading-brutal text-xl mb-4 flex items-center gap-2">
-                    <Clock className="w-6 h-6 text-green-600" /> READY TO UNLOCK
+                <div className="mb-12">
+                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                    <Clock className="w-8 h-8 text-green-600" /> READY TO UNLOCK
                     ({needsUnlockVaults.length})
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
