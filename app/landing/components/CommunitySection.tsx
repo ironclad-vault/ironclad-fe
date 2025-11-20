@@ -94,7 +94,7 @@ export default function CommunitySection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden pb-32"
     >
       {/* Animated Background */}
       <div className="absolute inset-0 pointer-events-none">
