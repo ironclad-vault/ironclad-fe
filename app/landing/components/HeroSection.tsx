@@ -16,46 +16,60 @@ export default function HeroSection() {
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Hero words - subtle slide-up with no rotation
-      gsap.fromTo(
+      const timeline = gsap.timeline({ delay: 0.1 });
+
+      // Hero words - smooth entrance with optimized easing
+      timeline.fromTo(
         ".hero-word",
-        { y: 40, opacity: 0, scale: 0.95, transformOrigin: "center bottom" },
+        { y: 50, opacity: 0, scale: 0.92, transformOrigin: "center bottom" },
         {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 1.0,
-          stagger: 0.1,
-          ease: "power2.out",
-        }
+          duration: 0.9,
+          stagger: { amount: 0.3, from: "start" },
+          ease: "expo.out",
+        },
+        0
       );
 
-      // Rotating text - smooth scale entrance
-      gsap.fromTo(
+      // Rotating text - smooth elastic entrance
+      timeline.fromTo(
         ".hero-rotating-text",
-        { y: 30, scale: 0.8, opacity: 0, transformOrigin: "center bottom" },
+        { y: 40, scale: 0.75, opacity: 0, transformOrigin: "center bottom" },
         {
           y: 0,
           scale: 1,
           opacity: 1,
-          duration: 1.2,
-          delay: 0.3,
-          ease: "back.out(1.1)",
-        }
+          duration: 1.1,
+          ease: "elastic.out(1, 0.5)",
+        },
+        0.2
       );
 
-      // Subcontent - clean fade-in from bottom
-      gsap.fromTo(
+      // Subcontent - fluid fade and slide combination
+      timeline.fromTo(
         ".hero-subcontent",
-        { opacity: 0, y: 30, transformOrigin: "center bottom" },
+        { opacity: 0, y: 40, scale: 0.95, transformOrigin: "center top" },
         {
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          delay: 0.6,
-          ease: "power1.out",
-        }
+          scale: 1,
+          duration: 0.85,
+          ease: "cubic.out",
+        },
+        0.5
       );
+
+      // Add subtle continuous float animation
+      gsap.to(".hero-rotating-text", {
+        y: 8,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 1.5,
+      });
     }, containerRef);
 
     return () => ctx.revert();
