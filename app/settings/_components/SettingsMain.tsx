@@ -129,14 +129,14 @@ export default function SettingsMain() {
           )}
 
           {/* Mode Options */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Mock Mode */}
             <div
-              className={`card-brutal p-6 ${
-                isMockMode ? "bg-yellow-50 border-yellow-300" : "bg-white"
+              className={`card-brutal brutal-border border-2 p-8 ${
+                isMockMode ? "bg-yellow-50 border-yellow-400" : "bg-white hover-lift"
               }`}
             >
-              <h3 className="heading-brutal text-lg mb-3">MOCK MODE</h3>
+              <h3 className="heading-brutal text-2xl mb-4">MOCK MODE</h3>
               <div className="space-y-3 mb-4">
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
