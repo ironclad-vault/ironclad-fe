@@ -96,14 +96,14 @@ function CreateVaultFormContent() {
   };
 
   return (
-    <div className="card-brutal p-8 flex flex-col gap-6">
-      <h3 className="heading-brutal text-3xl">
+    <div className="card-brutal brutal-border border-2 p-8 flex flex-col gap-8">
+      <h3 className="heading-brutal text-4xl">
         {mode === "complete" ? "COMPLETE DEPOSIT" : "CREATE NEW VAULT"}
       </h3>
 
       {mode === "complete" && existingVault && (
-        <div className="bg-blue-50 border-2 border-blue-300 p-4">
-          <p className="heading-brutal text-sm text-blue-900 mb-2">
+        <div className="brutal-border border-2 border-blue-400 bg-blue-50 p-6">
+          <p className="heading-brutal text-sm text-blue-900 mb-3">
             VAULT #{existingVault.id.toString()}
           </p>
           <div className="body-brutal text-sm text-blue-800 space-y-1">
