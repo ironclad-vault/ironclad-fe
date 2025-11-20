@@ -119,7 +119,7 @@ export function useScrollRevealStagger<T extends HTMLElement = HTMLDivElement>(
         transformOrigin: 'center bottom',
       })
 
-      // Create staggered animation - smooth and clean
+      // Create staggered animation - fluid and refined
       gsap.to(elements, {
         opacity: 1,
         y: 0,
@@ -129,7 +129,7 @@ export function useScrollRevealStagger<T extends HTMLElement = HTMLDivElement>(
         duration: options.duration ?? 1.0,
         delay: options.delay ?? 0,
         stagger: options.stagger ?? 0.15,
-        ease: options.ease ?? 'power3.out',
+        ease: options.ease ?? 'expo.out',
         scrollTrigger: {
           trigger: options.trigger || container,
           start: options.start || 'top 85%',
