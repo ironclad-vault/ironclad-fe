@@ -133,8 +133,8 @@ function CreateVaultFormContent() {
       )}
 
       {error && (
-        <div className="bg-red-100 border-2 border-red-500 p-4">
-          <p className="body-brutal font-bold text-red-800">ERROR: {error}</p>
+        <div className="brutal-border border-2 border-red-500 bg-red-50 p-6">
+          <p className="body-brutal font-bold text-red-800 text-lg">ERROR: {error}</p>
         </div>
       )}
 
