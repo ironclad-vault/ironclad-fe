@@ -78,7 +78,7 @@ function FeatureCard({
     >
       <div className="absolute top-0 right-0 w-16 h-16 border-2 border-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      <div className="relative z-10 w-20 h-20 bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-500 brutal-border border-2">
+      <div className="relative z-10 w-20 h-20 bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 brutal-border border-2">
         <Icon className="w-10 h-10 text-white font-bold" />
       </div>
 
