@@ -115,9 +115,9 @@ export default function MarketplaceMain() {
         <div className="flex border-b-2 border-black">
           <button
             onClick={() => handleTabChange("browse")}
-            className={`flex-1 px-6 py-4 font-bold heading-brutal border-r-2 border-black transition-colors ${
+            className={`flex-1 px-6 py-5 font-bold heading-brutal border-r-2 border-black transition-all hover-lift ${
               activeTab === "browse"
-                ? "bg-black text-white"
+                ? "bg-accent text-black"
                 : "bg-white hover:bg-gray-100"
             }`}
           >
@@ -126,9 +126,9 @@ export default function MarketplaceMain() {
           </button>
           <button
             onClick={() => handleTabChange("create")}
-            className={`flex-1 px-6 py-4 font-bold heading-brutal border-r-2 border-black transition-colors ${
+            className={`flex-1 px-6 py-5 font-bold heading-brutal border-r-2 border-black transition-all hover-lift ${
               activeTab === "create"
-                ? "bg-black text-white"
+                ? "bg-accent text-black"
                 : "bg-white hover:bg-gray-100"
             }`}
           >
@@ -137,9 +137,9 @@ export default function MarketplaceMain() {
           </button>
           <button
             onClick={() => handleTabChange("my-listings")}
-            className={`flex-1 px-6 py-4 font-bold heading-brutal transition-colors ${
+            className={`flex-1 px-6 py-5 font-bold heading-brutal transition-all hover-lift ${
               activeTab === "my-listings"
-                ? "bg-black text-white"
+                ? "bg-accent text-black"
                 : "bg-white hover:bg-gray-100"
             }`}
           >
