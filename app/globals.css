@@ -167,3 +167,48 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 !important;
   padding: 0 !important;
 }
+
+/* Enhanced grid backgrounds */
+.grid-pattern {
+  background-image:
+    linear-gradient(var(--color-structure) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-structure) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Decorative elements */
+.decor-block {
+  background: var(--color-accent);
+  border: var(--border-width) solid var(--color-text-primary);
+}
+
+.decor-block-dark {
+  background: var(--color-text-primary);
+  border: var(--border-width) solid var(--color-text-primary);
+}
+
+.section-divider {
+  height: var(--border-width);
+  background: linear-gradient(to right, transparent, var(--color-text-primary), transparent);
+  margin: 2rem 0;
+}
+
+/* Enhanced visual effects */
+.hover-lift {
+  transition: transform 0.3s ease !important;
+}
+
+.hover-lift:hover {
+  transform: translate(0, -4px) !important;
+}
+
+.text-accent {
+  color: var(--color-accent) !important;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .heading-brutal {
+    letter-spacing: 0.02em !important;
+  }
+}
