@@ -202,8 +202,8 @@ function CreateVaultFormContent() {
               <label className="body-brutal text-sm font-bold mb-2 block">
                 VAULT CREATED
               </label>
-              <div className="bg-green-100 border-2 border-green-500 p-4">
-                <p className="body-brutal font-bold text-green-800 mb-2">
+              <div className="brutal-border border-2 border-green-400 bg-green-50 p-6">
+                <p className="body-brutal font-bold text-green-800 mb-2 text-lg">
                   ✓ Vault ID: {createdVault.vaultId.toString()}
                 </p>
                 <p className="body-brutal text-sm text-green-700">
