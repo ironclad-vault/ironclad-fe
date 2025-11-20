@@ -49,25 +49,26 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
     <div ref={stepRef} className="relative group">
       {/* Desktop Card - Timeline handled by parent */}
       <div className="hidden md:block h-full">
-        <div className="brutal-border bg-white p-8 text-center flex flex-col h-full hover:border-accent transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative">
+        <div className="brutal-border border-2 bg-white p-8 text-center flex flex-col h-full hover:border-accent transition-all duration-500 hover:scale-105 hover:-translate-y-2 relative hover-lift">
+          <div className="absolute top-0 right-0 w-12 h-12 border-2 border-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
           {/* Icon Container */}
-          <div className="w-20 h-20 mx-auto mb-6 flex items-center justify-center brutal-border bg-background group-hover:scale-110 transition-all duration-300 relative z-10">
-            <Icon className={`w-10 h-10 ${step.iconColor} drop-shadow-md`} />
-            <div className="absolute inset-0 bg-accent opacity-0 group-hover:opacity-10 rounded transition-opacity duration-300" />
+          <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center brutal-border border-2 bg-accent group-hover:scale-110 transition-all duration-300 relative z-10">
+            <Icon className={`w-12 h-12 ${step.iconColor} font-bold`} />
           </div>
 
           {/* Step Number */}
-          <div className="heading-brutal text-4xl md:text-5xl mb-4 text-accent group-hover:scale-110 transition-transform duration-300 relative z-10">
+          <div className="heading-brutal text-5xl md:text-6xl mb-4 text-accent group-hover:scale-110 transition-transform duration-300 relative z-10">
             {step.number}
           </div>
 
           {/* Step Title */}
-          <div className="heading-brutal text-xl mb-4 group-hover:text-accent transition-colors duration-300 relative z-10">
+          <div className="heading-brutal text-2xl mb-4 group-hover:text-accent transition-colors duration-300 relative z-10">
             {step.title}
           </div>
 
           {/* Step Description */}
-          <div className="body-brutal text-sm leading-relaxed flex-1 relative z-10">
+          <div className="body-brutal text-sm leading-relaxed flex-1 relative z-10 border-t-2 border-accent pt-4 mt-auto">
             {step.description}
           </div>
         </div>
