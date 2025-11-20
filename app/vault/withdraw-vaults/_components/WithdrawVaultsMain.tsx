@@ -251,7 +251,7 @@ export default function WithdrawVaultsMain() {
             <button
               onClick={handleWithdrawClick}
               disabled={!selectedVaultId || !withdrawAmount || actionLoading}
-              className="button-brutal accent w-full py-3 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="button-brutal accent w-full py-4 text-lg font-bold hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {actionLoading ? "PROCESSING..." : "WITHDRAW"}
             </button>
@@ -259,8 +259,8 @@ export default function WithdrawVaultsMain() {
         </div>
 
         {/* Info Box */}
-        <div className="card-brutal p-6 mt-6 bg-gray-50">
-          <h3 className="heading-brutal text-lg mb-4">
+        <div className="card-brutal brutal-border border-2 p-8 mt-8 bg-gray-50">
+          <h3 className="heading-brutal text-2xl mb-4">
             WITHDRAWAL INFORMATION
           </h3>
           <p className="body-brutal text-sm text-gray-700 mb-4">
