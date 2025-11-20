@@ -16,18 +16,16 @@ interface PageTransitionProviderProps {
   children: ReactNode;
 }
 
-export function PageTransitionProvider({ 
-  children 
+export function PageTransitionProvider({
+  children
 }: PageTransitionProviderProps) {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const startTransition = () => {
-    console.log("PageTransitionProvider: Starting transition");
     setIsTransitioning(true);
   };
 
   const completeTransition = () => {
-    console.log("PageTransitionProvider: Completing transition");
     setIsTransitioning(false);
   };
 
