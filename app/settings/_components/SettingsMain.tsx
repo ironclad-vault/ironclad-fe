@@ -254,9 +254,9 @@ export default function SettingsMain() {
         </div>
 
         {/* Additional Settings Placeholder */}
-        <div className="card-brutal p-8 bg-gray-50">
-          <h2 className="heading-brutal text-2xl mb-4">ADDITIONAL SETTINGS</h2>
-          <p className="body-brutal text-gray-600">
+        <div className="card-brutal brutal-border border-2 p-8 bg-gray-50">
+          <h2 className="heading-brutal text-3xl mb-4">ADDITIONAL SETTINGS</h2>
+          <p className="body-brutal text-gray-700">
             More configuration options coming soon...
           </p>
         </div>
