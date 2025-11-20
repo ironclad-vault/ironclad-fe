@@ -100,11 +100,11 @@ export default function ScrollFloat({
       if (enableHover) {
         const handleMouseEnter = () => {
           gsap.to(charElements, {
-            scale: 1.1,
-            rotation: 'random(-5, 5)',
-            duration: 0.3,
-            stagger: 0.02,
-            ease: 'power2.out'
+            scale: 1.15,
+            rotation: 'random(-8, 8)',
+            duration: 0.4,
+            stagger: 0.03,
+            ease: 'cubic.out'
           })
         }
 
@@ -112,9 +112,9 @@ export default function ScrollFloat({
           gsap.to(charElements, {
             scale: 0.95,
             rotation: 0,
-            duration: 0.4,
-            stagger: 0.02,
-            ease: 'power2.out'
+            duration: 0.5,
+            stagger: 0.03,
+            ease: 'cubic.out'
           })
         }
 
