@@ -148,20 +148,20 @@ export default function HowItWorks() {
         );
       }
 
-      // Animate timeline nodes entrance
+      // Animate timeline nodes entrance - smooth and fluid
       const timelineNodes = sectionElement.querySelectorAll(".timeline-node");
       if (timelineNodes.length > 0) {
         gsap.fromTo(
           timelineNodes,
-          { scale: 0, rotation: 180, opacity: 0 },
+          { scale: 0.2, rotation: 360, opacity: 0 },
           {
             scale: 1,
             rotation: 0,
             opacity: 1,
-            duration: 0.8,
+            duration: 0.7,
             delay: 1,
-            stagger: 0.15,
-            ease: "back.out(1.5)",
+            stagger: 0.2,
+            ease: "elastic.out(1.1, 0.5)",
             scrollTrigger: {
               trigger: sectionElement,
               start: "top 75%",
