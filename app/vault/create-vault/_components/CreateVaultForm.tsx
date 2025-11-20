@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
 import { useVaults } from "@/hooks/ironclad/useVaults";
+import { useWallet } from "@/components/wallet/useWallet";
 import { getVaultStatus } from "@/lib/vaultUtils";
 
 function CreateVaultFormContent() {
@@ -12,6 +13,7 @@ function CreateVaultFormContent() {
   const vaultIdParam = searchParams.get("vaultId");
   const { createVault, mockDeposit, loading, error } = useVaultActions();
   const { vaults, refetch: refetchVaults } = useVaults();
+  const { isConnected } = useWallet();
 
   const [lockDuration, setLockDuration] = useState<string>("6");
   const [durationUnit, setDurationUnit] = useState<"months" | "seconds">(
