@@ -75,14 +75,17 @@ export default function CommunitySection() {
         });
       }
 
-      // CTA button pulse effect
+      // CTA button pulse effect - smooth and subtle
       const ctaButton = sectionRef.current?.querySelector(".cta-primary");
       if (ctaButton) {
         gsap.to(ctaButton, {
-          boxShadow: "0 0 30px rgba(247, 147, 26, 0.3)",
-          duration: 2,
+          boxShadow: [
+            "0 0 0px rgba(247, 147, 26, 0)",
+            "0 0 25px rgba(247, 147, 26, 0.4)",
+            "0 0 0px rgba(247, 147, 26, 0)",
+          ],
+          duration: 2.5,
           repeat: -1,
-          yoyo: true,
           ease: "sine.inOut",
         });
       }
