@@ -7,7 +7,7 @@ export default function AnimatedRouter({ children }: { children: React.ReactNode
   const pathname = usePathname();
 
   useEffect(() => {
-    console.log("Current pathname:", pathname);
+    // Route changed successfully
   }, [pathname]);
 
   return <>{children}</>;

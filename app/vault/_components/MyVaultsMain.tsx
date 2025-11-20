@@ -89,11 +89,12 @@ function VaultCard({
   const timeRemaining = getTimeRemaining();
 
   return (
-    <div className="card-brutal p-6 hover:shadow-lg transition-shadow">
-      <div className="flex justify-between items-start mb-4">
-        <h3 className="heading-brutal text-xl">VAULT #{vault.id.toString()}</h3>
+    <div className="card-brutal brutal-border border-2 p-8 hover:border-accent transition-all duration-300 hover-lift relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-8 h-8 border-2 border-accent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+      <div className="flex justify-between items-start mb-6">
+        <h3 className="heading-brutal text-2xl">VAULT #{vault.id.toString()}</h3>
         <span
-          className={`px-3 py-1 text-xs font-bold border-2 rounded ${statusColor}`}
+          className={`px-4 py-2 text-xs font-black brutal-border border-2 ${statusColor}`}
         >
           {statusLabel}
         </span>
@@ -327,62 +328,11 @@ export default function MyVaultsMain() {
 
   return (
     <div className="container mx-auto px-6">
-      {/* Header */}
-      <div className="card-brutal mb-6">
-        <div className="flex justify-between items-start mb-4">
-          <div>
-            <h1 className="heading-brutal text-3xl mb-2">MY VAULTS</h1>
-            <p className="body-brutal text-lg text-gray-600">
-              {vaults.length} {vaults.length === 1 ? "vault" : "vaults"} found
-            </p>
-          </div>
-          <button
-            onClick={refetch}
-            disabled={loading}
-            className="button-brutal px-4 py-2 border-2 border-gray-300 hover:bg-gray-50 disabled:opacity-50"
-          >
-            {loading ? "REFRESHING..." : "REFRESH"}
-          </button>
-        </div>
-
-        <TransitionButton
-          href="/vault/create-vault"
-          suppressTransition
-          className="button-brutal w-full py-3 bg-blue-600 text-white hover:bg-blue-700"
-        >
-          + CREATE NEW VAULT
-        </TransitionButton>
-
-        {/* Auto-refresh toggle */}
-        <div className="mt-4 flex items-center gap-3">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={autoRefresh}
-              onChange={(e) => setAutoRefresh(e.target.checked)}
-              className="w-4 h-4"
-            />
-            <span className="body-brutal text-sm">Auto-refresh every 30s</span>
-          </label>
-          {activeVaults.some((v) => {
-            const diff =
-              new Date(Number(v.lock_until) * 1000).getTime() -
-              new Date().getTime();
-            return diff > 0 && diff <= 60000;
-          }) &&
-            autoRefresh && (
-              <span className="body-brutal text-xs text-orange-600 font-bold">
-                ⚡ Fast polling (3s)
-              </span>
-            )}
-        </div>
-      </div>
-
-      {/* Wallet Connection Check */}
+      {/* Wallet Connection Check - Show First */}
       {!isConnected && (
-        <div className="card-brutal p-8 text-center">
-          <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-600">
+        <div className="card-brutal brutal-border border-2 p-12 text-center">
+          <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
+          <p className="body-brutal text-lg text-gray-700">
             Connect your wallet to view and manage your vaults
           </p>
         </div>
@@ -390,17 +340,67 @@ export default function MyVaultsMain() {
 
       {isConnected && (
         <>
+          {/* Header - Only show when wallet is connected */}
+          <div className="card-brutal brutal-border border-2 mb-8 p-8">
+            <div className="flex justify-between items-start mb-6 pb-6 border-b-2 border-accent">
+              <div>
+                <h1 className="heading-brutal text-5xl mb-2">MY VAULTS</h1>
+                <p className="body-brutal text-lg text-gray-700 font-semibold">
+                  {vaults.length} {vaults.length === 1 ? "vault" : "vaults"} found
+                </p>
+              </div>
+              <button
+                onClick={refetch}
+                disabled={loading}
+                className="button-brutal px-6 py-3 font-bold border-2 hover-lift disabled:opacity-50"
+              >
+                {loading ? "REFRESHING..." : "REFRESH"}
+              </button>
+            </div>
+
+            <TransitionButton
+              href="/vault/create-vault"
+              suppressTransition
+              className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
+            >
+              + CREATE NEW VAULT
+            </TransitionButton>
+
+            {/* Auto-refresh toggle */}
+            <div className="mt-6 flex items-center gap-3 border-t-2 border-accent pt-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={autoRefresh}
+                  onChange={(e) => setAutoRefresh(e.target.checked)}
+                  className="w-4 h-4"
+                />
+                <span className="body-brutal text-sm font-semibold">Auto-refresh every 30s</span>
+              </label>
+              {activeVaults.some((v) => {
+                const diff =
+                  new Date(Number(v.lock_until) * 1000).getTime() -
+                  new Date().getTime();
+                return diff > 0 && diff <= 60000;
+              }) &&
+                autoRefresh && (
+                  <span className="body-brutal text-xs text-orange-600 font-black">
+                    ⚡ Fast polling (3s)
+                  </span>
+                )}
+            </div>
+          </div>
           {/* Loading State */}
           {loading && vaults.length === 0 && (
-            <div className="card-brutal p-8 text-center">
+            <div className="card-brutal brutal-border border-2 p-8 text-center">
               <p className="body-brutal text-lg">Loading vaults...</p>
             </div>
           )}
 
           {/* Error State */}
           {error && (
-            <div className="card-brutal p-6 bg-red-50 border-red-300">
-              <h3 className="heading-brutal text-lg text-red-900 mb-2">
+            <div className="card-brutal brutal-border border-2 border-red-500 p-8 bg-red-50">
+              <h3 className="heading-brutal text-2xl text-red-900 mb-2">
                 ERROR
               </h3>
               <p className="body-brutal text-sm text-red-800">{error}</p>
@@ -409,15 +409,15 @@ export default function MyVaultsMain() {
 
           {/* Empty State */}
           {!loading && vaults.length === 0 && !error && (
-            <div className="card-brutal p-8 text-center">
-              <h2 className="heading-brutal text-2xl mb-4">NO VAULTS YET</h2>
-              <p className="body-brutal text-lg text-gray-600 mb-6">
+            <div className="card-brutal brutal-border border-2 p-12 text-center">
+              <h2 className="heading-brutal text-4xl mb-4">NO VAULTS YET</h2>
+              <p className="body-brutal text-lg text-gray-700 mb-8">
                 Create your first vault to start securing your Bitcoin
               </p>
               <TransitionButton
                 href="/vault/create-vault"
                 suppressTransition
-                className="button-brutal px-6 py-3 bg-blue-600 text-white hover:bg-blue-700"
+                className="button-brutal accent px-8 py-4 text-lg font-bold hover-lift"
               >
                 CREATE VAULT
               </TransitionButton>
@@ -429,9 +429,9 @@ export default function MyVaultsMain() {
             <>
               {/* Needs Unlock */}
               {needsUnlockVaults.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="heading-brutal text-xl mb-4 flex items-center gap-2">
-                    <Clock className="w-6 h-6 text-green-600" /> READY TO UNLOCK
+                <div className="mb-12">
+                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                    <Clock className="w-8 h-8 text-green-600" /> READY TO UNLOCK
                     ({needsUnlockVaults.length})
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -454,9 +454,9 @@ export default function MyVaultsMain() {
 
               {/* Unlockable Vaults */}
               {unlockableVaults.length > 0 && (
-                <div className="mb-8 flex flex-col gap-3">
-                  <h2 className="heading-brutal text-xl mb-4 flex items-center gap-2">
-                    <Unlock className="w-6 h-6 text-green-600" /> UNLOCKABLE (
+                <div className="mb-12">
+                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                    <Unlock className="w-8 h-8 text-green-600" /> UNLOCKABLE (
                     {unlockableVaults.length})
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -474,9 +474,9 @@ export default function MyVaultsMain() {
 
               {/* Active Locked Vaults */}
               {activeVaults.length > needsUnlockVaults.length && (
-                <div className="mb-8 flex flex-col gap-3">
-                  <h2 className="heading-brutal text-xl flex items-center gap-2 mb-4">
-                    <Lock className="w-6 h-6" /> ACTIVE LOCKED (
+                <div className="mb-12">
+                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                    <Lock className="w-8 h-8" /> ACTIVE LOCKED (
                     {activeVaults.length - needsUnlockVaults.length})
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -502,9 +502,9 @@ export default function MyVaultsMain() {
 
               {/* Pending Deposits */}
               {pendingVaults.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="heading-brutal text-xl flex items-center gap-2 mb-4">
-                    <Hourglass className="w-6 h-6" /> PENDING DEPOSIT (
+                <div className="mb-12">
+                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                    <Hourglass className="w-8 h-8" /> PENDING DEPOSIT (
                     {pendingVaults.length})
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -521,9 +521,9 @@ export default function MyVaultsMain() {
               )}
 
               {/* Quick Stats */}
-              <div className="card-brutal p-6">
-                <h3 className="heading-brutal text-lg mb-4">STATISTICS</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 body-brutal">
+              <div className="card-brutal brutal-border border-2 p-8 mt-12">
+                <h3 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent">STATISTICS</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 body-brutal">
                   <div>
                     <p className="text-gray-600 text-sm">Total Vaults</p>
                     <p className="text-2xl font-bold">{vaults.length}</p>

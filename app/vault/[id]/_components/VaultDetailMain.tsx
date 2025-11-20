@@ -21,8 +21,8 @@ export default function VaultDetailPage({
           <div className="container mx-auto px-6">
             <Suspense
               fallback={
-                <div className="card-brutal p-8">
-                  <p className="text-gray-600">Loading...</p>
+                <div className="card-brutal brutal-border border-2 p-8">
+                  <p className="body-brutal text-lg">Loading vault details...</p>
                 </div>
               }
             >

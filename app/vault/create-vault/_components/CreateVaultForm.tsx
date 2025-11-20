@@ -4,6 +4,7 @@ import { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
 import { useVaults } from "@/hooks/ironclad/useVaults";
+import { useWallet } from "@/components/wallet/useWallet";
 import { getVaultStatus } from "@/lib/vaultUtils";
 
 function CreateVaultFormContent() {
@@ -12,6 +13,7 @@ function CreateVaultFormContent() {
   const vaultIdParam = searchParams.get("vaultId");
   const { createVault, mockDeposit, loading, error } = useVaultActions();
   const { vaults, refetch: refetchVaults } = useVaults();
+  const { isConnected } = useWallet();
 
   const [lockDuration, setLockDuration] = useState<string>("6");
   const [durationUnit, setDurationUnit] = useState<"months" | "seconds">(
@@ -95,15 +97,27 @@ function CreateVaultFormContent() {
     return new Date(Number(timestamp) * 1000).toLocaleString("id-ID");
   };
 
+  // Show wallet connection message if not connected
+  if (!isConnected) {
+    return (
+      <div className="card-brutal brutal-border border-2 p-12 text-center">
+        <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
+        <p className="body-brutal text-lg text-gray-700">
+          Connect your wallet to create a new vault
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div className="card-brutal p-8 flex flex-col gap-6">
-      <h3 className="heading-brutal text-3xl">
+    <div className="card-brutal brutal-border border-2 p-8 flex flex-col gap-8">
+      <h3 className="heading-brutal text-4xl">
         {mode === "complete" ? "COMPLETE DEPOSIT" : "CREATE NEW VAULT"}
       </h3>
 
       {mode === "complete" && existingVault && (
-        <div className="bg-blue-50 border-2 border-blue-300 p-4">
-          <p className="heading-brutal text-sm text-blue-900 mb-2">
+        <div className="brutal-border border-2 border-blue-400 bg-blue-50 p-6">
+          <p className="heading-brutal text-sm text-blue-900 mb-3">
             VAULT #{existingVault.id.toString()}
           </p>
           <div className="body-brutal text-sm text-blue-800 space-y-1">
@@ -133,8 +147,8 @@ function CreateVaultFormContent() {
       )}
 
       {error && (
-        <div className="bg-red-100 border-2 border-red-500 p-4">
-          <p className="body-brutal font-bold text-red-800">ERROR: {error}</p>
+        <div className="brutal-border border-2 border-red-500 bg-red-50 p-6">
+          <p className="body-brutal font-bold text-red-800 text-lg">ERROR: {error}</p>
         </div>
       )}
 
@@ -188,7 +202,7 @@ function CreateVaultFormContent() {
           </div>
 
           <button
-            className="button-brutal accent w-full"
+            className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
             onClick={handleCreateVault}
             disabled={loading}
           >
@@ -202,8 +216,8 @@ function CreateVaultFormContent() {
               <label className="body-brutal text-sm font-bold mb-2 block">
                 VAULT CREATED
               </label>
-              <div className="bg-green-100 border-2 border-green-500 p-4">
-                <p className="body-brutal font-bold text-green-800 mb-2">
+              <div className="brutal-border border-2 border-green-400 bg-green-50 p-6">
+                <p className="body-brutal font-bold text-green-800 mb-2 text-lg">
                   ✓ Vault ID: {createdVault.vaultId.toString()}
                 </p>
                 <p className="body-brutal text-sm text-green-700">

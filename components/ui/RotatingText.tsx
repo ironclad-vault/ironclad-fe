@@ -51,18 +51,18 @@ export default function RotatingText({
 
         // Animate out current word
         gsap.to(currentEl, {
-          y: -20,
+          y: -25,
           opacity: 0,
-          duration: 0.3,
-          ease: "power2.inOut"
+          duration: 0.4,
+          ease: "cubic.inOut"
         })
 
         // Animate in next word
         gsap.to(nextEl, {
           y: 0,
           opacity: 1,
-          duration: 0.3,
-          ease: "power2.inOut"
+          duration: 0.4,
+          ease: "cubic.inOut"
         })
 
         // Update the ref

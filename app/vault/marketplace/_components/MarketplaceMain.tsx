@@ -89,9 +89,9 @@ export default function MarketplaceMain() {
 
   if (!isConnected) {
     return (
-      <div className="card-brutal p-8 text-center  mx-auto">
-        <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
-        <p className="body-brutal text-lg text-gray-600">
+      <div className="card-brutal brutal-border border-2 p-8 text-center mx-auto">
+        <h2 className="heading-brutal text-3xl mb-4">CONNECT YOUR WALLET</h2>
+        <p className="body-brutal text-lg text-gray-700">
           Please connect your wallet to access the marketplace.
         </p>
       </div>
@@ -100,8 +100,8 @@ export default function MarketplaceMain() {
 
   if (loading || vaultsLoading) {
     return (
-      <div className="card-brutal p-8 text-center  mx-auto">
-        <p className="body-brutal text-lg text-gray-600">
+      <div className="card-brutal brutal-border border-2 p-8 text-center mx-auto">
+        <p className="body-brutal text-lg text-gray-700">
           Loading marketplace...
         </p>
       </div>
@@ -111,13 +111,13 @@ export default function MarketplaceMain() {
   return (
     <div className="space-y-8 mx-auto">
       {/* Tabs Navigation */}
-      <div className="card-brutal">
+      <div className="card-brutal brutal-border border-2">
         <div className="flex border-b-2 border-black">
           <button
             onClick={() => handleTabChange("browse")}
-            className={`flex-1 px-6 py-4 font-bold heading-brutal border-r-2 border-black transition-colors ${
+            className={`flex-1 px-6 py-5 font-bold heading-brutal border-r-2 border-black transition-all hover-lift ${
               activeTab === "browse"
-                ? "bg-black text-white"
+                ? "bg-accent text-black"
                 : "bg-white hover:bg-gray-100"
             }`}
           >
@@ -126,9 +126,9 @@ export default function MarketplaceMain() {
           </button>
           <button
             onClick={() => handleTabChange("create")}
-            className={`flex-1 px-6 py-4 font-bold heading-brutal border-r-2 border-black transition-colors ${
+            className={`flex-1 px-6 py-5 font-bold heading-brutal border-r-2 border-black transition-all hover-lift ${
               activeTab === "create"
-                ? "bg-black text-white"
+                ? "bg-accent text-black"
                 : "bg-white hover:bg-gray-100"
             }`}
           >
@@ -137,9 +137,9 @@ export default function MarketplaceMain() {
           </button>
           <button
             onClick={() => handleTabChange("my-listings")}
-            className={`flex-1 px-6 py-4 font-bold heading-brutal transition-colors ${
+            className={`flex-1 px-6 py-5 font-bold heading-brutal transition-all hover-lift ${
               activeTab === "my-listings"
-                ? "bg-black text-white"
+                ? "bg-accent text-black"
                 : "bg-white hover:bg-gray-100"
             }`}
           >
@@ -153,11 +153,11 @@ export default function MarketplaceMain() {
           {/* Browse Listings Tab */}
           {activeTab === "browse" && (
             <div className="space-y-6">
-              <h1 className="heading-brutal text-3xl mb-3!">MARKETPLACE</h1>
+              <h1 className="heading-brutal text-4xl mb-6">MARKETPLACE</h1>
 
               {listings.length === 0 ? (
-                <div className="card-brutal p-8 text-center">
-                  <p className="body-brutal text-lg text-gray-600">
+                <div className="card-brutal brutal-border border-2 p-8 text-center">
+                  <p className="body-brutal text-lg text-gray-700">
                     No active listings available.
                   </p>
                 </div>

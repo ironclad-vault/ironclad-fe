@@ -100,11 +100,11 @@ export default function ScrollFloat({
       if (enableHover) {
         const handleMouseEnter = () => {
           gsap.to(charElements, {
-            scale: 1.1,
-            rotation: 'random(-5, 5)',
-            duration: 0.3,
-            stagger: 0.02,
-            ease: 'power2.out'
+            scale: 1.15,
+            rotation: 'random(-8, 8)',
+            duration: 0.4,
+            stagger: 0.03,
+            ease: 'cubic.out'
           })
         }
 
@@ -112,9 +112,9 @@ export default function ScrollFloat({
           gsap.to(charElements, {
             scale: 0.95,
             rotation: 0,
-            duration: 0.4,
-            stagger: 0.02,
-            ease: 'power2.out'
+            duration: 0.5,
+            stagger: 0.03,
+            ease: 'cubic.out'
           })
         }
 
@@ -125,14 +125,14 @@ export default function ScrollFloat({
           const mouseX = e.clientX - centerX
           const mouseY = e.clientY - centerY
 
-          const angleX = (mouseY / centerY) * -10
-          const angleY = (mouseX / centerX) * 10
+          const angleX = (mouseY / centerY) * -12
+          const angleY = (mouseX / centerX) * 12
 
           gsap.to(containerRef.current, {
             rotationX: angleX,
             rotationY: angleY,
-            duration: 0.5,
-            ease: 'power2.out'
+            duration: 0.6,
+            ease: 'cubic.out'
           })
         }
 
@@ -150,20 +150,22 @@ export default function ScrollFloat({
         }
       }
 
-      // Add entrance animation
+      // Add entrance animation - smooth and fluid
       gsap.fromTo(charElements,
         {
-          y: 100,
+          y: 80,
           opacity: 0,
-          rotation: 20
+          rotation: 15,
+          scale: 0.8
         },
         {
           y: (index: number) => index % 2 === 0 ? -initialY : initialY,
           opacity: 0.8,
           rotation: (index: number) => (index % 2 === 0 ? -rotationIntensity : rotationIntensity),
-          duration: 1,
-          stagger: 0.05,
-          ease: 'back.out(1.7)',
+          scale: 1,
+          duration: 0.8,
+          stagger: 0.04,
+          ease: 'elastic.out(0.8, 0.5)',
           scrollTrigger: {
             trigger: containerRef.current,
             start: 'top 80%',

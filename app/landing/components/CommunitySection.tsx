@@ -33,21 +33,21 @@ export default function CommunitySection() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Logo entrance animation
+      // Logo entrance animation - fluid elastic entrance
       if (logoRef.current) {
         gsap.fromTo(
           logoRef.current,
           {
-            scale: 0,
-            rotation: -180,
+            scale: 0.3,
+            rotation: -200,
             opacity: 0,
           },
           {
             scale: 1,
             rotation: 0,
             opacity: 1,
-            duration: 2,
-            ease: "back.out(1.7)",
+            duration: 1.5,
+            ease: "elastic.out(1.2, 0.4)",
             scrollTrigger: {
               trigger: logoRef.current,
               start: "top 80%",
@@ -57,32 +57,35 @@ export default function CommunitySection() {
         );
       }
 
-      // Floating particles animation
+      // Floating particles animation - smooth and continuous
       const section = sectionRef.current;
       if (section) {
         const particles = section.querySelectorAll(".particle");
         particles.forEach((particle, index) => {
           gsap.to(particle, {
-            y: "random(-100, -200)",
-            x: "random(-50, 50)",
-            rotation: "random(-180, 180)",
-            duration: "random(3, 6)",
+            y: "random(-120, -220)",
+            x: "random(-60, 60)",
+            rotation: "random(-360, 360)",
+            duration: "random(4, 8)",
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut",
-            delay: index * 0.2,
+            delay: index * 0.25,
           });
         });
       }
 
-      // CTA button pulse effect
+      // CTA button pulse effect - smooth and subtle
       const ctaButton = sectionRef.current?.querySelector(".cta-primary");
       if (ctaButton) {
         gsap.to(ctaButton, {
-          boxShadow: "0 0 30px rgba(247, 147, 26, 0.3)",
-          duration: 2,
+          boxShadow: [
+            "0 0 0px rgba(247, 147, 26, 0)",
+            "0 0 25px rgba(247, 147, 26, 0.4)",
+            "0 0 0px rgba(247, 147, 26, 0)",
+          ],
+          duration: 2.5,
           repeat: -1,
-          yoyo: true,
           ease: "sine.inOut",
         });
       }
@@ -94,7 +97,7 @@ export default function CommunitySection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden pb-32"
     >
       {/* Animated Background */}
       <div className="absolute inset-0 pointer-events-none">
@@ -114,15 +117,15 @@ export default function CommunitySection() {
           <div className="w-full flex justify-center pt-16 md:pt-20">
             <div ref={logoRef} className="relative inline-block">
               {/* Logo Container */}
-              <div className="w-40 h-40 md:w-48 md:h-48 brutal-border bg-white flex items-center justify-center group-hover:scale-110 transition-transform duration-500 overflow-hidden">
+              <div className="w-48 h-48 md:w-56 md:h-56 brutal-border border-4 bg-accent flex items-center justify-center hover:scale-110 transition-transform duration-500 overflow-hidden">
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="w-28 h-28 md:w-32 md:h-32 rounded brutal-border bg-accent opacity-20 absolute" />
-                  <div className="text-4xl md:text-5xl font-black text-accent relative z-10">
+                  <div className="w-32 h-32 md:w-40 md:h-40 brutal-border border-4 bg-black opacity-20 absolute" />
+                  <div className="text-4xl md:text-5xl font-black text-black relative z-10">
                     <Image
                       src="/ironclad-vault-logo.png"
                       alt="Ironclad Logo"
-                      width={64}
-                      height={64}
+                      width={80}
+                      height={80}
                       className="object-contain"
                     />
                   </div>
@@ -133,23 +136,25 @@ export default function CommunitySection() {
 
           {/* Title with glitch effect */}
           <div ref={titleRef} className="w-full text-center">
-            <GlitchText
-              text="Ironclad"
-              className="heading-brutal text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight"
-              glitchIntensity="high"
-              duration={3}
-            />
+            <div className="brutal-border border-4 bg-accent py-6 px-8 inline-block">
+              <GlitchText
+                text="Ironclad"
+                className="heading-brutal text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight text-black"
+                glitchIntensity="high"
+                duration={3}
+              />
+            </div>
           </div>
 
           {/* Tagline */}
           <div
             ref={taglineRef}
-            className="w-full text-center max-w-3xl mx-auto"
+            className="w-full text-center max-w-3xl mx-auto brutal-border border-2 py-8 px-6"
           >
-            <p className="body-brutal text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed px-4">
+            <p className="body-brutal text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
               Join the revolution in Bitcoin security. Build your digital
               fortress with
-              <span className="text-accent font-bold">
+              <span className="heading-brutal text-accent font-black">
                 {" "}
                 time-locked autonomy
               </span>
@@ -161,7 +166,7 @@ export default function CommunitySection() {
           <div ref={ctaRef} className="w-full flex justify-center">
             <TransitionButton
               href="/vault"
-              className="cta-primary button-brutal accent inline-flex items-center space-x-3 sm:space-x-4 text-base sm:text-lg md:text-xl px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 hover:scale-105 transition-transform duration-300 whitespace-nowrap"
+              className="cta-primary button-brutal accent inline-flex items-center space-x-3 sm:space-x-4 text-base sm:text-lg md:text-xl px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 hover-lift whitespace-nowrap font-bold"
             >
               <span className="heading-brutal">LAUNCH VAULT</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
@@ -170,13 +175,13 @@ export default function CommunitySection() {
 
           {/* Secondary CTA */}
           <div className="w-full text-center space-y-4">
-            <p className="body-brutal text-xs sm:text-sm md:text-base text-gray-500">
+            <p className="body-brutal text-xs sm:text-sm md:text-base text-gray-600">
               Curious? Explore how it works
             </p>
             <div>
               <a
                 href="#how-it-works"
-                className="button-brutal inline-block text-base sm:text-lg md:text-xl px-6 sm:px-8 py-3 sm:py-4 hover:scale-105 hover:shadow-lg transition-all duration-300"
+                className="button-brutal inline-block text-base sm:text-lg md:text-xl px-6 sm:px-8 py-3 sm:py-4 hover-lift font-bold"
               >
                 EXPLORE
               </a>
@@ -190,24 +195,24 @@ export default function CommunitySection() {
           >
             <a
               href="#"
-              className="social-link brutal-border w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover:shadow-brutal"
+              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
               aria-label="Discord"
             >
-              <MessageCircle className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-gray-900 group-hover:text-white transition-colors" />
+              <MessageCircle className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
             </a>
             <a
               href="#"
-              className="social-link brutal-border w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover:shadow-brutal"
+              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
               aria-label="Twitter"
             >
-              <Twitter className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-gray-900 group-hover:text-white transition-colors" />
+              <Twitter className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
             </a>
             <a
               href="#"
-              className="social-link brutal-border w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover:shadow-brutal"
+              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
               aria-label="GitHub"
             >
-              <Github className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-gray-900 group-hover:text-white transition-colors" />
+              <Github className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
             </a>
           </div>
         </div>

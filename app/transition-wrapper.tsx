@@ -6,16 +6,11 @@ import { usePageTransition } from "@/components/page/PageTransitionProvider";
 
 function PageTransitionWithAnimation({ children }: { children: React.ReactNode }) {
   const { isTransitioning, completeTransition } = usePageTransition();
-  
-  console.log("PageTransitionWithAnimation - isTransitioning:", isTransitioning);
-  
+
   return (
     <PageTransition
       isTransitioning={isTransitioning}
-      onTransitionComplete={() => {
-        console.log("PageTransitionWithAnimation: onTransitionComplete called");
-        completeTransition();
-      }}
+      onTransitionComplete={completeTransition}
     >
       {children}
     </PageTransition>

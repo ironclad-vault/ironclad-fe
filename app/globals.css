@@ -51,11 +51,13 @@ body {
   font-weight: 900 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
+  line-height: 1.2 !important;
 }
 
 .body-brutal {
   font-family: var(--font-body) !important;
   font-weight: 400 !important;
+  line-height: 1.6 !important;
 }
 
 .mono-brutal {
@@ -72,8 +74,18 @@ body {
   border: var(--border-width) solid var(--color-accent) !important;
 }
 
+.brutal-border-b {
+  border-bottom: var(--border-width) solid var(--border-color) !important;
+}
+
 /* Component Styles */
 .card-brutal {
+  background: var(--color-bg-white) !important;
+  border: var(--border-width) solid var(--border-color) !important;
+  padding: 24px !important;
+}
+
+.card-brutal-dark {
   background: var(--color-structure) !important;
   border: var(--border-width) solid var(--border-color) !important;
   padding: 24px !important;
@@ -87,20 +99,29 @@ body {
   font-weight: 700 !important;
   text-transform: uppercase !important;
   cursor: pointer !important;
-  transition: all 0.2s ease !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
 }
 
 .button-brutal:hover {
   background: var(--color-text-primary) !important;
+  transform: translate(-2px, -2px) !important;
+}
+
+.button-brutal:active {
+  transform: translate(0, 0) !important;
 }
 
 .button-brutal.accent {
   background: var(--color-accent) !important;
   color: var(--color-text-primary) !important;
+  font-weight: 700 !important;
 }
 
 .button-brutal.accent:hover {
   background: var(--color-accent) !important;
+  transform: translate(-2px, -2px) !important;
 }
 
 .input-brutal {
@@ -145,4 +166,49 @@ h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase !important;
   margin: 0 !important;
   padding: 0 !important;
+}
+
+/* Enhanced grid backgrounds */
+.grid-pattern {
+  background-image:
+    linear-gradient(var(--color-structure) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-structure) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Decorative elements */
+.decor-block {
+  background: var(--color-accent);
+  border: var(--border-width) solid var(--color-text-primary);
+}
+
+.decor-block-dark {
+  background: var(--color-text-primary);
+  border: var(--border-width) solid var(--color-text-primary);
+}
+
+.section-divider {
+  height: var(--border-width);
+  background: linear-gradient(to right, transparent, var(--color-text-primary), transparent);
+  margin: 2rem 0;
+}
+
+/* Enhanced visual effects */
+.hover-lift {
+  transition: transform 0.3s ease !important;
+}
+
+.hover-lift:hover {
+  transform: translate(0, -4px) !important;
+}
+
+.text-accent {
+  color: var(--color-accent) !important;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .heading-brutal {
+    letter-spacing: 0.02em !important;
+  }
 }

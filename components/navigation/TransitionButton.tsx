@@ -24,22 +24,21 @@ export default function TransitionButton({
     if (href) {
       e.preventDefault();
       e.stopPropagation();
-      
+
       if (suppressTransition) {
         // Direct navigation without transition
         router.push(href);
       } else {
-        console.log(`Starting curtain reveal transition to ${href}`);
         startTransition();
-        
-        // Navigate when overlay has fully covered the screen
+
+        // Navigate when overlay has fully covered the screen (0.6s)
+        // This ensures smooth page swap while hidden
         setTimeout(() => {
-          console.log(`Navigating to ${href}`);
           router.push(href);
-        }, 1500); // After overlay slides in (1.5s)
+        }, 600);
       }
     }
-    
+
     if (onClick) {
       onClick(e);
     }

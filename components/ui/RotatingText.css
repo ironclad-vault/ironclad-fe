@@ -32,8 +32,9 @@
   top: 0 !important;
   text-transform: uppercase;
   font-weight: 900;
-  color: var(--color-accent);
+  color: #000000 !important;
   white-space: nowrap;
+  text-shadow: none;
 }
 
 /* Ensure proper text alignment and spacing */

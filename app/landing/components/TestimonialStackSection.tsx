@@ -69,20 +69,20 @@ export default function TestimonialStackSection() {
       });
     });
 
-    // Create timeline with ScrollTrigger
+    // Create timeline with ScrollTrigger - smooth scrub animation
     const timeline = gsap.timeline({
       scrollTrigger: {
         trigger: pinRefElement,
         start: "top top",
         end: `+=${scrollDuration}`,
-        scrub: 1.2,
+        scrub: 0.8,
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
       },
     });
 
-    // Animate each card to form a stack
+    // Animate each card to form a stack with fluid easing
     cards.forEach((card, index) => {
       timeline.to(
         card,
@@ -91,9 +91,9 @@ export default function TestimonialStackSection() {
           rotate: cardRotations[index % cardRotations.length],
           scale: 1,
           opacity: 1,
-          ease: "power2.inOut",
+          ease: "cubic.inOut",
         },
-        index * 0.15
+        index * 0.12
       );
     });
 
@@ -112,11 +112,11 @@ export default function TestimonialStackSection() {
     <section id="testimonials" className="py-20 bg-(--color-bg-white)">
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="heading-brutal text-4xl md:text-6xl mb-6">
+        <div className="text-center mb-16 brutal-border border-2 border-accent py-12 px-6">
+          <h2 className="heading-brutal text-5xl md:text-7xl mb-4">
             TRUSTED BY USERS
           </h2>
-          <p className="body-brutal text-lg max-w-3xl mx-auto">
+          <p className="body-brutal text-lg max-w-3xl mx-auto text-gray-700">
             Real experiences from Bitcoin enthusiasts, developers, and security
             experts who have secured their assets with Ironclad.
           </p>
@@ -132,7 +132,7 @@ export default function TestimonialStackSection() {
           >
             {/* Base Card - Bottom card in the stack */}
             <div
-              className="testimonial-card absolute brutal-border bg-structure p-12 md:p-16 flex flex-col justify-center items-center text-center"
+              className="testimonial-card absolute brutal-border border-2 bg-structure p-12 md:p-16 flex flex-col justify-center items-center text-center"
               style={{
                 left: "50%",
                 top: "50%",
@@ -148,11 +148,11 @@ export default function TestimonialStackSection() {
               <blockquote className="heading-brutal text-2xl md:text-4xl leading-tight mb-10">
                 &ldquo;{testimonials[testimonials.length - 1].content}&rdquo;
               </blockquote>
-              <div className="mt-auto">
+              <div className="mt-auto border-t-2 border-accent pt-6 w-full">
                 <h3 className="heading-brutal text-2xl md:text-3xl mb-2">
                   {testimonials[testimonials.length - 1].name}
                 </h3>
-                <p className="body-brutal text-sm uppercase tracking-wider">
+                <p className="body-brutal text-sm uppercase tracking-wider text-accent font-bold">
                   {testimonials[testimonials.length - 1].role}
                 </p>
               </div>
@@ -166,7 +166,7 @@ export default function TestimonialStackSection() {
               {testimonials.slice(0, -1).map((testimonial, index) => (
                 <div
                   key={index}
-                  className="testimonial-card absolute brutal-border bg-(--color-bg-white) p-12 md:p-16 flex flex-col justify-center items-center text-center"
+                  className="testimonial-card absolute brutal-border border-2 bg-white p-12 md:p-16 flex flex-col justify-center items-center text-center hover-lift"
                   style={{
                     left: "50%",
                     top: "50%",
@@ -182,11 +182,11 @@ export default function TestimonialStackSection() {
                   <blockquote className="heading-brutal text-2xl md:text-4xl leading-tight mb-10">
                     &ldquo;{testimonial.content}&rdquo;
                   </blockquote>
-                  <div className="mt-auto">
+                  <div className="mt-auto border-t-2 border-accent pt-6 w-full">
                     <h3 className="heading-brutal text-2xl md:text-3xl mb-2">
                       {testimonial.name}
                     </h3>
-                    <p className="body-brutal text-sm uppercase tracking-wider">
+                    <p className="body-brutal text-sm uppercase tracking-wider text-accent font-bold">
                       {testimonial.role}
                     </p>
                   </div>

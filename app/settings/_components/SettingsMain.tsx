@@ -60,17 +60,17 @@ export default function SettingsMain() {
       </div>
 
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="heading-brutal text-4xl mb-2">SETTINGS</h1>
-        <p className="body-brutal text-gray-600">
+      <div className="mb-8 brutal-border border-2 border-accent py-8 px-6">
+        <h1 className="heading-brutal text-5xl mb-2">SETTINGS</h1>
+        <p className="body-brutal text-gray-700">
           Configure Ironclad Vault system settings and network mode
         </p>
       </div>
 
       {/* Network Mode Section */}
-      <div className="space-y-6">
-        <div className="card-brutal p-8">
-          <h2 className="heading-brutal text-2xl mb-4">NETWORK MODE</h2>
+      <div className="space-y-8">
+        <div className="card-brutal brutal-border border-2 p-8">
+          <h2 className="heading-brutal text-3xl mb-6 pb-4 border-b-2 border-accent">NETWORK MODE</h2>
           <p className="body-brutal text-gray-600 mb-6">
             Choose between Mock mode (for testing) and ckBTC Mainnet mode (real
             blockchain operations).
@@ -86,8 +86,8 @@ export default function SettingsMain() {
           )}
 
           {error && (
-            <div className="card-brutal p-4 bg-red-50 border-red-300 mb-4">
-              <p className="body-brutal text-sm text-red-900">
+            <div className="card-brutal brutal-border border-2 border-red-500 p-6 bg-red-50 mb-4">
+              <p className="body-brutal text-sm text-red-900 font-semibold">
                 Error loading network mode: {error}
               </p>
             </div>
@@ -95,7 +95,7 @@ export default function SettingsMain() {
 
           {/* Current Mode Display */}
           {mode && (
-            <div className="card-brutal p-6 mb-6 bg-gray-50">
+            <div className="card-brutal brutal-border border-2 p-8 mb-6 bg-gray-50">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="body-brutal text-sm text-gray-600 uppercase font-bold mb-1">
@@ -129,14 +129,14 @@ export default function SettingsMain() {
           )}
 
           {/* Mode Options */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Mock Mode */}
             <div
-              className={`card-brutal p-6 ${
-                isMockMode ? "bg-yellow-50 border-yellow-300" : "bg-white"
+              className={`card-brutal brutal-border border-2 p-8 ${
+                isMockMode ? "bg-yellow-50 border-yellow-400" : "bg-white hover-lift"
               }`}
             >
-              <h3 className="heading-brutal text-lg mb-3">MOCK MODE</h3>
+              <h3 className="heading-brutal text-2xl mb-4">MOCK MODE</h3>
               <div className="space-y-3 mb-4">
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
@@ -166,7 +166,7 @@ export default function SettingsMain() {
               <button
                 onClick={handleSwitchToMock}
                 disabled={loading || !!isMockMode}
-                className="button-brutal w-full py-3 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`button-brutal w-full py-4 font-bold text-lg ${isMockMode ? 'accent' : ''} disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isMockMode ? "ACTIVE" : "SWITCH TO MOCK"}
               </button>
@@ -174,11 +174,11 @@ export default function SettingsMain() {
 
             {/* ckBTC Mainnet Mode */}
             <div
-              className={`card-brutal p-6 ${
-                isCkbtcMode ? "bg-green-50 border-green-300" : "bg-white"
+              className={`card-brutal brutal-border border-2 p-8 ${
+                isCkbtcMode ? "bg-green-50 border-green-400" : "bg-white hover-lift"
               }`}
             >
-              <h3 className="heading-brutal text-lg mb-3">CKBTC MAINNET</h3>
+              <h3 className="heading-brutal text-2xl mb-4">CKBTC MAINNET</h3>
               <div className="space-y-3 mb-4">
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
@@ -208,7 +208,7 @@ export default function SettingsMain() {
               <button
                 onClick={handleSwitchToCkbtc}
                 disabled={loading || !!isCkbtcMode}
-                className="button-brutal accent w-full py-3 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`button-brutal ${isCkbtcMode ? 'accent' : ''} w-full py-4 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isCkbtcMode ? "ACTIVE" : "SWITCH TO CKBTC"}
               </button>
@@ -217,7 +217,7 @@ export default function SettingsMain() {
 
           {/* Warning Banner for ckBTC Mode */}
           {isCkbtcMode && (
-            <div className="card-brutal p-6 bg-orange-50 border-orange-300 mt-6">
+            <div className="card-brutal brutal-border border-2 border-orange-400 p-8 bg-orange-50 mt-8">
               <div className="flex gap-3">
                 <div>
                   <h4 className="heading-brutal text-sm font-bold text-orange-900 mb-2! flex flex-row items-center gap-2">
@@ -254,9 +254,9 @@ export default function SettingsMain() {
         </div>
 
         {/* Additional Settings Placeholder */}
-        <div className="card-brutal p-8 bg-gray-50">
-          <h2 className="heading-brutal text-2xl mb-4">ADDITIONAL SETTINGS</h2>
-          <p className="body-brutal text-gray-600">
+        <div className="card-brutal brutal-border border-2 p-8 bg-gray-50">
+          <h2 className="heading-brutal text-3xl mb-4">ADDITIONAL SETTINGS</h2>
+          <p className="body-brutal text-gray-700">
             More configuration options coming soon...
           </p>
         </div>
