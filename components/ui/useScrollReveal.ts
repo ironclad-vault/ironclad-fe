@@ -47,7 +47,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(
         transformOrigin: 'center bottom',
       })
 
-      // Create scroll-triggered animation - smooth entrance
+      // Create scroll-triggered animation - fluid entrance with refined easing
       gsap.to(element, {
         opacity: 1,
         y: 0,
@@ -56,7 +56,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(
         rotation: 0,
         duration: options.duration ?? 1.0,
         delay: options.delay ?? 0,
-        ease: options.ease ?? 'power3.out',
+        ease: options.ease ?? 'expo.out',
         scrollTrigger: {
           trigger: options.trigger || element,
           start: options.start || 'top 85%',
