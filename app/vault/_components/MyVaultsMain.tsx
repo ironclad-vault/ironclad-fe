@@ -522,9 +522,9 @@ export default function MyVaultsMain() {
               )}
 
               {/* Quick Stats */}
-              <div className="card-brutal p-6">
-                <h3 className="heading-brutal text-lg mb-4">STATISTICS</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 body-brutal">
+              <div className="card-brutal brutal-border border-2 p-8 mt-12">
+                <h3 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent">STATISTICS</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 body-brutal">
                   <div>
                     <p className="text-gray-600 text-sm">Total Vaults</p>
                     <p className="text-2xl font-bold">{vaults.length}</p>
