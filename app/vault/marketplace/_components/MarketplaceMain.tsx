@@ -153,11 +153,11 @@ export default function MarketplaceMain() {
           {/* Browse Listings Tab */}
           {activeTab === "browse" && (
             <div className="space-y-6">
-              <h1 className="heading-brutal text-3xl mb-3!">MARKETPLACE</h1>
+              <h1 className="heading-brutal text-4xl mb-6">MARKETPLACE</h1>
 
               {listings.length === 0 ? (
-                <div className="card-brutal p-8 text-center">
-                  <p className="body-brutal text-lg text-gray-600">
+                <div className="card-brutal brutal-border border-2 p-8 text-center">
+                  <p className="body-brutal text-lg text-gray-700">
                     No active listings available.
                   </p>
                 </div>
