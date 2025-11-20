@@ -503,9 +503,9 @@ export default function MyVaultsMain() {
 
               {/* Pending Deposits */}
               {pendingVaults.length > 0 && (
-                <div className="mb-8">
-                  <h2 className="heading-brutal text-xl flex items-center gap-2 mb-4">
-                    <Hourglass className="w-6 h-6" /> PENDING DEPOSIT (
+                <div className="mb-12">
+                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                    <Hourglass className="w-8 h-8" /> PENDING DEPOSIT (
                     {pendingVaults.length})
                   </h2>
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
