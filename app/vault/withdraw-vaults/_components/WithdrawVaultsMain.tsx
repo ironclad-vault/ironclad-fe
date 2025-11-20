@@ -120,9 +120,9 @@ export default function WithdrawVaultsMain() {
   if (!isConnected) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal p-8 text-center">
-          <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-600">
+        <div className="card-brutal brutal-border border-2 p-8 text-center">
+          <h2 className="heading-brutal text-3xl mb-4">CONNECT YOUR WALLET</h2>
+          <p className="body-brutal text-lg text-gray-700">
             Please connect your wallet to withdraw from vaults.
           </p>
         </div>
@@ -133,8 +133,8 @@ export default function WithdrawVaultsMain() {
   if (vaultsLoading) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal p-8 text-center">
-          <p className="body-brutal text-lg text-gray-600">
+        <div className="card-brutal brutal-border border-2 p-8 text-center">
+          <p className="body-brutal text-lg text-gray-700">
             Loading withdrawable vaults...
           </p>
         </div>
@@ -145,8 +145,8 @@ export default function WithdrawVaultsMain() {
   if (vaultsError) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal p-8 bg-red-50 border-red-300">
-          <h2 className="heading-brutal text-lg text-red-900 mb-2">ERROR</h2>
+        <div className="card-brutal brutal-border border-2 border-red-500 p-8 bg-red-50">
+          <h2 className="heading-brutal text-2xl text-red-900 mb-2">ERROR</h2>
           <p className="body-brutal text-sm text-red-800">{vaultsError}</p>
         </div>
       </div>
@@ -156,15 +156,15 @@ export default function WithdrawVaultsMain() {
   if (withdrawableVaults.length === 0) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal p-8 text-center">
-          <h2 className="heading-brutal text-2xl mb-4">
+        <div className="card-brutal brutal-border border-2 p-8 text-center">
+          <h2 className="heading-brutal text-3xl mb-4">
             NO WITHDRAWABLE VAULTS
           </h2>
-          <p className="body-brutal text-lg text-gray-600 mb-6">
+          <p className="body-brutal text-lg text-gray-700 mb-8">
             You don&apos;t have any vaults ready for withdrawal.
           </p>
-          <div className="card-brutal p-6 bg-blue-50 border-blue-300 mb-6">
-            <p className="body-brutal text-sm text-blue-900 mb-2">
+          <div className="card-brutal brutal-border border-2 border-blue-400 p-6 bg-blue-50 mb-8">
+            <p className="body-brutal text-sm text-blue-900 mb-2 font-bold">
               💡 <strong>Need to withdraw?</strong>
             </p>
             <p className="body-brutal text-sm text-blue-800">
@@ -175,7 +175,7 @@ export default function WithdrawVaultsMain() {
           <TransitionButton
             href="/vault"
             suppressTransition
-            className="button-brutal px-6 py-3 bg-blue-600 text-white hover:bg-blue-700"
+            className="button-brutal accent px-8 py-4 text-lg font-bold hover-lift"
           >
             GO TO MY VAULTS
           </TransitionButton>
@@ -185,13 +185,13 @@ export default function WithdrawVaultsMain() {
   }
 
   return (
-    <div className="container mx-auto px-6 bg-gray-50 min-h-screen">
+    <div className="container mx-auto px-6 bg-background min-h-screen py-8">
       <div>
         {/* Main Withdraw Card */}
-        <div className="card-brutal p-8">
-          <div className="flex items-center gap-3 mb-6">
-            <ArrowDownRight className="text-accent w-7 h-7" />
-            <h1 className="heading-brutal text-3xl">WITHDRAW</h1>
+        <div className="card-brutal brutal-border border-2 p-8">
+          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-accent">
+            <ArrowDownRight className="text-accent w-8 h-8 font-bold" />
+            <h1 className="heading-brutal text-4xl">WITHDRAW</h1>
           </div>
 
           <div className="space-y-6">
