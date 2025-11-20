@@ -124,21 +124,21 @@ export default function WhyIroncladSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 bg-(--color-bg-white) relative overflow-hidden"
+      className="py-24 bg-white relative overflow-hidden"
     >
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 right-20 w-64 h-64 bg-accent opacity-5 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-20 w-48 h-48 bg-structure opacity-10 rounded-full blur-2xl" />
+        <div className="absolute top-0 left-0 w-80 h-80 border-4 border-accent opacity-10 pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 border-4 border-accent opacity-5 pointer-events-none" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Title */}
-        <div ref={titleRef} className="text-center mb-20">
-          <h2 className="heading-brutal text-4xl md:text-6xl mb-6">
+        <div ref={titleRef} className="text-center mb-16 brutal-border border-2 border-accent py-12 px-6">
+          <h2 className="heading-brutal text-5xl md:text-7xl mb-4">
             WHY IRONCLAD?
           </h2>
-          <p className="body-brutal text-lg max-w-3xl mx-auto text-(--color-text-secondary)">
+          <p className="body-brutal text-lg max-w-3xl mx-auto text-gray-700">
             Built on decentralization, security, and autonomy. Next-generation
             Bitcoin custody solutions.
           </p>
@@ -147,7 +147,7 @@ export default function WhyIroncladSection() {
         {/* Feature Highlights */}
         <div
           ref={highlightsRef}
-          className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-20"
+          className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-20"
         >
           {[
             "TRUSTLESS",
@@ -158,8 +158,8 @@ export default function WhyIroncladSection() {
             "BITCOIN-NATIVE",
           ].map((highlight, index) => (
             <div key={index} className="feature-highlight text-center group">
-              <div className="brutal-border px-4 py-2 bg-structure group-hover:bg-accent group-hover:border-accent transition-all duration-300 hover:scale-110">
-                <span className="heading-brutal text-xs text-accent group-hover:text-foreground transition-colors duration-300">
+              <div className="brutal-border border-2 px-4 py-3 bg-accent group-hover:bg-black group-hover:border-black transition-all duration-300 hover:scale-110 hover-lift">
+                <span className="heading-brutal text-sm font-black text-black group-hover:text-white transition-colors duration-300">
                   {highlight}
                 </span>
               </div>
@@ -168,7 +168,7 @@ export default function WhyIroncladSection() {
         </div>
 
         {/* Feature Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
           {features.map((feature, index) => (
             <FeatureCard key={index} feature={feature} index={index} />
           ))}
@@ -178,7 +178,7 @@ export default function WhyIroncladSection() {
         <div className="text-center">
           <a
             href="#testimonials"
-            className="button-brutal accent inline-block text-lg px-8 py-4 hover:scale-110 hover:-translate-y-1 transition-all duration-300"
+            className="button-brutal accent inline-block text-lg px-10 py-5 hover-lift font-bold"
           >
             SEE WHAT USERS SAY
           </a>
