@@ -381,9 +381,9 @@ export default function MyVaultsMain() {
 
       {/* Wallet Connection Check */}
       {!isConnected && (
-        <div className="card-brutal p-8 text-center">
-          <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-600">
+        <div className="card-brutal brutal-border border-2 p-12 text-center">
+          <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
+          <p className="body-brutal text-lg text-gray-700">
             Connect your wallet to view and manage your vaults
           </p>
         </div>
@@ -393,15 +393,15 @@ export default function MyVaultsMain() {
         <>
           {/* Loading State */}
           {loading && vaults.length === 0 && (
-            <div className="card-brutal p-8 text-center">
+            <div className="card-brutal brutal-border border-2 p-8 text-center">
               <p className="body-brutal text-lg">Loading vaults...</p>
             </div>
           )}
 
           {/* Error State */}
           {error && (
-            <div className="card-brutal p-6 bg-red-50 border-red-300">
-              <h3 className="heading-brutal text-lg text-red-900 mb-2">
+            <div className="card-brutal brutal-border border-2 border-red-500 p-8 bg-red-50">
+              <h3 className="heading-brutal text-2xl text-red-900 mb-2">
                 ERROR
               </h3>
               <p className="body-brutal text-sm text-red-800">{error}</p>
