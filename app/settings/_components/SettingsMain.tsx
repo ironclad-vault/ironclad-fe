@@ -60,17 +60,17 @@ export default function SettingsMain() {
       </div>
 
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="heading-brutal text-4xl mb-2">SETTINGS</h1>
-        <p className="body-brutal text-gray-600">
+      <div className="mb-8 brutal-border border-2 border-accent py-8 px-6">
+        <h1 className="heading-brutal text-5xl mb-2">SETTINGS</h1>
+        <p className="body-brutal text-gray-700">
           Configure Ironclad Vault system settings and network mode
         </p>
       </div>
 
       {/* Network Mode Section */}
-      <div className="space-y-6">
-        <div className="card-brutal p-8">
-          <h2 className="heading-brutal text-2xl mb-4">NETWORK MODE</h2>
+      <div className="space-y-8">
+        <div className="card-brutal brutal-border border-2 p-8">
+          <h2 className="heading-brutal text-3xl mb-6 pb-4 border-b-2 border-accent">NETWORK MODE</h2>
           <p className="body-brutal text-gray-600 mb-6">
             Choose between Mock mode (for testing) and ckBTC Mainnet mode (real
             blockchain operations).
