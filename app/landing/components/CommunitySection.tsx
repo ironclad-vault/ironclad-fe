@@ -33,21 +33,21 @@ export default function CommunitySection() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Logo entrance animation
+      // Logo entrance animation - fluid elastic entrance
       if (logoRef.current) {
         gsap.fromTo(
           logoRef.current,
           {
-            scale: 0,
-            rotation: -180,
+            scale: 0.3,
+            rotation: -200,
             opacity: 0,
           },
           {
             scale: 1,
             rotation: 0,
             opacity: 1,
-            duration: 2,
-            ease: "back.out(1.7)",
+            duration: 1.5,
+            ease: "elastic.out(1.2, 0.4)",
             scrollTrigger: {
               trigger: logoRef.current,
               start: "top 80%",
