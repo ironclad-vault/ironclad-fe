@@ -51,11 +51,13 @@ body {
   font-weight: 900 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
+  line-height: 1.2 !important;
 }
 
 .body-brutal {
   font-family: var(--font-body) !important;
   font-weight: 400 !important;
+  line-height: 1.6 !important;
 }
 
 .mono-brutal {
