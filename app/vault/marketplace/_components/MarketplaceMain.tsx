@@ -89,9 +89,9 @@ export default function MarketplaceMain() {
 
   if (!isConnected) {
     return (
-      <div className="card-brutal p-8 text-center  mx-auto">
-        <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
-        <p className="body-brutal text-lg text-gray-600">
+      <div className="card-brutal brutal-border border-2 p-8 text-center mx-auto">
+        <h2 className="heading-brutal text-3xl mb-4">CONNECT YOUR WALLET</h2>
+        <p className="body-brutal text-lg text-gray-700">
           Please connect your wallet to access the marketplace.
         </p>
       </div>
@@ -100,8 +100,8 @@ export default function MarketplaceMain() {
 
   if (loading || vaultsLoading) {
     return (
-      <div className="card-brutal p-8 text-center  mx-auto">
-        <p className="body-brutal text-lg text-gray-600">
+      <div className="card-brutal brutal-border border-2 p-8 text-center mx-auto">
+        <p className="body-brutal text-lg text-gray-700">
           Loading marketplace...
         </p>
       </div>
@@ -111,7 +111,7 @@ export default function MarketplaceMain() {
   return (
     <div className="space-y-8 mx-auto">
       {/* Tabs Navigation */}
-      <div className="card-brutal">
+      <div className="card-brutal brutal-border border-2">
         <div className="flex border-b-2 border-black">
           <button
             onClick={() => handleTabChange("browse")}
