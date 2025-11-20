@@ -97,6 +97,18 @@ function CreateVaultFormContent() {
     return new Date(Number(timestamp) * 1000).toLocaleString("id-ID");
   };
 
+  // Show wallet connection message if not connected
+  if (!isConnected) {
+    return (
+      <div className="card-brutal brutal-border border-2 p-12 text-center">
+        <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
+        <p className="body-brutal text-lg text-gray-700">
+          Connect your wallet to create a new vault
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="card-brutal brutal-border border-2 p-8 flex flex-col gap-8">
       <h3 className="heading-brutal text-4xl">
