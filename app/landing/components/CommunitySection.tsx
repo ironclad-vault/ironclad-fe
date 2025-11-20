@@ -57,20 +57,20 @@ export default function CommunitySection() {
         );
       }
 
-      // Floating particles animation
+      // Floating particles animation - smooth and continuous
       const section = sectionRef.current;
       if (section) {
         const particles = section.querySelectorAll(".particle");
         particles.forEach((particle, index) => {
           gsap.to(particle, {
-            y: "random(-100, -200)",
-            x: "random(-50, 50)",
-            rotation: "random(-180, 180)",
-            duration: "random(3, 6)",
+            y: "random(-120, -220)",
+            x: "random(-60, 60)",
+            rotation: "random(-360, 360)",
+            duration: "random(4, 8)",
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut",
-            delay: index * 0.2,
+            delay: index * 0.25,
           });
         });
       }
