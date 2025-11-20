@@ -86,8 +86,8 @@ export default function SettingsMain() {
           )}
 
           {error && (
-            <div className="card-brutal p-4 bg-red-50 border-red-300 mb-4">
-              <p className="body-brutal text-sm text-red-900">
+            <div className="card-brutal brutal-border border-2 border-red-500 p-6 bg-red-50 mb-4">
+              <p className="body-brutal text-sm text-red-900 font-semibold">
                 Error loading network mode: {error}
               </p>
             </div>
@@ -95,7 +95,7 @@ export default function SettingsMain() {
 
           {/* Current Mode Display */}
           {mode && (
-            <div className="card-brutal p-6 mb-6 bg-gray-50">
+            <div className="card-brutal brutal-border border-2 p-8 mb-6 bg-gray-50">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="body-brutal text-sm text-gray-600 uppercase font-bold mb-1">
