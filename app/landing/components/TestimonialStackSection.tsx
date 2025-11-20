@@ -112,11 +112,11 @@ export default function TestimonialStackSection() {
     <section id="testimonials" className="py-20 bg-(--color-bg-white)">
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="heading-brutal text-4xl md:text-6xl mb-6">
+        <div className="text-center mb-16 brutal-border border-2 border-accent py-12 px-6">
+          <h2 className="heading-brutal text-5xl md:text-7xl mb-4">
             TRUSTED BY USERS
           </h2>
-          <p className="body-brutal text-lg max-w-3xl mx-auto">
+          <p className="body-brutal text-lg max-w-3xl mx-auto text-gray-700">
             Real experiences from Bitcoin enthusiasts, developers, and security
             experts who have secured their assets with Ironclad.
           </p>
