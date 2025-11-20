@@ -328,58 +328,7 @@ export default function MyVaultsMain() {
 
   return (
     <div className="container mx-auto px-6">
-      {/* Header */}
-      <div className="card-brutal brutal-border border-2 mb-8 p-8">
-        <div className="flex justify-between items-start mb-6 pb-6 border-b-2 border-accent">
-          <div>
-            <h1 className="heading-brutal text-5xl mb-2">MY VAULTS</h1>
-            <p className="body-brutal text-lg text-gray-700 font-semibold">
-              {vaults.length} {vaults.length === 1 ? "vault" : "vaults"} found
-            </p>
-          </div>
-          <button
-            onClick={refetch}
-            disabled={loading}
-            className="button-brutal px-6 py-3 font-bold border-2 hover-lift disabled:opacity-50"
-          >
-            {loading ? "REFRESHING..." : "REFRESH"}
-          </button>
-        </div>
-
-        <TransitionButton
-          href="/vault/create-vault"
-          suppressTransition
-          className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
-        >
-          + CREATE NEW VAULT
-        </TransitionButton>
-
-        {/* Auto-refresh toggle */}
-        <div className="mt-6 flex items-center gap-3 border-t-2 border-accent pt-4">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={autoRefresh}
-              onChange={(e) => setAutoRefresh(e.target.checked)}
-              className="w-4 h-4"
-            />
-            <span className="body-brutal text-sm font-semibold">Auto-refresh every 30s</span>
-          </label>
-          {activeVaults.some((v) => {
-            const diff =
-              new Date(Number(v.lock_until) * 1000).getTime() -
-              new Date().getTime();
-            return diff > 0 && diff <= 60000;
-          }) &&
-            autoRefresh && (
-              <span className="body-brutal text-xs text-orange-600 font-black">
-                ⚡ Fast polling (3s)
-              </span>
-            )}
-        </div>
-      </div>
-
-      {/* Wallet Connection Check */}
+      {/* Wallet Connection Check - Show First */}
       {!isConnected && (
         <div className="card-brutal brutal-border border-2 p-12 text-center">
           <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
@@ -391,6 +340,56 @@ export default function MyVaultsMain() {
 
       {isConnected && (
         <>
+          {/* Header - Only show when wallet is connected */}
+          <div className="card-brutal brutal-border border-2 mb-8 p-8">
+            <div className="flex justify-between items-start mb-6 pb-6 border-b-2 border-accent">
+              <div>
+                <h1 className="heading-brutal text-5xl mb-2">MY VAULTS</h1>
+                <p className="body-brutal text-lg text-gray-700 font-semibold">
+                  {vaults.length} {vaults.length === 1 ? "vault" : "vaults"} found
+                </p>
+              </div>
+              <button
+                onClick={refetch}
+                disabled={loading}
+                className="button-brutal px-6 py-3 font-bold border-2 hover-lift disabled:opacity-50"
+              >
+                {loading ? "REFRESHING..." : "REFRESH"}
+              </button>
+            </div>
+
+            <TransitionButton
+              href="/vault/create-vault"
+              suppressTransition
+              className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
+            >
+              + CREATE NEW VAULT
+            </TransitionButton>
+
+            {/* Auto-refresh toggle */}
+            <div className="mt-6 flex items-center gap-3 border-t-2 border-accent pt-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={autoRefresh}
+                  onChange={(e) => setAutoRefresh(e.target.checked)}
+                  className="w-4 h-4"
+                />
+                <span className="body-brutal text-sm font-semibold">Auto-refresh every 30s</span>
+              </label>
+              {activeVaults.some((v) => {
+                const diff =
+                  new Date(Number(v.lock_until) * 1000).getTime() -
+                  new Date().getTime();
+                return diff > 0 && diff <= 60000;
+              }) &&
+                autoRefresh && (
+                  <span className="body-brutal text-xs text-orange-600 font-black">
+                    ⚡ Fast polling (3s)
+                  </span>
+                )}
+            </div>
+          </div>
           {/* Loading State */}
           {loading && vaults.length === 0 && (
             <div className="card-brutal brutal-border border-2 p-8 text-center">
