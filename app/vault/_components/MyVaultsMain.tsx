@@ -5,6 +5,7 @@ import { useVaults } from "@/hooks/ironclad/useVaults";
 import { useWallet } from "@/components/wallet/useWallet";
 import { useAutoReinvest } from "@/hooks/ironclad/useAutoReinvest";
 import TransitionButton from "@/components/navigation/TransitionButton";
+import BTCAmount from "@/components/ui/BTCAmount";
 import type { Vault } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 import type { AutoReinvestConfigDTO } from "@/lib/ironclad-service";
 import { Clock, Lock, Hourglass, Unlock, Timer } from "lucide-react";
