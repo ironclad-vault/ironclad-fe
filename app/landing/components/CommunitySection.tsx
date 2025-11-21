@@ -77,7 +77,7 @@ export default function CommunitySection() {
           <div className="flex flex-col items-center md:items-start space-y-8">
             {/* Logo */}
             <div ref={logoRef} className="relative">
-              <div className="w-40 h-40 md:w-48 md:h-48 bg-zinc-900 rounded-2xl flex items-center justify-center ring-1 ring-zinc-200 shadow-lg">
+              <div className="w-40 h-40 md:w-48 md:h-48 bg-zinc-800 rounded-2xl flex items-center justify-center ring-1 ring-orange-500 shadow-lg">
                 <Image
                   src="/ironclad-vault-logo.png"
                   alt="Ironclad Logo"
@@ -90,7 +90,7 @@ export default function CommunitySection() {
 
             {/* Title */}
             <div ref={titleRef} className="space-y-4">
-              <h2 className="text-heading text-4xl md:text-5xl font-black text-zinc-900">
+              <h2 className="text-heading text-4xl md:text-5xl font-black text-white">
                 Ironclad Protocol
               </h2>
               <div className="h-1 w-16 bg-orange-500 rounded-full" />
@@ -141,7 +141,7 @@ export default function CommunitySection() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-zinc-200 my-12 md:my-16" />
+        <div className="border-t border-zinc-800 my-12 md:my-16" />
 
         {/* Community Section */}
         <div className="text-center space-y-8">
