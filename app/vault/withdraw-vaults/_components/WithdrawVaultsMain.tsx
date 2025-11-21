@@ -145,9 +145,9 @@ export default function WithdrawVaultsMain() {
   if (vaultsError) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal brutal-border border-2 border-red-500 p-8 bg-red-50">
-          <h2 className="heading-brutal text-2xl text-red-900 mb-2">ERROR</h2>
-          <p className="body-brutal text-sm text-red-800">{vaultsError}</p>
+        <div className="card-pro border-red-500 p-8 bg-red-50">
+          <h2 className="text-heading text-2xl text-red-900 mb-2">ERROR</h2>
+          <p className="text-body text-sm text-red-800">{vaultsError}</p>
         </div>
       </div>
     );
