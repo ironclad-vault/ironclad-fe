@@ -124,7 +124,7 @@ export default function CommunitySection() {
             <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 pt-4">
               <TransitionButton
                 href="/vault"
-                className="flex items-center justify-center gap-2 bg-zinc-900 text-white rounded-lg px-8 py-3 font-semibold hover:bg-black transition-colors duration-200 whitespace-nowrap"
+                className="flex items-center justify-center gap-2 bg-orange-500 text-white rounded-lg px-8 py-3 font-semibold hover:bg-orange-600 transition-colors duration-200 whitespace-nowrap"
               >
                 <span>Access Protocol</span>
                 <ArrowRight className="w-4 h-4" />
@@ -132,7 +132,7 @@ export default function CommunitySection() {
 
               <a
                 href="#how-it-works"
-                className="flex items-center justify-center gap-2 bg-white text-zinc-900 border border-zinc-200 rounded-lg px-8 py-3 font-semibold hover:bg-zinc-50 transition-colors duration-200 whitespace-nowrap"
+                className="flex items-center justify-center gap-2 bg-white text-zinc-900 border-2 border-orange-500 rounded-lg px-8 py-3 font-semibold hover:bg-orange-50 transition-colors duration-200 whitespace-nowrap"
               >
                 <span>Learn More</span>
               </a>
