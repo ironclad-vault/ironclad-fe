@@ -191,7 +191,7 @@ export default function ScrollFloat({
       className={`scroll-float ${intensity} ${colorShift ? 'color-shift' : ''} ${className}`}
       style={{ perspective: '1000px' }}
     >
-      <div className="scroll-float-text heading-brutal">
+      <div className="scroll-float-text text-heading">
         {text}
       </div>
     </div>

@@ -120,9 +120,9 @@ export default function WithdrawVaultsMain() {
   if (!isConnected) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal brutal-border border-2 p-8 text-center">
-          <h2 className="heading-brutal text-3xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-700">
+        <div className="card-pro p-8 text-center">
+          <h2 className="text-heading text-3xl mb-4">CONNECT YOUR WALLET</h2>
+          <p className="text-body text-lg text-gray-700">
             Please connect your wallet to withdraw from vaults.
           </p>
         </div>
@@ -133,8 +133,8 @@ export default function WithdrawVaultsMain() {
   if (vaultsLoading) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal brutal-border border-2 p-8 text-center">
-          <p className="body-brutal text-lg text-gray-700">
+        <div className="card-pro p-8 text-center">
+          <p className="text-body text-lg text-gray-700">
             Loading withdrawable vaults...
           </p>
         </div>
@@ -145,9 +145,9 @@ export default function WithdrawVaultsMain() {
   if (vaultsError) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal brutal-border border-2 border-red-500 p-8 bg-red-50">
-          <h2 className="heading-brutal text-2xl text-red-900 mb-2">ERROR</h2>
-          <p className="body-brutal text-sm text-red-800">{vaultsError}</p>
+        <div className="card-pro border-red-500 p-8 bg-red-50">
+          <h2 className="text-heading text-2xl text-red-900 mb-2">ERROR</h2>
+          <p className="text-body text-sm text-red-800">{vaultsError}</p>
         </div>
       </div>
     );
@@ -156,18 +156,18 @@ export default function WithdrawVaultsMain() {
   if (withdrawableVaults.length === 0) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal brutal-border border-2 p-8 text-center">
-          <h2 className="heading-brutal text-3xl mb-4">
+        <div className="card-pro p-8 text-center">
+          <h2 className="text-heading text-3xl mb-4">
             NO WITHDRAWABLE VAULTS
           </h2>
-          <p className="body-brutal text-lg text-gray-700 mb-8">
+          <p className="text-body text-lg text-gray-700 mb-8">
             You don&apos;t have any vaults ready for withdrawal.
           </p>
-          <div className="card-brutal brutal-border border-2 border-blue-400 p-6 bg-blue-50 mb-8">
-            <p className="body-brutal text-sm text-blue-900 mb-2 font-bold">
+          <div className="card-pro border-blue-400 p-6 bg-blue-50 mb-8">
+            <p className="text-body text-sm text-blue-900 mb-2 font-bold">
               💡 <strong>Need to withdraw?</strong>
             </p>
-            <p className="body-brutal text-sm text-blue-800">
+            <p className="text-body text-sm text-blue-800">
               If you have locked vaults, visit <strong>My Vaults</strong> page to unlock them first.
               Once unlocked, they will appear here for withdrawal.
             </p>
@@ -175,7 +175,7 @@ export default function WithdrawVaultsMain() {
           <TransitionButton
             href="/vault"
             suppressTransition
-            className="button-brutal accent px-8 py-4 text-lg font-bold hover-lift"
+            className="btn-pro accent px-8 py-4 text-lg font-bold hover-lift"
           >
             GO TO MY VAULTS
           </TransitionButton>
@@ -188,16 +188,16 @@ export default function WithdrawVaultsMain() {
     <div className="container mx-auto px-6 bg-background min-h-screen py-8">
       <div>
         {/* Main Withdraw Card */}
-        <div className="card-brutal brutal-border border-2 p-8">
+        <div className="card-pro p-8">
           <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-accent">
             <ArrowDownRight className="text-accent w-8 h-8 font-bold" />
-            <h1 className="heading-brutal text-4xl">WITHDRAW</h1>
+            <h1 className="text-heading text-4xl">WITHDRAW</h1>
           </div>
 
           <div className="space-y-6">
             {/* Vault Selection */}
             <div>
-              <label className="body-brutal text-sm font-bold mb-3 block">
+              <label className="text-body text-sm font-bold mb-3 block">
                 SELECT VAULT
               </label>
               <select
@@ -217,11 +217,11 @@ export default function WithdrawVaultsMain() {
 
             {/* Preview Amount */}
             {previewAmount !== null && (
-              <div className="card-brutal p-6 bg-blue-50 border-blue-300">
-                <p className="body-brutal text-xs text-blue-600 uppercase font-bold mb-2">
+              <div className="card-pro p-6 bg-blue-50 border-blue-300">
+                <p className="text-body text-xs text-blue-600 font-bold mb-2">
                   Available to Withdraw
                 </p>
-                <p className="heading-brutal text-3xl text-blue-900">
+                <p className="text-heading text-3xl text-blue-900">
                   {(Number(previewAmount) / 100_000_000).toFixed(8)} BTC
                 </p>
               </div>
@@ -229,7 +229,7 @@ export default function WithdrawVaultsMain() {
 
             {/* Amount Input */}
             <div>
-              <label className="body-brutal text-sm font-bold mb-3 block">
+              <label className="text-body text-sm font-bold mb-3 block">
                 AMOUNT (BTC)
               </label>
               <input
@@ -242,7 +242,7 @@ export default function WithdrawVaultsMain() {
                 className="input-brutal w-full"
                 disabled={!selectedVaultId}
               />
-              <p className="body-brutal text-xs text-gray-600 mt-2">
+              <p className="text-body text-xs text-gray-600 mt-2">
                 Enter the amount you want to withdraw
               </p>
             </div>
@@ -251,7 +251,7 @@ export default function WithdrawVaultsMain() {
             <button
               onClick={handleWithdrawClick}
               disabled={!selectedVaultId || !withdrawAmount || actionLoading}
-              className="button-brutal accent w-full py-4 text-lg font-bold hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-pro accent w-full py-4 text-lg font-bold hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {actionLoading ? "PROCESSING..." : "WITHDRAW"}
             </button>
@@ -259,15 +259,15 @@ export default function WithdrawVaultsMain() {
         </div>
 
         {/* Info Box */}
-        <div className="card-brutal brutal-border border-2 p-8 mt-8 bg-gray-50">
-          <h3 className="heading-brutal text-2xl mb-4">
+        <div className="card-pro p-8 mt-8 bg-gray-50">
+          <h3 className="text-heading text-2xl mb-4">
             WITHDRAWAL INFORMATION
           </h3>
-          <p className="body-brutal text-sm text-gray-700 mb-4">
+          <p className="text-body text-sm text-gray-700 mb-4">
             Withdraw your funds from an unlocked vault. The amount will be sent
             to your connected wallet.
           </p>
-          <ul className="body-brutal text-sm text-gray-600 space-y-2">
+          <ul className="text-body text-sm text-gray-600 space-y-2">
             <li>✓ Vault must be unlocked before withdrawal</li>
             <li>✓ Visit vault details page to unlock locked vaults</li>
             <li>✓ Check the available amount before withdrawing</li>
@@ -279,20 +279,20 @@ export default function WithdrawVaultsMain() {
         {/* Confirmation Modal */}
         {showConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="card-brutal brutal-border border-2 bg-white p-8 max-w-md w-full">
-              <h2 className="heading-brutal text-3xl mb-6">
+            <div className="card-pro bg-white p-8 max-w-md w-full">
+              <h2 className="text-heading text-3xl mb-6">
                 CONFIRM WITHDRAWAL
               </h2>
               <div className="space-y-4 mb-8">
-                <div className="card-brutal brutal-border border-2 p-6 bg-gray-50">
-                  <p className="body-brutal text-xs text-gray-600 uppercase mb-2 font-bold">
+                <div className="card-pro p-6 bg-gray-50">
+                  <p className="text-body text-xs text-gray-600 mb-2 font-bold">
                     Amount
                   </p>
-                  <p className="heading-brutal text-3xl">
+                  <p className="text-heading text-3xl">
                     {withdrawAmount} BTC
                   </p>
                 </div>
-                <p className="body-brutal text-sm text-gray-700">
+                <p className="text-body text-sm text-gray-700">
                   Are you sure you want to withdraw {withdrawAmount} BTC from
                   this vault?
                 </p>
@@ -300,13 +300,13 @@ export default function WithdrawVaultsMain() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowConfirm(false)}
-                  className="flex-1 button-brutal py-3 font-bold hover-lift"
+                  className="flex-1 btn-pro py-3 font-bold hover-lift"
                 >
                   CANCEL
                 </button>
                 <button
                   onClick={handleConfirmWithdraw}
-                  className="flex-1 button-brutal accent py-3 font-bold hover-lift disabled:opacity-50"
+                  className="flex-1 btn-pro accent py-3 font-bold hover-lift disabled:opacity-50"
                   disabled={actionLoading}
                 >
                   {actionLoading ? "PROCESSING..." : "CONFIRM"}

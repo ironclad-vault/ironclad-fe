@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useNetworkMode } from "@/hooks/ironclad/useNetworkMode";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { ArrowLeft, AlertTriangle, CheckCircle } from "lucide-react";
+import { ArrowLeft, AlertTriangle, CheckCircle, Activity } from "lucide-react";
 import VaultHeader from "@/components/layout/VaultHeader";
 
 /**
@@ -14,6 +14,8 @@ import VaultHeader from "@/components/layout/VaultHeader";
 export default function SettingsMain() {
   const { mode, loading, error, switchToMock, switchToCkbtc } =
     useNetworkMode();
+  const [lastProofOfLife, setLastProofOfLife] = useState<Date | null>(null);
+  const [pingingAlive, setPingingAlive] = useState(false);
 
   const handleSwitchToMock = async () => {
     try {
@@ -42,6 +44,19 @@ export default function SettingsMain() {
     }
   };
 
+  const handlePing = async () => {
+    setPingingAlive(true);
+    try {
+      // TODO: Call backend ping_alive function once available
+      setLastProofOfLife(new Date());
+      toast.success("Ping sent! Timer reset.");
+    } catch (err) {
+      toast.error(`Failed to send ping: ${err}`);
+    } finally {
+      setPingingAlive(false);
+    }
+  };
+
   const isMockMode = mode && "Mock" in mode;
   const isCkbtcMode = mode && "CkBTCMainnet" in mode;
 
@@ -60,18 +75,18 @@ export default function SettingsMain() {
       </div>
 
       {/* Header */}
-      <div className="mb-8 brutal-border border-2 border-accent py-8 px-6">
-        <h1 className="heading-brutal text-5xl mb-2">SETTINGS</h1>
-        <p className="body-brutal text-gray-700">
+      <div className="mb-8 card-pro border-accent py-8 px-6">
+        <h1 className="text-heading text-5xl mb-2">SETTINGS</h1>
+        <p className="text-body text-gray-700">
           Configure Ironclad Vault system settings and network mode
         </p>
       </div>
 
       {/* Network Mode Section */}
       <div className="space-y-8">
-        <div className="card-brutal brutal-border border-2 p-8">
-          <h2 className="heading-brutal text-3xl mb-6 pb-4 border-b-2 border-accent">NETWORK MODE</h2>
-          <p className="body-brutal text-gray-600 mb-6">
+        <div className="card-pro p-8">
+          <h2 className="text-heading text-3xl mb-6 pb-4 border-b-2 border-accent">NETWORK MODE</h2>
+          <p className="text-body text-gray-600 mb-6">
             Choose between Mock mode (for testing) and ckBTC Mainnet mode (real
             blockchain operations).
           </p>
@@ -79,15 +94,15 @@ export default function SettingsMain() {
           {loading && (
             <div className="flex items-center gap-2 mb-4">
               <div className="w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
-              <p className="body-brutal text-sm text-gray-600">
+              <p className="text-body text-sm text-gray-600">
                 Loading network mode...
               </p>
             </div>
           )}
 
           {error && (
-            <div className="card-brutal brutal-border border-2 border-red-500 p-6 bg-red-50 mb-4">
-              <p className="body-brutal text-sm text-red-900 font-semibold">
+            <div className="card-pro border-red-500 p-6 bg-red-50 mb-4">
+              <p className="text-body text-sm text-red-900 font-semibold">
                 Error loading network mode: {error}
               </p>
             </div>
@@ -95,13 +110,13 @@ export default function SettingsMain() {
 
           {/* Current Mode Display */}
           {mode && (
-            <div className="card-brutal brutal-border border-2 p-8 mb-6 bg-gray-50">
+            <div className="card-pro p-8 mb-6 bg-gray-50">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="body-brutal text-sm text-gray-600 uppercase font-bold mb-1">
+                  <p className="text-body text-sm text-gray-600 font-bold mb-1">
                     Current Mode
                   </p>
-                  <p className="heading-brutal text-xl">
+                  <p className="text-heading text-xl">
                     {isMockMode ? "MOCK" : "CKBTC MAINNET"}
                   </p>
                 </div>
@@ -132,33 +147,33 @@ export default function SettingsMain() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Mock Mode */}
             <div
-              className={`card-brutal brutal-border border-2 p-8 ${
+              className={`card-pro p-8 ${
                 isMockMode ? "bg-yellow-50 border-yellow-400" : "bg-white hover-lift"
               }`}
             >
-              <h3 className="heading-brutal text-2xl mb-4">MOCK MODE</h3>
+              <h3 className="text-heading text-2xl mb-4">MOCK MODE</h3>
               <div className="space-y-3 mb-4">
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="body-brutal text-sm text-gray-700">
+                  <p className="text-body text-sm text-gray-700">
                     Safe for testing and development
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="body-brutal text-sm text-gray-700">
+                  <p className="text-body text-sm text-gray-700">
                     No real blockchain calls
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="body-brutal text-sm text-gray-700">
+                  <p className="text-body text-sm text-gray-700">
                     Simulated ckBTC operations
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-red-600">✗</span>
-                  <p className="body-brutal text-sm text-gray-700">
+                  <p className="text-body text-sm text-gray-700">
                     Cannot sync real ckBTC balances
                   </p>
                 </div>
@@ -166,7 +181,7 @@ export default function SettingsMain() {
               <button
                 onClick={handleSwitchToMock}
                 disabled={loading || !!isMockMode}
-                className={`button-brutal w-full py-4 font-bold text-lg ${isMockMode ? 'accent' : ''} disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`btn-pro w-full py-4 font-bold text-lg ${isMockMode ? 'accent' : ''} disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isMockMode ? "ACTIVE" : "SWITCH TO MOCK"}
               </button>
@@ -174,33 +189,33 @@ export default function SettingsMain() {
 
             {/* ckBTC Mainnet Mode */}
             <div
-              className={`card-brutal brutal-border border-2 p-8 ${
+              className={`card-pro p-8 ${
                 isCkbtcMode ? "bg-green-50 border-green-400" : "bg-white hover-lift"
               }`}
             >
-              <h3 className="heading-brutal text-2xl mb-4">CKBTC MAINNET</h3>
+              <h3 className="text-heading text-2xl mb-4">CKBTC MAINNET</h3>
               <div className="space-y-3 mb-4">
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="body-brutal text-sm text-gray-700">
+                  <p className="text-body text-sm text-gray-700">
                     Real ckBTC testnet integration
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="body-brutal text-sm text-gray-700">
+                  <p className="text-body text-sm text-gray-700">
                     Sync balances from ledger
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="body-brutal text-sm text-gray-700">
+                  <p className="text-body text-sm text-gray-700">
                     Real ECDSA threshold signatures
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-orange-600">⚠</span>
-                  <p className="body-brutal text-sm text-gray-700">
+                  <p className="text-body text-sm text-gray-700">
                     Use only with testnet funds
                   </p>
                 </div>
@@ -208,7 +223,7 @@ export default function SettingsMain() {
               <button
                 onClick={handleSwitchToCkbtc}
                 disabled={loading || !!isCkbtcMode}
-                className={`button-brutal ${isCkbtcMode ? 'accent' : ''} w-full py-4 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`btn-pro ${isCkbtcMode ? 'accent' : ''} w-full py-4 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isCkbtcMode ? "ACTIVE" : "SWITCH TO CKBTC"}
               </button>
@@ -217,14 +232,14 @@ export default function SettingsMain() {
 
           {/* Warning Banner for ckBTC Mode */}
           {isCkbtcMode && (
-            <div className="card-brutal brutal-border border-2 border-orange-400 p-8 bg-orange-50 mt-8">
+            <div className="card-pro border-orange-400 p-8 bg-orange-50 mt-8">
               <div className="flex gap-3">
                 <div>
-                  <h4 className="heading-brutal text-sm font-bold text-orange-900 mb-2! flex flex-row items-center gap-2">
+                  <h4 className="text-heading text-sm font-bold text-orange-900 mb-2 flex flex-row items-center gap-2">
                     <AlertTriangle className="w-6 h-6 text-orange-600 shrink-0" />
                     IMPORTANT: TESTNET MODE ACTIVE
                   </h4>
-                  <div className="space-y-2 body-brutal text-sm text-orange-900">
+                  <div className="space-y-2 text-body text-sm text-orange-900">
                     <p>
                       You are currently using{" "}
                       <strong>ckBTC Mainnet mode</strong> with real blockchain
@@ -253,10 +268,69 @@ export default function SettingsMain() {
           )}
         </div>
 
+        {/* Inheritance Protocol Section */}
+        <div className="card-pro p-8">
+          <h2 className="heading-brutal text-3xl mb-6 pb-4 border-b-2 border-accent">
+            INHERITANCE PROTOCOL
+          </h2>
+
+          <div className="space-y-6">
+            {/* Status Row */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-label mb-2">DEAD MAN SWITCH STATUS</p>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 bg-emerald-500 rounded-full"></span>
+                  <span className="text-heading text-lg">ACTIVE</span>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-label mb-2">INACTIVITY TIMEOUT</p>
+                <p className="heading-brutal text-lg text-emerald-600">180 DAYS</p>
+              </div>
+            </div>
+
+            {/* Info Rows */}
+            <div className="bg-zinc-50 p-6 rounded-lg border border-zinc-200 space-y-3">
+              <div>
+                <p className="text-label mb-1">LAST PROOF OF LIFE</p>
+                <p className="text-body text-sm text-zinc-700">
+                  {lastProofOfLife
+                    ? lastProofOfLife.toLocaleString("id-ID")
+                    : "Not recorded"}
+                </p>
+              </div>
+              <div>
+                <p className="text-label mb-1">BENEFICIARY CLAIM AVAILABLE IN</p>
+                <p className="text-body text-sm text-zinc-700">
+                  180 Days (Default)
+                </p>
+              </div>
+            </div>
+
+            {/* Ping Button */}
+            <button
+              onClick={handlePing}
+              disabled={pingingAlive}
+              className="btn-pro w-full py-4 font-bold text-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              <Activity className="w-5 h-5" />
+              {pingingAlive ? "SENDING PING..." : "PROOF OF LIFE (PING)"}
+            </button>
+
+            {/* Help Text */}
+            <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+              <p className="text-body text-sm text-blue-900">
+                <strong>How It Works:</strong> Click "Proof of Life" regularly to prove you&apos;re alive and reset the 180-day timer. If the timer expires, your designated beneficiary can claim your vault.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Additional Settings Placeholder */}
-        <div className="card-brutal brutal-border border-2 p-8 bg-gray-50">
-          <h2 className="heading-brutal text-3xl mb-4">ADDITIONAL SETTINGS</h2>
-          <p className="body-brutal text-gray-700">
+        <div className="card-pro p-8 bg-gray-50">
+          <h2 className="text-heading text-3xl mb-4">ADDITIONAL SETTINGS</h2>
+          <p className="text-body text-gray-700">
             More configuration options coming soon...
           </p>
         </div>

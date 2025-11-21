@@ -7,6 +7,7 @@ import { useVaults } from "@/hooks/ironclad/useVaults";
 import InfoBox from "@/app/vault/_components/InfoBox";
 import { TrendingUp, ShoppingCart, Tag } from "lucide-react";
 import { getVaultStatus } from "@/lib/vaultUtils";
+import BTCAmount from "@/components/ui/BTCAmount";
 
 export default function MarketplaceMain() {
   const { isConnected, principal } = useWallet();
@@ -170,61 +171,68 @@ export default function MarketplaceMain() {
                       (v) => v.id === listing.vault_id
                     );
 
+                    let yieldPercent = 0;
+                    let discountPercent = 0;
+                    if (vaultDetails) {
+                      const vaultBalance = Number(vaultDetails.balance);
+                      const priceSats = Number(listing.price_sats);
+                      yieldPercent = ((vaultBalance - priceSats) / priceSats) * 100;
+                      discountPercent = ((vaultBalance - priceSats) / vaultBalance) * 100;
+                    }
+
                     return (
                       <div
                         key={listing.id.toString()}
-                        className="card-brutal p-6 hover:shadow-lg transition-shadow"
+                        className="card-pro p-6"
                       >
-                        <div className="space-y-3 mb-4">
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Listing ID
-                            </p>
-                            <p className="mono-brutal text-sm">
-                              {listing.id.toString()}
-                            </p>
+                        <div className="space-y-4 mb-6">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <p className="text-label mb-1">LISTING ID</p>
+                              <p className="mono-brutal text-sm">
+                                {listing.id.toString().slice(0, 16)}...
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-label mb-1">VAULT ID</p>
+                              <p className="mono-brutal text-sm">
+                                #{listing.vault_id.toString()}
+                              </p>
+                            </div>
                           </div>
 
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Vault ID
-                            </p>
-                            <p className="mono-brutal text-sm">
-                              {listing.vault_id.toString()}
-                            </p>
-                          </div>
+                          {yieldPercent > 0 && (
+                            <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold inline-block">
+                              🚀 +{yieldPercent.toFixed(1)}% YIELD
+                            </div>
+                          )}
 
                           {vaultDetails && (
-                            <div>
-                              <p className="body-brutal text-xs text-gray-500 uppercase">
-                                Vault Balance
-                              </p>
+                            <div className="bg-zinc-50 p-3 rounded-lg border border-zinc-200">
+                              <p className="text-label mb-2">VAULT BALANCE</p>
                               <p className="heading-brutal text-lg">
-                                {(
-                                  Number(vaultDetails.balance) / 100_000_000
-                                ).toFixed(8)}{" "}
-                                BTC
+                                <BTCAmount sats={vaultDetails.balance} showLabel={true} />
                               </p>
                             </div>
                           )}
 
-                          <div className="border-t-2 border-black pt-3">
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Price
-                            </p>
-                            <p className="heading-brutal text-2xl">
-                              {(
-                                Number(listing.price_sats) / 100_000_000
-                              ).toFixed(8)}{" "}
-                              BTC
-                            </p>
+                          <div className="border-t border-zinc-200 pt-4">
+                            <p className="text-label mb-2">ASKING PRICE</p>
+                            <div className="flex items-center">
+                              <p className="heading-brutal text-3xl text-emerald-600">
+                                <BTCAmount sats={listing.price_sats} showLabel={true} />
+                              </p>
+                              {discountPercent > 0 && (
+                                <span className="text-xs text-zinc-500 font-medium ml-2">
+                                  ({discountPercent.toFixed(1)}% DISCOUNT)
+                                </span>
+                              )}
+                            </div>
                           </div>
 
                           <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Seller
-                            </p>
-                            <p className="mono-brutal text-xs truncate">
+                            <p className="text-label mb-1">SELLER</p>
+                            <p className="mono-brutal text-xs text-zinc-600 truncate">
                               {listing.seller.toString().slice(0, 20)}...
                             </p>
                           </div>
@@ -235,10 +243,10 @@ export default function MarketplaceMain() {
                             handleBuyListing(listing.id, listing.price_sats)
                           }
                           disabled={isOwnListing}
-                          className={`w-full button-brutal py-3 font-bold ${
+                          className={`w-full py-3 font-semibold rounded-lg transition-all ${
                             isOwnListing
-                              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                              : "bg-green-600 text-white hover:bg-green-700"
+                              ? "bg-zinc-200 text-zinc-500 cursor-not-allowed"
+                              : "btn-pro accent hover:shadow-lg"
                           }`}
                         >
                           {isOwnListing ? "YOUR LISTING" : "BUY NOW"}
@@ -328,8 +336,8 @@ export default function MarketplaceMain() {
               <h1 className="heading-brutal text-3xl mb-3!">MY LISTINGS</h1>
 
               {myListings.length === 0 ? (
-                <div className="card-brutal p-8 text-center">
-                  <p className="body-brutal text-lg text-gray-600">
+                <div className="card-pro p-8 text-center">
+                  <p className="text-body text-lg text-zinc-600">
                     You don&apos;t have any active listings.
                   </p>
                 </div>
@@ -340,85 +348,93 @@ export default function MarketplaceMain() {
                       (v) => v.id === listing.vault_id
                     );
 
+                    let yieldPercent = 0;
+                    let discountPercent = 0;
+                    if (vaultDetails) {
+                      const vaultBalance = Number(vaultDetails.balance);
+                      const priceSats = Number(listing.price_sats);
+                      yieldPercent = ((vaultBalance - priceSats) / priceSats) * 100;
+                      discountPercent = ((vaultBalance - priceSats) / vaultBalance) * 100;
+                    }
+
                     return (
                       <div
                         key={listing.id.toString()}
-                        className="card-brutal p-6 hover:shadow-lg transition-shadow"
+                        className="card-pro p-6"
                       >
-                        <div className="space-y-3 mb-4">
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Listing ID
-                            </p>
-                            <p className="mono-brutal text-sm">
-                              {listing.id.toString()}
-                            </p>
-                          </div>
-
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Vault ID
-                            </p>
-                            <p className="mono-brutal text-sm">
-                              {listing.vault_id.toString()}
-                            </p>
-                          </div>
-
-                          {vaultDetails && (
+                        <div className="space-y-4 mb-6">
+                          <div className="flex justify-between items-start">
                             <div>
-                              <p className="body-brutal text-xs text-gray-500 uppercase">
-                                Vault Balance
+                              <p className="text-label mb-1">LISTING ID</p>
+                              <p className="mono-brutal text-sm">
+                                {listing.id.toString().slice(0, 16)}...
                               </p>
-                              <p className="heading-brutal text-lg">
-                                {(
-                                  Number(vaultDetails.balance) / 100_000_000
-                                ).toFixed(8)}{" "}
-                                BTC
-                              </p>
+                            </div>
+                            <div>
+                              <p className="text-label mb-1">STATUS</p>
+                              <span
+                                className={`px-3 py-1 text-xs font-semibold rounded-full inline-block ${
+                                  "Active" in listing.status
+                                    ? "bg-green-50 text-green-700"
+                                    : "Filled" in listing.status
+                                    ? "bg-blue-50 text-blue-700"
+                                    : "bg-zinc-100 text-zinc-700"
+                                }`}
+                              >
+                                {"Active" in listing.status
+                                  ? "ACTIVE"
+                                  : "Filled" in listing.status
+                                  ? "SOLD"
+                                  : "CANCELLED"}
+                              </span>
+                            </div>
+                          </div>
+
+                          {yieldPercent > 0 && (
+                            <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold inline-block">
+                              🚀 +{yieldPercent.toFixed(1)}% YIELD
                             </div>
                           )}
 
-                          <div className="border-t-2 border-black pt-3">
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Price
-                            </p>
-                            <p className="heading-brutal text-2xl">
-                              {(
-                                Number(listing.price_sats) / 100_000_000
-                              ).toFixed(8)}{" "}
-                              BTC
-                            </p>
+                          <div className="flex justify-between">
+                            <div>
+                              <p className="text-label mb-1">VAULT ID</p>
+                              <p className="mono-brutal text-sm">
+                                #{listing.vault_id.toString()}
+                              </p>
+                            </div>
+                            {vaultDetails && (
+                              <div className="text-right">
+                                <p className="text-label mb-1">VAULT BALANCE</p>
+                                <p className="heading-brutal text-lg">
+                                  <BTCAmount sats={vaultDetails.balance} showLabel={true} />
+                                </p>
+                              </div>
+                            )}
                           </div>
 
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Status
-                            </p>
-                            <span
-                              className={`px-3 py-1 text-xs font-bold border-2 border-black inline-block ${
-                                "Active" in listing.status
-                                  ? "bg-green-200 text-green-900"
-                                  : "Filled" in listing.status
-                                  ? "bg-blue-200 text-blue-900"
-                                  : "bg-gray-200 text-gray-900"
-                              }`}
-                            >
-                              {"Active" in listing.status
-                                ? "ACTIVE"
-                                : "Filled" in listing.status
-                                ? "SOLD"
-                                : "CANCELLED"}
-                            </span>
+                          <div className="border-t border-zinc-200 pt-4">
+                            <p className="text-label mb-2">ASKING PRICE</p>
+                            <div className="flex items-center">
+                              <p className="heading-brutal text-3xl text-emerald-600">
+                                <BTCAmount sats={listing.price_sats} showLabel={true} />
+                              </p>
+                              {discountPercent > 0 && (
+                                <span className="text-xs text-zinc-500 font-medium ml-2">
+                                  ({discountPercent.toFixed(1)}% DISCOUNT)
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
 
                         <button
                           onClick={() => handleCancelListing(listing.id)}
                           disabled={!("Active" in listing.status)}
-                          className={`w-full button-brutal py-3 font-bold ${
+                          className={`w-full py-3 font-semibold rounded-lg transition-all ${
                             !("Active" in listing.status)
-                              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                              : "bg-red-600 text-white hover:bg-red-700"
+                              ? "bg-zinc-200 text-zinc-500 cursor-not-allowed"
+                              : "bg-red-600 text-white hover:bg-red-700 hover:shadow-lg"
                           }`}
                         >
                           {!("Active" in listing.status)

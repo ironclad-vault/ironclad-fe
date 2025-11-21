@@ -10,7 +10,7 @@ import TransitionButton from "@/components/navigation/TransitionButton";
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const rotatingWords = ["SECURITY", "AUTONOMY", "FREEDOM", "TRUST"];
+  const rotatingWords = ["YIELD", "LIQUIDITY", "INHERITANCE", "CONTROL"];
 
   useLayoutEffect(() => {
     if (!containerRef.current) return;
@@ -78,81 +78,63 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="min-h-screen flex items-center justify-center bg-background pt-20 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center bg-black pt-20 relative overflow-hidden"
     >
+      {/* Subtle glow effect from top */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-orange-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+
       <div className="absolute inset-0 pointer-events-none">
         <ScrollFloat
           text="BITCOIN"
           speed={0.3}
-          className="absolute top-20 left-10 opacity-10"
+          className="absolute top-20 left-10 opacity-5"
         />
         <ScrollFloat
           text="TIMELOCK"
           speed={0.4}
-          className="absolute bottom-20 right-10 opacity-10"
+          className="absolute bottom-20 right-10 opacity-5"
         />
-        <div className="absolute top-0 right-0 w-96 h-96 border-4 border-accent opacity-10 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 border-4 border-accent opacity-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 border-4 border-orange-500 opacity-5 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 border-4 border-orange-500 opacity-5 pointer-events-none" />
       </div>
 
       <div className="text-center max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col items-center gap-8 mb-8">
-            <h1 className="heading-brutal text-5xl md:text-7xl lg:text-8xl mx-auto text-center leading-tight">
-              <span className="hero-word inline-block">LOCK YOUR</span>
+            <h1 className="text-heading text-7xl md:text-8xl lg:text-9xl mx-auto text-center leading-tight text-white font-black uppercase tracking-wide">
+              <span className="hero-word inline-block">THE FIRST LIQUID</span>
               <br />
-              <span className="hero-word inline-block">BTC WITH</span>
+              <span className="hero-word inline-block">VESTING PROTOCOL</span>
+              <br />
+              <span className="hero-word inline-block text-orange-500">ON BITCOIN</span>
             </h1>
 
             <div className="hero-rotating-text w-full flex justify-center">
-              <div className="brutal-border border-4 px-8 py-6 md:px-12 md:py-8 bg-accent">
-                <RotatingText
-                  words={rotatingWords}
-                  duration={2500}
-                  className="heading-brutal text-5xl md:text-6xl lg:text-7xl text-center inline-block min-w-[180px] md:min-w-[280px] text-black font-black"
-                  splitText="LOCK YOUR BTC WITH"
-                />
+              <div className="px-3 py-1 border-2 border-orange-500 rounded transform -rotate-12 inline-block">
+                <span className="text-heading text-lg md:text-xl text-orange-500 font-black uppercase tracking-widest">
+                  YIELD
+                </span>
               </div>
             </div>
-
-            <h2 className="heading-brutal text-4xl md:text-6xl lg:text-7xl mx-auto text-center leading-tight">
-              <span className="hero-word inline-block">SECURE YOUR</span>
-              <br />
-              <span className="hero-word inline-block">VAULT</span>
-            </h2>
           </div>
 
-          <div className="hero-subcontent flex flex-col gap-12 max-w-4xl mx-auto">
-            <div className="brutal-border border-2 bg-structure px-6 md:px-8 py-6 md:py-8">
-              <p className="body-brutal text-lg md:text-xl leading-relaxed">
-                Experience{" "}
-                <span className="heading-brutal text-accent font-black">
-                  time-locked security
-                </span>
-                <br />{" "}
-                <span className="heading-brutal text-accent font-black">
-                  trustless autonomy
-                </span>
-                , and{" "}
-                <span className="heading-brutal text-accent font-black">
-                  brutalist protection
-                </span>{" "}
-                for your digital assets.
-              </p>
-            </div>
+          <div className="hero-subcontent flex flex-col gap-12 max-w-3xl mx-auto">
+            <p className="text-body text-base md:text-lg leading-relaxed text-zinc-300 max-w-2xl mx-auto font-light">
+              Charting the first <span className="text-orange-500 font-semibold">liquid vesting protocol</span> on <span className="text-orange-500 font-semibold">Bitcoin</span>. Enumerate vesting protocols, evaluate risks, and enable <span className="text-orange-500 font-semibold">decentralized retention</span> based on Bitcoin.
+            </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <TransitionButton
                 href="/vault"
-                className="button-brutal accent flex items-center space-x-2 text-lg px-10 py-6 hover:lift font-bold"
+                className="flex items-center space-x-2 text-base md:text-lg px-8 md:px-10 py-3 md:py-4 font-bold bg-orange-500 text-black hover:bg-orange-600 rounded-md transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/50 active:scale-95"
               >
-                <span>LOCK YOUR ASSETS</span>
+                <span>ACCESS PROTOCOL</span>
                 <ArrowRight className="w-5 h-5" />
               </TransitionButton>
 
               <Link
                 href="#how-it-works"
-                className="button-brutal flex items-center space-x-2 text-lg px-10 py-6 hover-lift font-bold"
+                className="flex items-center space-x-2 text-base md:text-lg px-8 md:px-10 py-3 md:py-4 font-bold border-2 border-white/40 text-white hover:border-white hover:bg-white/10 rounded-md transition-all duration-200"
               >
                 <span>LEARN MORE</span>
                 <ArrowRight className="w-5 h-5" />

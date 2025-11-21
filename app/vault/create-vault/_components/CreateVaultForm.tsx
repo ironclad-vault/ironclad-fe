@@ -20,6 +20,7 @@ function CreateVaultFormContent() {
     "months"
   );
   const [depositAmount, setDepositAmount] = useState<string>("100000");
+  const [beneficiary, setBeneficiary] = useState<string>("");
   const [createdVault, setCreatedVault] = useState<{
     vaultId: bigint;
     expectedDeposit: bigint;
@@ -69,7 +70,11 @@ function CreateVaultFormContent() {
 
     const expectedDeposit = BigInt(depositAmount);
 
-    const vault = await createVault(lockUntil, expectedDeposit);
+    const vault = await createVault(
+      lockUntil,
+      expectedDeposit,
+      beneficiary || undefined
+    );
     if (vault) {
       setCreatedVault({
         vaultId: vault.id,
@@ -100,9 +105,9 @@ function CreateVaultFormContent() {
   // Show wallet connection message if not connected
   if (!isConnected) {
     return (
-      <div className="card-brutal brutal-border border-2 p-12 text-center">
-        <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
-        <p className="body-brutal text-lg text-gray-700">
+      <div className="card-pro p-12 text-center">
+        <h2 className="text-heading text-4xl mb-4">CONNECT YOUR WALLET</h2>
+        <p className="text-body text-lg text-gray-700">
           Connect your wallet to create a new vault
         </p>
       </div>
@@ -110,17 +115,17 @@ function CreateVaultFormContent() {
   }
 
   return (
-    <div className="card-brutal brutal-border border-2 p-8 flex flex-col gap-8">
-      <h3 className="heading-brutal text-4xl">
+    <div className="card-pro p-8 flex flex-col gap-8">
+      <h3 className="text-heading text-4xl">
         {mode === "complete" ? "COMPLETE DEPOSIT" : "CREATE NEW VAULT"}
       </h3>
 
       {mode === "complete" && existingVault && (
-        <div className="brutal-border border-2 border-blue-400 bg-blue-50 p-6">
-          <p className="heading-brutal text-sm text-blue-900 mb-3">
+        <div className="rounded-lg border-2 border-blue-400 bg-blue-50 p-6">
+          <p className="text-heading text-sm text-blue-900 mb-3">
             VAULT #{existingVault.id.toString()}
           </p>
-          <div className="body-brutal text-sm text-blue-800 space-y-1">
+          <div className="text-body text-sm text-blue-800 space-y-1">
             <p>
               Status: <span className="font-bold">Pending Deposit</span>
             </p>
@@ -147,15 +152,15 @@ function CreateVaultFormContent() {
       )}
 
       {error && (
-        <div className="brutal-border border-2 border-red-500 bg-red-50 p-6">
-          <p className="body-brutal font-bold text-red-800 text-lg">ERROR: {error}</p>
+        <div className="rounded-lg border-2 border-red-500 bg-red-50 p-6">
+          <p className="text-body font-bold text-red-800 text-lg">ERROR: {error}</p>
         </div>
       )}
 
       {!createdVault && mode === "create" ? (
         <>
           <div className="mb-6">
-            <label className="body-brutal text-sm font-bold mb-2 block">
+            <label className="text-body text-sm font-bold mb-2 block">
               LOCK DURATION
             </label>
             <select
@@ -177,14 +182,31 @@ function CreateVaultFormContent() {
               <option value="60:months">5 YEARS</option>
             </select>
             {durationUnit === "seconds" && (
-              <p className="body-brutal text-xs text-orange-600 mt-1 font-bold">
+              <p className="text-body text-xs text-orange-600 mt-1 font-bold">
                 ⚠️ TESTING MODE: Vault will unlock in {lockDuration} seconds
               </p>
             )}
           </div>
 
           <div className="mb-6">
-            <label className="body-brutal text-sm font-bold mb-2 block">
+            <label className="text-body text-sm font-bold mb-2 block">
+              INHERITANCE BENEFICIARY (OPTIONAL)
+            </label>
+            <input
+              type="text"
+              className="input-brutal"
+              value={beneficiary}
+              onChange={(e) => setBeneficiary(e.target.value)}
+              placeholder="Enter Principal ID (e.g. 2vxsx-fae...)"
+              disabled={loading}
+            />
+            <p className="text-body text-xs text-gray-500 mt-1">
+              If you become inactive for &gt;6 months, this principal can claim your vault.
+            </p>
+          </div>
+
+          <div className="mb-6">
+            <label className="text-body text-sm font-bold mb-2 block">
               DEPOSIT AMOUNT (SATS)
             </label>
             <input
@@ -196,13 +218,13 @@ function CreateVaultFormContent() {
               min="1"
               step="1"
             />
-            <p className="body-brutal text-xs text-gray-600 mt-1">
+            <p className="text-body text-xs text-gray-600 mt-1">
               {(parseInt(depositAmount) / 100000000).toFixed(8)} BTC
             </p>
           </div>
 
           <button
-            className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
+            className="btn-pro accent w-full py-4 text-lg font-bold hover-lift"
             onClick={handleCreateVault}
             disabled={loading}
           >
@@ -213,14 +235,14 @@ function CreateVaultFormContent() {
         <div className="mt-6">
           {mode === "create" && (
             <div className="mb-4">
-              <label className="body-brutal text-sm font-bold mb-2 block">
+              <label className="text-body text-sm font-bold mb-2 block">
                 VAULT CREATED
               </label>
-              <div className="brutal-border border-2 border-green-400 bg-green-50 p-6">
-                <p className="body-brutal font-bold text-green-800 mb-2 text-lg">
+              <div className="rounded-lg border-2 border-green-400 bg-green-50 p-6">
+                <p className="text-body font-bold text-green-800 mb-2 text-lg">
                   ✓ Vault ID: {createdVault.vaultId.toString()}
                 </p>
-                <p className="body-brutal text-sm text-green-700">
+                <p className="text-body text-sm text-green-700">
                   Expected Deposit: {createdVault.expectedDeposit.toString()}{" "}
                   sats
                 </p>
@@ -230,7 +252,7 @@ function CreateVaultFormContent() {
 
           {mode === "complete" && (
             <div className="mb-4">
-              <label className="body-brutal text-sm font-bold mb-2 block">
+              <label className="text-body text-sm font-bold mb-2 block">
                 DEPOSIT AMOUNT (SATS)
               </label>
               <input
@@ -242,17 +264,17 @@ function CreateVaultFormContent() {
                 min="1"
                 step="1"
               />
-              <p className="body-brutal text-xs text-gray-600 mt-1">
+              <p className="text-body text-xs text-gray-600 mt-1">
                 {(parseInt(depositAmount || "0") / 100000000).toFixed(8)} BTC
               </p>
-              <p className="body-brutal text-xs text-blue-600 mt-1">
+              <p className="text-body text-xs text-blue-600 mt-1">
                 Expected: {createdVault.expectedDeposit.toLocaleString()} sats
               </p>
             </div>
           )}
 
           <button
-            className="button-brutal w-full mb-4 bg-blue-600 text-white hover:bg-blue-700"
+            className="btn-pro w-full mb-4 bg-blue-600 text-white hover:bg-blue-700"
             onClick={handleMockDeposit}
             disabled={loading || parseInt(depositAmount || "0") <= 0}
           >
@@ -266,10 +288,10 @@ function CreateVaultFormContent() {
           {mode === "create" && (
             <>
               <div className="bg-yellow-100 border-2 border-yellow-500 p-4">
-                <p className="body-brutal font-bold text-yellow-800 mb-2">
+                <p className="text-body font-bold text-yellow-800 mb-2">
                   DEVELOPMENT MODE
                 </p>
-                <p className="body-brutal text-sm text-yellow-700">
+                <p className="text-body text-sm text-yellow-700">
                   In production, you would send Bitcoin to a generated address.
                   For development, click &apos;Mock Deposit&apos; above to
                   simulate the deposit.
@@ -277,7 +299,7 @@ function CreateVaultFormContent() {
               </div>
 
               <div className="mt-4 bg-red-100 border-2 border-red-500 p-4">
-                <p className="body-brutal font-bold text-red-800">
+                <p className="text-body font-bold text-red-800">
                   PRODUCTION WARNING: SEND BTC ONLY. DO NOT SEND CKBTC OR OTHER
                   ASSETS.
                 </p>
@@ -287,10 +309,10 @@ function CreateVaultFormContent() {
 
           {mode === "complete" && existingVault && (
             <div className="bg-yellow-100 border-2 border-yellow-500 p-4">
-              <p className="body-brutal font-bold text-yellow-800 mb-2">
+              <p className="text-body font-bold text-yellow-800 mb-2">
                 📍 DEPOSIT INSTRUCTIONS
               </p>
-              <div className="body-brutal text-sm text-yellow-700 space-y-2">
+              <div className="text-body text-sm text-yellow-700 space-y-2">
                 <p>
                   1. Send exactly{" "}
                   <span className="font-bold">
@@ -322,7 +344,7 @@ function CreateVaultFormContent() {
 export default function CreateVaultForm() {
   return (
     <Suspense
-      fallback={<div className="card-brutal p-8 text-center">Loading...</div>}
+      fallback={<div className="card-pro p-8 text-center">Loading...</div>}
     >
       <CreateVaultFormContent />
     </Suspense>

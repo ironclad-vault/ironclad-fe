@@ -105,7 +105,7 @@ export default function ScrollStack({
             <div
               key={index}
               ref={(el: HTMLDivElement | null) => { cardsRef.current[index] = el }}
-              className="card-brutal absolute left-0 right-0 mx-auto"
+              className="card-pro absolute left-0 right-0 mx-auto"
               style={{
                 width: "90%",
                 maxWidth: "800px",

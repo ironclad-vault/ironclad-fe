@@ -1,6 +1,7 @@
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
 import Hero from './components/HeroSection'
+import ProtocolStatsSection from './components/ProtocolStatsSection'
 import WhyIroncladLockSection from './components/WhyIroncladSection'
 import HowItWorksSection from './components/HowItWorksSection'
 import TestimonialStackSection from './components/TestimonialStackSection'
@@ -13,6 +14,7 @@ export default function LandingPage() {
       <Header />
       <main>
         <Hero />
+        <ProtocolStatsSection />
         <WhyIroncladLockSection />
         <HowItWorksSection />
         <TestimonialStackSection />

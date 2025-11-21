@@ -5,6 +5,7 @@ import { useVaults } from "@/hooks/ironclad/useVaults";
 import { useWallet } from "@/components/wallet/useWallet";
 import { useAutoReinvest } from "@/hooks/ironclad/useAutoReinvest";
 import TransitionButton from "@/components/navigation/TransitionButton";
+import BTCAmount from "@/components/ui/BTCAmount";
 import type { Vault } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 import type { AutoReinvestConfigDTO } from "@/lib/ironclad-service";
 import { Clock, Lock, Hourglass, Unlock, Timer } from "lucide-react";
@@ -41,19 +42,36 @@ function VaultCard({
   // Check if vault needs unlock button
   const needsUnlock = isTimeExpired && status === "ActiveLocked";
 
+  // Calculate progress percentage for time-lock progress bar
+  const calculateProgress = () => {
+    // Assuming vault was created at lock_until - timeRemaining
+    // For simplicity, we'll use lock_until as the end and estimate start as 2 weeks before
+    const lockTimestamp = Number(vault.lock_until);
+    const estStartTimestamp = lockTimestamp - (14 * 24 * 60 * 60); // Estimate 2 weeks before lock
+    const currentTimestamp = now.getTime() / 1000;
+
+    const totalDuration = lockTimestamp - estStartTimestamp;
+    const elapsed = currentTimestamp - estStartTimestamp;
+    const percentage = Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
+
+    return percentage;
+  };
+
+  const progressPercentage = status === "ActiveLocked" ? calculateProgress() : 100;
+
   // Get badge color based on plan status
   const getAutoReinvestBadgeColor = (status: "Active" | "Cancelled" | "Error" | "Paused"): string => {
     switch (status) {
       case "Active":
-        return "bg-blue-100 text-blue-900 border-blue-300";
+        return "bg-blue-50 text-blue-700";
       case "Paused":
-        return "bg-gray-100 text-gray-900 border-gray-300";
+        return "bg-zinc-100 text-zinc-700";
       case "Error":
-        return "bg-red-100 text-red-900 border-red-300";
+        return "bg-red-50 text-red-700";
       case "Cancelled":
-        return "bg-yellow-100 text-yellow-900 border-yellow-300";
+        return "bg-amber-50 text-amber-700";
       default:
-        return "bg-gray-100 text-gray-900 border-gray-300";
+        return "bg-zinc-100 text-zinc-700";
     }
   };
 
@@ -89,113 +107,120 @@ function VaultCard({
   const timeRemaining = getTimeRemaining();
 
   return (
-    <div className="card-brutal brutal-border border-2 p-8 hover:border-accent transition-all duration-300 hover-lift relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-8 h-8 border-2 border-accent opacity-0 hover:opacity-100 transition-opacity duration-300" />
-      <div className="flex justify-between items-start mb-6">
-        <h3 className="heading-brutal text-2xl">VAULT #{vault.id.toString()}</h3>
+    <div className="card-pro relative overflow-hidden">
+      <div className="flex justify-between items-start mb-4">
+        <h3 className="heading-brutal text-xl font-semibold">Vault #{vault.id.toString()}</h3>
         <span
-          className={`px-4 py-2 text-xs font-black brutal-border border-2 ${statusColor}`}
+          className={`px-3 py-1 text-xs font-semibold rounded-full flex items-center gap-2 ${statusColor}`}
         >
+          {status === "ActiveLocked" && (
+            <span className="status-pulse status-dot bg-green-500"></span>
+          )}
           {statusLabel}
         </span>
       </div>
 
+      {/* Progress Bar */}
+      {status === "ActiveLocked" && (
+        <div className="progress-bar-container mb-4">
+          <div className="progress-bar-fill" style={{ width: `${progressPercentage}%` }}></div>
+        </div>
+      )}
+
       {/* Auto-Reinvest Plan Badge */}
       {autoReinvestConfig && (
-        <div className="mb-4">
+        <div className="mb-5 pb-4 border-b border-zinc-100">
           {autoReinvestConfig.planStatus === "Active" && (
-            <div className={`px-3 py-2 text-xs font-bold border-2 rounded ${getAutoReinvestBadgeColor("Active")}`}>
+            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Active")}`}>
               <p className="flex items-center gap-1 mb-1">
                 📅 Auto-Reinvest Active
               </p>
-              <p className="text-xs opacity-90">Execution #{Number(autoReinvestConfig.executionCount)}</p>
+              <p className="text-xs opacity-75">Execution #{Number(autoReinvestConfig.executionCount)}</p>
               {nextCycleTimestamp && nextCycleTimestamp > 0 && (
-                <p className="text-xs opacity-90">Next: {formatNextCycleTime(nextCycleTimestamp)}</p>
+                <p className="text-xs opacity-75">Next: {formatNextCycleTime(nextCycleTimestamp)}</p>
               )}
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Paused" && (
-            <div className={`px-3 py-2 text-xs font-bold border-2 rounded ${getAutoReinvestBadgeColor("Paused")}`}>
+            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Paused")}`}>
               <p className="flex items-center gap-1">⏸️ Auto-Reinvest Paused</p>
-              <p className="text-xs opacity-90">Scheduled but waiting</p>
+              <p className="text-xs opacity-75">Scheduled but waiting</p>
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Error" && (
-            <div className={`px-3 py-2 text-xs font-bold border-2 rounded ${getAutoReinvestBadgeColor("Error")}`}>
+            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Error")}`}>
               <p className="flex items-center gap-1 mb-1">❌ Auto-Reinvest Error</p>
               {autoReinvestConfig.errorMessage && (
-                <p className="text-xs opacity-90">Reason: {autoReinvestConfig.errorMessage}</p>
+                <p className="text-xs opacity-75">Reason: {autoReinvestConfig.errorMessage}</p>
               )}
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Cancelled" && (
-            <div className={`px-3 py-2 text-xs font-bold border-2 rounded ${getAutoReinvestBadgeColor("Cancelled")}`}>
+            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Cancelled")}`}>
               <p className="flex items-center gap-1">🛑 Auto-Reinvest Cancelled</p>
-              <p className="text-xs opacity-90">Plan ended</p>
+              <p className="text-xs opacity-75">Plan ended</p>
             </div>
           )}
         </div>
       )}
 
-      <div className="space-y-3 body-brutal text-sm mb-4">
-        <div className="flex justify-between">
-          <span className="text-gray-600">Balance:</span>
-          <span className="font-bold">{formatSats(vault.balance)}</span>
+      <div className="space-y-4 text-body text-sm mb-5">
+        <div className="flex justify-between items-baseline">
+          <span className="text-label">BALANCE</span>
+          <BTCAmount sats={vault.balance} showLabel={true} className="text-right" />
         </div>
 
         {vault.expected_deposit && (
-          <div className="flex justify-between">
-            <span className="text-gray-600">Expected Deposit:</span>
-            <span className="font-bold">
-              {formatSats(vault.expected_deposit)}
-            </span>
+          <div className="flex justify-between items-baseline">
+            <span className="text-label">EXPECTED DEPOSIT</span>
+            <BTCAmount sats={vault.expected_deposit} showLabel={true} className="text-right" />
           </div>
         )}
 
-        <div className="flex justify-between">
-          <span className="text-gray-600">Lock Until:</span>
-          <span className="font-bold">
+        <div className="flex justify-between items-baseline">
+          <span className="text-label">LOCK UNTIL</span>
+          <span className="font-semibold text-right">
             {formatVaultDate(Number(vault.lock_until))}
           </span>
         </div>
 
         {status === "ActiveLocked" && timeRemaining && (
-          <div className="bg-blue-50 p-2 rounded border-2 border-blue-200">
-            <p className="text-xs font-bold text-blue-900 flex flex-row items-center gap-1">
-              <Timer /> {timeRemaining.days}d {timeRemaining.hours}h{" "}
+          <div className="bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+            <p className="text-xs font-semibold text-blue-900 flex flex-row items-center gap-1">
+              <Timer className="w-4 h-4" /> {timeRemaining.days}d {timeRemaining.hours}h{" "}
               {timeRemaining.minutes}m remaining
             </p>
           </div>
         )}
 
         {needsUnlock && (
-          <div className="bg-green-50 p-2 rounded border-2 border-green-200">
-            <p className="text-xs font-bold text-green-900">
+          <div className="bg-green-50 px-3 py-2 rounded-lg border border-green-200">
+            <p className="text-xs font-semibold text-green-900">
               ✓ Ready to unlock - Click UNLOCK below
             </p>
           </div>
         )}
 
-        <div className="flex justify-between">
-          <span className="text-gray-600">BTC Address:</span>
-          <span className="font-mono text-xs">
+        <div className="flex justify-between items-baseline pt-2">
+          <span className="text-label">BTC ADDRESS</span>
+          <span className="font-mono text-xs text-right">
             {vault.btc_address.slice(0, 12)}...
           </span>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 pt-4 border-t border-zinc-100">
         {/* Primary Actions */}
         <div className="flex gap-2">
           {status === "Unlockable" && (
             <TransitionButton
               href="/vault/withdraw-vaults"
               suppressTransition
-              className="flex-1 button-brutal py-2 text-sm bg-green-600 text-white hover:bg-green-700"
+              className="flex-1 button-brutal accent py-2 text-sm font-semibold"
             >
               WITHDRAW
             </TransitionButton>
@@ -204,7 +229,7 @@ function VaultCard({
             <TransitionButton
               href={`/vault/create-vault?vaultId=${vault.id.toString()}`}
               suppressTransition
-              className="flex-1 button-brutal py-2 text-sm bg-blue-600 text-white hover:bg-blue-700"
+              className="flex-1 button-brutal accent py-2 text-sm font-semibold"
             >
               COMPLETE
             </TransitionButton>
@@ -212,7 +237,7 @@ function VaultCard({
           {needsUnlock && onUnlockClick && (
             <button
               onClick={() => onUnlockClick(vault.id)}
-              className="flex-1 button-brutal py-2 text-sm bg-purple-600 text-white hover:bg-purple-700 font-bold"
+              className="flex-1 button-brutal accent py-2 text-sm font-semibold"
             >
               UNLOCK
             </button>
@@ -224,7 +249,7 @@ function VaultCard({
           <TransitionButton
             href={`/vault/${vault.id.toString()}`}
             suppressTransition
-            className="flex-1 button-brutal py-2 text-sm border-2 border-gray-300 hover:bg-gray-50"
+            className="flex-1 button-brutal py-2 text-sm font-semibold border border-zinc-200 text-zinc-700 hover:bg-zinc-50"
           >
             DETAILS
           </TransitionButton>
@@ -344,9 +369,9 @@ export default function MyVaultsMain() {
           <div className="card-brutal brutal-border border-2 mb-8 p-8">
             <div className="flex justify-between items-start mb-6 pb-6 border-b-2 border-accent">
               <div>
-                <h1 className="heading-brutal text-5xl mb-2">MY VAULTS</h1>
+                <h1 className="heading-brutal text-5xl mb-2">DASHBOARD</h1>
                 <p className="body-brutal text-lg text-gray-700 font-semibold">
-                  {vaults.length} {vaults.length === 1 ? "vault" : "vaults"} found
+                  {vaults.length} {vaults.length === 1 ? "position" : "positions"} found
                 </p>
               </div>
               <button
@@ -363,7 +388,7 @@ export default function MyVaultsMain() {
               suppressTransition
               className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
             >
-              + CREATE NEW VAULT
+              + MINT NEW BOND
             </TransitionButton>
 
             {/* Auto-refresh toggle */}
@@ -410,16 +435,16 @@ export default function MyVaultsMain() {
           {/* Empty State */}
           {!loading && vaults.length === 0 && !error && (
             <div className="card-brutal brutal-border border-2 p-12 text-center">
-              <h2 className="heading-brutal text-4xl mb-4">NO VAULTS YET</h2>
+              <h2 className="heading-brutal text-4xl mb-4">NO ACTIVE POSITIONS</h2>
               <p className="body-brutal text-lg text-gray-700 mb-8">
-                Create your first vault to start securing your Bitcoin
+                Mint a new Bond or buy discounted BTC on the market.
               </p>
               <TransitionButton
                 href="/vault/create-vault"
                 suppressTransition
                 className="button-brutal accent px-8 py-4 text-lg font-bold hover-lift"
               >
-                CREATE VAULT
+                MINT BOND
               </TransitionButton>
             </div>
           )}

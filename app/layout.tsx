@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Anton, IBM_Plex_Mono } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, IBM_Plex_Mono, Oswald } from "next/font/google";
 import "./globals.css";
 import AnimatedRouter from "@/components/navigation/AnimatedRouter";
 import AppWrapper from "./wrapper";
@@ -10,9 +10,15 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const anton = Anton({
-  weight: "400",
-  variable: "--font-anton",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plus-jakarta-sans",
+  subsets: ["latin"],
+});
+
+const oswald = Oswald({
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-oswald",
   subsets: ["latin"],
 });
 
@@ -36,7 +42,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning
-        className={`${inter.variable} ${anton.variable} ${ibmPlexMono.variable}`}
+        className={`${inter.variable} ${plusJakartaSans.variable} ${oswald.variable} ${ibmPlexMono.variable}`}
       >
         <AppWrapper>
           <AnimatedRouter>{children}</AnimatedRouter>
@@ -48,30 +54,31 @@ export default function RootLayout({
           toastOptions={{
             duration: 4000,
             style: {
-              background: "#000",
-              color: "#fff",
-              border: "1px solid #fff",
+              background: "#18181B",
+              color: "#FFFFFF",
+              border: "1px solid #F7931A",
               padding: "16px",
               fontFamily: "var(--font-ibm-plex-mono)",
+              borderRadius: "7px",
             },
             success: {
               duration: 3000,
               iconTheme: {
-                primary: "#0f0",
-                secondary: "#000",
+                primary: "#10B981",
+                secondary: "#18181B",
               },
             },
             error: {
               duration: 5000,
               iconTheme: {
-                primary: "#f00",
-                secondary: "#000",
+                primary: "#EF4444",
+                secondary: "#18181B",
               },
             },
             loading: {
               iconTheme: {
-                primary: "#fff",
-                secondary: "#000",
+                primary: "#F7931A",
+                secondary: "#18181B",
               },
             },
           }}

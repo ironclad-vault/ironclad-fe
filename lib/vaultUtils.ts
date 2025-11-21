@@ -153,6 +153,43 @@ export function formatBTC(sats: bigint | number): string {
 }
 
 /**
+ * Format BTC amount dengan "diminished decimals" untuk fintech UI
+ * Memisahkan significant digits dari trailing decimals untuk styling terpisah
+ * @param sats - Amount dalam satoshi
+ * @returns Object dengan major (significant digits) dan minor (trailing decimals)
+ * Example: 1.50000000 -> { major: "1.50", minor: "000000" }
+ */
+export function formatBTCWithDiminishedDecimals(sats: bigint | number): {
+  major: string;
+  minor: string;
+  full: string;
+} {
+  const amount = typeof sats === "bigint" ? Number(sats) : sats;
+  const btc = amount / 100_000_000;
+  const fullStr = btc.toFixed(8);
+
+  // Find where significant digits end
+  const trimmed = fullStr.replace(/0+$/, "");
+
+  if (trimmed.includes(".")) {
+    const parts = trimmed.split(".");
+    const major = trimmed;
+    const minor = fullStr.slice(major.length);
+    return {
+      major,
+      minor,
+      full: fullStr,
+    };
+  }
+
+  return {
+    major: trimmed,
+    minor: fullStr.slice(trimmed.length),
+    full: fullStr,
+  };
+}
+
+/**
  * Check apakah vault bisa di-unlock
  * Akan return true jika:
  * 1. Backend status = Unlockable, ATAU

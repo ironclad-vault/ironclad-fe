@@ -88,6 +88,7 @@ export default function TestimonialStackSection() {
         card,
         {
           y: index * finalStackGap,
+          zIndex: cards.length - index,
           rotate: cardRotations[index % cardRotations.length],
           scale: 1,
           opacity: 1,
@@ -109,14 +110,14 @@ export default function TestimonialStackSection() {
   }, []);
 
   return (
-    <section id="testimonials" className="py-20 bg-(--color-bg-white)">
+    <section id="testimonials" className="py-20 bg-zinc-950">
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <div className="text-center mb-16 brutal-border border-2 border-accent py-12 px-6">
-          <h2 className="heading-brutal text-5xl md:text-7xl mb-4">
+        <div className="text-center mb-16 card-pro border-accent py-12 px-6">
+          <h2 className="text-heading text-5xl md:text-7xl mb-4 text-white">
             TRUSTED BY USERS
           </h2>
-          <p className="body-brutal text-lg max-w-3xl mx-auto text-gray-700">
+          <p className="text-body text-lg max-w-3xl mx-auto text-zinc-400">
             Real experiences from Bitcoin enthusiasts, developers, and security
             experts who have secured their assets with Ironclad.
           </p>
@@ -132,7 +133,7 @@ export default function TestimonialStackSection() {
           >
             {/* Base Card - Bottom card in the stack */}
             <div
-              className="testimonial-card absolute brutal-border border-2 bg-structure p-12 md:p-16 flex flex-col justify-center items-center text-center"
+              className="testimonial-card absolute card-pro bg-structure p-12 md:p-16 flex flex-col justify-center items-center text-center"
               style={{
                 left: "50%",
                 top: "50%",
@@ -145,14 +146,14 @@ export default function TestimonialStackSection() {
                 backfaceVisibility: "hidden",
               }}
             >
-              <blockquote className="heading-brutal text-2xl md:text-4xl leading-tight mb-10">
+              <blockquote className="text-heading text-2xl md:text-4xl leading-tight mb-10">
                 &ldquo;{testimonials[testimonials.length - 1].content}&rdquo;
               </blockquote>
               <div className="mt-auto border-t-2 border-accent pt-6 w-full">
-                <h3 className="heading-brutal text-2xl md:text-3xl mb-2">
+                <h3 className="text-heading text-2xl md:text-3xl mb-2">
                   {testimonials[testimonials.length - 1].name}
                 </h3>
-                <p className="body-brutal text-sm uppercase tracking-wider text-accent font-bold">
+                <p className="text-body text-sm tracking-wider text-accent font-bold">
                   {testimonials[testimonials.length - 1].role}
                 </p>
               </div>
@@ -166,7 +167,7 @@ export default function TestimonialStackSection() {
               {testimonials.slice(0, -1).map((testimonial, index) => (
                 <div
                   key={index}
-                  className="testimonial-card absolute brutal-border border-2 bg-white p-12 md:p-16 flex flex-col justify-center items-center text-center hover-lift"
+                  className="testimonial-card absolute card-pro bg-zinc-900 p-12 md:p-16 flex flex-col justify-center items-center text-center hover-lift"
                   style={{
                     left: "50%",
                     top: "50%",
@@ -179,14 +180,14 @@ export default function TestimonialStackSection() {
                     backfaceVisibility: "hidden",
                   }}
                 >
-                  <blockquote className="heading-brutal text-2xl md:text-4xl leading-tight mb-10">
+                  <blockquote className="text-heading text-2xl md:text-4xl leading-tight mb-10">
                     &ldquo;{testimonial.content}&rdquo;
                   </blockquote>
                   <div className="mt-auto border-t-2 border-accent pt-6 w-full">
-                    <h3 className="heading-brutal text-2xl md:text-3xl mb-2">
+                    <h3 className="text-heading text-2xl md:text-3xl mb-2">
                       {testimonial.name}
                     </h3>
-                    <p className="body-brutal text-sm uppercase tracking-wider text-accent font-bold">
+                    <p className="text-body text-sm tracking-wider text-accent font-bold">
                       {testimonial.role}
                     </p>
                   </div>

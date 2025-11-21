@@ -2,7 +2,6 @@
   display: inline-block;
   position: relative;
   text-align: center;
-  width: 100%;
 }
 
 .text-rotate-sr-only {
@@ -20,60 +19,33 @@
 .rotating-word-container {
   position: relative;
   display: inline-block;
-  width: 100%;
   text-align: center;
 }
 
 .rotating-word {
-  display: inline-block;
+  display: block;
   text-align: center;
-  width: 100%;
-  left: 0 !important;
-  top: 0 !important;
   text-transform: uppercase;
   font-weight: 900;
   color: #000000 !important;
-  white-space: nowrap;
   text-shadow: none;
 }
 
-/* Ensure proper text alignment and spacing */
+/* Hero rotating text container */
 .hero-rotating-text {
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 1em;
-  width: 100%;
-}
-
-/* Dynamic sizing for different word lengths */
-.rotating-word[data-length="short"] {
-  font-size: 0.9em;
-}
-
-.rotating-word[data-length="medium"] {
-  font-size: 1em;
-}
-
-.rotating-word[data-length="long"] {
-  font-size: 0.85em;
 }
 
 /* Smooth transitions for symmetrical appearance */
 .rotating-word {
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-in-out;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .rotating-word-container {
-    width: 100%;
-    padding: 0 1rem;
-  }
-
   .rotating-word {
     font-size: clamp(1.2rem, 5vw, 2.5rem);
-    white-space: normal;
-    word-wrap: break-word;
   }
 }
