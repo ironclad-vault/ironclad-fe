@@ -156,18 +156,18 @@ export default function WithdrawVaultsMain() {
   if (withdrawableVaults.length === 0) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal brutal-border border-2 p-8 text-center">
-          <h2 className="heading-brutal text-3xl mb-4">
+        <div className="card-pro p-8 text-center">
+          <h2 className="text-heading text-3xl mb-4">
             NO WITHDRAWABLE VAULTS
           </h2>
-          <p className="body-brutal text-lg text-gray-700 mb-8">
+          <p className="text-body text-lg text-gray-700 mb-8">
             You don&apos;t have any vaults ready for withdrawal.
           </p>
-          <div className="card-brutal brutal-border border-2 border-blue-400 p-6 bg-blue-50 mb-8">
-            <p className="body-brutal text-sm text-blue-900 mb-2 font-bold">
+          <div className="card-pro border-blue-400 p-6 bg-blue-50 mb-8">
+            <p className="text-body text-sm text-blue-900 mb-2 font-bold">
               💡 <strong>Need to withdraw?</strong>
             </p>
-            <p className="body-brutal text-sm text-blue-800">
+            <p className="text-body text-sm text-blue-800">
               If you have locked vaults, visit <strong>My Vaults</strong> page to unlock them first.
               Once unlocked, they will appear here for withdrawal.
             </p>
@@ -175,7 +175,7 @@ export default function WithdrawVaultsMain() {
           <TransitionButton
             href="/vault"
             suppressTransition
-            className="button-brutal accent px-8 py-4 text-lg font-bold hover-lift"
+            className="btn-pro accent px-8 py-4 text-lg font-bold hover-lift"
           >
             GO TO MY VAULTS
           </TransitionButton>
