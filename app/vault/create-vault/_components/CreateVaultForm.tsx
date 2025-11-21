@@ -252,7 +252,7 @@ function CreateVaultFormContent() {
           )}
 
           <button
-            className="button-brutal w-full mb-4 bg-blue-600 text-white hover:bg-blue-700"
+            className="btn-pro w-full mb-4 bg-blue-600 text-white hover:bg-blue-700"
             onClick={handleMockDeposit}
             disabled={loading || parseInt(depositAmount || "0") <= 0}
           >
@@ -266,10 +266,10 @@ function CreateVaultFormContent() {
           {mode === "create" && (
             <>
               <div className="bg-yellow-100 border-2 border-yellow-500 p-4">
-                <p className="body-brutal font-bold text-yellow-800 mb-2">
+                <p className="text-body font-bold text-yellow-800 mb-2">
                   DEVELOPMENT MODE
                 </p>
-                <p className="body-brutal text-sm text-yellow-700">
+                <p className="text-body text-sm text-yellow-700">
                   In production, you would send Bitcoin to a generated address.
                   For development, click &apos;Mock Deposit&apos; above to
                   simulate the deposit.
