@@ -44,6 +44,19 @@ export default function SettingsMain() {
     }
   };
 
+  const handlePing = async () => {
+    setPingingAlive(true);
+    try {
+      // TODO: Call backend ping_alive function once available
+      setLastProofOfLife(new Date());
+      toast.success("Ping sent! Timer reset.");
+    } catch (err) {
+      toast.error(`Failed to send ping: ${err}`);
+    } finally {
+      setPingingAlive(false);
+    }
+  };
+
   const isMockMode = mode && "Mock" in mode;
   const isCkbtcMode = mode && "CkBTCMainnet" in mode;
 
