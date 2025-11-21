@@ -117,7 +117,7 @@ export default function Footer() {
             {/* Right Side: Status Indicator & Social Icons */}
             <div className="flex items-center gap-6">
               {/* System Status */}
-              <div className="flex items-center gap-2 text-xs text-zinc-500 font-medium">
+              <div className="flex items-center gap-2 text-xs text-zinc-400 font-medium">
                 <div className="w-2 h-2 bg-green-500 rounded-full" />
                 <span>System Status: Operational</span>
               </div>
@@ -126,21 +126,21 @@ export default function Footer() {
               <div className="flex gap-4">
                 <a
                   href="#"
-                  className="text-zinc-500 hover:text-zinc-900 transition-colors duration-200"
+                  className="text-zinc-400 hover:text-orange-500 transition-colors duration-200"
                   aria-label="Twitter"
                 >
                   <Twitter className="w-4 h-4" />
                 </a>
                 <a
                   href="#"
-                  className="text-zinc-500 hover:text-zinc-900 transition-colors duration-200"
+                  className="text-zinc-400 hover:text-orange-500 transition-colors duration-200"
                   aria-label="Discord"
                 >
                   <MessageCircle className="w-4 h-4" />
                 </a>
                 <a
                   href="#"
-                  className="text-zinc-500 hover:text-zinc-900 transition-colors duration-200"
+                  className="text-zinc-400 hover:text-orange-500 transition-colors duration-200"
                   aria-label="GitHub"
                 >
                   <Github className="w-4 h-4" />
