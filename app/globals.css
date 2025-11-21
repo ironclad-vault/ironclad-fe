@@ -116,23 +116,23 @@ body {
 .card-brutal {
   background: var(--color-bg-white) !important;
   border: var(--border-width) solid var(--color-structure) !important;
-  border-radius: 12px !important;
-  padding: 24px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+  padding: 28px !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
   transition: all 0.2s !important;
 }
 
 .card-brutal:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
-  border-color: #CBD5E1 !important;
+  border-color: var(--color-text-secondary) !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08) inset !important;
 }
 
 .card-brutal-dark {
-  background: #F1F5F9 !important;
+  background: var(--color-structure-light) !important;
   border: var(--border-width) solid var(--color-structure) !important;
-  border-radius: 12px !important;
-  padding: 24px !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 10px !important;
+  padding: 28px !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
 }
 
 .btn-pro {
