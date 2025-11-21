@@ -116,11 +116,11 @@ function CreateVaultFormContent() {
       </h3>
 
       {mode === "complete" && existingVault && (
-        <div className="brutal-border border-2 border-blue-400 bg-blue-50 p-6">
-          <p className="heading-brutal text-sm text-blue-900 mb-3">
+        <div className="rounded-lg border-2 border-blue-400 bg-blue-50 p-6">
+          <p className="text-heading text-sm text-blue-900 mb-3">
             VAULT #{existingVault.id.toString()}
           </p>
-          <div className="body-brutal text-sm text-blue-800 space-y-1">
+          <div className="text-body text-sm text-blue-800 space-y-1">
             <p>
               Status: <span className="font-bold">Pending Deposit</span>
             </p>
