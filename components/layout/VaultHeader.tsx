@@ -70,7 +70,7 @@ export default function VaultHeader() {
                 />
               </div>
             </div>
-            <div className="heading-brutal text-xl group-hover:text-accent transition-colors duration-300">
+            <div className="heading-brutal text-xl text-white group-hover:text-orange-500 transition-colors duration-300">
               IRONCLAD
             </div>
           </Link>
