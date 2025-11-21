@@ -2,7 +2,6 @@
   display: inline-block;
   position: relative;
   text-align: center;
-  width: 100%;
 }
 
 .text-rotate-sr-only {
@@ -20,20 +19,15 @@
 .rotating-word-container {
   position: relative;
   display: inline-block;
-  width: 100%;
   text-align: center;
 }
 
 .rotating-word {
-  display: inline-block;
+  display: block;
   text-align: center;
-  width: 100%;
-  left: 0 !important;
-  top: 0 !important;
   text-transform: uppercase;
   font-weight: 900;
   color: #000000 !important;
-  white-space: nowrap;
   text-shadow: none;
 }
 
