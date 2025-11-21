@@ -202,7 +202,7 @@ function CreateVaultFormContent() {
           </div>
 
           <button
-            className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
+            className="btn-pro accent w-full py-4 text-lg font-bold hover-lift"
             onClick={handleCreateVault}
             disabled={loading}
           >
