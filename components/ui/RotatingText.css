@@ -40,22 +40,9 @@
   width: 100%;
 }
 
-/* Dynamic sizing for different word lengths */
-.rotating-word[data-length="short"] {
-  font-size: 0.9em;
-}
-
-.rotating-word[data-length="medium"] {
-  font-size: 1em;
-}
-
-.rotating-word[data-length="long"] {
-  font-size: 0.85em;
-}
-
 /* Smooth transitions for symmetrical appearance */
 .rotating-word {
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-in-out;
 }
 
 /* Responsive adjustments */
