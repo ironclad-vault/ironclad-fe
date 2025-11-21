@@ -56,7 +56,7 @@ export function ConnectWalletButton() {
     return (
       <div className="flex items-center gap-3">
         <div className="px-3 py-1 bg-blue-50 border border-blue-200 rounded-md">
-          <span className="text-sm font-mono text-blue-900">
+          <span className="text-sm font-mono text-accent">
             {truncatePrincipal(principalText)}
           </span>
           {walletType && (
@@ -85,7 +85,7 @@ export function ConnectWalletButton() {
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-6!">
               <h2 className="text-2xl font-bold text-gray-900">Connect Wallet</h2>
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -109,7 +109,7 @@ export function ConnectWalletButton() {
             </div>
 
             {error && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+              <div className="mb-4! p-3 bg-red-50 border border-red-200 rounded-md">
                 <p className="text-sm text-red-800">{error}</p>
               </div>
             )}

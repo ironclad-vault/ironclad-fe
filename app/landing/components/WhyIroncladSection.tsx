@@ -78,15 +78,15 @@ function FeatureCard({
     >
       <div className="absolute top-0 right-0 w-16 h-16 border-2 border-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      <div className="relative z-10 w-20 h-20 bg-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 rounded-lg">
+      <div className="relative z-10 w-20 h-20 bg-orange-500 flex items-center justify-center mb-6! group-hover:scale-110 transition-all duration-300 rounded-lg">
         <Icon className="w-10 h-10 text-white font-bold" />
       </div>
 
-      <h3 className="relative z-10 text-heading text-2xl mb-3 text-white group-hover:text-orange-500 transition-colors duration-300">
+      <h3 className="relative z-10 text-heading text-2xl mb-3! text-white group-hover:text-orange-500 transition-colors duration-300">
         {feature.title}
       </h3>
 
-      <p className="relative z-10 text-body text-sm mb-6 leading-relaxed text-zinc-400">
+      <p className="relative z-10 text-body text-sm mb-6! leading-relaxed text-zinc-400">
         {feature.description}
       </p>
 
@@ -134,8 +134,8 @@ export default function WhyIroncladSection() {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Title */}
-        <div ref={titleRef} className="text-center mb-16 card-pro border-orange-500 py-12 px-6">
-          <h2 className="text-heading text-5xl md:text-7xl mb-4 text-white">
+        <div ref={titleRef} className="text-center mb-16! card-pro border-orange-500 py-12 px-6">
+          <h2 className="text-heading text-5xl md:text-7xl mb-4! text-white">
             PROTOCOL FEATURES
           </h2>
           <p className="text-body text-lg max-w-3xl mx-auto text-zinc-400">
@@ -146,7 +146,7 @@ export default function WhyIroncladSection() {
         {/* Feature Highlights */}
         <div
           ref={highlightsRef}
-          className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-20"
+          className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-20!"
         >
           {[
             "LIQUID",
@@ -167,7 +167,7 @@ export default function WhyIroncladSection() {
         </div>
 
         {/* Feature Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto mb-20!">
           {features.map((feature, index) => (
             <FeatureCard key={index} feature={feature} index={index} />
           ))}

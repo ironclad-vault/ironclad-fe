@@ -91,8 +91,8 @@ export default function MarketplaceMain() {
   if (!isConnected) {
     return (
       <div className="card-brutal brutal-border border-2 p-8 text-center mx-auto">
-        <h2 className="heading-brutal text-3xl mb-4">CONNECT YOUR WALLET</h2>
-        <p className="body-brutal text-lg text-gray-300">
+        <h2 className="heading-brutal text-3xl mb-4!">CONNECT YOUR WALLET</h2>
+        <p className="body-brutal text-lg text-accent">
           Please connect your wallet to access the marketplace.
         </p>
       </div>
@@ -102,7 +102,7 @@ export default function MarketplaceMain() {
   if (loading || vaultsLoading) {
     return (
       <div className="card-brutal brutal-border border-2 p-8 text-center mx-auto">
-        <p className="body-brutal text-lg text-gray-300">
+        <p className="body-brutal text-lg text-accent">
           Loading marketplace...
         </p>
       </div>
@@ -119,7 +119,7 @@ export default function MarketplaceMain() {
             className={`flex-1 px-6 py-5 font-bold heading-brutal border-r-2 border-black transition-all hover-lift ${
               activeTab === "browse"
                 ? "bg-accent text-black"
-                : "bg-white hover:bg-gray-100"
+                : "bg-black hover:bg-black/50"
             }`}
           >
             <ShoppingCart className="inline mr-2" size={18} />
@@ -130,7 +130,7 @@ export default function MarketplaceMain() {
             className={`flex-1 px-6 py-5 font-bold heading-brutal border-r-2 border-black transition-all hover-lift ${
               activeTab === "create"
                 ? "bg-accent text-black"
-                : "bg-white hover:bg-gray-100"
+                : "bg-black hover:bg-black/50"
             }`}
           >
             <Tag className="inline mr-2" size={18} />
@@ -141,7 +141,7 @@ export default function MarketplaceMain() {
             className={`flex-1 px-6 py-5 font-bold heading-brutal transition-all hover-lift ${
               activeTab === "my-listings"
                 ? "bg-accent text-black"
-                : "bg-white hover:bg-gray-100"
+                : "bg-black hover:bg-black/50"
             }`}
           >
             <TrendingUp className="inline mr-2" size={18} />
@@ -154,11 +154,11 @@ export default function MarketplaceMain() {
           {/* Browse Listings Tab */}
           {activeTab === "browse" && (
             <div className="space-y-6">
-              <h1 className="heading-brutal text-4xl mb-6">MARKETPLACE</h1>
+              <h1 className="heading-brutal text-4xl mb-6!">MARKETPLACE</h1>
 
               {listings.length === 0 ? (
                 <div className="card-brutal brutal-border border-2 p-8 text-center">
-                  <p className="body-brutal text-lg text-gray-300">
+                  <p className="body-brutal text-lg text-accent">
                     No active listings available.
                   </p>
                 </div>
@@ -184,16 +184,16 @@ export default function MarketplaceMain() {
 
                     return (
                       <div key={listing.id.toString()} className="card-pro p-6">
-                        <div className="space-y-4 mb-6">
+                        <div className="space-y-4 mb-6!">
                           <div className="flex justify-between items-start">
                             <div>
-                              <p className="text-label mb-1">LISTING ID</p>
+                              <p className="text-label mb-1!">LISTING ID</p>
                               <p className="mono-brutal text-sm">
                                 {listing.id.toString().slice(0, 16)}...
                               </p>
                             </div>
                             <div className="text-right">
-                              <p className="text-label mb-1">VAULT ID</p>
+                              <p className="text-label mb-1!">VAULT ID</p>
                               <p className="mono-brutal text-sm">
                                 #{listing.vault_id.toString()}
                               </p>
@@ -208,7 +208,7 @@ export default function MarketplaceMain() {
 
                           {vaultDetails && (
                             <div className="bg-zinc-50 p-3 rounded-lg border border-zinc-200">
-                              <p className="text-label mb-2">VAULT BALANCE</p>
+                              <p className="text-label mb-2!">VAULT BALANCE</p>
                               <p className="heading-brutal text-lg">
                                 <BTCAmount
                                   sats={vaultDetails.balance}
@@ -219,7 +219,7 @@ export default function MarketplaceMain() {
                           )}
 
                           <div className="border-t border-zinc-200 pt-4">
-                            <p className="text-label mb-2">ASKING PRICE</p>
+                            <p className="text-label mb-2!">ASKING PRICE</p>
                             <div className="flex items-center">
                               <p className="heading-brutal text-3xl text-emerald-600">
                                 <BTCAmount
@@ -236,7 +236,7 @@ export default function MarketplaceMain() {
                           </div>
 
                           <div>
-                            <p className="text-label mb-1">SELLER</p>
+                            <p className="text-label mb-1!">SELLER</p>
                             <p className="mono-brutal text-xs text-zinc-600 truncate">
                               {listing.seller.toString().slice(0, 20)}...
                             </p>
@@ -271,7 +271,7 @@ export default function MarketplaceMain() {
 
               <div className="card-brutal p-8 space-y-4">
                 <div>
-                  <label className="body-brutal text-sm font-bold mb-2 block">
+                  <label className="body-brutal text-sm font-bold mb-2! block">
                     SELECT VAULT
                   </label>
                   <select
@@ -295,7 +295,7 @@ export default function MarketplaceMain() {
                 </div>
 
                 <div>
-                  <label className="body-brutal text-sm font-bold mb-2 block">
+                  <label className="body-brutal text-sm font-bold mb-2! block">
                     PRICE (BTC)
                   </label>
                   <input
@@ -322,7 +322,7 @@ export default function MarketplaceMain() {
               </div>
 
               <InfoBox title="MARKETPLACE INFO">
-                <p className="body-brutal mb-3">
+                <p className="body-brutal mb-3!">
                   List your vault for sale on the marketplace. Other users can
                   browse and purchase your vault. Once sold, ownership transfers
                   to the buyer.
@@ -366,16 +366,16 @@ export default function MarketplaceMain() {
 
                     return (
                       <div key={listing.id.toString()} className="card-pro p-6">
-                        <div className="space-y-4 mb-6">
+                        <div className="space-y-4 mb-6!">
                           <div className="flex justify-between items-start">
                             <div>
-                              <p className="text-label mb-1">LISTING ID</p>
+                              <p className="text-label mb-1!">LISTING ID</p>
                               <p className="mono-brutal text-sm">
                                 {listing.id.toString().slice(0, 16)}...
                               </p>
                             </div>
                             <div>
-                              <p className="text-label mb-1">STATUS</p>
+                              <p className="text-label mb-1!">STATUS</p>
                               <span
                                 className={`px-3 py-1 text-xs font-semibold rounded-full inline-block ${
                                   "Active" in listing.status
@@ -402,14 +402,14 @@ export default function MarketplaceMain() {
 
                           <div className="flex justify-between">
                             <div>
-                              <p className="text-label mb-1">VAULT ID</p>
+                              <p className="text-label mb-1!">VAULT ID</p>
                               <p className="mono-brutal text-sm">
                                 #{listing.vault_id.toString()}
                               </p>
                             </div>
                             {vaultDetails && (
                               <div className="text-right">
-                                <p className="text-label mb-1">VAULT BALANCE</p>
+                                <p className="text-label mb-1!">VAULT BALANCE</p>
                                 <p className="heading-brutal text-lg">
                                   <BTCAmount
                                     sats={vaultDetails.balance}
@@ -421,7 +421,7 @@ export default function MarketplaceMain() {
                           </div>
 
                           <div className="border-t border-zinc-200 pt-4">
-                            <p className="text-label mb-2">ASKING PRICE</p>
+                            <p className="text-label mb-2!">ASKING PRICE</p>
                             <div className="flex items-center">
                               <p className="heading-brutal text-3xl text-emerald-600">
                                 <BTCAmount

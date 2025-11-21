@@ -52,17 +52,14 @@ export const ironcladClient = {
       beneficiary?: string
     ): Promise<Vault> {
       const actor = await createIroncladActor(identity);
-      if (beneficiary) {
-        console.info(
-          "[ironcladClient] Creating vault with beneficiary:",
-          beneficiary
-        );
-        // @ts-expect-error - Backend update pending
-        return actor.create_vault(lockUntil, expectedDeposit, [
-          Principal.fromText(beneficiary),
-        ]);
-      }
-      return actor.create_vault(lockUntil, expectedDeposit);
+      const beneficiaryOpt: [] | [Principal] = beneficiary
+        ? [Principal.fromText(beneficiary)]
+        : [];
+      console.info(
+        "[ironcladClient] Creating vault with beneficiary:",
+        beneficiaryOpt
+      );
+      return actor.create_vault(lockUntil, expectedDeposit, beneficiaryOpt);
     },
 
     /** Mock deposit to a vault (for testing) */
@@ -131,6 +128,29 @@ export const ironcladClient = {
     ): Promise<ReadonlyArray<VaultEvent>> {
       const actor = await createIroncladActor(identity);
       return actor.get_vault_events(vaultId);
+    },
+
+    /** Ping alive for a specific vault to reset inheritance timer */
+    async pingAlive(
+      vaultId: bigint,
+      identity?: Identity
+    ): Promise<{ Ok: Vault } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
+      return actor.ping_alive(vaultId);
+    },
+
+    /** Claim inheritance for a specific vault */
+    async claimInheritance(
+      vaultId: bigint,
+      identity?: Identity
+    ): Promise<Vault> {
+      const actor = await createIroncladActor(identity);
+      const result = await actor.claim_inheritance(vaultId);
+      if ("Ok" in result) {
+        return result.Ok;
+      } else {
+        throw new Error(result.Err || "Failed to claim inheritance");
+      }
     },
   },
 

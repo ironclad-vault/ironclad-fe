@@ -1,33 +1,34 @@
-'use client';
+"use client";
 
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useScrollReveal } from '@/components/ui/useScrollReveal';
-import { Wallet, Lock, TrendingUp } from 'lucide-react';
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useScrollReveal } from "@/components/ui/useScrollReveal";
+import { Wallet, Lock, TrendingUp } from "lucide-react";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
   {
     number: 1,
-    title: 'Connect Identity',
+    title: "Connect Identity",
     description:
-      'Secure login via Internet Identity. No seed phrases, fully non-custodial.',
+      "Secure login via Internet Identity. No seed phrases, fully non-custodial.",
     icon: Wallet,
   },
   {
     number: 2,
-    title: 'Mint Bond Position',
+    title: "Mint Bond Position",
     description:
-      'Deposit ckBTC to create a time-locked vault. This mints your liquid vesting position.',
+      "Deposit ckBTC to create a time-locked vault. This mints your liquid vesting position.",
     icon: Lock,
   },
   {
     number: 3,
-    title: 'Earn or Trade',
+    title: "Earn or Trade",
     description:
-      'Hold to maturity for full value, or sell your position on the bond market for instant liquidity.',
+      "Hold to maturity for full value, or sell your position on the bond market for instant liquidity.",
     icon: TrendingUp,
   },
 ];
@@ -49,13 +50,15 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
         <div className="absolute -top-4 -left-4 w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
           <div className="flex flex-col items-center justify-center">
             <Icon className="w-5 h-5 text-white" />
-            <span className="text-xs font-bold text-white mt-0.5">{step.number}</span>
+            <span className="text-xs font-bold text-white mt-0.5">
+              {step.number}
+            </span>
           </div>
         </div>
 
         {/* Content */}
         <div className="pt-4">
-          <h3 className="text-lg font-semibold text-white mb-3">
+          <h3 className="text-lg font-semibold text-white mb-3!">
             {step.title}
           </h3>
 
@@ -81,20 +84,21 @@ export default function HowItWorks() {
 
     const ctx = gsap.context(() => {
       // Animate connecting line
-      const connectingLine = sectionRef.current?.querySelector('.connecting-line');
+      const connectingLine =
+        sectionRef.current?.querySelector(".connecting-line");
       if (connectingLine) {
         gsap.fromTo(
           connectingLine,
-          { scaleX: 0, transformOrigin: 'left' },
+          { scaleX: 0, transformOrigin: "left" },
           {
             scaleX: 1,
             duration: 1.2,
             delay: 0.4,
-            ease: 'power2.inOut',
+            ease: "power2.inOut",
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: 'top 70%',
-              toggleActions: 'play none none reverse',
+              start: "top 70%",
+              toggleActions: "play none none reverse",
             },
           }
         );
@@ -112,11 +116,11 @@ export default function HowItWorks() {
             duration: 0.6,
             stagger: 0.1,
             delay: 0.2,
-            ease: 'cubic.out',
+            ease: "cubic.out",
             scrollTrigger: {
               trigger: sectionRef.current,
-              start: 'top 75%',
-              toggleActions: 'play none none reverse',
+              start: "top 75%",
+              toggleActions: "play none none reverse",
             },
           }
         );
@@ -134,12 +138,13 @@ export default function HowItWorks() {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Title */}
-        <div ref={titleRef} className="text-center mb-16">
-          <h2 className="text-heading text-5xl md:text-7xl mb-4 text-white">
+        <div ref={titleRef} className="text-center mb-16!">
+          <h2 className="text-heading text-5xl md:text-7xl mb-4! text-white">
             How It Works
           </h2>
           <p className="text-body text-lg max-w-3xl mx-auto text-zinc-400">
-            Three simple steps to secure your Bitcoin with Ironclad&apos;s liquid vesting protocol.
+            Three simple steps to secure your Bitcoin with Ironclad&apos;s
+            liquid vesting protocol.
           </p>
         </div>
 
@@ -163,16 +168,16 @@ export default function HowItWorks() {
 
         {/* CTA */}
         <div className="text-center mt-16 pt-8 border-t border-zinc-200">
-          <p className="text-sm text-zinc-500 mb-6 font-medium">
+          <p className="text-sm text-zinc-500 mb-6! font-medium">
             Ready to get started?
           </p>
-          <a
+          <Link
             href="/vault"
             className="inline-flex items-center gap-2 px-8 py-3 bg-zinc-900 text-white rounded-lg font-semibold hover:bg-black transition-colors duration-200"
           >
             Access Protocol
             <span>→</span>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

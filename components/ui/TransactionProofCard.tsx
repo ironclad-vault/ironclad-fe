@@ -80,7 +80,7 @@ export function TransactionProofCard({
   if (error) {
     return (
       <div className={`card-pro p-6 bg-gray-50 border-gray-300 ${className}`}>
-        <div className="flex justify-between items-start mb-2">
+        <div className="flex justify-between items-start mb-2!">
           <h4 className="text-heading text-sm font-bold text-gray-700">
             {proofTypeLabel} PROOF
           </h4>
@@ -96,7 +96,7 @@ export function TransactionProofCard({
   if (!proof) {
     return (
       <div className={`card-pro p-6 bg-gray-50 border-gray-300 ${className}`}>
-        <div className="flex justify-between items-start mb-2">
+        <div className="flex justify-between items-start mb-2!">
           <h4 className="text-heading text-sm font-bold text-gray-700">
             {proofTypeLabel} PROOF
           </h4>
@@ -119,7 +119,7 @@ export function TransactionProofCard({
 
   return (
     <div className={`card-pro p-6 ${className}`}>
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex justify-between items-start mb-4!">
         <h4 className="text-heading text-sm font-bold">
           {proofTypeLabel} PROOF
         </h4>
@@ -133,7 +133,7 @@ export function TransactionProofCard({
       <div className="space-y-3">
         {/* Transaction ID */}
         <div>
-          <p className="text-body text-xs text-gray-600 font-bold mb-1">
+          <p className="text-body text-xs text-gray-600 font-bold mb-1!">
             Transaction ID
           </p>
           <div className="flex items-center gap-2">
@@ -153,7 +153,7 @@ export function TransactionProofCard({
         {/* Confirmations */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <p className="text-body text-xs text-gray-600 font-bold mb-1">
+            <p className="text-body text-xs text-gray-600 font-bold mb-1!">
               Confirmations
             </p>
             <p className="text-heading text-lg">
@@ -161,7 +161,7 @@ export function TransactionProofCard({
             </p>
           </div>
           <div>
-            <p className="text-body text-xs text-gray-600 font-bold mb-1">
+            <p className="text-body text-xs text-gray-600 font-bold mb-1!">
               Status
             </p>
             <p className="text-heading text-lg">{statusLabel}</p>

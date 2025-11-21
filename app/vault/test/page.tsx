@@ -119,13 +119,13 @@ export default function TestPage() {
 
         <main className="pt-24 pb-16 flex-1 flex flex-col">
           <div className="container mx-auto px-6 max-w-6xl">
-            <h1 className="heading-brutal text-4xl mb-8">
+            <h1 className="heading-brutal text-4xl mb-8!">
               🧪 FEATURE TESTING DASHBOARD
             </h1>
 
             {/* Connection Status */}
-            <div className="card-brutal mb-6 p-6">
-              <h2 className="heading-brutal text-2xl mb-4">
+            <div className="card-brutal mb-6! p-6">
+              <h2 className="heading-brutal text-2xl mb-4!">
                 CONNECTION STATUS
               </h2>
               <div className="grid grid-cols-2 gap-4 body-brutal">
@@ -167,8 +167,8 @@ export default function TestPage() {
             ) : (
               <>
                 {/* Vaults Overview */}
-                <div className="card-brutal mb-6 p-6">
-                  <div className="flex justify-between items-center mb-4">
+                <div className="card-brutal mb-6! p-6">
+                  <div className="flex justify-between items-center mb-4!">
                     <h2 className="heading-brutal text-2xl">YOUR VAULTS</h2>
                     <button
                       onClick={refetch}
@@ -179,10 +179,10 @@ export default function TestPage() {
                     </button>
                   </div>
                   {vaultsError && (
-                    <p className="text-red-600 mb-2">{vaultsError}</p>
+                    <p className="text-red-600 mb-2!">{vaultsError}</p>
                   )}
                   <div className="body-brutal">
-                    <p className="mb-2">Total Vaults: {vaults.length}</p>
+                    <p className="mb-2!">Total Vaults: {vaults.length}</p>
                     {vaults.length > 0 && (
                       <div className="space-y-2">
                         {vaults.map((vault) => (
@@ -226,13 +226,13 @@ export default function TestPage() {
                 </div>
 
                 {/* Create Vault Test */}
-                <div className="card-brutal mb-6 p-6">
-                  <h2 className="heading-brutal text-2xl mb-4">
+                <div className="card-brutal mb-6! p-6">
+                  <h2 className="heading-brutal text-2xl mb-4!">
                     🔐 TEST CREATE VAULT
                   </h2>
                   <div className="space-y-4">
                     <div>
-                      <label className="block body-brutal mb-2">
+                      <label className="block body-brutal mb-2!">
                         Lock Days:
                       </label>
                       <input
@@ -243,7 +243,7 @@ export default function TestPage() {
                       />
                     </div>
                     <div>
-                      <label className="block body-brutal mb-2">
+                      <label className="block body-brutal mb-2!">
                         Expected Deposit (sats):
                       </label>
                       <input
@@ -269,16 +269,16 @@ export default function TestPage() {
                 </div>
 
                 {/* Auto-Reinvest Test */}
-                <div className="card-brutal mb-6 p-6">
-                  <h2 className="heading-brutal text-2xl mb-4">
+                <div className="card-brutal mb-6! p-6">
+                  <h2 className="heading-brutal text-2xl mb-4!">
                     ♻️ AUTO-REINVEST CONFIGS
                   </h2>
-                  <div className="body-brutal mb-4">
+                  <div className="body-brutal mb-4!">
                     {autoReinvestLoading && <p>Loading configs...</p>}
                     {autoReinvestError && (
                       <p className="text-red-600">{autoReinvestError}</p>
                     )}
-                    <p className="mb-2">Active Configs: {configs.length}</p>
+                    <p className="mb-2!">Active Configs: {configs.length}</p>
                     {configs.length > 0 && (
                       <div className="space-y-2">
                         {configs.map((config) => (
@@ -317,11 +317,11 @@ export default function TestPage() {
                 </div>
 
                 {/* Marketplace Test */}
-                <div className="card-brutal mb-6 p-6">
-                  <h2 className="heading-brutal text-2xl mb-4">
+                <div className="card-brutal mb-6! p-6">
+                  <h2 className="heading-brutal text-2xl mb-4!">
                     🏪 TEST MARKETPLACE
                   </h2>
-                  <div className="body-brutal mb-4">
+                  <div className="body-brutal mb-4!">
                     {marketplaceLoading && <p>Loading listings...</p>}
                     {marketplaceError && (
                       <p className="text-red-600">{marketplaceError}</p>
@@ -364,7 +364,7 @@ export default function TestPage() {
 
                 {/* Test Results */}
                 <div className="card-brutal p-6">
-                  <h2 className="heading-brutal text-2xl mb-4">
+                  <h2 className="heading-brutal text-2xl mb-4!">
                     📊 TEST RESULTS
                   </h2>
                   <div className="body-brutal space-y-2">

@@ -42,7 +42,7 @@ function StatMetric({ stat, index }: { stat: StatItem; index: number }) {
   return (
     <div className="flex flex-col items-start md:items-center justify-center py-6 md:py-8 px-4 md:px-6">
       {/* Label with Icon */}
-      <div className="flex items-center gap-2 mb-3">
+      <div className="flex items-center gap-2 mb-3!">
         <Icon className="w-4 h-4 text-zinc-400" />
         <span className="text-label text-xs font-semibold uppercase tracking-wider text-zinc-400">
           {stat.label}

@@ -107,10 +107,10 @@ export function AdvancedActionsSection({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h3 className="heading-brutal text-lg mb-2">
+        <h3 className="heading-brutal text-lg mb-2!">
           BITCOIN THRESHOLD SIGNING
         </h3>
-        <p className="body-brutal text-sm text-gray-300">
+        <p className="body-brutal text-sm text-accent">
           Request a threshold ECDSA signature (secp256k1) for this vault using
           ICP&apos;s Bitcoin integration. Use this to sign withdrawal
           transactions or prove vault ownership.
@@ -119,7 +119,7 @@ export function AdvancedActionsSection({
 
       {/* Signature Request Form */}
       <div className="card-brutal p-6">
-        <h4 className="heading-brutal text-sm font-bold mb-4">
+        <h4 className="heading-brutal text-sm font-bold mb-4!">
           REQUEST SIGNATURE
         </h4>
 
@@ -127,7 +127,7 @@ export function AdvancedActionsSection({
           <div>
             <label
               htmlFor="signatureMessage"
-              className="body-brutal text-sm font-bold mb-2 block"
+              className="body-brutal text-sm font-bold mb-2! block"
             >
               Message to Sign
             </label>
@@ -167,7 +167,7 @@ export function AdvancedActionsSection({
 
           {error && !signatureResponse && (
             <div className="card-brutal p-4 bg-red-50 border-red-300">
-              <p className="body-brutal text-sm text-red-900 font-bold mb-1">
+              <p className="body-brutal text-sm text-red-900 font-bold mb-1!">
                 ❌ SIGNATURE FAILED
               </p>
               <p className="body-brutal text-xs text-red-800">{error}</p>
@@ -179,7 +179,7 @@ export function AdvancedActionsSection({
       {/* Signature Response Display */}
       {signatureResponse && (
         <div className="card-brutal p-6 bg-green-50 border-green-300">
-          <div className="flex justify-between items-start mb-4">
+          <div className="flex justify-between items-start mb-4!">
             <h4 className="heading-brutal text-sm font-bold text-green-900">
               ✓ SIGNATURE GENERATED
             </h4>
@@ -191,8 +191,8 @@ export function AdvancedActionsSection({
           <div className="space-y-4">
             {/* Signature (Hex) */}
             <div>
-              <div className="flex justify-between items-center mb-2">
-                <p className="body-brutal text-xs text-gray-300 uppercase font-bold">
+              <div className="flex justify-between items-center mb-2!">
+                <p className="body-brutal text-xs text-accent uppercase font-bold">
                   Signature (Hex)
                 </p>
                 <button
@@ -203,15 +203,15 @@ export function AdvancedActionsSection({
                   COPY HEX
                 </button>
               </div>
-              <code className="block body-brutal font-mono text-xs bg-white p-3 rounded border-2 border-green-300 overflow-x-auto">
+              <code className="block body-brutal font-mono text-xs bg-black p-3 rounded border-2 border-green-300 overflow-x-auto">
                 {Buffer.from(signatureResponse.signature).toString("hex")}
               </code>
             </div>
 
             {/* Signature (Base64) */}
             <div>
-              <div className="flex justify-between items-center mb-2">
-                <p className="body-brutal text-xs text-gray-300 uppercase font-bold">
+              <div className="flex justify-between items-center mb-2!">
+                <p className="body-brutal text-xs text-accent uppercase font-bold">
                   Signature (Base64)
                 </p>
                 <button
@@ -222,17 +222,17 @@ export function AdvancedActionsSection({
                   COPY BASE64
                 </button>
               </div>
-              <code className="block body-brutal font-mono text-xs bg-white p-3 rounded border-2 border-green-300 overflow-x-auto">
+              <code className="block body-brutal font-mono text-xs bg-black p-3 rounded border-2 border-green-300 overflow-x-auto">
                 {Buffer.from(signatureResponse.signature).toString("base64")}
               </code>
             </div>
 
             {/* Message (Original) */}
             <div>
-              <p className="body-brutal text-xs text-gray-300 uppercase font-bold mb-2">
+              <p className="body-brutal text-xs text-accent uppercase font-bold mb-2!">
                 Original Message
               </p>
-              <code className="block body-brutal font-mono text-xs bg-white p-3 rounded border-2 border-green-300 overflow-x-auto">
+              <code className="block body-brutal font-mono text-xs bg-black p-3 rounded border-2 border-green-300 overflow-x-auto">
                 {new TextDecoder().decode(
                   new Uint8Array(signatureResponse.message)
                 )}
@@ -242,19 +242,19 @@ export function AdvancedActionsSection({
             {/* Technical Details */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 border-t-2 border-green-300 pt-4">
               <div>
-                <p className="body-brutal text-xs text-gray-400 uppercase mb-1">
+                <p className="body-brutal text-xs text-gray-400 uppercase mb-1!">
                   Curve
                 </p>
                 <p className="body-brutal font-bold text-sm">secp256k1</p>
               </div>
               <div>
-                <p className="body-brutal text-xs text-gray-400 uppercase mb-1">
+                <p className="body-brutal text-xs text-gray-400 uppercase mb-1!">
                   Hash
                 </p>
                 <p className="body-brutal font-bold text-sm">SHA-256</p>
               </div>
               <div>
-                <p className="body-brutal text-xs text-gray-400 uppercase mb-1">
+                <p className="body-brutal text-xs text-gray-400 uppercase mb-1!">
                   Key
                 </p>
                 <p className="body-brutal font-bold text-sm">test_key_1</p>
@@ -274,11 +274,11 @@ export function AdvancedActionsSection({
 
       {/* Info Box */}
       <div className="card-brutal p-6 bg-blue-50 border-blue-300">
-        <h4 className="heading-brutal text-sm font-bold text-blue-900 mb-2! flex flex-row items-center gap-2">
+        <h4 className="heading-brutal text-sm font-bold text-accent mb-2! flex flex-row items-center gap-2">
           <Info className="inline-block w-4 h-4 mr-2" />
           ABOUT THRESHOLD SIGNATURES
         </h4>
-        <div className="space-y-2 body-brutal text-sm text-blue-900">
+        <div className="space-y-2 body-brutal text-sm text-accent">
           <p>
             • Threshold ECDSA signatures are generated using ICP&apos;s
             decentralized key generation protocol

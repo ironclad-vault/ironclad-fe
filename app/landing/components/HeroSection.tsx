@@ -100,13 +100,15 @@ export default function HeroSection() {
 
       <div className="text-center max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col gap-12">
-          <div className="flex flex-col items-center gap-8 mb-8">
+          <div className="flex flex-col items-center gap-8 mb-8!">
             <h1 className="text-heading text-7xl md:text-8xl lg:text-9xl mx-auto text-center leading-tight text-white font-black uppercase tracking-wide">
               <span className="hero-word inline-block">THE FIRST LIQUID</span>
               <br />
               <span className="hero-word inline-block">VESTING PROTOCOL</span>
               <br />
-              <span className="hero-word inline-block text-orange-500">ON BITCOIN</span>
+              <span className="hero-word inline-block text-orange-500">
+                ON BITCOIN
+              </span>
             </h1>
 
             <div className="hero-rotating-text w-full flex justify-center">
@@ -120,7 +122,16 @@ export default function HeroSection() {
 
           <div className="hero-subcontent flex flex-col gap-12 max-w-3xl mx-auto">
             <p className="text-body text-base md:text-lg leading-relaxed text-zinc-300 max-w-2xl mx-auto font-light">
-              Charting the first <span className="text-orange-500 font-semibold">liquid vesting protocol</span> on <span className="text-orange-500 font-semibold">Bitcoin</span>. Enumerate vesting protocols, evaluate risks, and enable <span className="text-orange-500 font-semibold">decentralized retention</span> based on Bitcoin.
+              Charting the first{" "}
+              <span className="text-orange-500 font-semibold">
+                liquid vesting protocol
+              </span>{" "}
+              on <span className="text-orange-500 font-semibold">Bitcoin</span>.
+              Enumerate vesting protocols, evaluate risks, and enable{" "}
+              <span className="text-orange-500 font-semibold">
+                decentralized retention
+              </span>{" "}
+              based on Bitcoin.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">

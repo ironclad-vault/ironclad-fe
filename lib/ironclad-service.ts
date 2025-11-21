@@ -14,6 +14,7 @@ import {
   BitcoinTxProof,
   SignatureResponse,
 } from "./ic/ironcladActor";
+import { Principal } from "@dfinity/principal";
 
 // Define Result type locally (Candid pattern)
 type Result<T> = { Ok: T } | { Err: string };
@@ -47,6 +48,9 @@ export interface VaultDTO {
    * Represented as a 0x-prefixed hex string or null if not present.
    */
   ckbtcSubaccountHex?: string | null;
+  beneficiary: string | null;
+  lastKeepAlive: number;
+  inheritanceTimeout: number;
 }
 
 export interface VaultEventDTO {
@@ -126,32 +130,44 @@ function mapListingStatus(status: ListingStatus): ListingStatusTS {
   return "Active"; // fallback
 }
 
-function mapAutoReinvestPlanStatus(raw: AutoReinvestPlanStatus | undefined | null): "Active" | "Cancelled" | "Error" | "Paused" {
+function mapAutoReinvestPlanStatus(
+  raw: AutoReinvestPlanStatus | undefined | null
+): "Active" | "Cancelled" | "Error" | "Paused" {
   // Handle undefined/null (old backend data or not yet deployed)
   if (!raw) {
-    console.warn("[mapAutoReinvestPlanStatus] Received undefined/null, defaulting to Active");
+    console.warn(
+      "[mapAutoReinvestPlanStatus] Received undefined/null, defaulting to Active"
+    );
     return "Active";
   }
-  
+
   // Handle Candid variant types
-  if (typeof raw === 'object') {
+  if (typeof raw === "object") {
     if ("Active" in raw) return "Active";
     if ("Cancelled" in raw) return "Cancelled";
     if ("Error" in raw) return "Error";
     if ("Paused" in raw) return "Paused";
   }
-  
+
   return "Active"; // fallback
 }
 
 function mapVault(raw: Vault): VaultDTO {
   // Map ckBTC subaccount (optional vec nat8)
   let ckbtcSubaccountHex: string | null = null;
-  if (raw.ckbtc_subaccount.length > 0 && raw.ckbtc_subaccount[0] !== undefined) {
-    const bytes = raw.ckbtc_subaccount[0] instanceof Uint8Array 
-      ? raw.ckbtc_subaccount[0] 
-      : new Uint8Array(raw.ckbtc_subaccount[0]);
-    ckbtcSubaccountHex = "0x" + Array.from(bytes).map(b => b.toString(16).padStart(2, "0")).join("");
+  if (
+    raw.ckbtc_subaccount.length > 0 &&
+    raw.ckbtc_subaccount[0] !== undefined
+  ) {
+    const bytes =
+      raw.ckbtc_subaccount[0] instanceof Uint8Array
+        ? raw.ckbtc_subaccount[0]
+        : new Uint8Array(raw.ckbtc_subaccount[0]);
+    ckbtcSubaccountHex =
+      "0x" +
+      Array.from(bytes)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
   }
 
   return {
@@ -164,9 +180,15 @@ function mapVault(raw: Vault): VaultDTO {
     updatedAt: Number(raw.updated_at),
     lockUntil: Number(raw.lock_until),
     btcAddress: raw.btc_address,
-    btcDepositTxid: raw.btc_deposit_txid.length > 0 ? raw.btc_deposit_txid[0]! : null,
-    btcWithdrawTxid: raw.btc_withdraw_txid.length > 0 ? raw.btc_withdraw_txid[0]! : null,
+    btcDepositTxid:
+      raw.btc_deposit_txid.length > 0 ? raw.btc_deposit_txid[0]! : null,
+    btcWithdrawTxid:
+      raw.btc_withdraw_txid.length > 0 ? raw.btc_withdraw_txid[0]! : null,
     ckbtcSubaccountHex,
+    beneficiary:
+      raw.beneficiary.length > 0 ? raw.beneficiary[0]!.toString() : null,
+    lastKeepAlive: Number(raw.last_keep_alive),
+    inheritanceTimeout: Number(raw.inheritance_timeout),
   };
 }
 
@@ -187,18 +209,25 @@ function mapConfig(raw: AutoReinvestConfig): AutoReinvestConfigDTO {
     next_cycle_timestamp?: bigint;
     execution_count?: bigint;
   };
-  
+
   const rawConfig = raw as RawConfigWithOptionalFields;
-  
+
   return {
     vaultId: raw.vault_id,
     owner: raw.owner.toString(),
     newLockDuration: raw.new_lock_duration,
     enabled: raw.enabled,
     planStatus: mapAutoReinvestPlanStatus(rawConfig.plan_status),
-    errorMessage: rawConfig.error_message && rawConfig.error_message.length > 0 ? rawConfig.error_message[0]! : null,
-    nextCycleTimestamp: rawConfig.next_cycle_timestamp ? Number(rawConfig.next_cycle_timestamp) : 0,
-    executionCount: rawConfig.execution_count ? rawConfig.execution_count : BigInt(0),
+    errorMessage:
+      rawConfig.error_message && rawConfig.error_message.length > 0
+        ? rawConfig.error_message[0]!
+        : null,
+    nextCycleTimestamp: rawConfig.next_cycle_timestamp
+      ? Number(rawConfig.next_cycle_timestamp)
+      : 0,
+    executionCount: rawConfig.execution_count
+      ? rawConfig.execution_count
+      : BigInt(0),
     createdAt: Number(raw.created_at),
     updatedAt: Number(raw.updated_at),
   };
@@ -253,16 +282,26 @@ function mapBitcoinTxProof(raw: BitcoinTxProof): BitcoinTxProofDTO {
 }
 
 function mapSignatureResponse(raw: SignatureResponse): SignatureResponseDTO {
-  const sigBytes = raw.signature instanceof Uint8Array 
-    ? raw.signature 
-    : new Uint8Array(raw.signature);
-  const msgBytes = raw.message instanceof Uint8Array 
-    ? raw.message 
-    : new Uint8Array(raw.message);
-  
+  const sigBytes =
+    raw.signature instanceof Uint8Array
+      ? raw.signature
+      : new Uint8Array(raw.signature);
+  const msgBytes =
+    raw.message instanceof Uint8Array
+      ? raw.message
+      : new Uint8Array(raw.message);
+
   return {
-    signatureHex: "0x" + Array.from(sigBytes).map(b => b.toString(16).padStart(2, "0")).join(""),
-    messageHex: "0x" + Array.from(msgBytes).map(b => b.toString(16).padStart(2, "0")).join(""),
+    signatureHex:
+      "0x" +
+      Array.from(sigBytes)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join(""),
+    messageHex:
+      "0x" +
+      Array.from(msgBytes)
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join(""),
   };
 }
 
@@ -322,14 +361,23 @@ async function getActorOrThrow(actor?: IroncladActor): Promise<IroncladActor> {
 export async function createVault({
   lockUntil,
   expectedDeposit,
+  beneficiary,
   actor,
 }: {
   lockUntil: number;
   expectedDeposit: bigint;
+  beneficiary?: string;
   actor?: IroncladActor;
 }): Promise<VaultDTO> {
   const actorInstance = await getActorOrThrow(actor);
-  const vault = await actorInstance.create_vault(BigInt(lockUntil), expectedDeposit);
+  const beneficiaryOpt: [] | [Principal] = beneficiary
+    ? [Principal.fromText(beneficiary)]
+    : [];
+  const vault = await actorInstance.create_vault(
+    BigInt(lockUntil),
+    expectedDeposit,
+    beneficiaryOpt
+  );
   return mapVault(vault);
 }
 
@@ -374,7 +422,9 @@ export async function getVault({
 }): Promise<VaultDTO | null> {
   const actorInstance = await getActorOrThrow(actor);
   const result = await actorInstance.get_vault(vaultId);
-  return result.length > 0 && result[0] !== undefined ? mapVault(result[0]) : null;
+  return result.length > 0 && result[0] !== undefined
+    ? mapVault(result[0])
+    : null;
 }
 
 /**
@@ -461,7 +511,9 @@ export async function withdrawVault({
  * Get all withdrawable vaults
  * NOTE: Returns plain Array<Vault>, NOT Result
  */
-export async function getWithdrawableVaults(actor?: IroncladActor): Promise<VaultDTO[]> {
+export async function getWithdrawableVaults(
+  actor?: IroncladActor
+): Promise<VaultDTO[]> {
   const actorInstance = await getActorOrThrow(actor);
   const vaults = await actorInstance.get_withdrawable_vaults();
   return vaults.map(mapVault);
@@ -485,7 +537,10 @@ export async function scheduleAutoReinvest({
   actor?: IroncladActor;
 }): Promise<void> {
   const actorInstance = await getActorOrThrow(actor);
-  const result = await actorInstance.schedule_auto_reinvest(vaultId, newLockDuration);
+  const result = await actorInstance.schedule_auto_reinvest(
+    vaultId,
+    newLockDuration
+  );
   unwrapResult(result);
 }
 
@@ -609,7 +664,9 @@ export async function cancelListing({
  * Get all active marketplace listings
  * NOTE: Returns plain Array<MarketListing>, NOT Result
  */
-export async function getActiveListings(actor?: IroncladActor): Promise<MarketListingDTO[]> {
+export async function getActiveListings(
+  actor?: IroncladActor
+): Promise<MarketListingDTO[]> {
   const actorInstance = await getActorOrThrow(actor);
   const listings = await actorInstance.get_active_listings();
   return listings.map(mapListing);
@@ -619,7 +676,9 @@ export async function getActiveListings(actor?: IroncladActor): Promise<MarketLi
  * Get all listings owned by the caller
  * NOTE: Returns plain Array<MarketListing>, NOT Result
  */
-export async function getMyListings(actor?: IroncladActor): Promise<MarketListingDTO[]> {
+export async function getMyListings(
+  actor?: IroncladActor
+): Promise<MarketListingDTO[]> {
   const actorInstance = await getActorOrThrow(actor);
   const listings = await actorInstance.get_my_listings();
   return listings.map(mapListing);
@@ -648,7 +707,9 @@ export async function buyListing({
 /**
  * Get current network mode
  */
-export async function getNetworkMode(actor?: IroncladActor): Promise<NetworkModeTS> {
+export async function getNetworkMode(
+  actor?: IroncladActor
+): Promise<NetworkModeTS> {
   const actorInstance = await getActorOrThrow(actor);
   const raw = await actorInstance.get_mode_query();
   return mapNetworkMode(raw);
@@ -665,7 +726,9 @@ export async function setNetworkModeMock(actor?: IroncladActor): Promise<void> {
 /**
  * Set network mode to ckBTC Mainnet
  */
-export async function setNetworkModeCkbtcMainnet(actor?: IroncladActor): Promise<void> {
+export async function setNetworkModeCkbtcMainnet(
+  actor?: IroncladActor
+): Promise<void> {
   const actorInstance = await getActorOrThrow(actor);
   await actorInstance.set_mode_ckbtc_mainnet();
 }
@@ -745,7 +808,7 @@ export async function requestBtcSignature({
   const actorInstance = await getActorOrThrow(actor);
   const result = await actorInstance.request_btc_signature(
     vaultId,
-    Array.from(message),
+    Array.from(message)
   );
   const raw = unwrapResult(result);
   return mapSignatureResponse(raw);

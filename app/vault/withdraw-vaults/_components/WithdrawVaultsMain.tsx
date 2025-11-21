@@ -124,8 +124,8 @@ export default function WithdrawVaultsMain() {
     return (
       <div className="container mx-auto px-6">
         <div className="card-pro p-8 text-center">
-          <h2 className="text-heading text-3xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="text-body text-lg text-gray-300">
+          <h2 className="text-heading text-3xl mb-4!">CONNECT YOUR WALLET</h2>
+          <p className="text-body text-lg text-accent">
             Please connect your wallet to withdraw from vaults.
           </p>
         </div>
@@ -137,7 +137,7 @@ export default function WithdrawVaultsMain() {
     return (
       <div className="container mx-auto px-6">
         <div className="card-pro p-8 text-center">
-          <p className="text-body text-lg text-gray-300">
+          <p className="text-body text-lg text-accent">
             Loading withdrawable vaults...
           </p>
         </div>
@@ -149,7 +149,7 @@ export default function WithdrawVaultsMain() {
     return (
       <div className="container mx-auto px-6">
         <div className="card-pro border-red-500 p-8 bg-red-50">
-          <h2 className="text-heading text-2xl text-red-900 mb-2">ERROR</h2>
+          <h2 className="text-heading text-2xl text-red-900 mb-2!">ERROR</h2>
           <p className="text-body text-sm text-red-800">{vaultsError}</p>
         </div>
       </div>
@@ -160,15 +160,15 @@ export default function WithdrawVaultsMain() {
     return (
       <div className="container mx-auto px-6">
         <div className="card-pro p-8 text-center">
-          <h2 className="text-heading text-3xl mb-4">NO WITHDRAWABLE VAULTS</h2>
-          <p className="text-body text-lg text-gray-300 mb-8">
+          <h2 className="text-heading text-3xl mb-4!">NO WITHDRAWABLE VAULTS</h2>
+          <p className="text-body text-lg text-accent mb-8!">
             You don&apos;t have any vaults ready for withdrawal.
           </p>
-          <div className="card-pro border-blue-400 p-6 bg-blue-50 mb-8">
-            <p className="text-body text-sm text-blue-900 mb-2 font-bold">
+          <div className="card-pro border-blue-400 p-6 bg-blue-50 mb-8!">
+            <p className="text-body text-sm text-accent mb-2! font-bold">
               💡 <strong>Need to withdraw?</strong>
             </p>
-            <p className="text-body text-sm text-blue-800">
+            <p className="text-body text-sm text-accent">
               If you have locked vaults, visit <strong>My Vaults</strong> page
               to unlock them first. Once unlocked, they will appear here for
               withdrawal.
@@ -191,7 +191,7 @@ export default function WithdrawVaultsMain() {
       <div>
         {/* Main Withdraw Card */}
         <div className="card-pro p-8">
-          <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-accent">
+          <div className="flex items-center gap-3 mb-6! pb-4 border-b-2 border-accent">
             <ArrowDownRight className="text-accent w-8 h-8 font-bold" />
             <h1 className="text-heading text-4xl">WITHDRAW</h1>
           </div>
@@ -199,7 +199,7 @@ export default function WithdrawVaultsMain() {
           <div className="space-y-6">
             {/* Vault Selection */}
             <div>
-              <label className="text-body text-sm font-bold mb-3 block">
+              <label className="text-body text-sm font-bold mb-3! block">
                 SELECT VAULT
               </label>
               <select
@@ -220,10 +220,10 @@ export default function WithdrawVaultsMain() {
             {/* Preview Amount */}
             {previewAmount !== null && (
               <div className="card-pro p-6 bg-blue-50 border-blue-300">
-                <p className="text-body text-xs text-blue-600 font-bold mb-2">
+                <p className="text-body text-xs text-blue-600 font-bold mb-2!">
                   Available to Withdraw
                 </p>
-                <p className="text-heading text-3xl text-blue-900">
+                <p className="text-heading text-3xl text-accent">
                   {(Number(previewAmount) / 100_000_000).toFixed(8)} BTC
                 </p>
               </div>
@@ -231,7 +231,7 @@ export default function WithdrawVaultsMain() {
 
             {/* Amount Input */}
             <div>
-              <label className="text-body text-sm font-bold mb-3 block">
+              <label className="text-body text-sm font-bold mb-3! block">
                 AMOUNT (BTC)
               </label>
               <input
@@ -262,8 +262,8 @@ export default function WithdrawVaultsMain() {
 
         {/* Info Box */}
         <div className="card-pro p-8 mt-8 bg-gray-50">
-          <h3 className="text-heading text-2xl mb-4">WITHDRAWAL INFORMATION</h3>
-          <p className="text-body text-sm text-gray-300 mb-4">
+          <h3 className="text-heading text-2xl mb-4!">WITHDRAWAL INFORMATION</h3>
+          <p className="text-body text-sm text-accent mb-4!">
             Withdraw your funds from an unlocked vault. The amount will be sent
             to your connected wallet.
           </p>
@@ -280,10 +280,10 @@ export default function WithdrawVaultsMain() {
         {showConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="card-pro bg-white p-8 max-w-md w-full">
-              <h2 className="text-heading text-3xl mb-6">CONFIRM WITHDRAWAL</h2>
-              <div className="space-y-4 mb-8">
+              <h2 className="text-heading text-3xl mb-6!">CONFIRM WITHDRAWAL</h2>
+              <div className="space-y-4 mb-8!">
                 <div className="card-pro p-6 bg-gray-50">
-                  <p className="text-body text-xs text-gray-400 mb-2 font-bold">
+                  <p className="text-body text-xs text-gray-400 mb-2! font-bold">
                     Amount
                   </p>
                   <p className="text-heading text-3xl">{withdrawAmount} BTC</p>

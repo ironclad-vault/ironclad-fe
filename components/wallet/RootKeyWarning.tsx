@@ -34,12 +34,12 @@ export function RootKeyWarning() {
         <div className="flex items-start gap-4">
           <div className="text-4xl">⚠️</div>
           <div className="flex-1">
-            <h3 className="font-bold text-xl text-yellow-900 mb-2">
+            <h3 className="font-bold text-xl text-yellow-900 mb-2!">
               Certificate Fix Required
             </h3>
-            <p className="text-yellow-800 mb-4">
-              We&apos;ve fixed the certificate verification issue. To apply the fix, please
-              disconnect and reconnect your wallet.
+            <p className="text-yellow-800 mb-4!">
+              We&apos;ve fixed the certificate verification issue. To apply the
+              fix, please disconnect and reconnect your wallet.
             </p>
             <div className="flex gap-3">
               <button

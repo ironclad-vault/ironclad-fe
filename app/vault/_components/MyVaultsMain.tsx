@@ -114,7 +114,7 @@ function VaultCard({
 
   return (
     <div className="card-pro relative overflow-hidden">
-      <div className="flex justify-between items-start mb-4">
+      <div className="flex justify-between items-start mb-4!">
         <h3 className="heading-brutal text-xl font-semibold">
           Vault #{vault.id.toString()}
         </h3>
@@ -130,7 +130,7 @@ function VaultCard({
 
       {/* Progress Bar */}
       {status === "ActiveLocked" && (
-        <div className="progress-bar-container mb-4">
+        <div className="progress-bar-container mb-4!">
           <div
             className="progress-bar-fill"
             style={{ width: `${progressPercentage}%` }}
@@ -140,14 +140,14 @@ function VaultCard({
 
       {/* Auto-Reinvest Plan Badge */}
       {autoReinvestConfig && (
-        <div className="mb-5 pb-4 border-b border-zinc-100">
+        <div className="mb-5! pb-4 border-b border-zinc-100">
           {autoReinvestConfig.planStatus === "Active" && (
             <div
               className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor(
                 "Active"
               )}`}
             >
-              <p className="flex items-center gap-1 mb-1">
+              <p className="flex items-center gap-1 mb-1!">
                 📅 Auto-Reinvest Active
               </p>
               <p className="text-xs opacity-75">
@@ -178,7 +178,7 @@ function VaultCard({
                 "Error"
               )}`}
             >
-              <p className="flex items-center gap-1 mb-1">
+              <p className="flex items-center gap-1 mb-1!">
                 ❌ Auto-Reinvest Error
               </p>
               {autoReinvestConfig.errorMessage && (
@@ -204,7 +204,7 @@ function VaultCard({
         </div>
       )}
 
-      <div className="space-y-4 text-body text-sm mb-5">
+      <div className="space-y-4 text-body text-sm mb-5!">
         <div className="flex justify-between items-baseline">
           <span className="text-label">BALANCE</span>
           <BTCAmount
@@ -234,7 +234,7 @@ function VaultCard({
 
         {status === "ActiveLocked" && timeRemaining && (
           <div className="bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
-            <p className="text-xs font-semibold text-blue-900 flex flex-row items-center gap-1">
+            <p className="text-xs font-semibold text-accent flex flex-row items-center gap-1">
               <Timer className="w-4 h-4" /> {timeRemaining.days}d{" "}
               {timeRemaining.hours}h {timeRemaining.minutes}m remaining
             </p>
@@ -403,8 +403,8 @@ export default function MyVaultsMain() {
       {/* Wallet Connection Check - Show First */}
       {!isConnected && (
         <div className="card-brutal brutal-border border-2 p-12 text-center">
-          <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-300">
+          <h2 className="heading-brutal text-4xl mb-4!">CONNECT YOUR WALLET</h2>
+          <p className="body-brutal text-lg text-accent">
             Connect your wallet to view and manage your vaults
           </p>
         </div>
@@ -413,11 +413,11 @@ export default function MyVaultsMain() {
       {isConnected && (
         <>
           {/* Header - Only show when wallet is connected */}
-          <div className="card-brutal brutal-border border-2 mb-8 p-8">
-            <div className="flex justify-between items-start mb-6 pb-6 border-b-2 border-accent">
+          <div className="card-brutal brutal-border border-2 mb-8! p-8">
+            <div className="flex justify-between items-start mb-6! pb-6 border-b-2 border-accent">
               <div>
-                <h1 className="heading-brutal text-5xl mb-2">DASHBOARD</h1>
-                <p className="body-brutal text-lg text-gray-300 font-semibold">
+                <h1 className="heading-brutal text-5xl mb-2!">DASHBOARD</h1>
+                <p className="body-brutal text-lg text-accent font-semibold">
                   {vaults.length}{" "}
                   {vaults.length === 1 ? "position" : "positions"} found
                 </p>
@@ -475,7 +475,7 @@ export default function MyVaultsMain() {
           {/* Error State */}
           {error && (
             <div className="card-brutal brutal-border border-2 border-red-500 p-8 bg-red-50">
-              <h3 className="heading-brutal text-2xl text-red-900 mb-2">
+              <h3 className="heading-brutal text-2xl text-red-900 mb-2!">
                 ERROR
               </h3>
               <p className="body-brutal text-sm text-red-800">{error}</p>
@@ -485,10 +485,10 @@ export default function MyVaultsMain() {
           {/* Empty State */}
           {!loading && vaults.length === 0 && !error && (
             <div className="card-brutal brutal-border border-2 p-12 text-center">
-              <h2 className="heading-brutal text-4xl mb-4">
+              <h2 className="heading-brutal text-4xl mb-4!">
                 NO ACTIVE POSITIONS
               </h2>
-              <p className="body-brutal text-lg text-gray-300 mb-8">
+              <p className="body-brutal text-lg text-accent mb-8!">
                 Mint a new Bond or buy discounted BTC on the market.
               </p>
               <TransitionButton
@@ -506,8 +506,8 @@ export default function MyVaultsMain() {
             <>
               {/* Needs Unlock */}
               {needsUnlockVaults.length > 0 && (
-                <div className="mb-12">
-                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                <div className="mb-12!">
+                  <h2 className="heading-brutal text-2xl mb-6! pb-4 border-b-2 border-accent flex items-center gap-3">
                     <Clock className="w-8 h-8 text-green-600" /> READY TO UNLOCK
                     ({needsUnlockVaults.length})
                   </h2>
@@ -531,8 +531,8 @@ export default function MyVaultsMain() {
 
               {/* Unlockable Vaults */}
               {unlockableVaults.length > 0 && (
-                <div className="mb-12">
-                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                <div className="mb-12!">
+                  <h2 className="heading-brutal text-2xl mb-6! pb-4 border-b-2 border-accent flex items-center gap-3">
                     <Unlock className="w-8 h-8 text-green-600" /> UNLOCKABLE (
                     {unlockableVaults.length})
                   </h2>
@@ -551,8 +551,8 @@ export default function MyVaultsMain() {
 
               {/* Active Locked Vaults */}
               {activeVaults.length > needsUnlockVaults.length && (
-                <div className="mb-12">
-                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                <div className="mb-12!">
+                  <h2 className="heading-brutal text-2xl mb-6! pb-4 border-b-2 border-accent flex items-center gap-3">
                     <Lock className="w-8 h-8" /> ACTIVE LOCKED (
                     {activeVaults.length - needsUnlockVaults.length})
                   </h2>
@@ -579,8 +579,8 @@ export default function MyVaultsMain() {
 
               {/* Pending Deposits */}
               {pendingVaults.length > 0 && (
-                <div className="mb-12">
-                  <h2 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent flex items-center gap-3">
+                <div className="mb-12!">
+                  <h2 className="heading-brutal text-2xl mb-6! pb-4 border-b-2 border-accent flex items-center gap-3">
                     <Hourglass className="w-8 h-8" /> PENDING DEPOSIT (
                     {pendingVaults.length})
                   </h2>
@@ -599,7 +599,7 @@ export default function MyVaultsMain() {
 
               {/* Quick Stats */}
               <div className="card-brutal brutal-border border-2 p-8 mt-12">
-                <h3 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent">
+                <h3 className="heading-brutal text-2xl mb-6! pb-4 border-b-2 border-accent">
                   STATISTICS
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 body-brutal">

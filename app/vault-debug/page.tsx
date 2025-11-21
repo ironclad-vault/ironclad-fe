@@ -40,7 +40,7 @@ export default function VaultDebugPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 p-8 space-y-8">
-      <h1 className="text-3xl font-bold mb-4">Ironclad / ICP Debug Panel</h1>
+      <h1 className="text-3xl font-bold mb-4!">Ironclad / ICP Debug Panel</h1>
 
       <section className="border border-slate-700 rounded-2xl p-5 space-y-3">
         <h2 className="text-lg font-semibold">Network Mode</h2>

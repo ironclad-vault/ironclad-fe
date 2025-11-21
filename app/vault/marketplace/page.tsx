@@ -18,7 +18,7 @@ export default function MarketplacePage() {
               <Suspense
                 fallback={
                   <div className="card-brutal p-8">
-                    <p className="text-gray-300">Loading...</p>
+                    <p className="text-accent">Loading...</p>
                   </div>
                 }
               >

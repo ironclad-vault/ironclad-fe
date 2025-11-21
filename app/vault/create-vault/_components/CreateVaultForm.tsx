@@ -106,8 +106,8 @@ function CreateVaultFormContent() {
   if (!isConnected) {
     return (
       <div className="card-pro p-12 text-center">
-        <h2 className="text-heading text-4xl mb-4">CONNECT YOUR WALLET</h2>
-        <p className="text-body text-lg text-gray-300">
+        <h2 className="text-heading text-4xl mb-4!">CONNECT YOUR WALLET</h2>
+        <p className="text-body text-lg text-accent">
           Connect your wallet to create a new vault
         </p>
       </div>
@@ -122,10 +122,10 @@ function CreateVaultFormContent() {
 
       {mode === "complete" && existingVault && (
         <div className="rounded-lg border-2 border-blue-400 bg-blue-50 p-6">
-          <p className="text-heading text-sm text-blue-900 mb-3">
+          <p className="text-heading text-sm text-accent mb-3!">
             VAULT #{existingVault.id.toString()}
           </p>
-          <div className="text-body text-sm text-blue-800 space-y-1">
+          <div className="text-body text-sm text-accent space-y-1">
             <p>
               Status: <span className="font-bold">Pending Deposit</span>
             </p>
@@ -161,8 +161,8 @@ function CreateVaultFormContent() {
 
       {!createdVault && mode === "create" ? (
         <>
-          <div className="mb-6">
-            <label className="text-body text-sm font-bold mb-2 block">
+          <div className="mb-6!">
+            <label className="text-body text-sm font-bold mb-2! block">
               LOCK DURATION
             </label>
             <select
@@ -190,8 +190,8 @@ function CreateVaultFormContent() {
             )}
           </div>
 
-          <div className="mb-6">
-            <label className="text-body text-sm font-bold mb-2 block">
+          <div className="mb-6!">
+            <label className="text-body text-sm font-bold mb-2! block">
               BENEFICIARY (OPTIONAL)
             </label>
             <input
@@ -207,8 +207,8 @@ function CreateVaultFormContent() {
             </p>
           </div>
 
-          <div className="mb-6">
-            <label className="text-body text-sm font-bold mb-2 block">
+          <div className="mb-6!">
+            <label className="text-body text-sm font-bold mb-2! block">
               DEPOSIT AMOUNT (SATS)
             </label>
             <input
@@ -236,12 +236,12 @@ function CreateVaultFormContent() {
       ) : createdVault ? (
         <div className="mt-6">
           {mode === "create" && (
-            <div className="mb-4">
-              <label className="text-body text-sm font-bold mb-2 block">
+            <div className="mb-4!">
+              <label className="text-body text-sm font-bold mb-2! block">
                 VAULT CREATED
               </label>
               <div className="rounded-lg border-2 border-green-400 bg-green-50 p-6">
-                <p className="text-body font-bold text-green-800 mb-2 text-lg">
+                <p className="text-body font-bold text-green-800 mb-2! text-lg">
                   ✓ Vault ID: {createdVault.vaultId.toString()}
                 </p>
                 <p className="text-body text-sm text-green-700">
@@ -253,8 +253,8 @@ function CreateVaultFormContent() {
           )}
 
           {mode === "complete" && (
-            <div className="mb-4">
-              <label className="text-body text-sm font-bold mb-2 block">
+            <div className="mb-4!">
+              <label className="text-body text-sm font-bold mb-2! block">
                 DEPOSIT AMOUNT (SATS)
               </label>
               <input
@@ -276,7 +276,7 @@ function CreateVaultFormContent() {
           )}
 
           <button
-            className="btn-pro w-full mb-4 bg-blue-600 text-white hover:bg-blue-700"
+            className="btn-pro w-full mb-4! bg-blue-600 text-white hover:bg-blue-700"
             onClick={handleMockDeposit}
             disabled={loading || parseInt(depositAmount || "0") <= 0}
           >
@@ -290,7 +290,7 @@ function CreateVaultFormContent() {
           {mode === "create" && (
             <>
               <div className="bg-yellow-100 border-2 border-yellow-500 p-4">
-                <p className="text-body font-bold text-yellow-800 mb-2">
+                <p className="text-body font-bold text-yellow-800 mb-2!">
                   DEVELOPMENT MODE
                 </p>
                 <p className="text-body text-sm text-yellow-700">
@@ -311,7 +311,7 @@ function CreateVaultFormContent() {
 
           {mode === "complete" && existingVault && (
             <div className="bg-yellow-100 border-2 border-yellow-500 p-4">
-              <p className="text-body font-bold text-yellow-800 mb-2">
+              <p className="text-body font-bold text-yellow-800 mb-2!">
                 📍 DEPOSIT INSTRUCTIONS
               </p>
               <div className="text-body text-sm text-yellow-700 space-y-2">

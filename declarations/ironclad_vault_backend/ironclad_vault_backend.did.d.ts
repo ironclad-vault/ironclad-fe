@@ -56,12 +56,24 @@ export interface SignatureResponse {
 export interface Vault {
   'id' : bigint,
   'status' : VaultStatus,
+  /**
+   * NEW: designated heir
+   */
+  'last_keep_alive' : bigint,
   'updated_at' : bigint,
   'balance' : bigint,
   'btc_deposit_txid' : [] | [string],
   'owner' : Principal,
+  'beneficiary' : [] | [Principal],
   'btc_withdraw_txid' : [] | [string],
+  /**
+   * NEW: seconds of inactivity before claim
+   */
   'created_at' : bigint,
+  /**
+   * NEW: timestamp of last owner activity
+   */
+  'inheritance_timeout' : bigint,
   'lock_until' : bigint,
   'expected_deposit' : bigint,
   'btc_address' : string,
@@ -89,12 +101,17 @@ export interface _SERVICE {
     { 'Ok' : MarketListing } |
       { 'Err' : string }
   >,
+  'claim_inheritance' : ActorMethod<
+    [bigint],
+    { 'Ok' : Vault } |
+      { 'Err' : string }
+  >,
   'create_listing' : ActorMethod<
     [bigint, bigint],
     { 'Ok' : MarketListing } |
       { 'Err' : string }
   >,
-  'create_vault' : ActorMethod<[bigint, bigint], Vault>,
+  'create_vault' : ActorMethod<[bigint, bigint, [] | [Principal]], Vault>,
   'execute_auto_reinvest' : ActorMethod<
     [bigint],
     { 'Ok' : Vault } |
@@ -135,6 +152,7 @@ export interface _SERVICE {
     { 'Ok' : Vault } |
       { 'Err' : string }
   >,
+  'ping_alive' : ActorMethod<[bigint], { 'Ok' : Vault } | { 'Err' : string }>,
   'preview_withdraw' : ActorMethod<
     [bigint],
     { 'Ok' : bigint } |

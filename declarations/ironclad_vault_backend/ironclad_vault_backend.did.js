@@ -8,12 +8,15 @@ export const idlFactory = ({ IDL }) => {
   const Vault = IDL.Record({
     'id' : IDL.Nat64,
     'status' : VaultStatus,
+    'last_keep_alive' : IDL.Nat64,
     'updated_at' : IDL.Nat64,
     'balance' : IDL.Nat64,
     'btc_deposit_txid' : IDL.Opt(IDL.Text),
     'owner' : IDL.Principal,
+    'beneficiary' : IDL.Opt(IDL.Principal),
     'btc_withdraw_txid' : IDL.Opt(IDL.Text),
     'created_at' : IDL.Nat64,
+    'inheritance_timeout' : IDL.Nat64,
     'lock_until' : IDL.Nat64,
     'expected_deposit' : IDL.Nat64,
     'btc_address' : IDL.Text,
@@ -98,12 +101,21 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Variant({ 'Ok' : MarketListing, 'Err' : IDL.Text })],
         [],
       ),
+    'claim_inheritance' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : Vault, 'Err' : IDL.Text })],
+        [],
+      ),
     'create_listing' : IDL.Func(
         [IDL.Nat64, IDL.Nat64],
         [IDL.Variant({ 'Ok' : MarketListing, 'Err' : IDL.Text })],
         [],
       ),
-    'create_vault' : IDL.Func([IDL.Nat64, IDL.Nat64], [Vault], []),
+    'create_vault' : IDL.Func(
+        [IDL.Nat64, IDL.Nat64, IDL.Opt(IDL.Principal)],
+        [Vault],
+        [],
+      ),
     'execute_auto_reinvest' : IDL.Func(
         [IDL.Nat64],
         [IDL.Variant({ 'Ok' : Vault, 'Err' : IDL.Text })],
@@ -153,6 +165,11 @@ export const idlFactory = ({ IDL }) => {
       ),
     'mock_deposit_vault' : IDL.Func(
         [IDL.Nat64, IDL.Nat64],
+        [IDL.Variant({ 'Ok' : Vault, 'Err' : IDL.Text })],
+        [],
+      ),
+    'ping_alive' : IDL.Func(
+        [IDL.Nat64],
         [IDL.Variant({ 'Ok' : Vault, 'Err' : IDL.Text })],
         [],
       ),

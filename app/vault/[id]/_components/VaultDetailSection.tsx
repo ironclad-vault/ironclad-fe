@@ -63,7 +63,7 @@ const getStatusColor = (vault: VaultDTO): string => {
   if (status === "Unlockable")
     return "bg cursor-pointer-green-100 text-green-900 border-green-300";
   if (status === "ActiveLocked")
-    return "bg-blue-100 text-blue-900 border-blue-300";
+    return "bg-blue-100 text-accent border-blue-300";
   return "bg-accent text-gray-900 border-gray-300";
 };
 
@@ -211,8 +211,8 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
     return (
       <div className="space-y-8 mx-auto container px-6">
         <div className="card-brutal p-8 text-center">
-          <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-300">
+          <h2 className="heading-brutal text-2xl mb-4!">CONNECT YOUR WALLET</h2>
+          <p className="body-brutal text-lg text-accent">
             Please connect your wallet to view vault details.
           </p>
         </div>
@@ -224,7 +224,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
     return (
       <div className="space-y-8 mx-auto container px-6">
         <div className="card-brutal p-8 text-center">
-          <p className="body-brutal text-lg text-gray-300">
+          <p className="body-brutal text-lg text-accent">
             Loading vault details...
           </p>
         </div>
@@ -236,7 +236,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
     return (
       <div className="space-y-8 mx-auto container px-6">
         <div className="card-brutal p-8 bg-red-50 border-red-300">
-          <h2 className="heading-brutal text-lg text-red-900 mb-2">ERROR</h2>
+          <h2 className="heading-brutal text-lg text-red-900 mb-2!">ERROR</h2>
           <p className="body-brutal text-sm text-red-800">
             {error || "Vault not found"}
           </p>
@@ -272,10 +272,10 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
   return (
     <div className="container mx-auto px-6">
-      <div className="mb-6">
+      <div className="mb-6!">
         <Link
           href="/vault"
-          className="flex items-center gap-2 text-blue-600 hover:text-blue-800"
+          className="flex items-center gap-2 text-accent hover:text-accent/70"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to My Vaults
@@ -284,9 +284,9 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
       <div className="space-y-6">
         <div className="card-brutal p-8">
-          <div className="flex justify-between items-start mb-4">
+          <div className="flex justify-between items-start mb-4!">
             <div>
-              <h1 className="heading-brutal text-4xl mb-2">
+              <h1 className="heading-brutal text-4xl mb-2!">
                 VAULT #{vault.id.toString()}
               </h1>
               <p className="body-brutal text-gray-400">
@@ -302,7 +302,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="card-brutal p-4 bg-gray-50">
-              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1">
+              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1!">
                 Balance
               </p>
               <p className="heading-brutal text-2xl">
@@ -310,7 +310,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
               </p>
             </div>
             <div className="card-brutal p-4 bg-gray-50">
-              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1">
+              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1!">
                 Lock Until
               </p>
               <p className="heading-brutal text-lg">
@@ -318,7 +318,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
               </p>
             </div>
             <div className="card-brutal p-4 bg-gray-50">
-              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1">
+              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1!">
                 Status
               </p>
               <p className="heading-brutal text-lg">{statusLabel}</p>
@@ -327,7 +327,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
           {status === "ActiveLocked" && timeRemaining && (
             <div className="mt-4 bg-blue-50 p-4 rounded border-2 border-blue-200">
-              <p className="body-brutal text-sm text-blue-900 font-bold flex flex-row items-center gap-1">
+              <p className="body-brutal text-sm text-accent font-bold flex flex-row items-center gap-1">
                 <Timer /> {timeRemaining.days}d {timeRemaining.hours}h{" "}
                 {timeRemaining.minutes}m remaining until unlock
               </p>
@@ -451,8 +451,8 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                     </div>
                     {vault.ckbtcSubaccountHex && (
                       <div className="border-b pb-4">
-                        <span className="body-brutal text-gray-400 block mb-2">
-                          ckBTC Subaccoun cursor-pointert:
+                        <span className="body-brutal text-gray-400 block mb-2!">
+                          ckBTC Subaccoun cursor-pointer:
                         </span>
                         <div className="flex items-center gap-2">
                           <code className="body-brutal font-mono text-xs bg-accent p-2 rounded flex-1 overflow-x-auto">
@@ -630,7 +630,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                                 {getEventIcon(event.action)}
                               </div>
                               <div className="flex-1">
-                                <div className="flex justify-between items-start mb-2">
+                                <div className="flex justify-between items-start mb-2!">
                                   <p className="body-brutal font-bold">
                                     {event.action.replace(/_/g, " ")}
                                   </p>
@@ -644,7 +644,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                                   </div>
                                 </div>
                                 {event.notes && (
-                                  <p className="body-brutal text-sm text-gray-300">
+                                  <p className="body-brutal text-sm text-accent">
                                     {event.notes}
                                   </p>
                                 )}
@@ -660,7 +660,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
             {activeTab === "config" && (
               <div className="space-y-6 flex flex-col gap-3">
-                <h3 className="heading-brutal text-lg mb-4">
+                <h3 className="heading-brutal text-lg mb-4!">
                   AUTO-REINVEST PLAN
                 </h3>
 
@@ -693,9 +693,9 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                             : "bg-yellow-50 border-yellow-300"
                         }`}
                       >
-                        <div className="flex justify-between items-start mb-4">
+                        <div className="flex justify-between items-start mb-4!">
                           <div>
-                            <p className="heading-brutal text-sm mb-2">
+                            <p className="heading-brutal text-sm mb-2!">
                               {currentConfig.planStatus === "Active"
                                 ? "📅 ACTIVE PLAN"
                                 : currentConfig.planStatus === "Error"
@@ -703,7 +703,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                                 : "🔒 PLAN " +
                                   currentConfig.planStatus.toUpperCase()}
                             </p>
-                            <p className="body-brutal text-sm text-gray-300 mb-1">
+                            <p className="body-brutal text-sm text-accent mb-1!">
                               Lock Duration:{" "}
                               {Number(currentConfig.newLockDuration) / 86400}{" "}
                               days
@@ -720,7 +720,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                             )}
                             {currentConfig.planStatus === "Active" &&
                               currentConfig.nextCycleTimestamp > 0 && (
-                                <p className="body-brutal text-xs text-blue-800 mt-1">
+                                <p className="body-brutal text-xs text-accent mt-1">
                                   Next cycle:{" "}
                                   {new Date(
                                     currentConfig.nextCycleTimestamp * 1000
@@ -746,7 +746,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                         {/* Error Message */}
                         {currentConfig.planStatus === "Error" &&
                           currentConfig.errorMessage && (
-                            <div className="bg-red-100 border-l-4 border-red-500 p-3 mb-4">
+                            <div className="bg-red-100 border-l-4 border-red-500 p-3 mb-4!">
                               <p className="body-brutal text-xs text-red-900 font-bold">
                                 Error Details:
                               </p>
@@ -824,7 +824,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       </div>
                     ) : (
                       <div className="card-brutal p-6 bg-gray-50 border-gray-300">
-                        <p className="body-brutal text-sm text-gray-700 font-bold mb-2 flex items-center">
+                        <p className="body-brutal text-sm text-gray-700 font-bold mb-2! flex items-center">
                           <Calendar className="w-5 h-5 inline-block mr-2" /> NO
                           PLAN YET
                         </p>
@@ -837,7 +837,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
                     {/* Schedule/Update Plan Form */}
                     <div className="card-brutal p-6">
-                      <h4 className="heading-brutal text-md mb-4">
+                      <h4 className="heading-brutal text-md mb-4!">
                         {currentConfig &&
                         currentConfig.planStatus !== "Error" &&
                         currentConfig.planStatus !== "Cancelled"
@@ -847,7 +847,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
                       <div className="space-y-4">
                         <div>
-                          <label className="body-brutal text-sm font-bold mb-2 block">
+                          <label className="body-brutal text-sm font-bold mb-2! block">
                             LOCK DURATION FOR EACH CYCLE
                           </label>
                           <select

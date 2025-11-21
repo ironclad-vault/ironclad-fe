@@ -31,7 +31,7 @@ export default function Footer() {
     <footer className="bg-zinc-900 border-t border-zinc-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Main Footer Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12! md:mb-16!">
           {/* Column 1: Brand */}
           <div className="flex flex-col space-y-4">
             <Link href="/" className="flex items-center space-x-2 group">

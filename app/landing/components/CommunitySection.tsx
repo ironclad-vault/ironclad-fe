@@ -76,7 +76,7 @@ export default function CommunitySection() {
         className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
       >
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center mb-16!">
           {/* Left: Logo & Title */}
           <div className="flex flex-col items-center md:items-start space-y-8">
             {/* Logo */}
@@ -154,7 +154,7 @@ export default function CommunitySection() {
         {/* Community Section */}
         <div className="text-center space-y-8">
           <div>
-            <h3 className="text-heading text-2xl md:text-3xl font-bold text-white mb-2">
+            <h3 className="text-heading text-2xl md:text-3xl font-bold text-white mb-2!">
               Join the Protocol
             </h3>
             <p className="text-body text-zinc-400">

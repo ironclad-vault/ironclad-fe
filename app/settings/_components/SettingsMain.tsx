@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ArrowLeft, AlertTriangle, CheckCircle, Activity } from "lucide-react";
 import { useWallet } from "@/components/wallet/useWallet";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
+import { useVaults } from "@/hooks/ironclad/useVaults";
 import VaultHeader from "@/components/layout/VaultHeader";
 
 /**
@@ -18,13 +19,44 @@ export default function SettingsMain() {
     useNetworkMode();
   useWallet();
   const { pingAlive, loading: actionLoading } = useVaultActions();
+  const { vaults, loading: vaultsLoading } = useVaults();
   const [nextCheckDate, setNextCheckDate] = useState<string>("");
+  const [pingingVaults, setPingingVaults] = useState(false);
 
   React.useEffect(() => {
     setNextCheckDate(
       new Date(Date.now() + 180 * 24 * 60 * 60 * 1000).toLocaleDateString()
     );
   }, []);
+
+  const handlePingAllVaults = async () => {
+    if (!vaults || vaults.length === 0) {
+      toast.error("No vaults found to ping");
+      return;
+    }
+
+    setPingingVaults(true);
+    try {
+      const results = await Promise.allSettled(
+        vaults.map((vault) => pingAlive(vault.id))
+      );
+
+      const successCount = results.filter(
+        (r) => r.status === "fulfilled" && "Ok" in r.value
+      ).length;
+      const failCount = results.length - successCount;
+
+      if (failCount === 0) {
+        toast.success(`Successfully pinged ${successCount} vault(s)`);
+      } else {
+        toast.error(`Pinged ${successCount} vault(s), ${failCount} failed`);
+      }
+    } catch (err) {
+      toast.error(`Failed to ping vaults: ${err}`);
+    } finally {
+      setPingingVaults(false);
+    }
+  };
 
   const handleSwitchToMock = async () => {
     try {
@@ -60,7 +92,7 @@ export default function SettingsMain() {
     <div className="container mx-auto px-6 py-8 pt-24">
       <VaultHeader />
       {/* Back Navigation */}
-      <div className="mb-6">
+      <div className="mb-6!">
         <Link
           href="/vault"
           className="flex items-center gap-2 text-accent hover:text-orange-800"
@@ -71,8 +103,8 @@ export default function SettingsMain() {
       </div>
 
       {/* Header */}
-      <div className="mb-8 card-pro border-accent py-8 px-6">
-        <h1 className="text-heading text-5xl mb-2">SETTINGS</h1>
+      <div className="mb-8! card-pro border-accent py-8 px-6">
+        <h1 className="text-heading text-5xl mb-2!">SETTINGS</h1>
         <p className="text-body text-white">
           Configure Ironclad Vault system settings and network mode
         </p>
@@ -81,16 +113,16 @@ export default function SettingsMain() {
       {/* Network Mode Section */}
       <div className="space-y-8">
         <div className="card-pro p-8">
-          <h2 className="text-heading text-3xl mb-6 pb-4 border-b-2 border-accent">
+          <h2 className="text-heading text-3xl mb-6! pb-4 border-b-2 border-accent">
             NETWORK MODE
           </h2>
-          <p className="text-body text-white mb-6">
+          <p className="text-body text-white mb-6!">
             Choose between Mock mode (for testing) and ckBTC Mainnet mode (real
             blockchain operations).
           </p>
 
           {loading && (
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-4!">
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               <p className="text-body text-sm text-white">
                 Loading network mode...
@@ -99,7 +131,7 @@ export default function SettingsMain() {
           )}
 
           {error && (
-            <div className="card-pro border-red-500 p-6 bg-red-50 mb-4">
+            <div className="card-pro border-red-500 p-6 bg-red-50 mb-4!">
               <p className="text-body text-sm text-red-900 font-semibold">
                 Error loading network mode: {error}
               </p>
@@ -108,10 +140,10 @@ export default function SettingsMain() {
 
           {/* Current Mode Display */}
           {mode && (
-            <div className="card-pro p-8 mb-6 bg-gray-50">
+            <div className="card-pro p-8 mb-6! bg-gray-50">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-body text-sm text-white font-bold mb-1">
+                  <p className="text-body text-sm text-white font-bold mb-1!">
                     Current Mode
                   </p>
                   <p className="text-heading text-xl text-white">
@@ -151,29 +183,29 @@ export default function SettingsMain() {
                   : "bg-white hover-lift"
               }`}
             >
-              <h3 className="text-heading text-2xl mb-4">MOCK MODE</h3>
-              <div className="space-y-3 mb-4">
+              <h3 className="text-heading text-2xl mb-4!">MOCK MODE</h3>
+              <div className="space-y-3 mb-4!">
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="text-body text-sm text-gray-300">
+                  <p className="text-body text-sm text-accent">
                     Safe for testing and development
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="text-body text-sm text-gray-300">
+                  <p className="text-body text-sm text-accent">
                     No real blockchain calls
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="text-body text-sm text-gray-300">
+                  <p className="text-body text-sm text-accent">
                     Simulated ckBTC operations
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-red-600">✗</span>
-                  <p className="text-body text-sm text-gray-300">
+                  <p className="text-body text-sm text-accent">
                     Cannot sync real ckBTC balances
                   </p>
                 </div>
@@ -197,29 +229,29 @@ export default function SettingsMain() {
                   : "bg-white hover-lift"
               }`}
             >
-              <h3 className="text-heading text-2xl mb-4">CKBTC MAINNET</h3>
-              <div className="space-y-3 mb-4">
+              <h3 className="text-heading text-2xl mb-4!">CKBTC MAINNET</h3>
+              <div className="space-y-3 mb-4!">
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="text-body text-sm text-gray-300">
+                  <p className="text-body text-sm text-accent">
                     Real ckBTC testnet integration
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="text-body text-sm text-gray-300">
+                  <p className="text-body text-sm text-accent">
                     Sync balances from ledger
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-green-600">✓</span>
-                  <p className="text-body text-sm text-gray-300">
+                  <p className="text-body text-sm text-accent">
                     Real ECDSA threshold signatures
                   </p>
                 </div>
                 <div className="flex items-start gap-2">
                   <span className="text-orange-600">⚠</span>
-                  <p className="text-body text-sm text-gray-300">
+                  <p className="text-body text-sm text-accent">
                     Use only with testnet funds
                   </p>
                 </div>
@@ -241,7 +273,7 @@ export default function SettingsMain() {
             <div className="card-pro border-orange-400 p-8 bg-orange-50 mt-8">
               <div className="flex gap-3">
                 <div>
-                  <h4 className="text-heading text-sm font-bold text-orange-900 mb-2 flex flex-row items-center gap-2">
+                  <h4 className="text-heading text-sm font-bold text-orange-900 mb-2! flex flex-row items-center gap-2">
                     <AlertTriangle className="w-6 h-6 text-orange-600 shrink-0" />
                     IMPORTANT: TESTNET MODE ACTIVE
                   </h4>
@@ -276,7 +308,7 @@ export default function SettingsMain() {
 
         {/* Inheritance Protocol Section */}
         <div className="card-pro p-8">
-          <h2 className="heading-brutal text-3xl mb-6 pb-4 border-b-2 border-accent">
+          <h2 className="heading-brutal text-3xl mb-6! pb-4 border-b-2 border-accent">
             INHERITANCE PROTOCOL
           </h2>
 
@@ -284,14 +316,14 @@ export default function SettingsMain() {
             {/* Status Row */}
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-label mb-2">DEAD MAN SWITCH STATUS</p>
+                <p className="text-label mb-2!">DEAD MAN SWITCH STATUS</p>
                 <div className="flex items-center gap-2">
                   <span className="inline-block w-3 h-3 bg-emerald-500 rounded-full animate-pulse"></span>
                   <span className="text-heading text-lg">ACTIVE</span>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-label mb-2">INACTIVITY TIMEOUT</p>
+                <p className="text-label mb-2!">INACTIVITY TIMEOUT</p>
                 <p className="heading-brutal text-lg text-emerald-600">
                   180 DAYS
                 </p>
@@ -301,16 +333,14 @@ export default function SettingsMain() {
             {/* Info Rows */}
             <div className="bg-zinc-50 p-6 rounded-lg border border-zinc-200 space-y-3 bg-opacity-10 border-opacity-20">
               <div>
-                <p className="text-label mb-1">NEXT CHECK</p>
-                <p className="text-body text-sm text-gray-300">
-                  {nextCheckDate}
-                </p>
+                <p className="text-label mb-1! text-black!">NEXT CHECK</p>
+                <p className="text-body text-sm text-accent">{nextCheckDate}</p>
               </div>
               <div>
-                <p className="text-label mb-1">
+                <p className="text-label mb-1! text-black!">
                   BENEFICIARY CLAIM AVAILABLE IN
                 </p>
-                <p className="text-body text-sm text-gray-300">
+                <p className="text-body text-sm text-accent">
                   180 Days (Default)
                 </p>
               </div>
@@ -318,17 +348,19 @@ export default function SettingsMain() {
 
             {/* Ping Button */}
             <button
-              onClick={() => pingAlive()}
-              disabled={actionLoading}
+              onClick={handlePingAllVaults}
+              disabled={actionLoading || pingingVaults || vaultsLoading}
               className="btn-pro w-full py-4 font-bold text-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <Activity className="w-5 h-5" />
-              {actionLoading ? "SENDING PING..." : "PROOF OF LIFE (PING)"}
+              {pingingVaults
+                ? "PINGING ALL VAULTS..."
+                : "PROOF OF LIFE (PING ALL VAULTS)"}
             </button>
 
             {/* Help Text */}
             <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-              <p className="text-body text-sm text-blue-900">
+              <p className="text-body text-sm text-accent">
                 <strong>How It Works:</strong> Click &quot;Proof of Life&quot;
                 regularly to prove you&apos;re alive and reset the 180-day
                 timer. If the timer expires, your designated beneficiary can
@@ -340,8 +372,8 @@ export default function SettingsMain() {
 
         {/* Additional Settings Placeholder */}
         <div className="card-pro p-8 bg-gray-50">
-          <h2 className="text-heading text-3xl mb-4">ADDITIONAL SETTINGS</h2>
-          <p className="text-body text-gray-300">
+          <h2 className="text-heading text-3xl mb-4!">ADDITIONAL SETTINGS</h2>
+          <p className="text-body text-accent">
             More configuration options coming soon...
           </p>
         </div>

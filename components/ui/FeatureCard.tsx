@@ -6,7 +6,7 @@ interface FeatureCardProps {
 export default function FeatureCard({ title, description }: FeatureCardProps) {
   return (
     <div className="card-pro">
-      <div className="text-heading text-lg mb-3">
+      <div className="text-heading text-lg mb-3!">
         {title}
       </div>
       <div className="text-body">

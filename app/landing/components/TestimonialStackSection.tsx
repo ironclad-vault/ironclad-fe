@@ -113,8 +113,8 @@ export default function TestimonialStackSection() {
     <section id="testimonials" className="py-20 bg-zinc-950">
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <div className="text-center mb-16 card-pro border-accent py-12 px-6">
-          <h2 className="text-heading text-5xl md:text-7xl mb-4 text-white">
+        <div className="text-center mb-16! card-pro border-accent py-12 px-6">
+          <h2 className="text-heading text-5xl md:text-7xl mb-4! text-white">
             TRUSTED BY USERS
           </h2>
           <p className="text-body text-lg max-w-3xl mx-auto text-zinc-400">
@@ -146,11 +146,11 @@ export default function TestimonialStackSection() {
                 backfaceVisibility: "hidden",
               }}
             >
-              <blockquote className="text-heading text-2xl md:text-4xl leading-tight mb-10">
+              <blockquote className="text-heading text-2xl md:text-4xl leading-tight mb-10!">
                 &ldquo;{testimonials[testimonials.length - 1].content}&rdquo;
               </blockquote>
               <div className="mt-auto border-t-2 border-accent pt-6 w-full">
-                <h3 className="text-heading text-2xl md:text-3xl mb-2">
+                <h3 className="text-heading text-2xl md:text-3xl mb-2!">
                   {testimonials[testimonials.length - 1].name}
                 </h3>
                 <p className="text-body text-sm tracking-wider text-accent font-bold">
@@ -180,11 +180,11 @@ export default function TestimonialStackSection() {
                     backfaceVisibility: "hidden",
                   }}
                 >
-                  <blockquote className="text-heading text-2xl md:text-4xl leading-tight mb-10">
+                  <blockquote className="text-heading text-2xl md:text-4xl leading-tight mb-10!">
                     &ldquo;{testimonial.content}&rdquo;
                   </blockquote>
                   <div className="mt-auto border-t-2 border-accent pt-6 w-full">
-                    <h3 className="text-heading text-2xl md:text-3xl mb-2">
+                    <h3 className="text-heading text-2xl md:text-3xl mb-2!">
                       {testimonial.name}
                     </h3>
                     <p className="text-body text-sm tracking-wider text-accent font-bold">

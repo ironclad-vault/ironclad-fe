@@ -154,13 +154,15 @@ export function useVaultActions() {
     }
   };
 
-  const handlePingAlive = async (): Promise<{ Ok: null } | { Err: string }> => {
+  const handlePingAlive = async (
+    vaultId: bigint
+  ): Promise<{ Ok: Vault } | { Err: string }> => {
     setLoading(true);
     setError(null);
 
     try {
       const result = await toast.promise(
-        ironcladClient.inheritance.pingAlive(identity ?? undefined),
+        ironcladClient.vaults.pingAlive(vaultId, identity ?? undefined),
         {
           loading: "Sending proof of life...",
           success: "Proof of life confirmed!",
@@ -178,12 +180,39 @@ export function useVaultActions() {
     }
   };
 
+  const handleClaimInheritance = async (
+    vaultId: bigint
+  ): Promise<Vault | null> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const vault = await toast.promise(
+        ironcladClient.vaults.claimInheritance(vaultId, identity ?? undefined),
+        {
+          loading: "Claiming inheritance...",
+          success: "Inheritance claimed successfully!",
+          error: (err) => `Claim failed: ${getErrorMessage(err)}`,
+        }
+      );
+      return vault;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+      console.error("[useVaultActions] Claim inheritance failed:", msg);
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     createVault: handleCreateVault,
     mockDeposit: handleMockDeposit,
     unlockVault: handleUnlockVault,
     withdrawVault: handleWithdrawVault,
     pingAlive: handlePingAlive,
+    claimInheritance: handleClaimInheritance,
     loading,
     error,
   };

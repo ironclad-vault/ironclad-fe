@@ -103,7 +103,7 @@ export function getVaultStatusColor(status: Vault | VaultStatusString): string {
   
   switch (statusStr) {
     case "ActiveLocked":
-      return "bg-blue-100 text-blue-900 border-blue-300";
+      return "bg-blue-100 text-accent border-blue-300";
     case "Unlockable":
       return "bg-green-100 text-green-900 border-green-300";
     case "Withdrawn":
