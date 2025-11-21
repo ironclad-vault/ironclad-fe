@@ -15,7 +15,13 @@ export default function MarketplacePage() {
         <section className="flex flex-col items-stretch min-h-screen">
           <main className="pt-24 pb-16 flex-1">
             <div className="container mx-auto px-6">
-              <Suspense fallback={<div className="card-brutal p-8"><p className="text-gray-600">Loading...</p></div>}>
+              <Suspense
+                fallback={
+                  <div className="card-brutal p-8">
+                    <p className="text-gray-300">Loading...</p>
+                  </div>
+                }
+              >
                 <MarketplaceMain />
               </Suspense>
             </div>

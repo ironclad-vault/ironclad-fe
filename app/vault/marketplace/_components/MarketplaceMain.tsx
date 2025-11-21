@@ -92,7 +92,7 @@ export default function MarketplaceMain() {
     return (
       <div className="card-brutal brutal-border border-2 p-8 text-center mx-auto">
         <h2 className="heading-brutal text-3xl mb-4">CONNECT YOUR WALLET</h2>
-        <p className="body-brutal text-lg text-gray-700">
+        <p className="body-brutal text-lg text-gray-300">
           Please connect your wallet to access the marketplace.
         </p>
       </div>
@@ -102,7 +102,7 @@ export default function MarketplaceMain() {
   if (loading || vaultsLoading) {
     return (
       <div className="card-brutal brutal-border border-2 p-8 text-center mx-auto">
-        <p className="body-brutal text-lg text-gray-700">
+        <p className="body-brutal text-lg text-gray-300">
           Loading marketplace...
         </p>
       </div>
@@ -158,7 +158,7 @@ export default function MarketplaceMain() {
 
               {listings.length === 0 ? (
                 <div className="card-brutal brutal-border border-2 p-8 text-center">
-                  <p className="body-brutal text-lg text-gray-700">
+                  <p className="body-brutal text-lg text-gray-300">
                     No active listings available.
                   </p>
                 </div>
@@ -176,15 +176,14 @@ export default function MarketplaceMain() {
                     if (vaultDetails) {
                       const vaultBalance = Number(vaultDetails.balance);
                       const priceSats = Number(listing.price_sats);
-                      yieldPercent = ((vaultBalance - priceSats) / priceSats) * 100;
-                      discountPercent = ((vaultBalance - priceSats) / vaultBalance) * 100;
+                      yieldPercent =
+                        ((vaultBalance - priceSats) / priceSats) * 100;
+                      discountPercent =
+                        ((vaultBalance - priceSats) / vaultBalance) * 100;
                     }
 
                     return (
-                      <div
-                        key={listing.id.toString()}
-                        className="card-pro p-6"
-                      >
+                      <div key={listing.id.toString()} className="card-pro p-6">
                         <div className="space-y-4 mb-6">
                           <div className="flex justify-between items-start">
                             <div>
@@ -211,7 +210,10 @@ export default function MarketplaceMain() {
                             <div className="bg-zinc-50 p-3 rounded-lg border border-zinc-200">
                               <p className="text-label mb-2">VAULT BALANCE</p>
                               <p className="heading-brutal text-lg">
-                                <BTCAmount sats={vaultDetails.balance} showLabel={true} />
+                                <BTCAmount
+                                  sats={vaultDetails.balance}
+                                  showLabel={true}
+                                />
                               </p>
                             </div>
                           )}
@@ -220,7 +222,10 @@ export default function MarketplaceMain() {
                             <p className="text-label mb-2">ASKING PRICE</p>
                             <div className="flex items-center">
                               <p className="heading-brutal text-3xl text-emerald-600">
-                                <BTCAmount sats={listing.price_sats} showLabel={true} />
+                                <BTCAmount
+                                  sats={listing.price_sats}
+                                  showLabel={true}
+                                />
                               </p>
                               {discountPercent > 0 && (
                                 <span className="text-xs text-zinc-500 font-medium ml-2">
@@ -302,7 +307,7 @@ export default function MarketplaceMain() {
                     placeholder="0.00000000"
                     className="input-brutal w-full"
                   />
-                  <p className="body-brutal text-xs text-gray-600 mt-2">
+                  <p className="body-brutal text-xs text-gray-400 mt-2">
                     Enter price in BTC (will be converted to satoshis)
                   </p>
                 </div>
@@ -322,7 +327,7 @@ export default function MarketplaceMain() {
                   browse and purchase your vault. Once sold, ownership transfers
                   to the buyer.
                 </p>
-                <p className="body-brutal text-sm text-gray-600">
+                <p className="body-brutal text-sm text-gray-400">
                   Note: Auto-reinvest configurations are automatically disabled
                   when a vault is sold.
                 </p>
@@ -353,15 +358,14 @@ export default function MarketplaceMain() {
                     if (vaultDetails) {
                       const vaultBalance = Number(vaultDetails.balance);
                       const priceSats = Number(listing.price_sats);
-                      yieldPercent = ((vaultBalance - priceSats) / priceSats) * 100;
-                      discountPercent = ((vaultBalance - priceSats) / vaultBalance) * 100;
+                      yieldPercent =
+                        ((vaultBalance - priceSats) / priceSats) * 100;
+                      discountPercent =
+                        ((vaultBalance - priceSats) / vaultBalance) * 100;
                     }
 
                     return (
-                      <div
-                        key={listing.id.toString()}
-                        className="card-pro p-6"
-                      >
+                      <div key={listing.id.toString()} className="card-pro p-6">
                         <div className="space-y-4 mb-6">
                           <div className="flex justify-between items-start">
                             <div>
@@ -407,7 +411,10 @@ export default function MarketplaceMain() {
                               <div className="text-right">
                                 <p className="text-label mb-1">VAULT BALANCE</p>
                                 <p className="heading-brutal text-lg">
-                                  <BTCAmount sats={vaultDetails.balance} showLabel={true} />
+                                  <BTCAmount
+                                    sats={vaultDetails.balance}
+                                    showLabel={true}
+                                  />
                                 </p>
                               </div>
                             )}
@@ -417,7 +424,10 @@ export default function MarketplaceMain() {
                             <p className="text-label mb-2">ASKING PRICE</p>
                             <div className="flex items-center">
                               <p className="heading-brutal text-3xl text-emerald-600">
-                                <BTCAmount sats={listing.price_sats} showLabel={true} />
+                                <BTCAmount
+                                  sats={listing.price_sats}
+                                  showLabel={true}
+                                />
                               </p>
                               {discountPercent > 0 && (
                                 <span className="text-xs text-zinc-500 font-medium ml-2">

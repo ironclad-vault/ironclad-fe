@@ -44,19 +44,22 @@ export default function WithdrawVaultsMain() {
       setPreviewAmount(preview);
     } catch (err) {
       let message = "Failed to preview withdrawal amount";
-      
+
       if (err instanceof Error) {
         // Check if error is about vault not being unlockable
-        if (err.message.toLowerCase().includes("not unlockable") || 
-            err.message.toLowerCase().includes("locked")) {
-          message = "This vault needs to be unlocked first. Please visit the vault details page to unlock it before withdrawing.";
+        if (
+          err.message.toLowerCase().includes("not unlockable") ||
+          err.message.toLowerCase().includes("locked")
+        ) {
+          message =
+            "This vault needs to be unlocked first. Please visit the vault details page to unlock it before withdrawing.";
         } else {
           message = err.message;
         }
       }
-      
+
       toast.error(message, { duration: 5000 });
-      
+
       // Reset selection if vault is not unlockable
       setSelectedVaultId("");
     }
@@ -122,7 +125,7 @@ export default function WithdrawVaultsMain() {
       <div className="container mx-auto px-6">
         <div className="card-pro p-8 text-center">
           <h2 className="text-heading text-3xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="text-body text-lg text-gray-700">
+          <p className="text-body text-lg text-gray-300">
             Please connect your wallet to withdraw from vaults.
           </p>
         </div>
@@ -134,7 +137,7 @@ export default function WithdrawVaultsMain() {
     return (
       <div className="container mx-auto px-6">
         <div className="card-pro p-8 text-center">
-          <p className="text-body text-lg text-gray-700">
+          <p className="text-body text-lg text-gray-300">
             Loading withdrawable vaults...
           </p>
         </div>
@@ -157,10 +160,8 @@ export default function WithdrawVaultsMain() {
     return (
       <div className="container mx-auto px-6">
         <div className="card-pro p-8 text-center">
-          <h2 className="text-heading text-3xl mb-4">
-            NO WITHDRAWABLE VAULTS
-          </h2>
-          <p className="text-body text-lg text-gray-700 mb-8">
+          <h2 className="text-heading text-3xl mb-4">NO WITHDRAWABLE VAULTS</h2>
+          <p className="text-body text-lg text-gray-300 mb-8">
             You don&apos;t have any vaults ready for withdrawal.
           </p>
           <div className="card-pro border-blue-400 p-6 bg-blue-50 mb-8">
@@ -168,8 +169,9 @@ export default function WithdrawVaultsMain() {
               💡 <strong>Need to withdraw?</strong>
             </p>
             <p className="text-body text-sm text-blue-800">
-              If you have locked vaults, visit <strong>My Vaults</strong> page to unlock them first.
-              Once unlocked, they will appear here for withdrawal.
+              If you have locked vaults, visit <strong>My Vaults</strong> page
+              to unlock them first. Once unlocked, they will appear here for
+              withdrawal.
             </p>
           </div>
           <TransitionButton
@@ -242,7 +244,7 @@ export default function WithdrawVaultsMain() {
                 className="input-brutal w-full"
                 disabled={!selectedVaultId}
               />
-              <p className="text-body text-xs text-gray-600 mt-2">
+              <p className="text-body text-xs text-gray-400 mt-2">
                 Enter the amount you want to withdraw
               </p>
             </div>
@@ -260,14 +262,12 @@ export default function WithdrawVaultsMain() {
 
         {/* Info Box */}
         <div className="card-pro p-8 mt-8 bg-gray-50">
-          <h3 className="text-heading text-2xl mb-4">
-            WITHDRAWAL INFORMATION
-          </h3>
-          <p className="text-body text-sm text-gray-700 mb-4">
+          <h3 className="text-heading text-2xl mb-4">WITHDRAWAL INFORMATION</h3>
+          <p className="text-body text-sm text-gray-300 mb-4">
             Withdraw your funds from an unlocked vault. The amount will be sent
             to your connected wallet.
           </p>
-          <ul className="text-body text-sm text-gray-600 space-y-2">
+          <ul className="text-body text-sm text-gray-400 space-y-2">
             <li>✓ Vault must be unlocked before withdrawal</li>
             <li>✓ Visit vault details page to unlock locked vaults</li>
             <li>✓ Check the available amount before withdrawing</li>
@@ -280,17 +280,13 @@ export default function WithdrawVaultsMain() {
         {showConfirm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="card-pro bg-white p-8 max-w-md w-full">
-              <h2 className="text-heading text-3xl mb-6">
-                CONFIRM WITHDRAWAL
-              </h2>
+              <h2 className="text-heading text-3xl mb-6">CONFIRM WITHDRAWAL</h2>
               <div className="space-y-4 mb-8">
                 <div className="card-pro p-6 bg-gray-50">
-                  <p className="text-body text-xs text-gray-600 mb-2 font-bold">
+                  <p className="text-body text-xs text-gray-400 mb-2 font-bold">
                     Amount
                   </p>
-                  <p className="text-heading text-3xl">
-                    {withdrawAmount} BTC
-                  </p>
+                  <p className="text-heading text-3xl">{withdrawAmount} BTC</p>
                 </div>
                 <p className="text-body text-sm text-gray-700">
                   Are you sure you want to withdraw {withdrawAmount} BTC from

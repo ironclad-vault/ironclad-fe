@@ -47,20 +47,26 @@ function VaultCard({
     // Assuming vault was created at lock_until - timeRemaining
     // For simplicity, we'll use lock_until as the end and estimate start as 2 weeks before
     const lockTimestamp = Number(vault.lock_until);
-    const estStartTimestamp = lockTimestamp - (14 * 24 * 60 * 60); // Estimate 2 weeks before lock
+    const estStartTimestamp = lockTimestamp - 14 * 24 * 60 * 60; // Estimate 2 weeks before lock
     const currentTimestamp = now.getTime() / 1000;
 
     const totalDuration = lockTimestamp - estStartTimestamp;
     const elapsed = currentTimestamp - estStartTimestamp;
-    const percentage = Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
+    const percentage = Math.max(
+      0,
+      Math.min(100, (elapsed / totalDuration) * 100)
+    );
 
     return percentage;
   };
 
-  const progressPercentage = status === "ActiveLocked" ? calculateProgress() : 100;
+  const progressPercentage =
+    status === "ActiveLocked" ? calculateProgress() : 100;
 
   // Get badge color based on plan status
-  const getAutoReinvestBadgeColor = (status: "Active" | "Cancelled" | "Error" | "Paused"): string => {
+  const getAutoReinvestBadgeColor = (
+    status: "Active" | "Cancelled" | "Error" | "Paused"
+  ): string => {
     switch (status) {
       case "Active":
         return "bg-blue-50 text-blue-700";
@@ -78,17 +84,17 @@ function VaultCard({
   // Format next cycle timestamp to human-readable format
   const formatNextCycleTime = (timestamp: number): string => {
     if (!timestamp || timestamp === 0) return "Not scheduled";
-    
+
     const targetDate = new Date(timestamp * 1000);
     const now = new Date();
     const diffMs = targetDate.getTime() - now.getTime();
-    
+
     if (diffMs <= 0) return "Due now";
-    
+
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    
+
     if (diffMinutes < 60) return `in ${diffMinutes}m`;
     if (diffHours < 24) return `in ${diffHours}h`;
     return `in ${diffDays}d`;
@@ -109,7 +115,9 @@ function VaultCard({
   return (
     <div className="card-pro relative overflow-hidden">
       <div className="flex justify-between items-start mb-4">
-        <h3 className="heading-brutal text-xl font-semibold">Vault #{vault.id.toString()}</h3>
+        <h3 className="heading-brutal text-xl font-semibold">
+          Vault #{vault.id.toString()}
+        </h3>
         <span
           className={`px-3 py-1 text-xs font-semibold rounded-full flex items-center gap-2 ${statusColor}`}
         >
@@ -123,7 +131,10 @@ function VaultCard({
       {/* Progress Bar */}
       {status === "ActiveLocked" && (
         <div className="progress-bar-container mb-4">
-          <div className="progress-bar-fill" style={{ width: `${progressPercentage}%` }}></div>
+          <div
+            className="progress-bar-fill"
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
         </div>
       )}
 
@@ -131,36 +142,62 @@ function VaultCard({
       {autoReinvestConfig && (
         <div className="mb-5 pb-4 border-b border-zinc-100">
           {autoReinvestConfig.planStatus === "Active" && (
-            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Active")}`}>
+            <div
+              className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor(
+                "Active"
+              )}`}
+            >
               <p className="flex items-center gap-1 mb-1">
                 📅 Auto-Reinvest Active
               </p>
-              <p className="text-xs opacity-75">Execution #{Number(autoReinvestConfig.executionCount)}</p>
+              <p className="text-xs opacity-75">
+                Execution #{Number(autoReinvestConfig.executionCount)}
+              </p>
               {nextCycleTimestamp && nextCycleTimestamp > 0 && (
-                <p className="text-xs opacity-75">Next: {formatNextCycleTime(nextCycleTimestamp)}</p>
+                <p className="text-xs opacity-75">
+                  Next: {formatNextCycleTime(nextCycleTimestamp)}
+                </p>
               )}
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Paused" && (
-            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Paused")}`}>
+            <div
+              className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor(
+                "Paused"
+              )}`}
+            >
               <p className="flex items-center gap-1">⏸️ Auto-Reinvest Paused</p>
               <p className="text-xs opacity-75">Scheduled but waiting</p>
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Error" && (
-            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Error")}`}>
-              <p className="flex items-center gap-1 mb-1">❌ Auto-Reinvest Error</p>
+            <div
+              className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor(
+                "Error"
+              )}`}
+            >
+              <p className="flex items-center gap-1 mb-1">
+                ❌ Auto-Reinvest Error
+              </p>
               {autoReinvestConfig.errorMessage && (
-                <p className="text-xs opacity-75">Reason: {autoReinvestConfig.errorMessage}</p>
+                <p className="text-xs opacity-75">
+                  Reason: {autoReinvestConfig.errorMessage}
+                </p>
               )}
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Cancelled" && (
-            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Cancelled")}`}>
-              <p className="flex items-center gap-1">🛑 Auto-Reinvest Cancelled</p>
+            <div
+              className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor(
+                "Cancelled"
+              )}`}
+            >
+              <p className="flex items-center gap-1">
+                🛑 Auto-Reinvest Cancelled
+              </p>
               <p className="text-xs opacity-75">Plan ended</p>
             </div>
           )}
@@ -170,13 +207,21 @@ function VaultCard({
       <div className="space-y-4 text-body text-sm mb-5">
         <div className="flex justify-between items-baseline">
           <span className="text-label">BALANCE</span>
-          <BTCAmount sats={vault.balance} showLabel={true} className="text-right" />
+          <BTCAmount
+            sats={vault.balance}
+            showLabel={true}
+            className="text-right"
+          />
         </div>
 
         {vault.expected_deposit && (
           <div className="flex justify-between items-baseline">
             <span className="text-label">EXPECTED DEPOSIT</span>
-            <BTCAmount sats={vault.expected_deposit} showLabel={true} className="text-right" />
+            <BTCAmount
+              sats={vault.expected_deposit}
+              showLabel={true}
+              className="text-right"
+            />
           </div>
         )}
 
@@ -190,8 +235,8 @@ function VaultCard({
         {status === "ActiveLocked" && timeRemaining && (
           <div className="bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
             <p className="text-xs font-semibold text-blue-900 flex flex-row items-center gap-1">
-              <Timer className="w-4 h-4" /> {timeRemaining.days}d {timeRemaining.hours}h{" "}
-              {timeRemaining.minutes}m remaining
+              <Timer className="w-4 h-4" /> {timeRemaining.days}d{" "}
+              {timeRemaining.hours}h {timeRemaining.minutes}m remaining
             </p>
           </div>
         )}
@@ -269,8 +314,10 @@ export default function MyVaultsMain() {
   const [autoRefresh, setAutoRefresh] = useState(true);
 
   // Helper to find auto-reinvest config for a vault
-  const getConfigForVault = (vaultId: bigint): AutoReinvestConfigDTO | undefined => {
-    return configs.find(c => c.vaultId === vaultId);
+  const getConfigForVault = (
+    vaultId: bigint
+  ): AutoReinvestConfigDTO | undefined => {
+    return configs.find((c) => c.vaultId === vaultId);
   };
 
   // Filter vaults by status
@@ -357,7 +404,7 @@ export default function MyVaultsMain() {
       {!isConnected && (
         <div className="card-brutal brutal-border border-2 p-12 text-center">
           <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-700">
+          <p className="body-brutal text-lg text-gray-300">
             Connect your wallet to view and manage your vaults
           </p>
         </div>
@@ -370,8 +417,9 @@ export default function MyVaultsMain() {
             <div className="flex justify-between items-start mb-6 pb-6 border-b-2 border-accent">
               <div>
                 <h1 className="heading-brutal text-5xl mb-2">DASHBOARD</h1>
-                <p className="body-brutal text-lg text-gray-700 font-semibold">
-                  {vaults.length} {vaults.length === 1 ? "position" : "positions"} found
+                <p className="body-brutal text-lg text-gray-300 font-semibold">
+                  {vaults.length}{" "}
+                  {vaults.length === 1 ? "position" : "positions"} found
                 </p>
               </div>
               <button
@@ -400,7 +448,9 @@ export default function MyVaultsMain() {
                   onChange={(e) => setAutoRefresh(e.target.checked)}
                   className="w-4 h-4"
                 />
-                <span className="body-brutal text-sm font-semibold">Auto-refresh every 30s</span>
+                <span className="body-brutal text-sm font-semibold">
+                  Auto-refresh every 30s
+                </span>
               </label>
               {activeVaults.some((v) => {
                 const diff =
@@ -435,8 +485,10 @@ export default function MyVaultsMain() {
           {/* Empty State */}
           {!loading && vaults.length === 0 && !error && (
             <div className="card-brutal brutal-border border-2 p-12 text-center">
-              <h2 className="heading-brutal text-4xl mb-4">NO ACTIVE POSITIONS</h2>
-              <p className="body-brutal text-lg text-gray-700 mb-8">
+              <h2 className="heading-brutal text-4xl mb-4">
+                NO ACTIVE POSITIONS
+              </h2>
+              <p className="body-brutal text-lg text-gray-300 mb-8">
                 Mint a new Bond or buy discounted BTC on the market.
               </p>
               <TransitionButton
@@ -547,32 +599,34 @@ export default function MyVaultsMain() {
 
               {/* Quick Stats */}
               <div className="card-brutal brutal-border border-2 p-8 mt-12">
-                <h3 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent">STATISTICS</h3>
+                <h3 className="heading-brutal text-2xl mb-6 pb-4 border-b-2 border-accent">
+                  STATISTICS
+                </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 body-brutal">
                   <div>
-                    <p className="text-gray-600 text-sm">Total Vaults</p>
+                    <p className="text-gray-400 text-sm">Total Vaults</p>
                     <p className="text-2xl font-bold">{vaults.length}</p>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-sm">Need Unlock</p>
+                    <p className="text-gray-400 text-sm">Need Unlock</p>
                     <p className="text-2xl font-bold text-green-600">
                       {needsUnlockVaults.length}
                     </p>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-sm">Unlockable</p>
+                    <p className="text-gray-400 text-sm">Unlockable</p>
                     <p className="text-2xl font-bold text-green-600">
                       {unlockableVaults.length}
                     </p>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-sm">Locked</p>
+                    <p className="text-gray-400 text-sm">Locked</p>
                     <p className="text-2xl font-bold">
                       {activeVaults.length - needsUnlockVaults.length}
                     </p>
                   </div>
                   <div>
-                    <p className="text-gray-600 text-sm">Pending</p>
+                    <p className="text-gray-400 text-sm">Pending</p>
                     <p className="text-2xl font-bold">{pendingVaults.length}</p>
                   </div>
                 </div>

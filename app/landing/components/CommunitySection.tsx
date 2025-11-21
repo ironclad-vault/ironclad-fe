@@ -1,27 +1,31 @@
-'use client';
+"use client";
 
-import { useLayoutEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useLayoutEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
   useScrollReveal,
   useScrollRevealStagger,
-} from '@/components/ui/useScrollReveal';
-import { ArrowRight, Github, Twitter, MessageCircle, Mail } from 'lucide-react';
-import GlitchText from '@/components/ui/animated/GlitchText';
-import Image from 'next/image';
-import TransitionButton from '@/components/navigation/TransitionButton';
+} from "@/components/ui/useScrollReveal";
+import { ArrowRight, Github, Twitter, MessageCircle, Mail } from "lucide-react";
+import GlitchText from "@/components/ui/animated/GlitchText";
+import Image from "next/image";
+import TransitionButton from "@/components/navigation/TransitionButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CommunitySection() {
   const sectionRef = useRef<HTMLElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const logoRef = useScrollReveal<HTMLDivElement>({ y: 40, opacity: 0, delay: 0 });
+  const logoRef = useScrollReveal<HTMLDivElement>({
+    y: 40,
+    opacity: 0,
+    delay: 0,
+  });
   const titleRef = useScrollReveal<HTMLDivElement>({ y: 40, delay: 0.1 });
   const descRef = useScrollReveal<HTMLDivElement>({ y: 40, delay: 0.2 });
   const ctaRef = useScrollReveal<HTMLDivElement>({ y: 40, delay: 0.3 });
-  const socialRef = useScrollRevealStagger<HTMLDivElement>('.social-link', {
+  const socialRef = useScrollRevealStagger<HTMLDivElement>(".social-link", {
     y: 20,
     opacity: 0,
     stagger: 0.08,
@@ -42,11 +46,11 @@ export default function CommunitySection() {
             scale: 1,
             opacity: 1,
             duration: 0.8,
-            ease: 'power3.out',
+            ease: "power3.out",
             scrollTrigger: {
               trigger: logo,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse',
+              start: "top 85%",
+              toggleActions: "play none none reverse",
             },
           }
         );
@@ -100,18 +104,22 @@ export default function CommunitySection() {
           {/* Right: Description & CTA */}
           <div ref={descRef} className="flex flex-col space-y-8">
             <div className="space-y-4">
-              <p className="text-body text-lg text-zinc-600 leading-relaxed">
-                The first liquid vesting protocol on Bitcoin. Trade time-locked positions, enforce discipline, and secure your legacy with on-chain inheritance.
+              <p className="text-body text-lg text-zinc-400 leading-relaxed">
+                The first liquid vesting protocol on Bitcoin. Trade time-locked
+                positions, enforce discipline, and secure your legacy with
+                on-chain inheritance.
               </p>
 
-              <ul className="space-y-3 text-sm text-zinc-600">
+              <ul className="space-y-3 text-sm text-zinc-400">
                 <li className="flex items-start gap-3">
                   <span className="text-orange-500 font-bold mt-1">•</span>
                   <span>Non-custodial vaults with time-lock discipline</span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-500 font-bold mt-1">•</span>
-                  <span>Trade positions as zero-coupon bonds on secondary market</span>
+                  <span>
+                    Trade positions as zero-coupon bonds on secondary market
+                  </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-500 font-bold mt-1">•</span>
@@ -146,19 +154,17 @@ export default function CommunitySection() {
         {/* Community Section */}
         <div className="text-center space-y-8">
           <div>
-            <h3 className="text-heading text-2xl md:text-3xl font-bold text-zinc-900 mb-2">
+            <h3 className="text-heading text-2xl md:text-3xl font-bold text-white mb-2">
               Join the Protocol
             </h3>
-            <p className="text-body text-zinc-600">
-              Connect with the community and stay updated on the latest developments.
+            <p className="text-body text-zinc-400">
+              Connect with the community and stay updated on the latest
+              developments.
             </p>
           </div>
 
           {/* Social Links - Professional Grid with Orange Accents */}
-          <div
-            ref={socialRef}
-            className="flex justify-center gap-4 flex-wrap"
-          >
+          <div ref={socialRef} className="flex justify-center gap-4 flex-wrap">
             <a
               href="#"
               className="social-link w-12 h-12 bg-zinc-900 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-all duration-200 group"

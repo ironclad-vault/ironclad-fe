@@ -110,7 +110,7 @@ export function AdvancedActionsSection({
         <h3 className="heading-brutal text-lg mb-2">
           BITCOIN THRESHOLD SIGNING
         </h3>
-        <p className="body-brutal text-sm text-gray-600">
+        <p className="body-brutal text-sm text-gray-300">
           Request a threshold ECDSA signature (secp256k1) for this vault using
           ICP&apos;s Bitcoin integration. Use this to sign withdrawal
           transactions or prove vault ownership.
@@ -140,7 +140,7 @@ export function AdvancedActionsSection({
               className="w-full font-mono text-sm p-3 border-2 border-black rounded focus:outline-none focus:border-blue-600"
               disabled={loading}
             />
-            <p className="body-brutal text-xs text-gray-500 mt-1">
+            <p className="body-brutal text-xs text-gray-400 mt-1">
               The message will be encoded as UTF-8 bytes and signed using the
               vault&apos;s threshold ECDSA key (test_key_1 on testnet).
             </p>
@@ -192,7 +192,7 @@ export function AdvancedActionsSection({
             {/* Signature (Hex) */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <p className="body-brutal text-xs text-gray-700 uppercase font-bold">
+                <p className="body-brutal text-xs text-gray-300 uppercase font-bold">
                   Signature (Hex)
                 </p>
                 <button
@@ -211,7 +211,7 @@ export function AdvancedActionsSection({
             {/* Signature (Base64) */}
             <div>
               <div className="flex justify-between items-center mb-2">
-                <p className="body-brutal text-xs text-gray-700 uppercase font-bold">
+                <p className="body-brutal text-xs text-gray-300 uppercase font-bold">
                   Signature (Base64)
                 </p>
                 <button
@@ -229,7 +229,7 @@ export function AdvancedActionsSection({
 
             {/* Message (Original) */}
             <div>
-              <p className="body-brutal text-xs text-gray-700 uppercase font-bold mb-2">
+              <p className="body-brutal text-xs text-gray-300 uppercase font-bold mb-2">
                 Original Message
               </p>
               <code className="block body-brutal font-mono text-xs bg-white p-3 rounded border-2 border-green-300 overflow-x-auto">
@@ -242,19 +242,19 @@ export function AdvancedActionsSection({
             {/* Technical Details */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 border-t-2 border-green-300 pt-4">
               <div>
-                <p className="body-brutal text-xs text-gray-600 uppercase mb-1">
+                <p className="body-brutal text-xs text-gray-400 uppercase mb-1">
                   Curve
                 </p>
                 <p className="body-brutal font-bold text-sm">secp256k1</p>
               </div>
               <div>
-                <p className="body-brutal text-xs text-gray-600 uppercase mb-1">
+                <p className="body-brutal text-xs text-gray-400 uppercase mb-1">
                   Hash
                 </p>
                 <p className="body-brutal font-bold text-sm">SHA-256</p>
               </div>
               <div>
-                <p className="body-brutal text-xs text-gray-600 uppercase mb-1">
+                <p className="body-brutal text-xs text-gray-400 uppercase mb-1">
                   Key
                 </p>
                 <p className="body-brutal font-bold text-sm">test_key_1</p>

@@ -107,7 +107,7 @@ function CreateVaultFormContent() {
     return (
       <div className="card-pro p-12 text-center">
         <h2 className="text-heading text-4xl mb-4">CONNECT YOUR WALLET</h2>
-        <p className="text-body text-lg text-gray-700">
+        <p className="text-body text-lg text-gray-300">
           Connect your wallet to create a new vault
         </p>
       </div>
@@ -153,7 +153,9 @@ function CreateVaultFormContent() {
 
       {error && (
         <div className="rounded-lg border-2 border-red-500 bg-red-50 p-6">
-          <p className="text-body font-bold text-red-800 text-lg">ERROR: {error}</p>
+          <p className="text-body font-bold text-red-800 text-lg">
+            ERROR: {error}
+          </p>
         </div>
       )}
 
@@ -190,18 +192,18 @@ function CreateVaultFormContent() {
 
           <div className="mb-6">
             <label className="text-body text-sm font-bold mb-2 block">
-              INHERITANCE BENEFICIARY (OPTIONAL)
+              BENEFICIARY (OPTIONAL)
             </label>
             <input
               type="text"
-              className="input-brutal"
+              className="input-brutal bg-[#09090B] border-zinc-800 text-white"
               value={beneficiary}
               onChange={(e) => setBeneficiary(e.target.value)}
               placeholder="Enter Principal ID (e.g. 2vxsx-fae...)"
               disabled={loading}
             />
-            <p className="text-body text-xs text-gray-500 mt-1">
-              If you become inactive for &gt;6 months, this principal can claim your vault.
+            <p className="text-body text-xs text-gray-400 mt-1">
+              Principal ID who can claim this vault if you become inactive.
             </p>
           </div>
 
@@ -218,7 +220,7 @@ function CreateVaultFormContent() {
               min="1"
               step="1"
             />
-            <p className="text-body text-xs text-gray-600 mt-1">
+            <p className="text-body text-xs text-gray-400 mt-1">
               {(parseInt(depositAmount) / 100000000).toFixed(8)} BTC
             </p>
           </div>
@@ -264,7 +266,7 @@ function CreateVaultFormContent() {
                 min="1"
                 step="1"
               />
-              <p className="text-body text-xs text-gray-600 mt-1">
+              <p className="text-body text-xs text-gray-400 mt-1">
                 {(parseInt(depositAmount || "0") / 100000000).toFixed(8)} BTC
               </p>
               <p className="text-body text-xs text-blue-600 mt-1">

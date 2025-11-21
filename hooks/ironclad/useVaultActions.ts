@@ -33,8 +33,8 @@ export function useVaultActions() {
           beneficiary
         ),
         {
-          loading: 'Creating vault...',
-          success: 'Vault created successfully!',
+          loading: "Creating vault...",
+          success: "Vault created successfully!",
           error: (err) => `Failed to create vault: ${getErrorMessage(err)}`,
         }
       );
@@ -58,19 +58,23 @@ export function useVaultActions() {
 
     try {
       const result = await toast.promise(
-        ironcladClient.vaults.mockDeposit(vaultId, amount, identity ?? undefined),
+        ironcladClient.vaults.mockDeposit(
+          vaultId,
+          amount,
+          identity ?? undefined
+        ),
         {
-          loading: 'Processing deposit...',
+          loading: "Processing deposit...",
           success: (res) => {
             if ("Err" in res) {
               throw new Error(res.Err);
             }
-            return 'Deposit successful!';
+            return "Deposit successful!";
           },
           error: (err) => `Deposit failed: ${getErrorMessage(err)}`,
         }
       );
-      
+
       if ("Err" in result) {
         setError(result.Err);
         return null;
@@ -94,17 +98,17 @@ export function useVaultActions() {
       const result = await toast.promise(
         ironcladClient.vaults.unlock(vaultId, identity ?? undefined),
         {
-          loading: 'Unlocking vault...',
+          loading: "Unlocking vault...",
           success: (res) => {
             if ("Err" in res) {
               throw new Error(res.Err);
             }
-            return 'Vault unlocked successfully!';
+            return "Vault unlocked successfully!";
           },
           error: (err) => `Unlock failed: ${getErrorMessage(err)}`,
         }
       );
-      
+
       if ("Err" in result) {
         setError(result.Err);
         return null;
@@ -128,8 +132,12 @@ export function useVaultActions() {
     setError(null);
 
     try {
-      const result = await ironcladClient.vaults.withdraw(vaultId, amount, identity ?? undefined);
-      
+      const result = await ironcladClient.vaults.withdraw(
+        vaultId,
+        amount,
+        identity ?? undefined
+      );
+
       if ("Err" in result) {
         const errMsg = result.Err;
         setError(errMsg);
@@ -146,11 +154,36 @@ export function useVaultActions() {
     }
   };
 
+  const handlePingAlive = async (): Promise<{ Ok: null } | { Err: string }> => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const result = await toast.promise(
+        ironcladClient.inheritance.pingAlive(identity ?? undefined),
+        {
+          loading: "Sending proof of life...",
+          success: "Proof of life confirmed!",
+          error: (err) => `Ping failed: ${getErrorMessage(err)}`,
+        }
+      );
+      return result;
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+      console.error("[useVaultActions] Ping failed:", msg);
+      return { Err: msg };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     createVault: handleCreateVault,
     mockDeposit: handleMockDeposit,
     unlockVault: handleUnlockVault,
     withdrawVault: handleWithdrawVault,
+    pingAlive: handlePingAlive,
     loading,
     error,
   };

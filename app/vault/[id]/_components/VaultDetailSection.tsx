@@ -57,15 +57,14 @@ const formatStatusLabel = (vault: VaultDTO): string => {
 
 const getStatusColor = (vault: VaultDTO): string => {
   const status = getVaultStatusString(vault);
-  if (status === "Withdrawn")
-    return "bg-gray-100 text-gray-900 border-gray-300";
+  if (status === "Withdrawn") return "bg-accent text-gray-900 border-gray-300";
   if (status === "PendingDeposit")
     return "bg-yellow-100 text-yellow-900 border-yellow-300";
   if (status === "Unlockable")
-    return "bg-green-100 text-green-900 border-green-300";
+    return "bg cursor-pointer-green-100 text-green-900 border-green-300";
   if (status === "ActiveLocked")
     return "bg-blue-100 text-blue-900 border-blue-300";
-  return "bg-gray-100 text-gray-900 border-gray-300";
+  return "bg-accent text-gray-900 border-gray-300";
 };
 
 export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
@@ -213,7 +212,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
       <div className="space-y-8 mx-auto container px-6">
         <div className="card-brutal p-8 text-center">
           <h2 className="heading-brutal text-2xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-600">
+          <p className="body-brutal text-lg text-gray-300">
             Please connect your wallet to view vault details.
           </p>
         </div>
@@ -225,7 +224,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
     return (
       <div className="space-y-8 mx-auto container px-6">
         <div className="card-brutal p-8 text-center">
-          <p className="body-brutal text-lg text-gray-600">
+          <p className="body-brutal text-lg text-gray-300">
             Loading vault details...
           </p>
         </div>
@@ -243,7 +242,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
           </p>
           <Link
             href="/vault"
-            className="text-blue-600 hover:underline mt-4 inline-block"
+            className="text-accent hover:underline mt-4 inline-block"
           >
             ← Back to Vaults
           </Link>
@@ -290,7 +289,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
               <h1 className="heading-brutal text-4xl mb-2">
                 VAULT #{vault.id.toString()}
               </h1>
-              <p className="body-brutal text-gray-600">
+              <p className="body-brutal text-gray-400">
                 Owner: {vault.owner.slice(0, 12)}...
               </p>
             </div>
@@ -303,7 +302,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="card-brutal p-4 bg-gray-50">
-              <p className="body-brutal text-xs text-gray-600 uppercase font-bold mb-1">
+              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1">
                 Balance
               </p>
               <p className="heading-brutal text-2xl">
@@ -311,7 +310,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
               </p>
             </div>
             <div className="card-brutal p-4 bg-gray-50">
-              <p className="body-brutal text-xs text-gray-600 uppercase font-bold mb-1">
+              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1">
                 Lock Until
               </p>
               <p className="heading-brutal text-lg">
@@ -319,7 +318,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
               </p>
             </div>
             <div className="card-brutal p-4 bg-gray-50">
-              <p className="body-brutal text-xs text-gray-600 uppercase font-bold mb-1">
+              <p className="body-brutal text-xs text-gray-400 uppercase font-bold mb-1">
                 Status
               </p>
               <p className="heading-brutal text-lg">{statusLabel}</p>
@@ -350,40 +349,40 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
           <div className="flex border-b-2 border-black">
             <button
               onClick={() => setActiveTab("overview")}
-              className={`flex-1 px-6 py-4 font-bold heading-brutal border-r-2 border-black transition-colors ${
+              className={`flex-1 px-6 py-4 cursor-pointer font-bold heading-brutal border-r-2 border-black transition-colors ${
                 activeTab === "overview"
                   ? "bg-black text-white"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-accent hover:bg-accent/50"
               }`}
             >
               OVERVIEW
             </button>
             <button
               onClick={() => setActiveTab("history")}
-              className={`flex-1 px-6 py-4 font-bold heading-brutal border-r-2 border-black transition-colors ${
+              className={`flex-1 px-6 py-4 cursor-pointer font-bold heading-brutal border-r-2 border-black transition-colors ${
                 activeTab === "history"
                   ? "bg-black text-white"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-accent hover:bg-accent/50"
               }`}
             >
               HISTORY
             </button>
             <button
               onClick={() => setActiveTab("config")}
-              className={`flex-1 px-6 py-4 font-bold heading-brutal border-r-2 border-black transition-colors ${
+              className={`flex-1 px-6 py-4 cursor-pointer font-bold heading-brutal border-r-2 border-black transition-colors ${
                 activeTab === "config"
                   ? "bg-black text-white"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-accent hover:bg-accent/50"
               }`}
             >
               AUTO-REINVEST
             </button>
             <button
               onClick={() => setActiveTab("advanced")}
-              className={`flex-1 px-6 py-4 font-bold heading-brutal transition-colors ${
+              className={`flex-1 px-6 py-4 cursor-pointer font-bold heading-brutal transition-colors ${
                 activeTab === "advanced"
                   ? "bg-black text-white"
-                  : "bg-white hover:bg-gray-100"
+                  : "bg-accent hover:bg-accent/50"
               }`}
             >
               ADVANCED
@@ -399,7 +398,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                   </h3>
                   <div className="space-y-4">
                     <div className="flex justify-between border-b pb-2">
-                      <span className="body-brutal text-gray-600">
+                      <span className="body-brutal text-gray-400">
                         Vault ID:
                       </span>
                       <span className="body-brutal font-bold">
@@ -407,19 +406,19 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       </span>
                     </div>
                     <div className="flex justify-between border-b pb-2">
-                      <span className="body-brutal text-gray-600">Owner:</span>
+                      <span className="body-brutal text-gray-400">Owner:</span>
                       <span className="body-brutal font-mono text-sm">
                         {vault.owner}
                       </span>
                     </div>
                     <div className="flex justify-between border-b pb-2">
-                      <span className="body-brutal text-gray-600">Status:</span>
+                      <span className="body-brutal text-gray-400">Status:</span>
                       <span className="body-brutal font-bold">
                         {statusLabel}
                       </span>
                     </div>
                     <div className="flex justify-between border-b pb-2">
-                      <span className="body-brutal text-gray-600">
+                      <span className="body-brutal text-gray-400">
                         Balance:
                       </span>
                       <span className="body-brutal font-bold">
@@ -427,7 +426,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       </span>
                     </div>
                     <div className="flex justify-between border-b pb-2">
-                      <span className="body-brutal text-gray-600">
+                      <span className="body-brutal text-gray-400">
                         Expected Deposit:
                       </span>
                       <span className="body-brutal font-bold">
@@ -435,7 +434,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       </span>
                     </div>
                     <div className="flex justify-between border-b pb-2">
-                      <span className="body-brutal text-gray-600">
+                      <span className="body-brutal text-gray-400">
                         Lock Until:
                       </span>
                       <span className="body-brutal font-bold">
@@ -443,7 +442,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       </span>
                     </div>
                     <div className="flex justify-between border-b pb-2">
-                      <span className="body-brutal text-gray-600">
+                      <span className="body-brutal text-gray-400">
                         BTC Address:
                       </span>
                       <span className="body-brutal font-mono text-sm">
@@ -452,11 +451,11 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                     </div>
                     {vault.ckbtcSubaccountHex && (
                       <div className="border-b pb-4">
-                        <span className="body-brutal text-gray-600 block mb-2">
-                          ckBTC Subaccount:
+                        <span className="body-brutal text-gray-400 block mb-2">
+                          ckBTC Subaccoun cursor-pointert:
                         </span>
                         <div className="flex items-center gap-2">
-                          <code className="body-brutal font-mono text-xs bg-gray-100 p-2 rounded flex-1 overflow-x-auto">
+                          <code className="body-brutal font-mono text-xs bg-accent p-2 rounded flex-1 overflow-x-auto">
                             {vault.ckbtcSubaccountHex}
                           </code>
                           <button
@@ -472,14 +471,14 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                             COPY
                           </button>
                         </div>
-                        <p className="body-brutal text-xs text-gray-500 mt-1">
+                        <p className="body-brutal text-xs text-gray-400 mt-1">
                           Send ckBTC to this subaccount to fund the vault
                         </p>
                       </div>
                     )}
                     {vault.btcDepositTxid && (
                       <div className="flex justify-between border-b pb-2">
-                        <span className="body-brutal text-gray-600">
+                        <span className="body-brutal text-gray-400">
                           Deposit TXID:
                         </span>
                         <span className="body-brutal font-mono text-xs">
@@ -489,7 +488,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                     )}
                     {vault.btcWithdrawTxid && (
                       <div className="flex justify-between border-b pb-2">
-                        <span className="body-brutal text-gray-600">
+                        <span className="body-brutal text-gray-400">
                           Withdraw TXID:
                         </span>
                         <span className="body-brutal font-mono text-xs">
@@ -543,7 +542,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
                 {events.length === 0 ? (
                   <div className="card-brutal p-8 text-center bg-gray-50">
-                    <p className="body-brutal text-gray-600">No events yet</p>
+                    <p className="body-brutal text-gray-400">No events yet</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -636,16 +635,16 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                                     {event.action.replace(/_/g, " ")}
                                   </p>
                                   <div className="text-right">
-                                    <p className="body-brutal text-xs text-gray-600">
+                                    <p className="body-brutal text-xs text-gray-400">
                                       {getRelativeTime(event.timestamp)}
                                     </p>
-                                    <p className="body-brutal text-xs text-gray-500">
+                                    <p className="body-brutal text-xs text-gray-400">
                                       {formatVaultDate(event.timestamp)}
                                     </p>
                                   </div>
                                 </div>
                                 {event.notes && (
-                                  <p className="body-brutal text-sm text-gray-700">
+                                  <p className="body-brutal text-sm text-gray-300">
                                     {event.notes}
                                   </p>
                                 )}
@@ -704,13 +703,13 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                                 : "🔒 PLAN " +
                                   currentConfig.planStatus.toUpperCase()}
                             </p>
-                            <p className="body-brutal text-sm text-gray-700 mb-1">
+                            <p className="body-brutal text-sm text-gray-300 mb-1">
                               Lock Duration:{" "}
                               {Number(currentConfig.newLockDuration) / 86400}{" "}
                               days
                             </p>
                             {currentConfig.executionCount > 0 && (
-                              <p className="body-brutal text-xs text-gray-600">
+                              <p className="body-brutal text-xs text-gray-400">
                                 ✓ {currentConfig.executionCount.toString()}{" "}
                                 cycle
                                 {Number(currentConfig.executionCount) !== 1

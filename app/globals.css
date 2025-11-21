@@ -5,12 +5,12 @@
   /* Color Palette - Dark Bitcoin (High Contrast, Premium) */
   --color-bg-primary: #09090b;
   --color-bg-secondary: #18181b;
-  --color-text-primary: #FFFFFF;
+  --color-text-primary: #ffffff;
   --color-text-secondary: #a1a1aa;
   --color-structure: #27272a;
   --color-structure-light: #3f3f46;
-  --color-accent: #F7931A;
-  --color-text-white: #FFFFFF;
+  --color-accent: #f7931a;
+  --color-text-white: #ffffff;
   --color-bg-white: #18181b;
   --color-unlocked: #10b981;
 
@@ -38,9 +38,12 @@
 /* Dark Bitcoin Minimalist Base Styles */
 body {
   background: var(--color-bg-primary) !important;
-  background-image:
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='7' seed='2' /%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23noiseFilter)' opacity='0.22'/%3E%3C/svg%3E"),
-    radial-gradient(circle at 50% 0%, rgba(247, 147, 26, 0.03) 0%, transparent 50%);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='7' seed='2' /%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23noiseFilter)' opacity='0.22'/%3E%3C/svg%3E"),
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(247, 147, 26, 0.03) 0%,
+      transparent 50%
+    );
   background-attachment: fixed !important;
   background-size: 80px 80px, cover !important;
   background-repeat: repeat, no-repeat !important;
@@ -52,7 +55,7 @@ body {
 
 /* Add fixed noise overlay as pseudo-element for enhanced film grain effect */
 body::before {
-  content: '' !important;
+  content: "" !important;
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
@@ -171,18 +174,18 @@ article {
 }
 
 .btn-pro {
-  background: var(--color-text-primary) !important;
-  color: var(--color-text-white) !important;
-  border: var(--border-width) solid transparent !important;
-  border-radius: 7px !important;
-  padding: 10px 20px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease !important;
+  background: black;
+  color: var(--color-text-white);
+  border: var(--border-width) solid transparent;
+  border-radius: 7px;
+  padding: 10px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .btn-pro:hover {
-  background: #27272A !important;
+  background: #27272a !important;
 }
 
 .btn-pro:active {
@@ -195,7 +198,7 @@ article {
 }
 
 .btn-pro.primary:hover {
-  background: #27272A !important;
+  background: #27272a !important;
 }
 
 .btn-pro.accent {
@@ -220,7 +223,7 @@ article {
 
 .button-brutal:hover {
   border-color: var(--color-accent) !important;
-  background: #27272A !important;
+  background: #27272a !important;
 }
 
 .button-brutal:active {
@@ -270,8 +273,8 @@ article {
 
 .status-brutal.locked {
   background: rgba(247, 147, 26, 0.15) !important;
-  color: #F7931A !important;
-  border-color: #F7931A !important;
+  color: #f7931a !important;
+  border-color: #f7931a !important;
 }
 
 .status-brutal.unlocked {
@@ -293,10 +296,10 @@ article {
 
 .badge-pending {
   background: rgba(247, 147, 26, 0.15) !important;
-  color: #F7931A !important;
+  color: #f7931a !important;
   padding: 6px 12px !important;
   border-radius: 20px !important;
-  border: 1px solid #F7931A !important;
+  border: 1px solid #f7931a !important;
   font-weight: 500 !important;
   display: inline-block !important;
   font-size: 0.875rem !important;
@@ -322,7 +325,12 @@ article {
 }
 
 /* Reset unwanted styles */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading) !important;
   font-weight: 700 !important;
   margin: 0 !important;
@@ -332,8 +340,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Enhanced grid backgrounds */
 .grid-pattern {
-  background-image:
-    linear-gradient(var(--color-structure) 1px, transparent 1px),
+  background-image: linear-gradient(var(--color-structure) 1px, transparent 1px),
     linear-gradient(90deg, var(--color-structure) 1px, transparent 1px);
   background-size: 40px 40px;
 }
@@ -351,7 +358,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .section-divider {
   height: var(--border-width);
-  background: linear-gradient(to right, transparent, var(--color-structure), transparent);
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-structure),
+    transparent
+  );
   margin: 2rem 0;
 }
 
@@ -378,7 +390,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Pulse Animation for Status Indicators */
 @keyframes pulse-glow {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
   }
