@@ -88,6 +88,7 @@ export default function TestimonialStackSection() {
         card,
         {
           y: index * finalStackGap,
+          z: cards.length - index,
           rotate: cardRotations[index % cardRotations.length],
           scale: 1,
           opacity: 1,
