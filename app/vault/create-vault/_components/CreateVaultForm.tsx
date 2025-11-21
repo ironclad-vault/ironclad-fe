@@ -70,7 +70,11 @@ function CreateVaultFormContent() {
 
     const expectedDeposit = BigInt(depositAmount);
 
-    const vault = await createVault(lockUntil, expectedDeposit);
+    const vault = await createVault(
+      lockUntil,
+      expectedDeposit,
+      beneficiary || undefined
+    );
     if (vault) {
       setCreatedVault({
         vaultId: vault.id,
