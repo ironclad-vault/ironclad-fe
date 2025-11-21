@@ -63,6 +63,15 @@ body::before {
   z-index: 1 !important;
 }
 
+/* Ensure content appears above noise overlay */
+#__next,
+main,
+section,
+article {
+  position: relative !important;
+  z-index: 2 !important;
+}
+
 /* Typography System */
 .text-heading {
   font-family: var(--font-heading) !important;
