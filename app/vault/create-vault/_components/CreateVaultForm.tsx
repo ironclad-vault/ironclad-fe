@@ -184,7 +184,7 @@ function CreateVaultFormContent() {
           </div>
 
           <div className="mb-6">
-            <label className="body-brutal text-sm font-bold mb-2 block">
+            <label className="text-body text-sm font-bold mb-2 block">
               DEPOSIT AMOUNT (SATS)
             </label>
             <input
@@ -196,7 +196,7 @@ function CreateVaultFormContent() {
               min="1"
               step="1"
             />
-            <p className="body-brutal text-xs text-gray-600 mt-1">
+            <p className="text-body text-xs text-gray-600 mt-1">
               {(parseInt(depositAmount) / 100000000).toFixed(8)} BTC
             </p>
           </div>
