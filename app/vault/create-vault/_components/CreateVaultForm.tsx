@@ -155,7 +155,7 @@ function CreateVaultFormContent() {
       {!createdVault && mode === "create" ? (
         <>
           <div className="mb-6">
-            <label className="body-brutal text-sm font-bold mb-2 block">
+            <label className="text-body text-sm font-bold mb-2 block">
               LOCK DURATION
             </label>
             <select
