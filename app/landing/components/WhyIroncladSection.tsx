@@ -74,11 +74,11 @@ function FeatureCard({
   return (
     <div
       ref={cardRef}
-      className="card-pro p-8 h-full flex flex-col hover:border-accent transition-all duration-500 group hover:scale-105 hover:-translate-y-2 relative overflow-hidden hover-lift"
+      className="card-pro p-8 h-full flex flex-col hover:border-orange-500 transition-all duration-500 group hover:scale-105 hover:-translate-y-2 relative overflow-hidden hover-lift"
     >
-      <div className="absolute top-0 right-0 w-16 h-16 border-2 border-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute top-0 right-0 w-16 h-16 border-2 border-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      <div className="relative z-10 w-20 h-20 bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 rounded-lg">
+      <div className="relative z-10 w-20 h-20 bg-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 rounded-lg">
         <Icon className="w-10 h-10 text-white font-bold" />
       </div>
 
@@ -90,7 +90,7 @@ function FeatureCard({
         {feature.description}
       </p>
 
-      <div className="relative z-10 mt-auto border-t-2 border-accent pt-4">
+      <div className="relative z-10 mt-auto border-t-2 border-orange-500 pt-4">
         <div className="space-y-2">
           {feature.benefits.map((benefit, benefitIndex) => (
             <div
@@ -98,7 +98,7 @@ function FeatureCard({
               className="flex items-center gap-3 group-hover:translate-x-2 transition-transform duration-300"
               style={{ transitionDelay: `${benefitIndex * 50}ms` }}
             >
-              <div className="w-2 h-2 bg-accent flex-shrink-0 group-hover:scale-150 transition-transform duration-300" />
+              <div className="w-2 h-2 bg-orange-500 flex-shrink-0 group-hover:scale-150 transition-transform duration-300" />
               <span className="text-body text-xs font-bold text-zinc-300 group-hover:text-orange-500 transition-colors duration-300">
                 {benefit}
               </span>
