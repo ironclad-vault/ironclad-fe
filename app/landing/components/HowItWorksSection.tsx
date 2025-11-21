@@ -44,7 +44,7 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
   return (
     <div ref={stepRef} className="relative group">
       {/* Card */}
-      <div className="relative bg-white ring-1 ring-zinc-200 rounded-2xl p-8 h-full shadow-sm hover:shadow-md hover:ring-zinc-300 transition-all duration-300 hover:-translate-y-1">
+      <div className="relative bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-8 h-full shadow-sm hover:shadow-md hover:ring-orange-500 transition-all duration-300 hover:-translate-y-1">
         {/* Step Indicator Badge */}
         <div className="absolute -top-4 -left-4 w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
           <div className="flex flex-col items-center justify-center">
