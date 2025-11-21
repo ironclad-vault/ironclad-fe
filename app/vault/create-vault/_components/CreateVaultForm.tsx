@@ -230,7 +230,7 @@ function CreateVaultFormContent() {
 
           {mode === "complete" && (
             <div className="mb-4">
-              <label className="body-brutal text-sm font-bold mb-2 block">
+              <label className="text-body text-sm font-bold mb-2 block">
                 DEPOSIT AMOUNT (SATS)
               </label>
               <input
@@ -242,10 +242,10 @@ function CreateVaultFormContent() {
                 min="1"
                 step="1"
               />
-              <p className="body-brutal text-xs text-gray-600 mt-1">
+              <p className="text-body text-xs text-gray-600 mt-1">
                 {(parseInt(depositAmount || "0") / 100000000).toFixed(8)} BTC
               </p>
-              <p className="body-brutal text-xs text-blue-600 mt-1">
+              <p className="text-body text-xs text-blue-600 mt-1">
                 Expected: {createdVault.expectedDeposit.toLocaleString()} sats
               </p>
             </div>
