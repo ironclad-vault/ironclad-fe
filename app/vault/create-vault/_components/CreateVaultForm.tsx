@@ -100,9 +100,9 @@ function CreateVaultFormContent() {
   // Show wallet connection message if not connected
   if (!isConnected) {
     return (
-      <div className="card-brutal brutal-border border-2 p-12 text-center">
-        <h2 className="heading-brutal text-4xl mb-4">CONNECT YOUR WALLET</h2>
-        <p className="body-brutal text-lg text-gray-700">
+      <div className="card-pro p-12 text-center">
+        <h2 className="text-heading text-4xl mb-4">CONNECT YOUR WALLET</h2>
+        <p className="text-body text-lg text-gray-700">
           Connect your wallet to create a new vault
         </p>
       </div>
