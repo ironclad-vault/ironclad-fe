@@ -174,58 +174,43 @@ export default function MarketplaceMain() {
                     return (
                       <div
                         key={listing.id.toString()}
-                        className="card-brutal p-6 hover:shadow-lg transition-shadow"
+                        className="card-pro p-6"
                       >
-                        <div className="space-y-3 mb-4">
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Listing ID
-                            </p>
-                            <p className="mono-brutal text-sm">
-                              {listing.id.toString()}
-                            </p>
-                          </div>
-
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Vault ID
-                            </p>
-                            <p className="mono-brutal text-sm">
-                              {listing.vault_id.toString()}
-                            </p>
+                        <div className="space-y-4 mb-6">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <p className="text-label mb-1">LISTING ID</p>
+                              <p className="mono-brutal text-sm">
+                                {listing.id.toString().slice(0, 16)}...
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-label mb-1">VAULT ID</p>
+                              <p className="mono-brutal text-sm">
+                                #{listing.vault_id.toString()}
+                              </p>
+                            </div>
                           </div>
 
                           {vaultDetails && (
-                            <div>
-                              <p className="body-brutal text-xs text-gray-500 uppercase">
-                                Vault Balance
-                              </p>
+                            <div className="bg-zinc-50 p-3 rounded-lg border border-zinc-200">
+                              <p className="text-label mb-2">VAULT BALANCE</p>
                               <p className="heading-brutal text-lg">
-                                {(
-                                  Number(vaultDetails.balance) / 100_000_000
-                                ).toFixed(8)}{" "}
-                                BTC
+                                <BTCAmount sats={vaultDetails.balance} showLabel={true} />
                               </p>
                             </div>
                           )}
 
-                          <div className="border-t-2 border-black pt-3">
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Price
-                            </p>
-                            <p className="heading-brutal text-2xl">
-                              {(
-                                Number(listing.price_sats) / 100_000_000
-                              ).toFixed(8)}{" "}
-                              BTC
+                          <div className="border-t border-zinc-200 pt-4">
+                            <p className="text-label mb-2">ASKING PRICE</p>
+                            <p className="heading-brutal text-3xl text-emerald-600">
+                              <BTCAmount sats={listing.price_sats} showLabel={true} />
                             </p>
                           </div>
 
                           <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Seller
-                            </p>
-                            <p className="mono-brutal text-xs truncate">
+                            <p className="text-label mb-1">SELLER</p>
+                            <p className="mono-brutal text-xs text-zinc-600 truncate">
                               {listing.seller.toString().slice(0, 20)}...
                             </p>
                           </div>
@@ -236,10 +221,10 @@ export default function MarketplaceMain() {
                             handleBuyListing(listing.id, listing.price_sats)
                           }
                           disabled={isOwnListing}
-                          className={`w-full button-brutal py-3 font-bold ${
+                          className={`w-full py-3 font-semibold rounded-lg transition-all ${
                             isOwnListing
-                              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                              : "bg-green-600 text-white hover:bg-green-700"
+                              ? "bg-zinc-200 text-zinc-500 cursor-not-allowed"
+                              : "btn-pro accent hover:shadow-lg"
                           }`}
                         >
                           {isOwnListing ? "YOUR LISTING" : "BUY NOW"}
