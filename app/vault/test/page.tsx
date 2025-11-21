@@ -144,13 +144,13 @@ export default function TestPage() {
                   <p className="text-lg font-bold text-white">{walletType || "N/A"}</p>
                 </div>
                 <div className="col-span-2">
-                  <p className="text-gray-600">Principal:</p>
+                  <p className="text-zinc-400">Principal:</p>
                   <p className="text-sm font-mono">
                     {principal?.toString() || "N/A"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Actor:</p>
+                  <p className="text-zinc-400">Actor:</p>
                   <p className="text-lg font-bold">
                     Anonymous (Phase 1)
                   </p>
@@ -239,7 +239,7 @@ export default function TestPage() {
                         type="number"
                         value={lockDays}
                         onChange={(e) => setLockDays(Number(e.target.value))}
-                        className="w-full p-2 border-2 border-gray-300"
+                        className="w-full p-2 border-2 border-zinc-700"
                       />
                     </div>
                     <div>
@@ -252,7 +252,7 @@ export default function TestPage() {
                         onChange={(e) =>
                           setDepositAmount(Number(e.target.value))
                         }
-                        className="w-full p-2 border-2 border-gray-300"
+                        className="w-full p-2 border-2 border-zinc-700"
                       />
                     </div>
                     <button
@@ -284,7 +284,7 @@ export default function TestPage() {
                         {configs.map((config) => (
                           <div
                             key={config.vaultId.toString()}
-                            className="p-3 bg-gray-50 border border-gray-200 rounded"
+                            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
                           >
                             <p className="font-bold">
                               Vault #{config.vaultId.toString()}
@@ -310,7 +310,7 @@ export default function TestPage() {
                       </div>
                     )}
                   </div>
-                  <p className="body-brutal text-sm text-gray-600">
+                  <p className="body-brutal text-sm text-zinc-400">
                     Use the &ldquo;Schedule Reinvest&rdquo; button on individual
                     vaults above
                   </p>
@@ -332,7 +332,7 @@ export default function TestPage() {
                         {listings.map((listing) => (
                           <div
                             key={listing.id.toString()}
-                            className="p-3 bg-gray-50 border border-gray-200 rounded"
+                            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
                           >
                             <p className="font-bold">
                               Listing #{listing.id.toString()}
@@ -369,12 +369,12 @@ export default function TestPage() {
                   </h2>
                   <div className="body-brutal space-y-2">
                     {Object.keys(testResults).length === 0 ? (
-                      <p className="text-gray-600">No tests run yet</p>
+                      <p className="text-zinc-400">No tests run yet</p>
                     ) : (
                       Object.entries(testResults).map(([test, result]) => (
                         <div
                           key={test}
-                          className="p-3 bg-gray-50 border border-gray-200 rounded"
+                          className="p-3 bg-zinc-800 border border-zinc-700 rounded"
                         >
                           <p className="font-bold">{test}:</p>
                           <p className="text-sm">{result}</p>
