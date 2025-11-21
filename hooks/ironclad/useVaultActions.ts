@@ -18,7 +18,8 @@ export function useVaultActions() {
 
   const handleCreateVault = async (
     lockUntil: number,
-    expectedDeposit: bigint
+    expectedDeposit: bigint,
+    beneficiary?: string
   ): Promise<Vault | null> => {
     setLoading(true);
     setError(null);
@@ -28,7 +29,8 @@ export function useVaultActions() {
         ironcladClient.vaults.create(
           BigInt(lockUntil),
           expectedDeposit,
-          identity ?? undefined
+          identity ?? undefined,
+          beneficiary
         ),
         {
           loading: 'Creating vault...',
