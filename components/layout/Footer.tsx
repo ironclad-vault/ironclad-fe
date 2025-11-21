@@ -4,6 +4,8 @@ import { Github, Twitter, MessageCircle, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
     <footer className="relative bg-background text-white overflow-hidden">
       {/* Decorative gradient overlay */}
