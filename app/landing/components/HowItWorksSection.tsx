@@ -193,7 +193,7 @@ export default function HowItWorks() {
           <h2 className="text-heading text-5xl md:text-7xl mb-4">
             HOW IT WORKS
           </h2>
-          <p className="body-brutal text-lg max-w-3xl mx-auto text-gray-700">
+          <p className="text-body text-lg max-w-3xl mx-auto text-zinc-600">
             Three simple steps to secure your Bitcoin with Ironclad&apos;s
             time-based vault system.
           </p>
