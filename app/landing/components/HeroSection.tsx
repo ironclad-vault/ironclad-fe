@@ -105,7 +105,7 @@ export default function HeroSection() {
             </h1>
 
             <div className="hero-rotating-text w-full flex justify-center">
-              <div className="px-10 py-6 md:px-16 md:py-8 bg-accent border border-accent rounded-lg">
+              <div className="px-8 py-4 md:px-12 md:py-5 bg-accent border border-accent rounded-lg">
                 <RotatingText
                   words={rotatingWords}
                   duration={2500}
