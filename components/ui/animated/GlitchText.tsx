@@ -90,6 +90,23 @@ export default function GlitchText({
           rotation: 0,
           duration: 1,
           ease: 'power3.out',
+          onComplete: function() {
+            // Start glitch cycle after entrance
+            const glitchInterval = setInterval(() => {
+              createGlitch()
+            }, duration * 1000)
+
+            // Initial glitch
+            setTimeout(() => {
+              createGlitch()
+            }, 500)
+
+            // Store cleanup function for later use
+            const animationScope = this as unknown as { _cleanup?: () => void }
+            animationScope._cleanup = () => {
+              clearInterval(glitchInterval)
+            }
+          }
         }
       )
 
