@@ -124,24 +124,24 @@ export default function Footer() {
               <p className="text-heading text-lg md:text-xl font-black">
                 BUILT ON THE INTERNET COMPUTER | IRONCLAD
               </p>
-              <p className="text-gray-400 text-sm md:text-base max-w-2xl">
+              <p className="text-gray-200 text-sm md:text-base max-w-2xl font-medium">
                 Decentralized Bitcoin custody powered by autonomous smart contracts. Your fortress, your rules, your Bitcoin.
               </p>
             </div>
 
             {/* Bottom bar */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-8 border-t border-gray-800">
-              <p className="text-gray-600 text-xs md:text-sm font-medium">
-                © 2024 Ironclad. Built with cryptographic proof.
+              <p className="text-gray-300 text-xs md:text-sm font-medium">
+                © {currentYear} Ironclad. Built with cryptographic proof.
               </p>
-              <div className="flex gap-6 text-gray-600 text-xs md:text-sm">
-                <a href="#" className="hover:text-accent transition-colors duration-300">
+              <div className="flex gap-6 text-gray-300 text-xs md:text-sm">
+                <a href="#" className="hover:text-accent transition-colors duration-300 font-medium">
                   Status
                 </a>
-                <a href="#" className="hover:text-accent transition-colors duration-300">
+                <a href="#" className="hover:text-accent transition-colors duration-300 font-medium">
                   Roadmap
                 </a>
-                <a href="#" className="hover:text-accent transition-colors duration-300">
+                <a href="#" className="hover:text-accent transition-colors duration-300 font-medium">
                   Community
                 </a>
               </div>
