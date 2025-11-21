@@ -32,13 +32,13 @@ export default function Header() {
           <nav className="hidden md:flex items-center space-x-8">
             <Link
               href="#how-it-works"
-              className="text-body text-sm font-bold text-white hover:text-orange-500 transition-colors duration-300 hover:border-b-2 hover:border-orange-500 pb-1"
+              className="text-body text-sm font-bold text-zinc-300 hover:text-orange-500 transition-colors duration-300 hover:border-b-2 hover:border-orange-500 pb-1"
             >
               HOW IT WORKS
             </Link>
             <Link
               href="#testimonials"
-              className="text-body text-sm font-bold text-white hover:text-orange-500 transition-colors duration-300 hover:border-b-2 hover:border-orange-500 pb-1"
+              className="text-body text-sm font-bold text-zinc-300 hover:text-orange-500 transition-colors duration-300 hover:border-b-2 hover:border-orange-500 pb-1"
             >
               TESTIMONIALS
             </Link>
