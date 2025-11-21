@@ -152,13 +152,11 @@ export default function CommunitySection() {
             className="w-full text-center max-w-3xl mx-auto card-pro py-8 px-6"
           >
             <p className="text-body text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
-              Join the revolution in Bitcoin security. Build your digital
-              fortress with
+              The first liquid vesting protocol on Bitcoin. Trade time-locked positions, enforce discipline, and secure your legacy with
               <span className="text-heading text-accent font-bold">
                 {" "}
-                time-locked autonomy
+                on-chain inheritance.
               </span>
-              and cryptographic proof.
             </p>
           </div>
 
