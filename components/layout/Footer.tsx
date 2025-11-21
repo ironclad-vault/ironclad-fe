@@ -152,6 +152,21 @@ export default function Footer() {
         {/* Bottom accent bar */}
         <div className="h-1 bg-gradient-to-r from-accent via-orange-400 to-accent" />
       </div>
+
+      <style jsx>{`
+        .footer-orange-text {
+          color: var(--color-accent, #f79326);
+          text-shadow:
+            -1.5px -1.5px 0 #000,
+            1.5px -1.5px 0 #000,
+            -1.5px 1.5px 0 #000,
+            1.5px 1.5px 0 #000,
+            -1px 0 0 #000,
+            1px 0 0 #000,
+            0 -1px 0 #000,
+            0 1px 0 #000;
+        }
+      `}</style>
     </footer>
   );
 }
