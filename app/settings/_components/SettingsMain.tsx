@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useNetworkMode } from "@/hooks/ironclad/useNetworkMode";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { ArrowLeft, AlertTriangle, CheckCircle } from "lucide-react";
+import { ArrowLeft, AlertTriangle, CheckCircle, Activity } from "lucide-react";
 import VaultHeader from "@/components/layout/VaultHeader";
 
 /**
