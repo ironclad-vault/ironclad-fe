@@ -86,7 +86,7 @@ function FeatureCard({
         {feature.title}
       </h3>
 
-      <p className="relative z-10 text-body text-sm mb-6 leading-relaxed text-gray-800">
+      <p className="relative z-10 text-body text-sm mb-6 leading-relaxed text-zinc-400">
         {feature.description}
       </p>
 
@@ -99,7 +99,7 @@ function FeatureCard({
               style={{ transitionDelay: `${benefitIndex * 50}ms` }}
             >
               <div className="w-2 h-2 bg-accent flex-shrink-0 group-hover:scale-150 transition-transform duration-300" />
-              <span className="text-body text-xs font-bold text-gray-700 group-hover:text-accent transition-colors duration-300">
+              <span className="text-body text-xs font-bold text-zinc-300 group-hover:text-orange-500 transition-colors duration-300">
                 {benefit}
               </span>
             </div>
@@ -124,7 +124,7 @@ export default function WhyIroncladSection() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 bg-white relative overflow-hidden"
+      className="py-24 bg-zinc-950 relative overflow-hidden"
     >
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
@@ -135,10 +135,10 @@ export default function WhyIroncladSection() {
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Title */}
         <div ref={titleRef} className="text-center mb-16 card-pro border-accent py-12 px-6">
-          <h2 className="text-heading text-5xl md:text-7xl mb-4">
+          <h2 className="text-heading text-5xl md:text-7xl mb-4 text-white">
             PROTOCOL FEATURES
           </h2>
-          <p className="text-body text-lg max-w-3xl mx-auto text-zinc-600">
+          <p className="text-body text-lg max-w-3xl mx-auto text-zinc-400">
             DeFi-grade vesting and inheritance infrastructure for Bitcoin holders.
           </p>
         </div>
@@ -157,7 +157,7 @@ export default function WhyIroncladSection() {
             "BITCOIN-NATIVE",
           ].map((highlight, index) => (
             <div key={index} className="feature-highlight text-center group">
-              <div className="px-4 py-3 bg-accent border border-accent rounded-lg group-hover:bg-zinc-900 group-hover:border-zinc-900 transition-all duration-300 hover:scale-110 hover-lift">
+              <div className="px-4 py-3 bg-orange-500 border border-orange-500 rounded-lg group-hover:bg-zinc-800 group-hover:border-zinc-700 transition-all duration-300 hover:scale-110 hover-lift">
                 <span className="text-heading text-sm font-bold text-white group-hover:text-white transition-colors duration-300">
                   {highlight}
                 </span>
