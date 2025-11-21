@@ -78,8 +78,11 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="min-h-screen flex items-center justify-center bg-zinc-950 pt-20 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center bg-black pt-20 relative overflow-hidden"
     >
+      {/* Subtle glow effect from top */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-orange-500/5 to-transparent rounded-full blur-3xl pointer-events-none" />
+
       <div className="absolute inset-0 pointer-events-none">
         <ScrollFloat
           text="BITCOIN"
@@ -98,17 +101,17 @@ export default function HeroSection() {
       <div className="text-center max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col items-center gap-8 mb-8">
-            <h1 className="text-heading text-6xl md:text-7xl lg:text-8xl mx-auto text-center leading-tight text-white font-black uppercase tracking-tight">
+            <h1 className="text-heading text-7xl md:text-8xl lg:text-9xl mx-auto text-center leading-tight text-white font-black uppercase tracking-wide">
               <span className="hero-word inline-block">THE FIRST LIQUID</span>
               <br />
               <span className="hero-word inline-block">VESTING PROTOCOL</span>
               <br />
-              <span className="hero-word inline-block">ON BITCOIN</span>
+              <span className="hero-word inline-block text-orange-500">ON BITCOIN</span>
             </h1>
 
             <div className="hero-rotating-text w-full flex justify-center">
-              <div className="px-4 py-2 border-2 border-orange-500 rounded-md transform rotate-12 inline-block">
-                <span className="text-heading text-xl md:text-2xl text-orange-500 font-black uppercase tracking-wider">
+              <div className="px-3 py-1 border-2 border-orange-500 rounded transform -rotate-12 inline-block">
+                <span className="text-heading text-lg md:text-xl text-orange-500 font-black uppercase tracking-widest">
                   YIELD
                 </span>
               </div>
