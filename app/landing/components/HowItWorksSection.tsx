@@ -130,15 +130,15 @@ export default function HowItWorks() {
     <section
       ref={sectionRef}
       id="how-it-works"
-      className="py-24 bg-white relative overflow-hidden"
+      className="py-24 bg-zinc-950 relative overflow-hidden"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Title */}
         <div ref={titleRef} className="text-center mb-16">
-          <h2 className="text-heading text-5xl md:text-7xl mb-4 text-zinc-900">
+          <h2 className="text-heading text-5xl md:text-7xl mb-4 text-white">
             How It Works
           </h2>
-          <p className="text-body text-lg max-w-3xl mx-auto text-zinc-500">
+          <p className="text-body text-lg max-w-3xl mx-auto text-zinc-400">
             Three simple steps to secure your Bitcoin with Ironclad&apos;s liquid vesting protocol.
           </p>
         </div>
