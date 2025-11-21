@@ -213,14 +213,14 @@ function CreateVaultFormContent() {
         <div className="mt-6">
           {mode === "create" && (
             <div className="mb-4">
-              <label className="body-brutal text-sm font-bold mb-2 block">
+              <label className="text-body text-sm font-bold mb-2 block">
                 VAULT CREATED
               </label>
-              <div className="brutal-border border-2 border-green-400 bg-green-50 p-6">
-                <p className="body-brutal font-bold text-green-800 mb-2 text-lg">
+              <div className="rounded-lg border-2 border-green-400 bg-green-50 p-6">
+                <p className="text-body font-bold text-green-800 mb-2 text-lg">
                   ✓ Vault ID: {createdVault.vaultId.toString()}
                 </p>
-                <p className="body-brutal text-sm text-green-700">
+                <p className="text-body text-sm text-green-700">
                   Expected Deposit: {createdVault.expectedDeposit.toString()}{" "}
                   sats
                 </p>
