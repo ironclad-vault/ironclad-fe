@@ -176,16 +176,15 @@ body {
   background: var(--color-text-primary) !important;
   color: var(--color-text-white) !important;
   border: var(--border-width) solid transparent !important;
-  border-radius: 8px !important;
+  border-radius: 7px !important;
   padding: 10px 20px !important;
   font-weight: 600 !important;
   cursor: pointer !important;
-  transition: all 0.2s !important;
+  transition: all 0.2s ease !important;
 }
 
 .button-brutal:hover {
-  background: #1E293B !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  background: #27272A !important;
 }
 
 .button-brutal:active {
@@ -199,8 +198,7 @@ body {
 }
 
 .button-brutal.accent:hover {
-  background: #E68915 !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  background: #D35A00 !important;
 }
 
 .input-brutal {
