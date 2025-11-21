@@ -62,7 +62,7 @@ export default function Footer() {
 
             {/* Quick Links */}
             <div className="space-y-6">
-              <h4 className="text-lg font-black text-white">EXPLORE</h4>
+              <h4 className="text-lg font-black text-accent">EXPLORE</h4>
               <ul className="space-y-3">
                 <li>
                   <a href="#how-it-works" className="text-accent hover:text-white transition-colors duration-300 font-bold">
