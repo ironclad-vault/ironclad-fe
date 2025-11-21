@@ -20,6 +20,7 @@ function CreateVaultFormContent() {
     "months"
   );
   const [depositAmount, setDepositAmount] = useState<string>("100000");
+  const [beneficiary, setBeneficiary] = useState<string>("");
   const [createdVault, setCreatedVault] = useState<{
     vaultId: bigint;
     expectedDeposit: bigint;
