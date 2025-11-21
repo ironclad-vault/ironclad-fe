@@ -82,7 +82,7 @@ function FeatureCard({
         <Icon className="w-10 h-10 text-white font-bold" />
       </div>
 
-      <h3 className="relative z-10 text-heading text-2xl mb-3 text-foreground group-hover:text-accent transition-colors duration-300">
+      <h3 className="relative z-10 text-heading text-2xl mb-3 text-white group-hover:text-orange-500 transition-colors duration-300">
         {feature.title}
       </h3>
 
