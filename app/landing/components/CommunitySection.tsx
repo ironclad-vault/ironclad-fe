@@ -132,7 +132,7 @@ export default function CommunitySection() {
 
               <a
                 href="#how-it-works"
-                className="flex items-center justify-center gap-2 bg-white text-zinc-900 border-2 border-orange-500 rounded-lg px-8 py-3 font-semibold hover:bg-orange-50 transition-colors duration-200 whitespace-nowrap"
+                className="flex items-center justify-center gap-2 bg-zinc-900 text-white border-2 border-orange-500 rounded-lg px-8 py-3 font-semibold hover:bg-orange-500 hover:text-black transition-colors duration-200 whitespace-nowrap"
               >
                 <span>Learn More</span>
               </a>
