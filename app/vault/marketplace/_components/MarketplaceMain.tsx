@@ -314,8 +314,8 @@ export default function MarketplaceMain() {
               <h1 className="heading-brutal text-3xl mb-3!">MY LISTINGS</h1>
 
               {myListings.length === 0 ? (
-                <div className="card-brutal p-8 text-center">
-                  <p className="body-brutal text-lg text-gray-600">
+                <div className="card-pro p-8 text-center">
+                  <p className="text-body text-lg text-zinc-600">
                     You don&apos;t have any active listings.
                   </p>
                 </div>
