@@ -55,11 +55,11 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
 
         {/* Content */}
         <div className="pt-4">
-          <h3 className="text-lg font-semibold text-zinc-900 mb-3">
+          <h3 className="text-lg font-semibold text-white mb-3">
             {step.title}
           </h3>
 
-          <p className="text-sm text-zinc-500 leading-relaxed">
+          <p className="text-sm text-zinc-400 leading-relaxed">
             {step.description}
           </p>
         </div>
