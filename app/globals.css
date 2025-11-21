@@ -1,13 +1,15 @@
 @import "tailwindcss";
 
-/* Professional Institutional Design System - Ironclad */
+/* High-End Fintech Design System - Ironclad */
 :root {
-  /* Color Palette - Slate */
-  --color-bg-primary: #F8FAFC;
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #64748B;
-  --color-structure: #E2E8F0;
-  --color-accent: #F7931A;
+  /* Color Palette - Zinc (Neutral, Mature, Comfortable) */
+  --color-bg-primary: #FAFAFA;
+  --color-bg-secondary: #F5F5F5;
+  --color-text-primary: #18181B;
+  --color-text-secondary: #71717A;
+  --color-structure: #E4E4E7;
+  --color-structure-light: #F4F4F5;
+  --color-accent: #EA580C;
   --color-text-white: #FFFFFF;
   --color-bg-white: #FFFFFF;
   --color-unlocked: #00FF00;
