@@ -166,7 +166,7 @@ export default function CommunitySection() {
               href="/vault"
               className="cta-primary btn-pro accent inline-flex items-center space-x-3 sm:space-x-4 text-base sm:text-lg md:text-xl px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 hover-lift whitespace-nowrap font-bold"
             >
-              <span className="text-heading">LAUNCH VAULT</span>
+              <span className="text-heading">ACCESS PROTOCOL</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
             </TransitionButton>
           </div>
