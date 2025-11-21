@@ -28,14 +28,14 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-zinc-50 border-t border-zinc-200">
+    <footer className="bg-zinc-900 border-t border-zinc-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
         {/* Main Footer Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 md:mb-16">
           {/* Column 1: Brand */}
           <div className="flex flex-col space-y-4">
             <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-300">
+              <div className="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-300">
                 <Image
                   src="/ironclad-vault-logo.png"
                   alt="Ironclad Logo"
@@ -44,16 +44,16 @@ export default function Footer() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-heading text-xl font-black text-black">IRONCLAD</span>
+              <span className="text-heading text-xl font-black text-white">IRONCLAD</span>
             </Link>
-            <p className="text-sm text-zinc-500 leading-relaxed max-w-xs">
+            <p className="text-sm text-zinc-400 leading-relaxed max-w-xs">
               The First Liquid Vesting Protocol on Bitcoin.
             </p>
           </div>
 
           {/* Column 2: Protocol */}
           <div className="flex flex-col space-y-6">
-            <h3 className="text-label font-bold text-zinc-900 uppercase tracking-wide text-xs">
+            <h3 className="text-label font-bold text-zinc-300 uppercase tracking-wide text-xs">
               Protocol
             </h3>
             <nav className="flex flex-col space-y-3">
@@ -61,7 +61,7 @@ export default function Footer() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200 font-medium"
+                  className="text-sm text-zinc-400 hover:text-orange-500 transition-colors duration-200 font-medium"
                 >
                   {link.label}
                 </Link>
@@ -71,7 +71,7 @@ export default function Footer() {
 
           {/* Column 3: Resources */}
           <div className="flex flex-col space-y-6">
-            <h3 className="text-label font-bold text-zinc-900 uppercase tracking-wide text-xs">
+            <h3 className="text-label font-bold text-zinc-300 uppercase tracking-wide text-xs">
               Resources
             </h3>
             <nav className="flex flex-col space-y-3">
@@ -79,7 +79,7 @@ export default function Footer() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200 font-medium"
+                  className="text-sm text-zinc-400 hover:text-orange-500 transition-colors duration-200 font-medium"
                 >
                   {link.label}
                 </Link>
@@ -89,7 +89,7 @@ export default function Footer() {
 
           {/* Column 4: Legal */}
           <div className="flex flex-col space-y-6">
-            <h3 className="text-label font-bold text-zinc-900 uppercase tracking-wide text-xs">
+            <h3 className="text-label font-bold text-zinc-300 uppercase tracking-wide text-xs">
               Legal
             </h3>
             <nav className="flex flex-col space-y-3">
@@ -97,7 +97,7 @@ export default function Footer() {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200 font-medium"
+                  className="text-sm text-zinc-400 hover:text-orange-500 transition-colors duration-200 font-medium"
                 >
                   {link.label}
                 </Link>
@@ -107,10 +107,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-zinc-200 pt-8">
+        <div className="border-t border-zinc-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
             {/* Copyright */}
-            <p className="text-xs text-zinc-500 font-medium">
+            <p className="text-xs text-zinc-400 font-medium">
               © {currentYear} Ironclad Protocol. All rights reserved.
             </p>
 
