@@ -32,12 +32,7 @@
   --font-mono: var(--font-mono);
 }
 
-/* Brutalist Base Styles */
-* {
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-
+/* Professional Base Styles */
 body {
   background: var(--color-bg-primary) !important;
   color: var(--color-text-primary) !important;
