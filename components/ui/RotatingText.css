@@ -60,14 +60,7 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .rotating-word-container {
-    width: 100%;
-    padding: 0 1rem;
-  }
-
   .rotating-word {
     font-size: clamp(1.2rem, 5vw, 2.5rem);
-    white-space: normal;
-    word-wrap: break-word;
   }
 }
