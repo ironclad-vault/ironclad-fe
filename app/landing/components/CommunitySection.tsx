@@ -174,14 +174,14 @@ export default function CommunitySection() {
           {/* Secondary CTA */}
           <div className="w-full text-center space-y-4">
             <p className="text-body text-xs sm:text-sm md:text-base text-zinc-600">
-              Curious? Explore how it works
+              Want to learn more about the protocol?
             </p>
             <div>
               <a
                 href="#how-it-works"
                 className="button-brutal inline-block text-base sm:text-lg md:text-xl px-6 sm:px-8 py-3 sm:py-4 hover-lift font-bold"
               >
-                EXPLORE
+                HOW IT WORKS
               </a>
             </div>
           </div>
