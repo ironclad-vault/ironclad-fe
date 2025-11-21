@@ -259,15 +259,15 @@ export default function WithdrawVaultsMain() {
         </div>
 
         {/* Info Box */}
-        <div className="card-brutal brutal-border border-2 p-8 mt-8 bg-gray-50">
-          <h3 className="heading-brutal text-2xl mb-4">
+        <div className="card-pro p-8 mt-8 bg-gray-50">
+          <h3 className="text-heading text-2xl mb-4">
             WITHDRAWAL INFORMATION
           </h3>
-          <p className="body-brutal text-sm text-gray-700 mb-4">
+          <p className="text-body text-sm text-gray-700 mb-4">
             Withdraw your funds from an unlocked vault. The amount will be sent
             to your connected wallet.
           </p>
-          <ul className="body-brutal text-sm text-gray-600 space-y-2">
+          <ul className="text-body text-sm text-gray-600 space-y-2">
             <li>✓ Vault must be unlocked before withdrawal</li>
             <li>✓ Visit vault details page to unlock locked vaults</li>
             <li>✓ Check the available amount before withdrawing</li>
