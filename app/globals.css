@@ -310,12 +310,12 @@ h1, h2, h3, h4, h5, h6 {
 /* Decorative elements */
 .decor-block {
   background: var(--color-accent);
-  border: var(--border-width) solid var(--color-text-primary);
+  border: var(--border-width) solid var(--color-accent);
 }
 
 .decor-block-dark {
-  background: var(--color-text-primary);
-  border: var(--border-width) solid var(--color-text-primary);
+  background: var(--color-bg-secondary);
+  border: var(--border-width) solid var(--color-accent);
 }
 
 .section-divider {
