@@ -158,8 +158,8 @@ export default function WhyIroncladSection() {
             "BITCOIN-NATIVE",
           ].map((highlight, index) => (
             <div key={index} className="feature-highlight text-center group">
-              <div className="brutal-border border-2 px-4 py-3 bg-accent group-hover:bg-black group-hover:border-black transition-all duration-300 hover:scale-110 hover-lift">
-                <span className="heading-brutal text-sm font-black text-black group-hover:text-white transition-colors duration-300">
+              <div className="px-4 py-3 bg-accent border border-accent rounded-lg group-hover:bg-zinc-900 group-hover:border-zinc-900 transition-all duration-300 hover:scale-110 hover-lift">
+                <span className="text-heading text-sm font-bold text-white group-hover:text-white transition-colors duration-300">
                   {highlight}
                 </span>
               </div>
