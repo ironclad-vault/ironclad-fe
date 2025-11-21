@@ -27,6 +27,7 @@
 @theme inline {
   --color-background: var(--color-bg-primary);
   --color-foreground: var(--color-text-primary);
+  --color-surface: var(--color-bg-secondary);
   --color-structure: var(--color-structure);
   --color-accent: var(--color-accent);
   --font-sans: var(--font-body);
