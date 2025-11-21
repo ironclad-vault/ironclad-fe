@@ -123,19 +123,15 @@ export default function HeroSection() {
           <div className="hero-subcontent flex flex-col gap-12 max-w-4xl mx-auto">
             <div className="border border-zinc-200 bg-zinc-50 px-6 md:px-8 py-6 md:py-8 rounded-lg">
               <p className="text-body text-lg md:text-xl leading-relaxed">
-                Experience{" "}
+                Lock BTC for yield. Trade time-locked positions as{" "}
                 <span className="text-heading text-accent font-bold">
-                  time-locked security
+                  zero-coupon bonds
                 </span>
-                <br />{" "}
+                . Secure your assets with{" "}
                 <span className="text-heading text-accent font-bold">
-                  trustless autonomy
+                  on-chain inheritance protocols
                 </span>
-                , and{" "}
-                <span className="text-heading text-accent font-bold">
-                  professional protection
-                </span>{" "}
-                for your digital assets.
+                . Built on ICP.
               </p>
             </div>
 
@@ -144,7 +140,7 @@ export default function HeroSection() {
                 href="/vault"
                 className="btn-pro accent flex items-center space-x-2 text-lg px-10 py-6 hover:lift font-bold"
               >
-                <span>LOCK YOUR ASSETS</span>
+                <span>ACCESS PROTOCOL</span>
                 <ArrowRight className="w-5 h-5" />
               </TransitionButton>
 
