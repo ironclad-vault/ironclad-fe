@@ -175,7 +175,7 @@ export default function CommunitySection() {
 
           {/* Secondary CTA */}
           <div className="w-full text-center space-y-4">
-            <p className="body-brutal text-xs sm:text-sm md:text-base text-gray-600">
+            <p className="text-body text-xs sm:text-sm md:text-base text-zinc-600">
               Curious? Explore how it works
             </p>
             <div>
