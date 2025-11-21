@@ -136,11 +136,10 @@ export default function WhyIroncladSection() {
         {/* Section Title */}
         <div ref={titleRef} className="text-center mb-16 card-pro border-accent py-12 px-6">
           <h2 className="text-heading text-5xl md:text-7xl mb-4">
-            WHY IRONCLAD?
+            PROTOCOL FEATURES
           </h2>
           <p className="text-body text-lg max-w-3xl mx-auto text-zinc-600">
-            Built on decentralization, security, and autonomy. Next-generation
-            Bitcoin custody solutions.
+            DeFi-grade vesting and inheritance infrastructure for Bitcoin holders.
           </p>
         </div>
 
