@@ -117,15 +117,15 @@ export default function CommunitySection() {
           <div className="w-full flex justify-center pt-16 md:pt-20">
             <div ref={logoRef} className="relative inline-block">
               {/* Logo Container */}
-              <div className="w-48 h-48 md:w-56 md:h-56 border-4 border-accent rounded-lg bg-accent flex items-center justify-center hover:scale-110 transition-transform duration-500 overflow-hidden">
+              <div className="w-64 h-64 md:w-72 md:h-72 border-4 border-accent rounded-lg bg-accent flex items-center justify-center hover:scale-110 transition-transform duration-500 overflow-hidden">
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="w-32 h-32 md:w-40 md:h-40 border-4 border-accent rounded-lg bg-black opacity-20 absolute" />
+                  <div className="w-40 h-40 md:w-52 md:h-52 border-4 border-accent rounded-lg bg-black opacity-20 absolute" />
                   <div className="text-4xl md:text-5xl font-black text-black relative z-10">
                     <Image
                       src="/ironclad-vault-logo.png"
                       alt="Ironclad Logo"
-                      width={80}
-                      height={80}
+                      width={120}
+                      height={120}
                       className="object-contain"
                     />
                   </div>
