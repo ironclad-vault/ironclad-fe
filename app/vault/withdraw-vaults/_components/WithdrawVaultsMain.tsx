@@ -251,7 +251,7 @@ export default function WithdrawVaultsMain() {
             <button
               onClick={handleWithdrawClick}
               disabled={!selectedVaultId || !withdrawAmount || actionLoading}
-              className="button-brutal accent w-full py-4 text-lg font-bold hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
+              className="btn-pro accent w-full py-4 text-lg font-bold hover-lift disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {actionLoading ? "PROCESSING..." : "WITHDRAW"}
             </button>
