@@ -116,8 +116,8 @@ export default function HeroSection() {
           </div>
 
           <div className="hero-subcontent flex flex-col gap-12 max-w-3xl mx-auto">
-            <p className="text-body text-base md:text-lg leading-relaxed text-zinc-400 max-w-2xl mx-auto">
-              Charting the first liquid vesting protocol on Bitcoin. Enumerate vesting protocols, evaluate risks, and enable decentralized retention based on Bitcoin.
+            <p className="text-body text-base md:text-lg leading-relaxed text-white max-w-2xl mx-auto">
+              Charting the first <span className="text-orange-500 font-bold">liquid vesting protocol</span> on <span className="text-orange-500 font-bold">Bitcoin</span>. Enumerate <span className="text-orange-500 font-bold">vesting protocols</span>, evaluate risks, and enable <span className="text-orange-500 font-bold">decentralized retention</span> based on Bitcoin.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
