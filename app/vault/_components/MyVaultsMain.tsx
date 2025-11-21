@@ -435,16 +435,16 @@ export default function MyVaultsMain() {
           {/* Empty State */}
           {!loading && vaults.length === 0 && !error && (
             <div className="card-brutal brutal-border border-2 p-12 text-center">
-              <h2 className="heading-brutal text-4xl mb-4">NO VAULTS YET</h2>
+              <h2 className="heading-brutal text-4xl mb-4">NO ACTIVE POSITIONS</h2>
               <p className="body-brutal text-lg text-gray-700 mb-8">
-                Create your first vault to start securing your Bitcoin
+                Mint a new Bond or buy discounted BTC on the market.
               </p>
               <TransitionButton
                 href="/vault/create-vault"
                 suppressTransition
                 className="button-brutal accent px-8 py-4 text-lg font-bold hover-lift"
               >
-                CREATE VAULT
+                MINT BOND
               </TransitionButton>
             </div>
           )}
