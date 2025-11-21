@@ -337,6 +337,14 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-accent) !important;
 }
 
+.bg-accent-subtle {
+  background: rgba(247, 147, 26, 0.1) !important;
+}
+
+.border-accent {
+  border-color: var(--color-accent) !important;
+}
+
 /* Pulse Animation for Status Indicators */
 @keyframes pulse-glow {
   0%, 100% {
