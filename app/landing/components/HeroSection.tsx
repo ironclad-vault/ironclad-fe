@@ -104,12 +104,12 @@ export default function HeroSection() {
               <span className="hero-word inline-block">BTC WITH</span>
             </h1>
 
-            <div className="hero-rotating-text w-full flex justify-center">
-              <div className="px-8 py-6 md:px-12 md:py-8 bg-accent border border-accent rounded-lg">
+            <div className="hero-rotating-text w-full flex justify-center items-center">
+              <div className="px-8 py-6 md:px-12 md:py-8 bg-accent border border-accent rounded-lg flex items-center justify-center">
                 <RotatingText
                   words={rotatingWords}
                   duration={2500}
-                  className="text-heading text-5xl md:text-6xl lg:text-7xl text-center inline-block min-w-[180px] md:min-w-[280px] text-white font-bold"
+                  className="text-heading text-5xl md:text-6xl lg:text-7xl text-center min-w-[180px] md:min-w-[280px] text-white font-bold"
                   splitText="LOCK YOUR BTC WITH"
                 />
               </div>
