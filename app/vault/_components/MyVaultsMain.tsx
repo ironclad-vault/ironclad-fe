@@ -107,14 +107,24 @@ function VaultCard({
 
   return (
     <div className="card-pro relative overflow-hidden">
-      <div className="flex justify-between items-start mb-6">
+      <div className="flex justify-between items-start mb-4">
         <h3 className="heading-brutal text-xl font-semibold">Vault #{vault.id.toString()}</h3>
         <span
-          className={`px-3 py-1 text-xs font-semibold rounded-full ${statusColor}`}
+          className={`px-3 py-1 text-xs font-semibold rounded-full flex items-center gap-2 ${statusColor}`}
         >
+          {status === "ActiveLocked" && (
+            <span className="status-pulse status-dot bg-green-500"></span>
+          )}
           {statusLabel}
         </span>
       </div>
+
+      {/* Progress Bar */}
+      {status === "ActiveLocked" && (
+        <div className="progress-bar-container mb-4">
+          <div className="progress-bar-fill" style={{ width: `${progressPercentage}%` }}></div>
+        </div>
+      )}
 
       {/* Auto-Reinvest Plan Badge */}
       {autoReinvestConfig && (
