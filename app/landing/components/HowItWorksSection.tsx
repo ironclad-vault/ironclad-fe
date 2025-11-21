@@ -54,7 +54,7 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
 
           {/* Icon Container */}
           <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-accent rounded-lg group-hover:scale-110 transition-all duration-300 relative z-10">
-            <Icon className={`w-12 h-12 ${step.iconColor} font-bold`} />
+            <Icon className="w-12 h-12 text-white font-bold" />
           </div>
 
           {/* Step Number */}
