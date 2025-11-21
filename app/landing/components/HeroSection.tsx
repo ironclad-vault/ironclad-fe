@@ -10,7 +10,7 @@ import TransitionButton from "@/components/navigation/TransitionButton";
 
 export default function HeroSection() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const rotatingWords = ["SECURITY", "AUTONOMY", "FREEDOM", "TRUST"];
+  const rotatingWords = ["YIELD", "LIQUIDITY", "INHERITANCE", "CONTROL"];
 
   useLayoutEffect(() => {
     if (!containerRef.current) return;
