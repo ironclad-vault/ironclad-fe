@@ -50,7 +50,7 @@ export default function RootLayout({
             style: {
               background: "#18181B",
               color: "#FFFFFF",
-              border: "1px solid #27272A",
+              border: "1px solid #F7931A",
               padding: "16px",
               fontFamily: "var(--font-ibm-plex-mono)",
               borderRadius: "7px",
@@ -71,7 +71,7 @@ export default function RootLayout({
             },
             loading: {
               iconTheme: {
-                primary: "#EA580C",
+                primary: "#F7931A",
                 secondary: "#18181B",
               },
             },
