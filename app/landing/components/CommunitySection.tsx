@@ -59,7 +59,7 @@ export default function CommunitySection() {
   return (
     <section
       ref={sectionRef}
-      className="py-24 bg-white border-t border-zinc-200 relative overflow-hidden"
+      className="py-24 bg-zinc-950 border-t border-zinc-800 relative overflow-hidden"
     >
       {/* Subtle Background */}
       <div className="absolute inset-0 pointer-events-none">
