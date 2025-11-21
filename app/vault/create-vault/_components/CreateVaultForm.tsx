@@ -322,7 +322,7 @@ function CreateVaultFormContent() {
 export default function CreateVaultForm() {
   return (
     <Suspense
-      fallback={<div className="card-brutal p-8 text-center">Loading...</div>}
+      fallback={<div className="card-pro p-8 text-center">Loading...</div>}
     >
       <CreateVaultFormContent />
     </Suspense>
