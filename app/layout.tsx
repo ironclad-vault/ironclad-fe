@@ -36,7 +36,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning
-        className={`${inter.variable} ${anton.variable} ${ibmPlexMono.variable}`}
+        className={`${inter.variable} ${plusJakartaSans.variable} ${ibmPlexMono.variable}`}
       >
         <AppWrapper>
           <AnimatedRouter>{children}</AnimatedRouter>
