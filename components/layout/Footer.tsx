@@ -116,7 +116,7 @@ export default function Footer() {
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-800 my-12" />
+          <div className="border-t border-accent my-12" />
 
           {/* Bottom section */}
           <div className="space-y-6">
