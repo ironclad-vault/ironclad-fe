@@ -187,14 +187,14 @@ function VaultCard({
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 pt-4 border-t border-zinc-100">
         {/* Primary Actions */}
         <div className="flex gap-2">
           {status === "Unlockable" && (
             <TransitionButton
               href="/vault/withdraw-vaults"
               suppressTransition
-              className="flex-1 button-brutal py-2 text-sm bg-green-600 text-white hover:bg-green-700"
+              className="flex-1 button-brutal accent py-2 text-sm font-semibold"
             >
               WITHDRAW
             </TransitionButton>
@@ -203,7 +203,7 @@ function VaultCard({
             <TransitionButton
               href={`/vault/create-vault?vaultId=${vault.id.toString()}`}
               suppressTransition
-              className="flex-1 button-brutal py-2 text-sm bg-blue-600 text-white hover:bg-blue-700"
+              className="flex-1 button-brutal accent py-2 text-sm font-semibold"
             >
               COMPLETE
             </TransitionButton>
@@ -211,7 +211,7 @@ function VaultCard({
           {needsUnlock && onUnlockClick && (
             <button
               onClick={() => onUnlockClick(vault.id)}
-              className="flex-1 button-brutal py-2 text-sm bg-purple-600 text-white hover:bg-purple-700 font-bold"
+              className="flex-1 button-brutal accent py-2 text-sm font-semibold"
             >
               UNLOCK
             </button>
@@ -223,7 +223,7 @@ function VaultCard({
           <TransitionButton
             href={`/vault/${vault.id.toString()}`}
             suppressTransition
-            className="flex-1 button-brutal py-2 text-sm border-2 border-gray-300 hover:bg-gray-50"
+            className="flex-1 button-brutal py-2 text-sm font-semibold border border-zinc-200 text-zinc-700 hover:bg-zinc-50"
           >
             DETAILS
           </TransitionButton>
