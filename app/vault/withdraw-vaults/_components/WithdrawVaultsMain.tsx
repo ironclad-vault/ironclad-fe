@@ -288,11 +288,11 @@ export default function WithdrawVaultsMain() {
                   <p className="text-body text-xs text-gray-600 mb-2 font-bold">
                     Amount
                   </p>
-                  <p className="heading-brutal text-3xl">
+                  <p className="text-heading text-3xl">
                     {withdrawAmount} BTC
                   </p>
                 </div>
-                <p className="body-brutal text-sm text-gray-700">
+                <p className="text-body text-sm text-gray-700">
                   Are you sure you want to withdraw {withdrawAmount} BTC from
                   this vault?
                 </p>
