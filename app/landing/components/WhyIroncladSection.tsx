@@ -74,19 +74,19 @@ function FeatureCard({
   return (
     <div
       ref={cardRef}
-      className="brutal-border border-2 bg-white p-8 h-full flex flex-col hover:border-accent transition-all duration-500 group hover:scale-105 hover:-translate-y-2 relative overflow-hidden hover-lift"
+      className="card-pro p-8 h-full flex flex-col hover:border-accent transition-all duration-500 group hover:scale-105 hover:-translate-y-2 relative overflow-hidden hover-lift"
     >
       <div className="absolute top-0 right-0 w-16 h-16 border-2 border-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-      <div className="relative z-10 w-20 h-20 bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 brutal-border border-2">
+      <div className="relative z-10 w-20 h-20 bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-all duration-300 rounded-lg">
         <Icon className="w-10 h-10 text-white font-bold" />
       </div>
 
-      <h3 className="relative z-10 heading-brutal text-2xl mb-3 text-foreground group-hover:text-accent transition-colors duration-300">
+      <h3 className="relative z-10 text-heading text-2xl mb-3 text-foreground group-hover:text-accent transition-colors duration-300">
         {feature.title}
       </h3>
 
-      <p className="relative z-10 body-brutal text-sm mb-6 leading-relaxed text-gray-800">
+      <p className="relative z-10 text-body text-sm mb-6 leading-relaxed text-gray-800">
         {feature.description}
       </p>
 
@@ -99,7 +99,7 @@ function FeatureCard({
               style={{ transitionDelay: `${benefitIndex * 50}ms` }}
             >
               <div className="w-2 h-2 bg-accent flex-shrink-0 group-hover:scale-150 transition-transform duration-300" />
-              <span className="body-brutal text-xs uppercase font-bold text-gray-700 group-hover:text-accent transition-colors duration-300">
+              <span className="text-body text-xs font-bold text-gray-700 group-hover:text-accent transition-colors duration-300">
                 {benefit}
               </span>
             </div>
@@ -134,8 +134,8 @@ export default function WhyIroncladSection() {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Title */}
-        <div ref={titleRef} className="text-center mb-16 brutal-border border-2 border-accent py-12 px-6">
-          <h2 className="heading-brutal text-5xl md:text-7xl mb-4">
+        <div ref={titleRef} className="text-center mb-16 card-pro border-accent py-12 px-6">
+          <h2 className="text-heading text-5xl md:text-7xl mb-4">
             WHY IRONCLAD?
           </h2>
           <p className="body-brutal text-lg max-w-3xl mx-auto text-gray-700">
