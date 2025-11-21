@@ -123,8 +123,8 @@ export default function HeroSection() {
           </div>
 
           <div className="hero-subcontent flex flex-col gap-12 max-w-4xl mx-auto">
-            <div className="brutal-border border-2 bg-structure px-6 md:px-8 py-6 md:py-8">
-              <p className="body-brutal text-lg md:text-xl leading-relaxed">
+            <div className="border border-zinc-200 bg-zinc-50 px-6 md:px-8 py-6 md:py-8 rounded-lg">
+              <p className="text-body text-lg md:text-xl leading-relaxed">
                 Experience{" "}
                 <span className="text-heading text-accent font-bold">
                   time-locked security
