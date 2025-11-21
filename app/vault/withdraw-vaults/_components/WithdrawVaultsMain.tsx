@@ -217,11 +217,11 @@ export default function WithdrawVaultsMain() {
 
             {/* Preview Amount */}
             {previewAmount !== null && (
-              <div className="card-brutal p-6 bg-blue-50 border-blue-300">
-                <p className="body-brutal text-xs text-blue-600 uppercase font-bold mb-2">
+              <div className="card-pro p-6 bg-blue-50 border-blue-300">
+                <p className="text-body text-xs text-blue-600 font-bold mb-2">
                   Available to Withdraw
                 </p>
-                <p className="heading-brutal text-3xl text-blue-900">
+                <p className="text-heading text-3xl text-blue-900">
                   {(Number(previewAmount) / 100_000_000).toFixed(8)} BTC
                 </p>
               </div>
