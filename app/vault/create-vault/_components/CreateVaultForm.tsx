@@ -177,7 +177,7 @@ function CreateVaultFormContent() {
               <option value="60:months">5 YEARS</option>
             </select>
             {durationUnit === "seconds" && (
-              <p className="body-brutal text-xs text-orange-600 mt-1 font-bold">
+              <p className="text-body text-xs text-orange-600 mt-1 font-bold">
                 ⚠️ TESTING MODE: Vault will unlock in {lockDuration} seconds
               </p>
             )}
