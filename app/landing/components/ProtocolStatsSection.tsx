@@ -43,8 +43,8 @@ function StatMetric({ stat, index }: { stat: StatItem; index: number }) {
     <div className="flex flex-col items-start md:items-center justify-center py-6 md:py-8 px-4 md:px-6">
       {/* Label with Icon */}
       <div className="flex items-center gap-2 mb-3">
-        <Icon className="w-4 h-4 text-zinc-300" />
-        <span className="text-label text-xs font-semibold uppercase tracking-wider text-zinc-500">
+        <Icon className="w-4 h-4 text-zinc-400" />
+        <span className="text-label text-xs font-semibold uppercase tracking-wider text-zinc-400">
           {stat.label}
         </span>
         {stat.live && (
@@ -57,11 +57,11 @@ function StatMetric({ stat, index }: { stat: StatItem; index: number }) {
 
       {/* Value */}
       <div className="flex items-baseline gap-2">
-        <span className="text-3xl md:text-4xl font-bold text-zinc-900 tabular-nums">
+        <span className="text-3xl md:text-4xl font-bold text-white tabular-nums">
           {stat.value}
         </span>
         {stat.detail && (
-          <span className="text-sm font-medium text-zinc-500">
+          <span className="text-sm font-medium text-zinc-400">
             {stat.detail}
           </span>
         )}
@@ -142,10 +142,10 @@ export default function ProtocolStatsSection() {
         {/* Glass Card Container */}
         <div
           ref={containerRef}
-          className="bg-white/80 backdrop-blur-md ring-1 ring-zinc-200 shadow-lg shadow-zinc-200/50 rounded-2xl overflow-hidden"
+          className="bg-zinc-900/80 backdrop-blur-md ring-1 ring-zinc-800 shadow-lg shadow-orange-500/10 rounded-2xl overflow-hidden"
         >
           {/* Desktop: Divided Grid Layout */}
-          <div className="hidden md:grid md:grid-cols-3 divide-x divide-zinc-100">
+          <div className="hidden md:grid md:grid-cols-3 divide-x divide-zinc-800">
             {stats.map((stat, index) => (
               <div key={index} className="flex items-center justify-center">
                 <div className="w-full">
@@ -156,7 +156,7 @@ export default function ProtocolStatsSection() {
           </div>
 
           {/* Mobile: Stacked Layout */}
-          <div className="md:hidden divide-y divide-zinc-100">
+          <div className="md:hidden divide-y divide-zinc-800">
             {stats.map((stat, index) => (
               <StatMetric key={index} stat={stat} index={index} />
             ))}
