@@ -101,39 +101,39 @@ function VaultCard({
 
       {/* Auto-Reinvest Plan Badge */}
       {autoReinvestConfig && (
-        <div className="mb-4">
+        <div className="mb-5 pb-4 border-b border-zinc-100">
           {autoReinvestConfig.planStatus === "Active" && (
-            <div className={`px-3 py-2 text-xs font-bold border-2 rounded ${getAutoReinvestBadgeColor("Active")}`}>
+            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Active")}`}>
               <p className="flex items-center gap-1 mb-1">
                 📅 Auto-Reinvest Active
               </p>
-              <p className="text-xs opacity-90">Execution #{Number(autoReinvestConfig.executionCount)}</p>
+              <p className="text-xs opacity-75">Execution #{Number(autoReinvestConfig.executionCount)}</p>
               {nextCycleTimestamp && nextCycleTimestamp > 0 && (
-                <p className="text-xs opacity-90">Next: {formatNextCycleTime(nextCycleTimestamp)}</p>
+                <p className="text-xs opacity-75">Next: {formatNextCycleTime(nextCycleTimestamp)}</p>
               )}
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Paused" && (
-            <div className={`px-3 py-2 text-xs font-bold border-2 rounded ${getAutoReinvestBadgeColor("Paused")}`}>
+            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Paused")}`}>
               <p className="flex items-center gap-1">⏸️ Auto-Reinvest Paused</p>
-              <p className="text-xs opacity-90">Scheduled but waiting</p>
+              <p className="text-xs opacity-75">Scheduled but waiting</p>
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Error" && (
-            <div className={`px-3 py-2 text-xs font-bold border-2 rounded ${getAutoReinvestBadgeColor("Error")}`}>
+            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Error")}`}>
               <p className="flex items-center gap-1 mb-1">❌ Auto-Reinvest Error</p>
               {autoReinvestConfig.errorMessage && (
-                <p className="text-xs opacity-90">Reason: {autoReinvestConfig.errorMessage}</p>
+                <p className="text-xs opacity-75">Reason: {autoReinvestConfig.errorMessage}</p>
               )}
             </div>
           )}
 
           {autoReinvestConfig.planStatus === "Cancelled" && (
-            <div className={`px-3 py-2 text-xs font-bold border-2 rounded ${getAutoReinvestBadgeColor("Cancelled")}`}>
+            <div className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor("Cancelled")}`}>
               <p className="flex items-center gap-1">🛑 Auto-Reinvest Cancelled</p>
-              <p className="text-xs opacity-90">Plan ended</p>
+              <p className="text-xs opacity-75">Plan ended</p>
             </div>
           )}
         </div>
