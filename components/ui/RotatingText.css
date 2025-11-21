@@ -31,13 +31,11 @@
   text-shadow: none;
 }
 
-/* Ensure proper text alignment and spacing */
+/* Hero rotating text container */
 .hero-rotating-text {
+  width: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  min-height: 1em;
-  width: 100%;
 }
 
 /* Smooth transitions for symmetrical appearance */
