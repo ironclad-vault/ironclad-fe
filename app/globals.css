@@ -80,15 +80,17 @@ article {
 .text-heading {
   font-family: var(--font-heading) !important;
   font-weight: 700 !important;
-  letter-spacing: -0.03em !important;
+  letter-spacing: 0.05em !important;
   line-height: 1.2 !important;
+  text-transform: uppercase !important;
 }
 
 .heading-brutal {
   font-family: var(--font-heading) !important;
   font-weight: 700 !important;
-  letter-spacing: -0.03em !important;
+  letter-spacing: 0.05em !important;
   line-height: 1.2 !important;
+  text-transform: uppercase !important;
 }
 
 .body-brutal {
