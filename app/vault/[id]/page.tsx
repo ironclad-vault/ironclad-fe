@@ -17,15 +17,15 @@ export default async function Page({
   const { id } = await params;
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col bg-background">
       <VaultHeader />
-      <main className="min-h-screen bg-white">
-        <div className="pt-24 pb-16">
+      <section className="flex flex-col items-stretch min-h-screen">
+        <main className="pt-24 pb-16 flex-1 flex flex-col gap-8">
           <Suspense
             fallback={
               <div className="container mx-auto px-6">
                 <div className="card-brutal p-8 text-center">
-                  <p className="body-brutal text-lg text-gray-600">
+                  <p className="body-brutal text-lg text-zinc-400">
                     Loading vault details...
                   </p>
                 </div>
@@ -34,9 +34,9 @@ export default async function Page({
           >
             <VaultDetailContent vaultId={id} />
           </Suspense>
-        </div>
-      </main>
-      <Footer />
+        </main>
+        <Footer />
+      </section>
     </div>
   );
 }
