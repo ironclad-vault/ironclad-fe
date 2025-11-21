@@ -99,9 +99,9 @@ export default function HeroSection() {
         <div className="flex flex-col gap-12">
           <div className="flex flex-col items-center gap-8 mb-8">
             <h1 className="text-heading text-5xl md:text-7xl lg:text-8xl mx-auto text-center leading-tight">
-              <span className="hero-word inline-block">LOCK YOUR</span>
+              <span className="hero-word inline-block">THE FIRST LIQUID</span>
               <br />
-              <span className="hero-word inline-block">BTC WITH</span>
+              <span className="hero-word inline-block">VESTING PROTOCOL</span>
             </h1>
 
             <div className="hero-rotating-text w-full flex justify-center">
@@ -110,15 +110,13 @@ export default function HeroSection() {
                   words={rotatingWords}
                   duration={2500}
                   className="text-heading text-3xl md:text-4xl lg:text-5xl text-center text-white font-bold"
-                  splitText="LOCK YOUR BTC WITH"
+                  splitText="ON BITCOIN"
                 />
               </div>
             </div>
 
             <h2 className="text-heading text-4xl md:text-6xl lg:text-7xl mx-auto text-center leading-tight">
-              <span className="hero-word inline-block">SECURE YOUR</span>
-              <br />
-              <span className="hero-word inline-block">VAULT</span>
+              <span className="hero-word inline-block">ON BITCOIN</span>
             </h2>
           </div>
 
