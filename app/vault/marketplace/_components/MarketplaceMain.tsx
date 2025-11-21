@@ -329,82 +329,68 @@ export default function MarketplaceMain() {
                     return (
                       <div
                         key={listing.id.toString()}
-                        className="card-brutal p-6 hover:shadow-lg transition-shadow"
+                        className="card-pro p-6"
                       >
-                        <div className="space-y-3 mb-4">
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Listing ID
-                            </p>
-                            <p className="mono-brutal text-sm">
-                              {listing.id.toString()}
-                            </p>
-                          </div>
-
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Vault ID
-                            </p>
-                            <p className="mono-brutal text-sm">
-                              {listing.vault_id.toString()}
-                            </p>
-                          </div>
-
-                          {vaultDetails && (
+                        <div className="space-y-4 mb-6">
+                          <div className="flex justify-between items-start">
                             <div>
-                              <p className="body-brutal text-xs text-gray-500 uppercase">
-                                Vault Balance
-                              </p>
-                              <p className="heading-brutal text-lg">
-                                {(
-                                  Number(vaultDetails.balance) / 100_000_000
-                                ).toFixed(8)}{" "}
-                                BTC
+                              <p className="text-label mb-1">LISTING ID</p>
+                              <p className="mono-brutal text-sm">
+                                {listing.id.toString().slice(0, 16)}...
                               </p>
                             </div>
-                          )}
-
-                          <div className="border-t-2 border-black pt-3">
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Price
-                            </p>
-                            <p className="heading-brutal text-2xl">
-                              {(
-                                Number(listing.price_sats) / 100_000_000
-                              ).toFixed(8)}{" "}
-                              BTC
-                            </p>
+                            <div>
+                              <p className="text-label mb-1">STATUS</p>
+                              <span
+                                className={`px-3 py-1 text-xs font-semibold rounded-full inline-block ${
+                                  "Active" in listing.status
+                                    ? "bg-green-50 text-green-700"
+                                    : "Filled" in listing.status
+                                    ? "bg-blue-50 text-blue-700"
+                                    : "bg-zinc-100 text-zinc-700"
+                                }`}
+                              >
+                                {"Active" in listing.status
+                                  ? "ACTIVE"
+                                  : "Filled" in listing.status
+                                  ? "SOLD"
+                                  : "CANCELLED"}
+                              </span>
+                            </div>
                           </div>
 
-                          <div>
-                            <p className="body-brutal text-xs text-gray-500 uppercase">
-                              Status
+                          <div className="flex justify-between">
+                            <div>
+                              <p className="text-label mb-1">VAULT ID</p>
+                              <p className="mono-brutal text-sm">
+                                #{listing.vault_id.toString()}
+                              </p>
+                            </div>
+                            {vaultDetails && (
+                              <div className="text-right">
+                                <p className="text-label mb-1">VAULT BALANCE</p>
+                                <p className="heading-brutal text-lg">
+                                  <BTCAmount sats={vaultDetails.balance} showLabel={true} />
+                                </p>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="border-t border-zinc-200 pt-4">
+                            <p className="text-label mb-2">ASKING PRICE</p>
+                            <p className="heading-brutal text-3xl text-emerald-600">
+                              <BTCAmount sats={listing.price_sats} showLabel={true} />
                             </p>
-                            <span
-                              className={`px-3 py-1 text-xs font-bold border-2 border-black inline-block ${
-                                "Active" in listing.status
-                                  ? "bg-green-200 text-green-900"
-                                  : "Filled" in listing.status
-                                  ? "bg-blue-200 text-blue-900"
-                                  : "bg-gray-200 text-gray-900"
-                              }`}
-                            >
-                              {"Active" in listing.status
-                                ? "ACTIVE"
-                                : "Filled" in listing.status
-                                ? "SOLD"
-                                : "CANCELLED"}
-                            </span>
                           </div>
                         </div>
 
                         <button
                           onClick={() => handleCancelListing(listing.id)}
                           disabled={!("Active" in listing.status)}
-                          className={`w-full button-brutal py-3 font-bold ${
+                          className={`w-full py-3 font-semibold rounded-lg transition-all ${
                             !("Active" in listing.status)
-                              ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                              : "bg-red-600 text-white hover:bg-red-700"
+                              ? "bg-zinc-200 text-zinc-500 cursor-not-allowed"
+                              : "bg-red-600 text-white hover:bg-red-700 hover:shadow-lg"
                           }`}
                         >
                           {!("Active" in listing.status)
