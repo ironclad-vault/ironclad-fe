@@ -190,6 +190,23 @@ function CreateVaultFormContent() {
 
           <div className="mb-6">
             <label className="text-body text-sm font-bold mb-2 block">
+              INHERITANCE BENEFICIARY (OPTIONAL)
+            </label>
+            <input
+              type="text"
+              className="input-brutal"
+              value={beneficiary}
+              onChange={(e) => setBeneficiary(e.target.value)}
+              placeholder="Enter Principal ID (e.g. 2vxsx-fae...)"
+              disabled={loading}
+            />
+            <p className="text-body text-xs text-gray-500 mt-1">
+              If you become inactive for &gt;6 months, this principal can claim your vault.
+            </p>
+          </div>
+
+          <div className="mb-6">
+            <label className="text-body text-sm font-bold mb-2 block">
               DEPOSIT AMOUNT (SATS)
             </label>
             <input
