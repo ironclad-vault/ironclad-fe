@@ -45,15 +45,15 @@ function VaultCard({
   const getAutoReinvestBadgeColor = (status: "Active" | "Cancelled" | "Error" | "Paused"): string => {
     switch (status) {
       case "Active":
-        return "bg-blue-100 text-blue-900 border-blue-300";
+        return "bg-blue-50 text-blue-700";
       case "Paused":
-        return "bg-gray-100 text-gray-900 border-gray-300";
+        return "bg-zinc-100 text-zinc-700";
       case "Error":
-        return "bg-red-100 text-red-900 border-red-300";
+        return "bg-red-50 text-red-700";
       case "Cancelled":
-        return "bg-yellow-100 text-yellow-900 border-yellow-300";
+        return "bg-amber-50 text-amber-700";
       default:
-        return "bg-gray-100 text-gray-900 border-gray-300";
+        return "bg-zinc-100 text-zinc-700";
     }
   };
 
