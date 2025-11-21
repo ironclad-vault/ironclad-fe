@@ -110,8 +110,8 @@ function CreateVaultFormContent() {
   }
 
   return (
-    <div className="card-brutal brutal-border border-2 p-8 flex flex-col gap-8">
-      <h3 className="heading-brutal text-4xl">
+    <div className="card-pro p-8 flex flex-col gap-8">
+      <h3 className="text-heading text-4xl">
         {mode === "complete" ? "COMPLETE DEPOSIT" : "CREATE NEW VAULT"}
       </h3>
 
