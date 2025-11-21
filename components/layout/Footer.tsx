@@ -92,22 +92,22 @@ export default function Footer() {
               <h4 className="text-lg font-black text-white">RESOURCES</h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-gray-200 hover:text-accent transition-colors duration-300 font-medium">
+                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
                     Documentation
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-200 hover:text-accent transition-colors duration-300 font-medium">
+                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
                     Security Audit
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-200 hover:text-accent transition-colors duration-300 font-medium">
+                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
                     Privacy Policy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-gray-200 hover:text-accent transition-colors duration-300 font-medium">
+                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
                     Terms of Service
                   </a>
                 </li>
