@@ -348,6 +348,15 @@ export default function MarketplaceMain() {
                       (v) => v.id === listing.vault_id
                     );
 
+                    let yieldPercent = 0;
+                    let discountPercent = 0;
+                    if (vaultDetails) {
+                      const vaultBalance = Number(vaultDetails.balance);
+                      const priceSats = Number(listing.price_sats);
+                      yieldPercent = ((vaultBalance - priceSats) / priceSats) * 100;
+                      discountPercent = ((vaultBalance - priceSats) / vaultBalance) * 100;
+                    }
+
                     return (
                       <div
                         key={listing.id.toString()}
@@ -381,6 +390,12 @@ export default function MarketplaceMain() {
                             </div>
                           </div>
 
+                          {yieldPercent > 0 && (
+                            <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold inline-block">
+                              🚀 +{yieldPercent.toFixed(1)}% YIELD
+                            </div>
+                          )}
+
                           <div className="flex justify-between">
                             <div>
                               <p className="text-label mb-1">VAULT ID</p>
@@ -400,9 +415,16 @@ export default function MarketplaceMain() {
 
                           <div className="border-t border-zinc-200 pt-4">
                             <p className="text-label mb-2">ASKING PRICE</p>
-                            <p className="heading-brutal text-3xl text-emerald-600">
-                              <BTCAmount sats={listing.price_sats} showLabel={true} />
-                            </p>
+                            <div className="flex items-center">
+                              <p className="heading-brutal text-3xl text-emerald-600">
+                                <BTCAmount sats={listing.price_sats} showLabel={true} />
+                              </p>
+                              {discountPercent > 0 && (
+                                <span className="text-xs text-zinc-500 font-medium ml-2">
+                                  ({discountPercent.toFixed(1)}% DISCOUNT)
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
 
