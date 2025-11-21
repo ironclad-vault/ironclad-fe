@@ -134,7 +134,7 @@ export default function WhyIroncladSection() {
 
       <div className="container mx-auto px-6 relative z-10">
         {/* Section Title */}
-        <div ref={titleRef} className="text-center mb-16 card-pro border-accent py-12 px-6">
+        <div ref={titleRef} className="text-center mb-16 card-pro border-orange-500 py-12 px-6">
           <h2 className="text-heading text-5xl md:text-7xl mb-4 text-white">
             PROTOCOL FEATURES
           </h2>
