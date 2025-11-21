@@ -369,9 +369,9 @@ export default function MyVaultsMain() {
           <div className="card-brutal brutal-border border-2 mb-8 p-8">
             <div className="flex justify-between items-start mb-6 pb-6 border-b-2 border-accent">
               <div>
-                <h1 className="heading-brutal text-5xl mb-2">MY VAULTS</h1>
+                <h1 className="heading-brutal text-5xl mb-2">DASHBOARD</h1>
                 <p className="body-brutal text-lg text-gray-700 font-semibold">
-                  {vaults.length} {vaults.length === 1 ? "vault" : "vaults"} found
+                  {vaults.length} {vaults.length === 1 ? "position" : "positions"} found
                 </p>
               </div>
               <button
