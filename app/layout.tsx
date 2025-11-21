@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Anton, IBM_Plex_Mono } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import AnimatedRouter from "@/components/navigation/AnimatedRouter";
 import AppWrapper from "./wrapper";
@@ -10,9 +10,9 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const anton = Anton({
-  weight: "400",
-  variable: "--font-anton",
+const plusJakartaSans = Plus_Jakarta_Sans({
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-plus-jakarta-sans",
   subsets: ["latin"],
 });
 
