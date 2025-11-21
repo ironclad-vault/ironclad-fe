@@ -130,18 +130,18 @@ export default function TestPage() {
               </h2>
               <div className="grid grid-cols-2 gap-4 body-brutal">
                 <div>
-                  <p className="text-gray-600">Status:</p>
+                  <p className="text-zinc-400">Status:</p>
                   <p
                     className={`text-lg font-bold ${
-                      isConnected ? "text-green-600" : "text-red-600"
+                      isConnected ? "text-green-500" : "text-red-500"
                     }`}
                   >
                     {isConnected ? "✅ Connected" : "❌ Not Connected"}
                   </p>
                 </div>
                 <div>
-                  <p className="text-gray-600">Wallet Type:</p>
-                  <p className="text-lg font-bold">{walletType || "N/A"}</p>
+                  <p className="text-zinc-400">Wallet Type:</p>
+                  <p className="text-lg font-bold text-white">{walletType || "N/A"}</p>
                 </div>
                 <div className="col-span-2">
                   <p className="text-gray-600">Principal:</p>
