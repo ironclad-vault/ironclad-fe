@@ -89,7 +89,7 @@ export default function Footer() {
 
             {/* Info Links */}
             <div className="space-y-6">
-              <h4 className="text-lg font-black text-white">RESOURCES</h4>
+              <h4 className="text-lg font-black text-accent">RESOURCES</h4>
               <ul className="space-y-3">
                 <li>
                   <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
