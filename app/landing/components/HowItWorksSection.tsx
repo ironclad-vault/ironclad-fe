@@ -108,7 +108,7 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
             </div>
 
             {/* Step Description */}
-            <div className="body-brutal text-sm leading-relaxed text-gray-700">
+            <div className="text-body text-sm leading-relaxed text-zinc-700">
               {step.description}
             </div>
           </div>
