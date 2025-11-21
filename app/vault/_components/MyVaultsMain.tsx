@@ -139,48 +139,48 @@ function VaultCard({
         </div>
       )}
 
-      <div className="space-y-3 body-brutal text-sm mb-4">
-        <div className="flex justify-between">
-          <span className="text-gray-600">Balance:</span>
-          <span className="font-bold">{formatSats(vault.balance)}</span>
+      <div className="space-y-4 text-body text-sm mb-5">
+        <div className="flex justify-between items-baseline">
+          <span className="text-label">BALANCE</span>
+          <span className="font-semibold text-right tabular-nums">{formatSats(vault.balance)}</span>
         </div>
 
         {vault.expected_deposit && (
-          <div className="flex justify-between">
-            <span className="text-gray-600">Expected Deposit:</span>
-            <span className="font-bold">
+          <div className="flex justify-between items-baseline">
+            <span className="text-label">EXPECTED DEPOSIT</span>
+            <span className="font-semibold text-right tabular-nums">
               {formatSats(vault.expected_deposit)}
             </span>
           </div>
         )}
 
-        <div className="flex justify-between">
-          <span className="text-gray-600">Lock Until:</span>
-          <span className="font-bold">
+        <div className="flex justify-between items-baseline">
+          <span className="text-label">LOCK UNTIL</span>
+          <span className="font-semibold text-right">
             {formatVaultDate(Number(vault.lock_until))}
           </span>
         </div>
 
         {status === "ActiveLocked" && timeRemaining && (
-          <div className="bg-blue-50 p-2 rounded border-2 border-blue-200">
-            <p className="text-xs font-bold text-blue-900 flex flex-row items-center gap-1">
-              <Timer /> {timeRemaining.days}d {timeRemaining.hours}h{" "}
+          <div className="bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+            <p className="text-xs font-semibold text-blue-900 flex flex-row items-center gap-1">
+              <Timer className="w-4 h-4" /> {timeRemaining.days}d {timeRemaining.hours}h{" "}
               {timeRemaining.minutes}m remaining
             </p>
           </div>
         )}
 
         {needsUnlock && (
-          <div className="bg-green-50 p-2 rounded border-2 border-green-200">
-            <p className="text-xs font-bold text-green-900">
+          <div className="bg-green-50 px-3 py-2 rounded-lg border border-green-200">
+            <p className="text-xs font-semibold text-green-900">
               ✓ Ready to unlock - Click UNLOCK below
             </p>
           </div>
         )}
 
-        <div className="flex justify-between">
-          <span className="text-gray-600">BTC Address:</span>
-          <span className="font-mono text-xs">
+        <div className="flex justify-between items-baseline pt-2">
+          <span className="text-label">BTC ADDRESS</span>
+          <span className="font-mono text-xs text-right">
             {vault.btc_address.slice(0, 12)}...
           </span>
         </div>
