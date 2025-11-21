@@ -14,6 +14,8 @@ import VaultHeader from "@/components/layout/VaultHeader";
 export default function SettingsMain() {
   const { mode, loading, error, switchToMock, switchToCkbtc } =
     useNetworkMode();
+  const [lastProofOfLife, setLastProofOfLife] = useState<Date | null>(null);
+  const [pingingAlive, setPingingAlive] = useState(false);
 
   const handleSwitchToMock = async () => {
     try {
