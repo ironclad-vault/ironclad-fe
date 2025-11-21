@@ -65,23 +65,23 @@ export default function Footer() {
               <h4 className="text-lg font-black text-white">EXPLORE</h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#how-it-works" className="text-gray-200 hover:text-accent transition-colors duration-300 font-medium">
+                  <a href="#how-it-works" className="text-accent hover:text-white transition-colors duration-300 font-bold">
                     How It Works
                   </a>
                 </li>
                 <li>
-                  <a href="#features" className="text-gray-200 hover:text-accent transition-colors duration-300 font-medium">
+                  <a href="#features" className="text-accent hover:text-white transition-colors duration-300 font-bold">
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href="#testimonials" className="text-gray-200 hover:text-accent transition-colors duration-300 font-medium">
+                  <a href="#testimonials" className="text-accent hover:text-white transition-colors duration-300 font-bold">
                     Testimonials
                   </a>
                 </li>
                 <li>
-                  <a href="/vault" className="text-gray-200 hover:text-accent transition-colors duration-300 font-medium">
-                    Launch Vault
+                  <a href="/vault" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                    Dashboard
                   </a>
                 </li>
               </ul>
