@@ -196,12 +196,12 @@ body {
 
 .button-brutal.accent {
   background: var(--color-accent) !important;
-  color: var(--color-text-white) !important;
+  color: #000000 !important;
   font-weight: 600 !important;
 }
 
 .button-brutal.accent:hover {
-  background: #D35A00 !important;
+  background: #e8851a !important;
 }
 
 .input-brutal {
