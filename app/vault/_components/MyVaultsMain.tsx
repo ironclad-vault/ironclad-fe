@@ -89,12 +89,11 @@ function VaultCard({
   const timeRemaining = getTimeRemaining();
 
   return (
-    <div className="card-brutal brutal-border border-2 p-8 hover:border-accent transition-all duration-300 hover-lift relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-8 h-8 border-2 border-accent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+    <div className="card-pro relative overflow-hidden">
       <div className="flex justify-between items-start mb-6">
-        <h3 className="heading-brutal text-2xl">VAULT #{vault.id.toString()}</h3>
+        <h3 className="heading-brutal text-xl font-semibold">Vault #{vault.id.toString()}</h3>
         <span
-          className={`px-4 py-2 text-xs font-black brutal-border border-2 ${statusColor}`}
+          className={`px-3 py-1 text-xs font-semibold rounded-full ${statusColor}`}
         >
           {statusLabel}
         </span>
