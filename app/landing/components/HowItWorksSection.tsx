@@ -93,8 +93,8 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
           {/* Card */}
           <div className="flex-1 card-pro p-6 text-left flex flex-col hover:border-accent transition-all duration-300 hover:scale-102 pb-6 mb-4">
             {/* Icon Container */}
-            <div className="w-14 h-14 mb-4 flex items-center justify-center rounded-lg bg-background group-hover:scale-110 transition-transform duration-300">
-              <Icon className={`w-7 h-7 ${step.iconColor}`} />
+            <div className="w-14 h-14 mb-4 flex items-center justify-center rounded-lg bg-accent group-hover:scale-110 transition-transform duration-300">
+              <Icon className="w-7 h-7 text-white font-bold" />
             </div>
 
             {/* Step Number */}
