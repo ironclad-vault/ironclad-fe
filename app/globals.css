@@ -15,9 +15,9 @@
   --color-unlocked: #10b981;
 
   /* Typography */
-  --font-heading: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif;
+  --font-heading: var(--font-oswald), "Oswald", sans-serif;
   --font-body: var(--font-inter), "Inter", sans-serif;
-  --font-mono: "IBM Plex Mono", monospace;
+  --font-mono: var(--font-ibm-plex-mono), "IBM Plex Mono", monospace;
 
   /* Border Styles */
   --border-width: 1px;
