@@ -154,7 +154,7 @@ export default function CommunitySection() {
             </p>
           </div>
 
-          {/* Social Links - Professional Grid */}
+          {/* Social Links - Professional Grid with Orange Accents */}
           <div
             ref={socialRef}
             className="flex justify-center gap-4 flex-wrap"
@@ -168,7 +168,7 @@ export default function CommunitySection() {
             </a>
             <a
               href="#"
-              className="social-link w-12 h-12 bg-zinc-900 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-all duration-200 group"
+              className="social-link w-12 h-12 bg-orange-500 hover:bg-orange-600 rounded-lg flex items-center justify-center transition-all duration-200 group"
               aria-label="Discord"
             >
               <MessageCircle className="w-5 h-5 text-white" />
@@ -182,7 +182,7 @@ export default function CommunitySection() {
             </a>
             <a
               href="#"
-              className="social-link w-12 h-12 bg-zinc-900 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-all duration-200 group"
+              className="social-link w-12 h-12 bg-orange-500 hover:bg-orange-600 rounded-lg flex items-center justify-center transition-all duration-200 group"
               aria-label="Email"
             >
               <Mail className="w-5 h-5 text-white" />
