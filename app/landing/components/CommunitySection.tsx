@@ -117,9 +117,9 @@ export default function CommunitySection() {
           <div className="w-full flex justify-center pt-16 md:pt-20">
             <div ref={logoRef} className="relative inline-block">
               {/* Logo Container */}
-              <div className="w-48 h-48 md:w-56 md:h-56 brutal-border border-4 bg-accent flex items-center justify-center hover:scale-110 transition-transform duration-500 overflow-hidden">
+              <div className="w-48 h-48 md:w-56 md:h-56 border-4 border-accent rounded-lg bg-accent flex items-center justify-center hover:scale-110 transition-transform duration-500 overflow-hidden">
                 <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="w-32 h-32 md:w-40 md:h-40 brutal-border border-4 bg-black opacity-20 absolute" />
+                  <div className="w-32 h-32 md:w-40 md:h-40 border-4 border-accent rounded-lg bg-black opacity-20 absolute" />
                   <div className="text-4xl md:text-5xl font-black text-black relative z-10">
                     <Image
                       src="/ironclad-vault-logo.png"
@@ -136,10 +136,10 @@ export default function CommunitySection() {
 
           {/* Title with glitch effect */}
           <div ref={titleRef} className="w-full text-center">
-            <div className="brutal-border border-4 bg-accent py-6 px-8 inline-block">
+            <div className="border-4 border-accent rounded-lg bg-accent py-6 px-8 inline-block">
               <GlitchText
                 text="Ironclad"
-                className="heading-brutal text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight text-black"
+                className="text-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight text-black"
                 glitchIntensity="high"
                 duration={3}
               />
@@ -149,12 +149,12 @@ export default function CommunitySection() {
           {/* Tagline */}
           <div
             ref={taglineRef}
-            className="w-full text-center max-w-3xl mx-auto brutal-border border-2 py-8 px-6"
+            className="w-full text-center max-w-3xl mx-auto card-pro py-8 px-6"
           >
-            <p className="body-brutal text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
+            <p className="text-body text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
               Join the revolution in Bitcoin security. Build your digital
               fortress with
-              <span className="heading-brutal text-accent font-black">
+              <span className="text-heading text-accent font-bold">
                 {" "}
                 time-locked autonomy
               </span>
@@ -166,9 +166,9 @@ export default function CommunitySection() {
           <div ref={ctaRef} className="w-full flex justify-center">
             <TransitionButton
               href="/vault"
-              className="cta-primary button-brutal accent inline-flex items-center space-x-3 sm:space-x-4 text-base sm:text-lg md:text-xl px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 hover-lift whitespace-nowrap font-bold"
+              className="cta-primary btn-pro accent inline-flex items-center space-x-3 sm:space-x-4 text-base sm:text-lg md:text-xl px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 hover-lift whitespace-nowrap font-bold"
             >
-              <span className="heading-brutal">LAUNCH VAULT</span>
+              <span className="text-heading">LAUNCH VAULT</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
             </TransitionButton>
           </div>
