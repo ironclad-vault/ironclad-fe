@@ -119,14 +119,14 @@ export default function HeroSection() {
           </div>
 
           <div className="hero-subcontent flex flex-col gap-12 max-w-3xl mx-auto">
-            <p className="text-body text-base md:text-lg leading-relaxed text-white max-w-2xl mx-auto">
-              Charting the first <span className="text-orange-500 font-bold">liquid vesting protocol</span> on <span className="text-orange-500 font-bold">Bitcoin</span>. Enumerate <span className="text-orange-500 font-bold">vesting protocols</span>, evaluate risks, and enable <span className="text-orange-500 font-bold">decentralized retention</span> based on Bitcoin.
+            <p className="text-body text-base md:text-lg leading-relaxed text-zinc-300 max-w-2xl mx-auto font-light">
+              Charting the first <span className="text-orange-500 font-semibold">liquid vesting protocol</span> on <span className="text-orange-500 font-semibold">Bitcoin</span>. Enumerate vesting protocols, evaluate risks, and enable <span className="text-orange-500 font-semibold">decentralized retention</span> based on Bitcoin.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <TransitionButton
                 href="/vault"
-                className="flex items-center space-x-2 text-lg px-10 py-4 font-black bg-orange-500 text-black hover:bg-orange-600 rounded-md transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/50"
+                className="flex items-center space-x-2 text-base md:text-lg px-8 md:px-10 py-3 md:py-4 font-bold bg-orange-500 text-black hover:bg-orange-600 rounded-md transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/50 active:scale-95"
               >
                 <span>ACCESS PROTOCOL</span>
                 <ArrowRight className="w-5 h-5" />
@@ -134,7 +134,7 @@ export default function HeroSection() {
 
               <Link
                 href="#how-it-works"
-                className="flex items-center space-x-2 text-lg px-10 py-4 font-black border-2 border-white text-white hover:bg-white hover:text-black rounded-md transition-all duration-200"
+                className="flex items-center space-x-2 text-base md:text-lg px-8 md:px-10 py-3 md:py-4 font-bold border-2 border-white/40 text-white hover:border-white hover:bg-white/10 rounded-md transition-all duration-200"
               >
                 <span>LEARN MORE</span>
                 <ArrowRight className="w-5 h-5" />
