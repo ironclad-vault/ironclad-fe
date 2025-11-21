@@ -9,28 +9,28 @@ import { Shield, Clock, Zap, Globe, Lock, Ban } from "lucide-react";
 
 const features = [
   {
-    title: "NATIVE BITCOIN",
+    title: "ZERO-COUPON BONDS",
     description:
-      "Pure Bitcoin integration with no bridges. Your BTC remains on-chain, secured by proof-of-work.",
-    icon: Shield,
-    benefits: ["No bridges", "No wrapped tokens", "On-chain security"],
+      "Access instant liquidity by selling your locked positions on the secondary market. Buyers earn yield through discounted Bitcoin.",
+    icon: Zap,
+    benefits: ["Instant liquidity", "Secondary market", "Discounted entry"],
   },
   {
-    title: "TIME-LOCK AUTONOMY",
+    title: "LIQUID VESTING",
     description:
-      "Vaults run autonomously on Internet Computer. Time-locks cannot be modified.",
+      "Time-lock your BTC to enforce holding discipline, but remain liquid via our bond marketplace. No more dead capital.",
     icon: Clock,
-    benefits: ["Autonomous execution", "Unmodifiable locks", "Trustless"],
+    benefits: ["Holding discipline", "Market liquidity", "Active capital"],
   },
   {
-    title: "BRUTALIST SECURITY",
+    title: "DEAD MAN SWITCH",
     description:
-      "Transparent audited contracts with minimal attack surface and maximum security.",
-    icon: Lock,
+      "Native inheritance protocol. If you become inactive, ownership of your vaults automatically transfers to your designated beneficiary.",
+    icon: Shield,
     benefits: [
-      "Minimal attack surface",
-      "Audited contracts",
-      "Transparent code",
+      "Auto inheritance",
+      "Beneficiary transfer",
+      "Asset protection",
     ],
   },
   {
