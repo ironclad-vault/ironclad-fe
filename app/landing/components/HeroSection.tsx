@@ -78,67 +78,52 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="min-h-screen flex items-center justify-center bg-background pt-20 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center bg-zinc-950 pt-20 relative overflow-hidden"
     >
       <div className="absolute inset-0 pointer-events-none">
         <ScrollFloat
           text="BITCOIN"
           speed={0.3}
-          className="absolute top-20 left-10 opacity-10"
+          className="absolute top-20 left-10 opacity-5"
         />
         <ScrollFloat
           text="TIMELOCK"
           speed={0.4}
-          className="absolute bottom-20 right-10 opacity-10"
+          className="absolute bottom-20 right-10 opacity-5"
         />
-        <div className="absolute top-0 right-0 w-96 h-96 border-4 border-accent opacity-10 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-64 h-64 border-4 border-accent opacity-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-96 h-96 border-4 border-orange-500 opacity-5 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-64 h-64 border-4 border-orange-500 opacity-5 pointer-events-none" />
       </div>
 
       <div className="text-center max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col items-center gap-8 mb-8">
-            <h1 className="text-heading text-5xl md:text-7xl lg:text-8xl mx-auto text-center leading-tight">
+            <h1 className="text-heading text-6xl md:text-7xl lg:text-8xl mx-auto text-center leading-tight text-white font-black uppercase tracking-tight">
               <span className="hero-word inline-block">THE FIRST LIQUID</span>
               <br />
               <span className="hero-word inline-block">VESTING PROTOCOL</span>
+              <br />
+              <span className="hero-word inline-block">ON BITCOIN</span>
             </h1>
 
             <div className="hero-rotating-text w-full flex justify-center">
-              <div className="px-6 py-3 md:px-8 md:py-4 bg-accent border border-accent rounded-lg">
-                <RotatingText
-                  words={rotatingWords}
-                  duration={2500}
-                  className="text-heading text-3xl md:text-4xl lg:text-5xl text-center text-white font-bold"
-                  splitText="ON BITCOIN"
-                />
+              <div className="px-4 py-2 border-2 border-orange-500 rounded-md transform rotate-12 inline-block">
+                <span className="text-heading text-xl md:text-2xl text-orange-500 font-black uppercase tracking-wider">
+                  YIELD
+                </span>
               </div>
             </div>
-
-            <h2 className="text-heading text-4xl md:text-6xl lg:text-7xl mx-auto text-center leading-tight">
-              <span className="hero-word inline-block">ON BITCOIN</span>
-            </h2>
           </div>
 
-          <div className="hero-subcontent flex flex-col gap-12 max-w-4xl mx-auto">
-            <div className="border border-zinc-200 bg-zinc-50 px-6 md:px-8 py-6 md:py-8 rounded-lg">
-              <p className="text-body text-lg md:text-xl leading-relaxed">
-                Lock BTC for yield. Trade time-locked positions as{" "}
-                <span className="text-heading text-accent font-bold">
-                  zero-coupon bonds
-                </span>
-                . Secure your assets with{" "}
-                <span className="text-heading text-accent font-bold">
-                  on-chain inheritance protocols
-                </span>
-                . Built on ICP.
-              </p>
-            </div>
+          <div className="hero-subcontent flex flex-col gap-12 max-w-3xl mx-auto">
+            <p className="text-body text-base md:text-lg leading-relaxed text-zinc-400 max-w-2xl mx-auto">
+              Charting the first liquid vesting protocol on Bitcoin. Enumerate vesting protocols, evaluate risks, and enable decentralized retention based on Bitcoin.
+            </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <TransitionButton
                 href="/vault"
-                className="btn-pro accent flex items-center space-x-2 text-lg px-10 py-6 hover:lift font-bold"
+                className="flex items-center space-x-2 text-lg px-10 py-4 font-black bg-orange-500 text-black hover:bg-orange-600 rounded-md transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/50"
               >
                 <span>ACCESS PROTOCOL</span>
                 <ArrowRight className="w-5 h-5" />
@@ -146,7 +131,7 @@ export default function HeroSection() {
 
               <Link
                 href="#how-it-works"
-                className="button-brutal flex items-center space-x-2 text-lg px-10 py-6 hover-lift font-bold"
+                className="flex items-center space-x-2 text-lg px-10 py-4 font-black border-2 border-white text-white hover:bg-white hover:text-black rounded-md transition-all duration-200"
               >
                 <span>LEARN MORE</span>
                 <ArrowRight className="w-5 h-5" />
