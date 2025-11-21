@@ -1,172 +1,155 @@
 'use client';
 
-import { Github, Twitter, MessageCircle, Mail } from 'lucide-react';
+import { Github, Twitter, MessageCircle, Mail, Dot } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+
+const protocolLinks = [
+  { label: 'Bond Market', href: '/vault' },
+  { label: 'My Vaults', href: '/vault' },
+  { label: 'Analytics', href: '#' },
+  { label: 'Network Status', href: '#' },
+];
+
+const resourcesLinks = [
+  { label: 'Documentation', href: '#' },
+  { label: 'Whitepaper', href: '#' },
+  { label: 'GitHub', href: '#' },
+  { label: 'Bug Bounty', href: '#' },
+];
+
+const legalLinks = [
+  { label: 'Terms of Service', href: '#' },
+  { label: 'Privacy Policy', href: '#' },
+  { label: 'Cookie Policy', href: '#' },
+];
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-background text-white overflow-hidden">
-      {/* Decorative gradient overlay */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-accent opacity-5 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-accent opacity-3 rounded-full blur-3xl" />
-      </div>
-
-      <div className="relative z-10">
-        {/* Top accent bar */}
-        <div className="h-1 bg-gradient-to-r from-accent via-orange-400 to-accent" />
-
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-16 mb-16">
-            {/* Brand section */}
-            <div className="flex flex-col space-y-6">
-              <div className="space-y-3">
-                <h3 className="text-2xl md:text-3xl font-black text-accent footer-orange-text">IRONCLAD</h3>
-                <p className="text-accent text-sm md:text-base leading-relaxed max-w-xs font-bold footer-orange-text">
-                  Bitcoin security reimagined. Time-locked autonomy powered by smart contracts.
-                </p>
+    <footer className="bg-zinc-50 border-t border-zinc-200">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+        {/* Main Footer Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 md:mb-16">
+          {/* Column 1: Brand */}
+          <div className="flex flex-col space-y-4">
+            <Link href="/" className="flex items-center space-x-2 group">
+              <div className="w-10 h-10 bg-black rounded-lg flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform duration-300">
+                <Image
+                  src="/ironclad-vault-logo.png"
+                  alt="Ironclad Logo"
+                  width={24}
+                  height={24}
+                  className="object-contain"
+                />
               </div>
+              <span className="text-heading text-xl font-black text-black">IRONCLAD</span>
+            </Link>
+            <p className="text-sm text-zinc-500 leading-relaxed max-w-xs">
+              The First Liquid Vesting Protocol on Bitcoin.
+            </p>
+          </div>
+
+          {/* Column 2: Protocol */}
+          <div className="flex flex-col space-y-6">
+            <h3 className="text-label font-bold text-zinc-900 uppercase tracking-wide text-xs">
+              Protocol
+            </h3>
+            <nav className="flex flex-col space-y-3">
+              {protocolLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200 font-medium"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Column 3: Resources */}
+          <div className="flex flex-col space-y-6">
+            <h3 className="text-label font-bold text-zinc-900 uppercase tracking-wide text-xs">
+              Resources
+            </h3>
+            <nav className="flex flex-col space-y-3">
+              {resourcesLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200 font-medium"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* Column 4: Legal */}
+          <div className="flex flex-col space-y-6">
+            <h3 className="text-label font-bold text-zinc-900 uppercase tracking-wide text-xs">
+              Legal
+            </h3>
+            <nav className="flex flex-col space-y-3">
+              {legalLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="text-sm text-zinc-500 hover:text-zinc-900 transition-colors duration-200 font-medium"
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-zinc-200 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            {/* Copyright */}
+            <p className="text-xs text-zinc-500 font-medium">
+              © {currentYear} Ironclad Protocol. All rights reserved.
+            </p>
+
+            {/* Right Side: Status Indicator & Social Icons */}
+            <div className="flex items-center gap-6">
+              {/* System Status */}
+              <div className="flex items-center gap-2 text-xs text-zinc-500 font-medium">
+                <div className="w-2 h-2 bg-green-500 rounded-full" />
+                <span>System Status: Operational</span>
+              </div>
+
+              {/* Social Icons */}
               <div className="flex gap-4">
                 <a
                   href="#"
-                  className="w-12 h-12 border-2 border-accent rounded-lg flex items-center justify-center hover:bg-accent hover:text-black transition-all duration-300 hover-lift group"
+                  className="text-zinc-500 hover:text-zinc-900 transition-colors duration-200"
                   aria-label="Twitter"
                 >
-                  <Twitter className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <Twitter className="w-4 h-4" />
                 </a>
                 <a
                   href="#"
-                  className="w-12 h-12 border-2 border-accent rounded-lg flex items-center justify-center hover:bg-accent hover:text-black transition-all duration-300 hover-lift group"
-                  aria-label="GitHub"
-                >
-                  <Github className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                </a>
-                <a
-                  href="#"
-                  className="w-12 h-12 border-2 border-accent rounded-lg flex items-center justify-center hover:bg-accent hover:text-black transition-all duration-300 hover-lift group"
+                  className="text-zinc-500 hover:text-zinc-900 transition-colors duration-200"
                   aria-label="Discord"
                 >
-                  <MessageCircle className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <MessageCircle className="w-4 h-4" />
                 </a>
                 <a
                   href="#"
-                  className="w-12 h-12 border-2 border-accent rounded-lg flex items-center justify-center hover:bg-accent hover:text-black transition-all duration-300 hover-lift group"
-                  aria-label="Email"
+                  className="text-zinc-500 hover:text-zinc-900 transition-colors duration-200"
+                  aria-label="GitHub"
                 >
-                  <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                </a>
-              </div>
-            </div>
-
-            {/* Quick Links */}
-            <div className="space-y-6">
-              <h4 className="text-lg font-black text-accent footer-orange-text">EXPLORE</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a href="#how-it-works" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                    How It Works
-                  </a>
-                </li>
-                <li>
-                  <a href="#features" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                    Features
-                  </a>
-                </li>
-                <li>
-                  <a href="#testimonials" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                    Testimonials
-                  </a>
-                </li>
-                <li>
-                  <a href="/vault" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                    Dashboard
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Info Links */}
-            <div className="space-y-6">
-              <h4 className="text-lg font-black text-accent footer-orange-text">RESOURCES</h4>
-              <ul className="space-y-3">
-                <li>
-                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                    Security Audit
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                    Terms of Service
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="border-t border-accent my-12" />
-
-          {/* Bottom section */}
-          <div className="space-y-6">
-            <div className="space-y-4">
-              <p className="text-accent text-lg md:text-xl font-black footer-orange-text">
-                BUILT ON THE INTERNET COMPUTER | IRONCLAD
-              </p>
-              <p className="text-accent text-sm md:text-base max-w-2xl font-bold footer-orange-text">
-                Decentralized Bitcoin custody powered by autonomous smart contracts. Your fortress, your rules, your Bitcoin.
-              </p>
-            </div>
-
-            {/* Bottom bar */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-8 border-t border-accent">
-              <p className="text-accent text-xs md:text-sm font-bold footer-orange-text">
-                © {currentYear} Ironclad. Built with cryptographic proof.
-              </p>
-              <div className="flex gap-6 text-accent text-xs md:text-sm">
-                <a href="#" className="hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                  Status
-                </a>
-                <a href="#" className="hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                  Roadmap
-                </a>
-                <a href="#" className="hover:text-white transition-colors duration-300 font-bold footer-orange-text">
-                  Community
+                  <Github className="w-4 h-4" />
                 </a>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Bottom accent bar */}
-        <div className="h-1 bg-gradient-to-r from-accent via-orange-400 to-accent" />
       </div>
-
-      <style jsx>{`
-        .footer-orange-text {
-          color: var(--color-accent, #f79326);
-          text-shadow:
-            -1.5px -1.5px 0 #000,
-            1.5px -1.5px 0 #000,
-            -1.5px 1.5px 0 #000,
-            1.5px 1.5px 0 #000,
-            -1px 0 0 #000,
-            1px 0 0 #000,
-            0 -1px 0 #000,
-            0 1px 0 #000;
-        }
-      `}</style>
     </footer>
   );
 }
