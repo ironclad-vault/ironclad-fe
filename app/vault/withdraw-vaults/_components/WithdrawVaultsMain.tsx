@@ -120,9 +120,9 @@ export default function WithdrawVaultsMain() {
   if (!isConnected) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal brutal-border border-2 p-8 text-center">
-          <h2 className="heading-brutal text-3xl mb-4">CONNECT YOUR WALLET</h2>
-          <p className="body-brutal text-lg text-gray-700">
+        <div className="card-pro p-8 text-center">
+          <h2 className="text-heading text-3xl mb-4">CONNECT YOUR WALLET</h2>
+          <p className="text-body text-lg text-gray-700">
             Please connect your wallet to withdraw from vaults.
           </p>
         </div>
