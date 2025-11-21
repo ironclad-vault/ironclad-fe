@@ -98,7 +98,7 @@ export default function HeroSection() {
       <div className="text-center max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col gap-12">
           <div className="flex flex-col items-center gap-8 mb-8">
-            <h1 className="heading-brutal text-5xl md:text-7xl lg:text-8xl mx-auto text-center leading-tight">
+            <h1 className="text-heading text-5xl md:text-7xl lg:text-8xl mx-auto text-center leading-tight">
               <span className="hero-word inline-block">LOCK YOUR</span>
               <br />
               <span className="hero-word inline-block">BTC WITH</span>
@@ -109,13 +109,13 @@ export default function HeroSection() {
                 <RotatingText
                   words={rotatingWords}
                   duration={2500}
-                  className="heading-brutal text-5xl md:text-6xl lg:text-7xl text-center inline-block min-w-[180px] md:min-w-[280px] text-black font-black"
+                  className="text-heading text-5xl md:text-6xl lg:text-7xl text-center inline-block min-w-[180px] md:min-w-[280px] text-black font-bold"
                   splitText="LOCK YOUR BTC WITH"
                 />
               </div>
             </div>
 
-            <h2 className="heading-brutal text-4xl md:text-6xl lg:text-7xl mx-auto text-center leading-tight">
+            <h2 className="text-heading text-4xl md:text-6xl lg:text-7xl mx-auto text-center leading-tight">
               <span className="hero-word inline-block">SECURE YOUR</span>
               <br />
               <span className="hero-word inline-block">VAULT</span>
@@ -126,16 +126,16 @@ export default function HeroSection() {
             <div className="brutal-border border-2 bg-structure px-6 md:px-8 py-6 md:py-8">
               <p className="body-brutal text-lg md:text-xl leading-relaxed">
                 Experience{" "}
-                <span className="heading-brutal text-accent font-black">
+                <span className="text-heading text-accent font-bold">
                   time-locked security
                 </span>
                 <br />{" "}
-                <span className="heading-brutal text-accent font-black">
+                <span className="text-heading text-accent font-bold">
                   trustless autonomy
                 </span>
                 , and{" "}
-                <span className="heading-brutal text-accent font-black">
-                  brutalist protection
+                <span className="text-heading text-accent font-bold">
+                  professional protection
                 </span>{" "}
                 for your digital assets.
               </p>
@@ -144,7 +144,7 @@ export default function HeroSection() {
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <TransitionButton
                 href="/vault"
-                className="button-brutal accent flex items-center space-x-2 text-lg px-10 py-6 hover:lift font-bold"
+                className="btn-pro accent flex items-center space-x-2 text-lg px-10 py-6 hover:lift font-bold"
               >
                 <span>LOCK YOUR ASSETS</span>
                 <ArrowRight className="w-5 h-5" />
