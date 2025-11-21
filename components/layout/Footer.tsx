@@ -24,7 +24,7 @@ export default function Footer() {
             <div className="flex flex-col space-y-6">
               <div className="space-y-3">
                 <h3 className="text-2xl md:text-3xl font-black text-accent">IRONCLAD</h3>
-                <p className="text-gray-400 text-sm md:text-base leading-relaxed max-w-xs">
+                <p className="text-gray-200 text-sm md:text-base leading-relaxed max-w-xs font-medium">
                   Bitcoin security reimagined. Time-locked autonomy powered by smart contracts.
                 </p>
               </div>
