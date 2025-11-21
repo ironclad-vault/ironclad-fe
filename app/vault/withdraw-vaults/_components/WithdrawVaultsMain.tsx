@@ -300,13 +300,13 @@ export default function WithdrawVaultsMain() {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowConfirm(false)}
-                  className="flex-1 button-brutal py-3 font-bold hover-lift"
+                  className="flex-1 btn-pro py-3 font-bold hover-lift"
                 >
                   CANCEL
                 </button>
                 <button
                   onClick={handleConfirmWithdraw}
-                  className="flex-1 button-brutal accent py-3 font-bold hover-lift disabled:opacity-50"
+                  className="flex-1 btn-pro accent py-3 font-bold hover-lift disabled:opacity-50"
                   disabled={actionLoading}
                 >
                   {actionLoading ? "PROCESSING..." : "CONFIRM"}
