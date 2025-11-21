@@ -112,12 +112,12 @@ export default function TestPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen flex flex-col bg-background">
       <RootKeyWarning />
       <TransitionWrapper>
         <VaultHeader />
 
-        <main className="pt-24 pb-16">
+        <main className="pt-24 pb-16 flex-1 flex flex-col">
           <div className="container mx-auto px-6 max-w-6xl">
             <h1 className="heading-brutal text-4xl mb-8">
               🧪 FEATURE TESTING DASHBOARD
