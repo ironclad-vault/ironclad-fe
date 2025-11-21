@@ -7,6 +7,7 @@ import { useVaults } from "@/hooks/ironclad/useVaults";
 import InfoBox from "@/app/vault/_components/InfoBox";
 import { TrendingUp, ShoppingCart, Tag } from "lucide-react";
 import { getVaultStatus } from "@/lib/vaultUtils";
+import BTCAmount from "@/components/ui/BTCAmount";
 
 export default function MarketplaceMain() {
   const { isConnected, principal } = useWallet();
