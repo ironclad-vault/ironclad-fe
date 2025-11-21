@@ -59,138 +59,137 @@ export default function CommunitySection() {
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-screen flex items-center justify-center bg-background overflow-hidden pb-32"
+      className="py-24 bg-white border-t border-zinc-200 relative overflow-hidden"
     >
-      {/* Animated Background */}
+      {/* Subtle Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-10 w-32 h-32 bg-accent opacity-10 rounded-full particle" />
-        <div className="absolute top-40 right-20 w-24 h-24 bg-accent opacity-8 rounded-full particle" />
-        <div className="absolute bottom-20 left-32 w-40 h-40 bg-accent opacity-5 rounded-full particle" />
-        <div className="absolute bottom-40 right-40 w-28 h-28 bg-accent opacity-12 rounded-full particle" />
-        <div className="absolute top-60 left-60 w-20 h-20 bg-accent opacity-6 rounded-full particle" />
-
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 bg-grid-pattern opacity-5" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500 opacity-3 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-blue-500 opacity-2 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
-        <div className="flex flex-col items-center justify-center w-full space-y-12">
-          {/* Logo with animation */}
-          <div className="w-full flex justify-center pt-16 md:pt-20">
-            <div ref={logoRef} className="relative inline-block">
-              {/* Logo Container */}
-              <div className="w-64 h-64 md:w-72 md:h-72 border-4 border-accent rounded-lg bg-accent flex items-center justify-center hover:scale-110 transition-transform duration-500 overflow-hidden">
-                <div className="relative w-full h-full flex items-center justify-center">
-                  <div className="w-40 h-40 md:w-52 md:h-52 border-4 border-accent rounded-lg bg-black opacity-20 absolute" />
-                  <div className="text-4xl md:text-5xl font-black text-black relative z-10">
-                    <Image
-                      src="/ironclad-vault-logo.png"
-                      alt="Ironclad Logo"
-                      width={120}
-                      height={120}
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
+      <div
+        ref={contentRef}
+        className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+      >
+        {/* Main Content Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center mb-16">
+          {/* Left: Logo & Title */}
+          <div className="flex flex-col items-center md:items-start space-y-8">
+            {/* Logo */}
+            <div ref={logoRef} className="relative">
+              <div className="w-40 h-40 md:w-48 md:h-48 bg-zinc-900 rounded-2xl flex items-center justify-center ring-1 ring-zinc-200 shadow-lg">
+                <Image
+                  src="/ironclad-vault-logo.png"
+                  alt="Ironclad Logo"
+                  width={100}
+                  height={100}
+                  className="object-contain"
+                />
               </div>
             </div>
-          </div>
 
-          {/* Title with glitch effect */}
-          <div ref={titleRef} className="w-full text-center">
-            <div className="border border-accent rounded-lg bg-accent py-8 px-12 inline-block">
-              <GlitchText
-                text="Ironclad"
-                className="text-heading text-6xl sm:text-7xl md:text-8xl lg:text-9xl leading-tight text-white"
-                glitchIntensity="high"
-                duration={3}
-              />
+            {/* Title */}
+            <div ref={titleRef} className="space-y-4">
+              <h2 className="text-heading text-4xl md:text-5xl font-black text-zinc-900">
+                Ironclad Protocol
+              </h2>
+              <div className="h-1 w-16 bg-orange-500 rounded-full" />
             </div>
           </div>
 
-          {/* Tagline */}
-          <div
-            ref={taglineRef}
-            className="w-full text-center max-w-3xl mx-auto card-pro py-8 px-6"
-          >
-            <p className="text-body text-lg sm:text-xl md:text-2xl text-gray-700 leading-relaxed">
-              The first liquid vesting protocol on Bitcoin. Trade time-locked positions, enforce discipline, and secure your legacy with
-              <span className="text-heading text-accent font-bold">
-                {" "}
-                on-chain inheritance.
-              </span>
-            </p>
-          </div>
+          {/* Right: Description & CTA */}
+          <div ref={descRef} className="flex flex-col space-y-8">
+            <div className="space-y-4">
+              <p className="text-body text-lg text-zinc-600 leading-relaxed">
+                The first liquid vesting protocol on Bitcoin. Trade time-locked positions, enforce discipline, and secure your legacy with on-chain inheritance.
+              </p>
 
-          {/* Main CTA */}
-          <div ref={ctaRef} className="w-full flex justify-center">
-            <TransitionButton
-              href="/vault"
-              className="cta-primary btn-pro accent inline-flex items-center space-x-3 sm:space-x-4 text-base sm:text-lg md:text-xl px-6 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 hover-lift whitespace-nowrap font-bold"
-            >
-              <span className="text-heading">ACCESS PROTOCOL</span>
-              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
-            </TransitionButton>
-          </div>
+              <ul className="space-y-3 text-sm text-zinc-600">
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 font-bold mt-1">•</span>
+                  <span>Non-custodial vaults with time-lock discipline</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 font-bold mt-1">•</span>
+                  <span>Trade positions as zero-coupon bonds on secondary market</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 font-bold mt-1">•</span>
+                  <span>Automatic inheritance transfer protocol</span>
+                </li>
+              </ul>
+            </div>
 
-          {/* Secondary CTA */}
-          <div className="w-full text-center space-y-4">
-            <p className="text-body text-xs sm:text-sm md:text-base text-zinc-600">
-              Want to learn more about the protocol?
-            </p>
-            <div>
+            {/* CTA Buttons */}
+            <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 pt-4">
+              <TransitionButton
+                href="/vault"
+                className="flex items-center justify-center gap-2 bg-zinc-900 text-white rounded-lg px-8 py-3 font-semibold hover:bg-black transition-colors duration-200 whitespace-nowrap"
+              >
+                <span>Access Protocol</span>
+                <ArrowRight className="w-4 h-4" />
+              </TransitionButton>
+
               <a
                 href="#how-it-works"
-                className="button-brutal inline-block text-base sm:text-lg md:text-xl px-6 sm:px-8 py-3 sm:py-4 hover-lift font-bold"
+                className="flex items-center justify-center gap-2 bg-white text-zinc-900 border border-zinc-200 rounded-lg px-8 py-3 font-semibold hover:bg-zinc-50 transition-colors duration-200 whitespace-nowrap"
               >
-                HOW IT WORKS
+                <span>Learn More</span>
               </a>
             </div>
           </div>
+        </div>
 
-          {/* Social Links */}
+        {/* Divider */}
+        <div className="border-t border-zinc-200 my-12 md:my-16" />
+
+        {/* Community Section */}
+        <div className="text-center space-y-8">
+          <div>
+            <h3 className="text-heading text-2xl md:text-3xl font-bold text-zinc-900 mb-2">
+              Join the Protocol
+            </h3>
+            <p className="text-body text-zinc-600">
+              Connect with the community and stay updated on the latest developments.
+            </p>
+          </div>
+
+          {/* Social Links - Professional Grid */}
           <div
             ref={socialRef}
-            className="w-full flex justify-center gap-3 sm:gap-4 md:gap-6 pt-8 md:pt-12"
+            className="flex justify-center gap-4 flex-wrap"
           >
             <a
               href="#"
-              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
-              aria-label="Discord"
-            >
-              <MessageCircle className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
-            </a>
-            <a
-              href="#"
-              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
+              className="social-link w-12 h-12 bg-zinc-900 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-all duration-200 group"
               aria-label="Twitter"
             >
-              <Twitter className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
+              <Twitter className="w-5 h-5 text-white" />
             </a>
             <a
               href="#"
-              className="social-link brutal-border border-2 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-white flex items-center justify-center hover:bg-accent hover:scale-110 transition-all duration-300 group shrink-0 hover-lift"
+              className="social-link w-12 h-12 bg-zinc-900 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-all duration-200 group"
+              aria-label="Discord"
+            >
+              <MessageCircle className="w-5 h-5 text-white" />
+            </a>
+            <a
+              href="#"
+              className="social-link w-12 h-12 bg-zinc-900 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-all duration-200 group"
               aria-label="GitHub"
             >
-              <Github className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-gray-900 group-hover:text-white transition-colors font-bold" />
+              <Github className="w-5 h-5 text-white" />
+            </a>
+            <a
+              href="#"
+              className="social-link w-12 h-12 bg-zinc-900 hover:bg-orange-500 rounded-lg flex items-center justify-center transition-all duration-200 group"
+              aria-label="Email"
+            >
+              <Mail className="w-5 h-5 text-white" />
             </a>
           </div>
         </div>
       </div>
-
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-background to-transparent" />
-
-      <style jsx>{`
-        .bg-grid-pattern {
-          background-image: linear-gradient(
-              var(--color-structure) 1px,
-              transparent 1px
-            ),
-            linear-gradient(90deg, var(--color-structure) 1px, transparent 1px);
-          background-size: 50px 50px;
-        }
-      `}</style>
     </section>
   );
 }
