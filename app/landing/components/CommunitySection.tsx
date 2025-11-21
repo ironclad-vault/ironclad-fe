@@ -136,10 +136,10 @@ export default function CommunitySection() {
 
           {/* Title with glitch effect */}
           <div ref={titleRef} className="w-full text-center">
-            <div className="border-4 border-accent rounded-lg bg-accent py-6 px-8 inline-block">
+            <div className="border border-accent rounded-lg bg-accent py-6 px-8 inline-block">
               <GlitchText
                 text="Ironclad"
-                className="text-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight text-black"
+                className="text-heading text-5xl sm:text-6xl md:text-7xl lg:text-8xl leading-tight text-white"
                 glitchIntensity="high"
                 duration={3}
               />
