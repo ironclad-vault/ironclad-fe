@@ -388,7 +388,7 @@ export default function MyVaultsMain() {
               suppressTransition
               className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
             >
-              + CREATE NEW VAULT
+              + MINT NEW BOND
             </TransitionButton>
 
             {/* Auto-refresh toggle */}
