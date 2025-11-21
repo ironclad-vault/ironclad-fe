@@ -167,7 +167,7 @@ export default function TestimonialStackSection() {
               {testimonials.slice(0, -1).map((testimonial, index) => (
                 <div
                   key={index}
-                  className="testimonial-card absolute card-pro bg-white p-12 md:p-16 flex flex-col justify-center items-center text-center hover-lift"
+                  className="testimonial-card absolute card-pro bg-zinc-900 p-12 md:p-16 flex flex-col justify-center items-center text-center hover-lift"
                   style={{
                     left: "50%",
                     top: "50%",
