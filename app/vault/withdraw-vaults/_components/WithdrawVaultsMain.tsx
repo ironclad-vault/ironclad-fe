@@ -229,7 +229,7 @@ export default function WithdrawVaultsMain() {
 
             {/* Amount Input */}
             <div>
-              <label className="body-brutal text-sm font-bold mb-3 block">
+              <label className="text-body text-sm font-bold mb-3 block">
                 AMOUNT (BTC)
               </label>
               <input
@@ -242,7 +242,7 @@ export default function WithdrawVaultsMain() {
                 className="input-brutal w-full"
                 disabled={!selectedVaultId}
               />
-              <p className="body-brutal text-xs text-gray-600 mt-2">
+              <p className="text-body text-xs text-gray-600 mt-2">
                 Enter the amount you want to withdraw
               </p>
             </div>
