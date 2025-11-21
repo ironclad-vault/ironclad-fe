@@ -14,6 +14,7 @@ export default function LandingPage() {
       <Header />
       <main>
         <Hero />
+        <ProtocolStatsSection />
         <WhyIroncladLockSection />
         <HowItWorksSection />
         <TestimonialStackSection />
