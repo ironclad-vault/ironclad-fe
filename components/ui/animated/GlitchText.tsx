@@ -132,11 +132,10 @@ export default function GlitchText({
 
         .glitch-text-container span {
           display: block;
-          mix-blend-mode: multiply;
         }
 
-        .glitch-text-container:hover span {
-          mix-blend-mode: normal;
+        .glitch-text-container span:not(:first-child) {
+          mix-blend-mode: multiply;
         }
       `}</style>
     </div>
