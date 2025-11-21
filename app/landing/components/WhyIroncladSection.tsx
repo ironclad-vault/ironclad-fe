@@ -128,8 +128,8 @@ export default function WhyIroncladSection() {
     >
       {/* Background decoration */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-80 h-80 border-4 border-accent opacity-10 pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 border-4 border-accent opacity-5 pointer-events-none" />
+        <div className="absolute top-0 left-0 w-80 h-80 border-4 border-orange-500 opacity-10 pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 border-4 border-orange-500 opacity-5 pointer-events-none" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
