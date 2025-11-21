@@ -102,19 +102,15 @@ export default function HeroSection() {
         <div className="flex flex-col gap-12">
           <div className="flex flex-col items-center gap-8 mb-8!">
             <h1 className="text-heading text-7xl md:text-8xl lg:text-9xl mx-auto text-center leading-tight text-white font-black uppercase tracking-wide">
-              <span className="hero-word inline-block">THE FIRST LIQUID</span>
+              <span className="hero-word inline-block">LIQUID VESTING</span>
               <br />
-              <span className="hero-word inline-block">VESTING PROTOCOL</span>
-              <br />
-              <span className="hero-word inline-block text-orange-500">
-                ON BITCOIN
-              </span>
+              <span className="hero-word inline-block">FOR BITCOIN</span>
             </h1>
 
             <div className="hero-rotating-text w-full flex justify-center">
               <div className="px-3 py-1 border-2 border-orange-500 rounded transform -rotate-12 inline-block">
                 <span className="text-heading text-lg md:text-xl text-orange-500 font-black uppercase tracking-widest">
-                  YIELD
+                  ZERO-COUPON BONDS
                 </span>
               </div>
             </div>
@@ -122,16 +118,20 @@ export default function HeroSection() {
 
           <div className="hero-subcontent flex flex-col gap-12 max-w-3xl mx-auto">
             <p className="text-body text-base md:text-lg leading-relaxed text-zinc-300 max-w-2xl mx-auto font-light">
-              Charting the first{" "}
+              The first{" "}
               <span className="text-orange-500 font-semibold">
-                liquid vesting protocol
+                institutional-grade liquid vesting protocol
               </span>{" "}
-              on <span className="text-orange-500 font-semibold">Bitcoin</span>.
-              Enumerate vesting protocols, evaluate risks, and enable{" "}
+              for Bitcoin. Time-lock your holdings with tradeable positions,
+              automated{" "}
               <span className="text-orange-500 font-semibold">
-                decentralized retention
-              </span>{" "}
-              based on Bitcoin.
+                inheritance protocol
+              </span>
+              , and cryptographic{" "}
+              <span className="text-orange-500 font-semibold">
+                ownership proofs
+              </span>
+              .
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -139,7 +139,7 @@ export default function HeroSection() {
                 href="/vault"
                 className="flex items-center space-x-2 text-base md:text-lg px-8 md:px-10 py-3 md:py-4 font-bold bg-orange-500 text-black hover:bg-orange-600 rounded-md transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/50 active:scale-95"
               >
-                <span>ACCESS PROTOCOL</span>
+                <span>LAUNCH TERMINAL</span>
                 <ArrowRight className="w-5 h-5" />
               </TransitionButton>
 

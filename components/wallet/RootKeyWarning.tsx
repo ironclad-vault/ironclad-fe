@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
+import { AlertTriangle } from "lucide-react";
 
 export function RootKeyWarning() {
   const { isConnected, disconnect } = useWallet();
@@ -32,7 +33,7 @@ export function RootKeyWarning() {
     <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 max-w-2xl w-full px-4">
       <div className="bg-yellow-50 border-4 border-yellow-400 rounded-lg p-6 shadow-xl">
         <div className="flex items-start gap-4">
-          <div className="text-4xl">⚠️</div>
+          <AlertTriangle size={40} className="text-yellow-600 flex-shrink-0" />
           <div className="flex-1">
             <h3 className="font-bold text-xl text-yellow-900 mb-2!">
               Certificate Fix Required

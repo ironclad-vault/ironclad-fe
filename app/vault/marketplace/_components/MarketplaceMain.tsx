@@ -154,12 +154,12 @@ export default function MarketplaceMain() {
           {/* Browse Listings Tab */}
           {activeTab === "browse" && (
             <div className="space-y-6">
-              <h1 className="heading-brutal text-4xl mb-6!">MARKETPLACE</h1>
+              <h1 className="heading-brutal text-4xl mb-6!">BOND MARKET</h1>
 
               {listings.length === 0 ? (
                 <div className="card-brutal brutal-border border-2 p-8 text-center">
                   <p className="body-brutal text-lg text-accent">
-                    No active listings available.
+                    No active bond listings available.
                   </p>
                 </div>
               ) : (
@@ -207,26 +207,26 @@ export default function MarketplaceMain() {
                           )}
 
                           {vaultDetails && (
-                            <div className="bg-zinc-50 p-3 rounded-lg border border-zinc-200">
+                            <div className="bg-black p-3 rounded-lg border border-zinc-200">
                               <p className="text-label mb-2!">VAULT BALANCE</p>
-                              <p className="heading-brutal text-lg">
+                              <div className="heading-brutal text-lg">
                                 <BTCAmount
                                   sats={vaultDetails.balance}
                                   showLabel={true}
                                 />
-                              </p>
+                              </div>
                             </div>
                           )}
 
                           <div className="border-t border-zinc-200 pt-4">
                             <p className="text-label mb-2!">ASKING PRICE</p>
                             <div className="flex items-center">
-                              <p className="heading-brutal text-3xl text-emerald-600">
+                              <div className="heading-brutal text-3xl text-emerald-600">
                                 <BTCAmount
                                   sats={listing.price_sats}
                                   showLabel={true}
                                 />
-                              </p>
+                              </div>
                               {discountPercent > 0 && (
                                 <span className="text-xs text-zinc-500 font-medium ml-2">
                                   ({discountPercent.toFixed(1)}% DISCOUNT)
@@ -267,21 +267,27 @@ export default function MarketplaceMain() {
           {/* Create Listing Tab */}
           {activeTab === "create" && (
             <div className="space-y-6 ">
-              <h1 className="heading-brutal text-3xl mb-3!">CREATE LISTING</h1>
+              <h1 className="heading-brutal text-3xl mb-3!">LIST BOND POSITION</h1>
 
               <div className="card-brutal p-8 space-y-4">
                 <div>
                   <label className="body-brutal text-sm font-bold mb-2! block">
-                    SELECT VAULT
+                    SELECT POSITION
                   </label>
                   <select
                     value={selectedVaultId}
                     onChange={(e) => setSelectedVaultId(e.target.value)}
                     className="input-brutal w-full"
                   >
-                    <option value="">-- Select a vault --</option>
+                    <option value="">-- Select a position --</option>
                     {vaults
                       .filter((vault) => getVaultStatus(vault) !== "Withdrawn")
+                      .filter(
+                        (vault) =>
+                          !myListings.some(
+                            (listing) => listing.vault_id === vault.id
+                          )
+                      )
                       .map((vault) => (
                         <option
                           key={vault.id.toString()}
@@ -321,15 +327,15 @@ export default function MarketplaceMain() {
                 </button>
               </div>
 
-              <InfoBox title="MARKETPLACE INFO">
+              <InfoBox title="BOND MARKET INFO">
                 <p className="body-brutal mb-3!">
-                  List your vault for sale on the marketplace. Other users can
-                  browse and purchase your vault. Once sold, ownership transfers
-                  to the buyer.
+                  List your time-locked position as a zero-coupon bond. Buyers
+                  acquire discounted Bitcoin. Sellers access instant liquidity.
+                  Ownership transfers on-chain upon purchase.
                 </p>
                 <p className="body-brutal text-sm text-gray-400">
-                  Note: Auto-reinvest configurations are automatically disabled
-                  when a vault is sold.
+                  Note: Auto-Roll strategies automatically terminate upon
+                  position transfer.
                 </p>
               </InfoBox>
             </div>
@@ -343,7 +349,7 @@ export default function MarketplaceMain() {
               {myListings.length === 0 ? (
                 <div className="card-pro p-8 text-center">
                   <p className="text-body text-lg text-zinc-600">
-                    You don&apos;t have any active listings.
+                    You don&apos;t have any active bond listings.
                   </p>
                 </div>
               ) : (
@@ -395,8 +401,9 @@ export default function MarketplaceMain() {
                           </div>
 
                           {yieldPercent > 0 && (
-                            <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold inline-block">
-                              🚀 +{yieldPercent.toFixed(1)}% YIELD
+                            <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1">
+                              <TrendingUp size={12} />
+                              +{yieldPercent.toFixed(1)}% YIELD
                             </div>
                           )}
 
@@ -409,13 +416,15 @@ export default function MarketplaceMain() {
                             </div>
                             {vaultDetails && (
                               <div className="text-right">
-                                <p className="text-label mb-1!">VAULT BALANCE</p>
-                                <p className="heading-brutal text-lg">
+                                <p className="text-label mb-1!">
+                                  VAULT BALANCE
+                                </p>
+                                <div className="heading-brutal text-lg">
                                   <BTCAmount
                                     sats={vaultDetails.balance}
                                     showLabel={true}
                                   />
-                                </p>
+                                </div>
                               </div>
                             )}
                           </div>
@@ -423,12 +432,12 @@ export default function MarketplaceMain() {
                           <div className="border-t border-zinc-200 pt-4">
                             <p className="text-label mb-2!">ASKING PRICE</p>
                             <div className="flex items-center">
-                              <p className="heading-brutal text-3xl text-emerald-600">
+                              <div className="heading-brutal text-3xl text-emerald-600">
                                 <BTCAmount
                                   sats={listing.price_sats}
                                   showLabel={true}
                                 />
-                              </p>
+                              </div>
                               {discountPercent > 0 && (
                                 <span className="text-xs text-zinc-500 font-medium ml-2">
                                   ({discountPercent.toFixed(1)}% DISCOUNT)

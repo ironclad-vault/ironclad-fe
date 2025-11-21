@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useNetworkMode } from "@/hooks/ironclad/useNetworkMode";
 import { useCkbtcSync } from "@/hooks/ironclad/useCkbtcSync";
 import { useVaults } from "@/hooks/ironclad/useVaults";
+import { AlertCircle, Lightbulb } from "lucide-react";
 
 export default function VaultDebugPage() {
   const {
@@ -121,7 +122,10 @@ export default function VaultDebugPage() {
           </div>
         ) : (
           <div className="bg-yellow-900/20 border border-yellow-700 rounded p-3">
-            <p className="text-sm text-yellow-400">⚠️ No vaults found</p>
+            <p className="text-sm text-yellow-400 flex items-center gap-2">
+              <AlertCircle size={16} />
+              No vaults found
+            </p>
             <p className="text-xs text-yellow-300 mt-1">
               Create a vault first at <Link href="/vault" className="underline">/vault</Link>
             </p>
@@ -147,15 +151,18 @@ export default function VaultDebugPage() {
           </button>
         </div>
         {!vaultIdInput || vaultIdInput === "0" ? (
-          <p className="text-xs text-yellow-400">⚠️ Select a vault from above or enter a valid vault ID</p>
+          <p className="text-xs text-yellow-400 flex items-center gap-2">
+            <AlertCircle size={14} />
+            Select a vault from above or enter a valid vault ID
+          </p>
         ) : null}
         {syncError && (
           <div className="bg-red-900/20 border border-red-700 rounded p-3">
             <p className="text-xs text-red-400 font-bold">Error:</p>
             <p className="text-xs text-red-300 mt-1">{syncError}</p>
             {syncError.includes("not found") && (
-              <p className="text-xs text-red-200 mt-2">
-                💡 Tip: Vault ID {vaultIdInput} does not exist or you do not own it
+              <p className="text-xs text-red-200 mt-2 flex items-center gap-1">
+                <Lightbulb size={14} /> Tip: Vault ID {vaultIdInput} does not exist or you do not own it
               </p>
             )}
           </div>

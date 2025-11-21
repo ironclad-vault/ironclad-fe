@@ -127,7 +127,6 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
     try {
       await unlockVault(BigInt(vault.id));
-      toast.success("Vault unlocked successfully!");
 
       const updatedVault = await getVault({ vaultId: BigInt(vault.id) });
       if (updatedVault) {
@@ -156,8 +155,6 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
 
     const success = await cancel(BigInt(vault.id));
     if (success) {
-      // toast already handled by useAutoReinvest hook
-      // configs will be refetched automatically by the hook
     }
   };
 
@@ -278,7 +275,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
           className="flex items-center gap-2 text-accent hover:text-accent/70"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to My Vaults
+          Back to My Positions
         </Link>
       </div>
 
@@ -287,7 +284,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
           <div className="flex justify-between items-start mb-4!">
             <div>
               <h1 className="heading-brutal text-4xl mb-2!">
-                VAULT #{vault.id.toString()}
+                POSITION #{vault.id.toString()}
               </h1>
               <p className="body-brutal text-gray-400">
                 Owner: {vault.owner.slice(0, 12)}...
@@ -326,7 +323,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
           </div>
 
           {status === "ActiveLocked" && timeRemaining && (
-            <div className="mt-4 bg-blue-50 p-4 rounded border-2 border-blue-200">
+            <div className="mt-4 bg-black/50 p-4 rounded border-2 border-accent">
               <p className="body-brutal text-sm text-accent font-bold flex flex-row items-center gap-1">
                 <Timer /> {timeRemaining.days}d {timeRemaining.hours}h{" "}
                 {timeRemaining.minutes}m remaining until unlock
@@ -375,7 +372,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                   : "bg-accent hover:bg-accent/50"
               }`}
             >
-              AUTO-REINVEST
+              AUTO-ROLL
             </button>
             <button
               onClick={() => setActiveTab("advanced")}
@@ -455,7 +452,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                           ckBTC Subaccoun cursor-pointer:
                         </span>
                         <div className="flex items-center gap-2">
-                          <code className="body-brutal font-mono text-xs bg-accent p-2 rounded flex-1 overflow-x-auto">
+                          <code className="bg-black/50 border-accent border-2 font-mono text-xs p-2 rounded flex-1 overflow-x-auto">
                             {vault.ckbtcSubaccountHex}
                           </code>
                           <button
@@ -535,7 +532,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                     <option value="LOCKED">Locked</option>
                     <option value="UNLOCK_READY">Unlocked</option>
                     <option value="WITHDRAW_REQUESTED">Withdrawn</option>
-                    <option value="AUTO_REINVEST">Auto-Reinvest</option>
+                    <option value="AUTO_REINVEST">Auto-Roll</option>
                     <option value="VAULT_LISTED">Marketplace</option>
                   </select>
                 </div>
@@ -661,7 +658,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
             {activeTab === "config" && (
               <div className="space-y-6 flex flex-col gap-3">
                 <h3 className="heading-brutal text-lg mb-4!">
-                  AUTO-REINVEST PLAN
+                  AUTO-ROLL STRATEGY
                 </h3>
 
                 {getVaultStatusString(vault) === "Withdrawn" ? (
@@ -674,8 +671,8 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                 ) : status !== "Unlockable" ? (
                   <div className="card-brutal p-6 bg-yellow-50 border-yellow-300">
                     <p className="body-brutal text-sm text-yellow-800 flex flex-row items-center gap-1">
-                      <FileWarning /> Vault must be unlocked to configure
-                      auto-reinvest plan.
+                      <FileWarning /> Position must be unlocked to configure
+                      auto-roll strategy.
                     </p>
                   </div>
                 ) : (
@@ -695,13 +692,21 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       >
                         <div className="flex justify-between items-start mb-4!">
                           <div>
-                            <p className="heading-brutal text-sm mb-2!">
-                              {currentConfig.planStatus === "Active"
-                                ? "📅 ACTIVE PLAN"
-                                : currentConfig.planStatus === "Error"
-                                ? "⚠️ PLAN ERROR"
-                                : "🔒 PLAN " +
-                                  currentConfig.planStatus.toUpperCase()}
+                            <p className="heading-brutal text-sm mb-2! flex items-center gap-2">
+                              {currentConfig.planStatus === "Active" ? (
+                                <>
+                                  <Calendar size={16} /> ACTIVE PLAN
+                                </>
+                              ) : currentConfig.planStatus === "Error" ? (
+                                <>
+                                  <AlertCircle size={16} /> PLAN ERROR
+                                </>
+                              ) : (
+                                <>
+                                  <Lock size={16} /> PLAN{" "}
+                                  {currentConfig.planStatus.toUpperCase()}
+                                </>
+                              )}
                             </p>
                             <p className="body-brutal text-sm text-accent mb-1!">
                               Lock Duration:{" "}
@@ -826,30 +831,33 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       <div className="card-brutal p-6 bg-gray-50 border-gray-300">
                         <p className="body-brutal text-sm text-gray-700 font-bold mb-2! flex items-center">
                           <Calendar className="w-5 h-5 inline-block mr-2" /> NO
-                          PLAN YET
+                          STRATEGY YET
                         </p>
                         <p className="body-brutal text-sm text-gray-600">
-                          Create a plan below to enable automatic multi-cycle
-                          reinvestment.
+                          Enable auto-roll to automatically renew your time-lock
+                          upon maturity.
                         </p>
                       </div>
                     )}
 
-                    {/* Schedule/Update Plan Form */}
+                    {/* Schedule/Update Strategy Form */}
                     <div className="card-brutal p-6">
                       <h4 className="heading-brutal text-md mb-4!">
                         {currentConfig &&
                         currentConfig.planStatus !== "Error" &&
                         currentConfig.planStatus !== "Cancelled"
-                          ? "UPDATE PLAN"
-                          : "CREATE AUTO-REINVEST PLAN"}
+                          ? "UPDATE STRATEGY"
+                          : "ENABLE AUTO-ROLL STRATEGY"}
                       </h4>
 
                       <div className="space-y-4">
                         <div>
                           <label className="body-brutal text-sm font-bold mb-2! block">
-                            LOCK DURATION FOR EACH CYCLE
+                            RENEWAL LOCK DURATION
                           </label>
+                          <p className="body-brutal text-xs text-gray-500 mb-2!">
+                            How long to lock your BTC after each renewal
+                          </p>
                           <select
                             value={newLockDuration}
                             onChange={(e) => setNewLockDuration(e.target.value)}
@@ -857,16 +865,14 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                             disabled={autoReinvestLoading}
                           >
                             <option value="2592000">
-                              30 days (2.5% APY) - Quick Cycles
+                              30 days - Quick Cycles
                             </option>
-                            <option value="7776000">
-                              90 days (5% APY) - Balanced
-                            </option>
+                            <option value="7776000">90 days - Balanced</option>
                             <option value="15552000">
-                              180 days (7.5% APY) - Long Term
+                              180 days - Long Term
                             </option>
                             <option value="31536000">
-                              365 days (10% APY) - Maximum Gains
+                              365 days - Maximum HODL
                             </option>
                           </select>
                         </div>
@@ -881,8 +887,8 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                             : currentConfig &&
                               currentConfig.planStatus !== "Error" &&
                               currentConfig.planStatus !== "Cancelled"
-                            ? "UPDATE PLAN"
-                            : "SCHEDULE PLAN"}
+                            ? "UPDATE STRATEGY"
+                            : "ENABLE AUTO-ROLL"}
                         </button>
                       </div>
                     </div>

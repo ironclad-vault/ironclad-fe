@@ -14,21 +14,21 @@ const steps = [
     number: 1,
     title: "Connect Identity",
     description:
-      "Secure login via Internet Identity. No seed phrases, fully non-custodial.",
+      "Authenticate via Internet Identity. Non-custodial. No seed phrases. Full cryptographic sovereignty.",
     icon: Wallet,
   },
   {
     number: 2,
     title: "Mint Bond Position",
     description:
-      "Deposit ckBTC to create a time-locked vault. This mints your liquid vesting position.",
+      "Deposit ckBTC to create time-locked vault. Configure maturity date and optional beneficiary. Position minted on-chain.",
     icon: Lock,
   },
   {
     number: 3,
-    title: "Earn or Trade",
+    title: "Trade or Hold",
     description:
-      "Hold to maturity for full value, or sell your position on the bond market for instant liquidity.",
+      "Hold to maturity for full value. Or trade position on bond market for instant liquidity at discount. Buyers acquire discounted Bitcoin.",
     icon: TrendingUp,
   },
 ];
@@ -140,11 +140,10 @@ export default function HowItWorks() {
         {/* Section Title */}
         <div ref={titleRef} className="text-center mb-16!">
           <h2 className="text-heading text-5xl md:text-7xl mb-4! text-white">
-            How It Works
+            Protocol Mechanics
           </h2>
           <p className="text-body text-lg max-w-3xl mx-auto text-zinc-400">
-            Three simple steps to secure your Bitcoin with Ironclad&apos;s
-            liquid vesting protocol.
+            Three steps to institutional-grade liquid vesting on Bitcoin.
           </p>
         </div>
 
@@ -175,7 +174,7 @@ export default function HowItWorks() {
             href="/vault"
             className="inline-flex items-center gap-2 px-8 py-3 bg-zinc-900 text-white rounded-lg font-semibold hover:bg-black transition-colors duration-200"
           >
-            Access Protocol
+            Launch Terminal
             <span>→</span>
           </Link>
         </div>

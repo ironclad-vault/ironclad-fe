@@ -22,7 +22,9 @@ export default function BTCAmount({
   return (
     <div className={`flex items-baseline gap-0.5 ${className}`}>
       <span className="btc-amount-major">{formatted.major}</span>
-      {formatted.minor && <span className="btc-amount-minor">{formatted.minor}</span>}
+      {formatted.minor && (
+        <span className="btc-amount-minor">{formatted.minor}</span>
+      )}
       {showLabel && <span className="text-xs ml-1 text-zinc-500">BTC</span>}
     </div>
   );

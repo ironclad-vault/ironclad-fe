@@ -34,7 +34,7 @@ export function useVaultActions() {
         ),
         {
           loading: "Creating vault...",
-          success: "Vault created successfully!",
+          success: "Bond position minted successfully!",
           error: (err) => `Failed to create vault: ${getErrorMessage(err)}`,
         }
       );

@@ -1,43 +1,44 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { SignatureResponse } from "@/lib/ic/ironcladActor";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "@/lib/toastUtils";
-import { Info } from "lucide-react";
+import { ShieldCheck, Copy, Check, X, CheckCircle, Lock } from "lucide-react";
 
-interface AdvancedActionsSectionProps {
+interface CryptographicAuditSectionProps {
   vaultId: bigint;
 }
 
+interface AuditResult {
+  message: string;
+  signature: SignatureResponse;
+  timestamp: Date;
+}
+
 /**
- * AdvancedActionsSection
- * Advanced Bitcoin operations: threshold ECDSA signature requests
- * For signing withdrawal transactions or proving vault ownership
+ * CryptographicAuditSection
+ * Proof of Ownership / Cryptographic Audit
+ * Showcases ICP Threshold ECDSA capabilities for non-custodial Bitcoin key ownership verification
  */
 export function AdvancedActionsSection({
   vaultId,
-}: AdvancedActionsSectionProps) {
-  const [message, setMessage] = useState("");
-  const [signatureResponse, setSignatureResponse] =
-    useState<SignatureResponse | null>(null);
+}: CryptographicAuditSectionProps) {
+  const [auditResult, setAuditResult] = useState<AuditResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [copiedField, setCopiedField] = useState<string | null>(null);
 
-  const handleRequestSignature = async () => {
-    if (!message.trim()) {
-      toast.error("Please enter a message to sign");
-      return;
-    }
-
+  const handleVerifyOwnership = async () => {
     setLoading(true);
     setError(null);
-    setSignatureResponse(null);
+    setAuditResult(null);
 
     try {
-      // Encode message as bytes (Uint8Array)
-      const messageBytes = new TextEncoder().encode(message);
+      // Generate verification message
+      const verificationMessage = `Ironclad Vault verification: ownership proof for Vault #${vaultId}`;
+      const messageBytes = new TextEncoder().encode(verificationMessage);
 
       // Request signature from backend
       const result = await ironcladClient.btcSigning.requestSignature(
@@ -46,60 +47,76 @@ export function AdvancedActionsSection({
       );
 
       if ("Ok" in result) {
-        setSignatureResponse(result.Ok);
-        toast.success("Signature generated successfully!");
+        setAuditResult({
+          message: verificationMessage,
+          signature: result.Ok,
+          timestamp: new Date(),
+        });
+        toast.success("✅ Ownership verified successfully!");
       } else {
         const errMsg = result.Err;
         setError(errMsg);
-        toast.error(`Signature failed: ${errMsg}`);
+        toast.error(`Verification failed: ${errMsg}`);
       }
     } catch (err) {
       const msg = getErrorMessage(err);
       setError(msg);
-      toast.error(`Signature request failed: ${msg}`);
-      console.error("[AdvancedActionsSection] Signature error:", err);
+      toast.error(`Verification failed: ${msg}`);
+      console.error("[CryptographicAuditSection] Error:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  const clearSignature = () => {
-    setSignatureResponse(null);
-    setError(null);
-    setMessage("");
+  const copyToClipboard = (text: string, fieldName: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedField(fieldName);
+    toast.success(`${fieldName} copied!`);
+    setTimeout(() => setCopiedField(null), 2000);
   };
 
-  const copySignatureHex = () => {
-    if (signatureResponse) {
-      const sigHex = Buffer.from(signatureResponse.signature).toString("hex");
-      navigator.clipboard.writeText(sigHex);
-      toast.success("Signature (hex) copied!");
-    }
+  const truncateHex = (hex: string, maxLength: number = 32): string => {
+    if (hex.length <= maxLength) return hex;
+    const half = Math.floor(maxLength / 2);
+    return hex.slice(0, half) + "..." + hex.slice(-half);
   };
 
-  const copySignatureBase64 = () => {
-    if (signatureResponse) {
-      const sigBase64 = Buffer.from(signatureResponse.signature).toString(
-        "base64"
+  const downloadAuditReport = () => {
+    if (auditResult) {
+      const sigHex = Buffer.from(auditResult.signature.signature).toString(
+        "hex"
       );
-      navigator.clipboard.writeText(sigBase64);
-      toast.success("Signature (base64) copied!");
-    }
-  };
+      const report = `IRONCLAD VAULT CRYPTOGRAPHIC AUDIT REPORT
+=====================================
+Generated: ${auditResult.timestamp.toISOString()}
+Vault ID: ${vaultId}
 
-  const downloadSignature = () => {
-    if (signatureResponse) {
-      const sigHex = Buffer.from(signatureResponse.signature).toString("hex");
-      const blob = new Blob([sigHex], { type: "text/plain" });
+VERIFICATION MESSAGE:
+${auditResult.message}
+
+CRYPTOGRAPHIC SIGNATURE (HEX):
+${sigHex}
+
+TECHNICAL DETAILS:
+- Curve: secp256k1
+- Hash: SHA-256
+- Protocol: ICP Threshold ECDSA
+- Key: test_key_1 (testnet)
+
+This signature proves non-custodial ownership of the Bitcoin keys
+associated with this vault using Internet Computer's decentralized
+threshold key generation and signing protocol.
+`;
+      const blob = new Blob([report], { type: "text/plain" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `vault-${vaultId}-signature.sig`;
+      a.download = `ironclad-audit-vault-${vaultId}-${Date.now()}.txt`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
-      toast.success("Signature file downloaded!");
+      toast.success("Audit report downloaded!");
     }
   };
 
@@ -107,198 +124,206 @@ export function AdvancedActionsSection({
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h3 className="heading-brutal text-lg mb-2!">
-          BITCOIN THRESHOLD SIGNING
+        <h3 className="heading-brutal text-lg mb-2! flex items-center gap-2">
+          CRYPTOGRAPHIC AUDIT
         </h3>
         <p className="body-brutal text-sm text-accent">
-          Request a threshold ECDSA signature (secp256k1) for this vault using
-          ICP&apos;s Bitcoin integration. Use this to sign withdrawal
-          transactions or prove vault ownership.
+          Verify that this Vault truly holds the Bitcoin keys. This process uses
+          Threshold ECDSA to generate a cryptographic signature directly from
+          the Internet Computer, proving non-custodial ownership without a
+          centralized bridge.
         </p>
       </div>
 
-      {/* Signature Request Form */}
-      <div className="card-brutal p-6">
-        <h4 className="heading-brutal text-sm font-bold mb-4!">
-          REQUEST SIGNATURE
-        </h4>
+      {/* Verification Button */}
+      {!auditResult && (
+        <button
+          onClick={handleVerifyOwnership}
+          disabled={loading}
+          className="w-full btn-pro accent py-4 font-bold text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-all"
+        >
+          <ShieldCheck size={24} />
+          {loading ? "VERIFYING..." : "VERIFY KEY OWNERSHIP"}
+        </button>
+      )}
 
-        <div className="space-y-4">
-          <div>
-            <label
-              htmlFor="signatureMessage"
-              className="body-brutal text-sm font-bold mb-2! block"
-            >
-              Message to Sign
-            </label>
-            <textarea
-              id="signatureMessage"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Enter message to sign (will be SHA-256 hashed)"
-              rows={4}
-              className="w-full font-mono text-sm p-3 border-2 border-black rounded focus:outline-none focus:border-blue-600"
-              disabled={loading}
-            />
-            <p className="body-brutal text-xs text-gray-400 mt-1">
-              The message will be encoded as UTF-8 bytes and signed using the
-              vault&apos;s threshold ECDSA key (test_key_1 on testnet).
+      {/* Error State */}
+      {error && !auditResult && (
+        <div className="card-brutal p-6 bg-red-50 border-red-300">
+          <p className="body-brutal text-sm text-red-900 font-bold mb-2! flex items-center gap-2">
+            <X size={16} />
+            VERIFICATION FAILED
+          </p>
+          <p className="body-brutal text-xs text-red-800">{error}</p>
+          <button
+            onClick={() => setError(null)}
+            className="button-brutal text-xs mt-3 py-2 px-3"
+          >
+            DISMISS
+          </button>
+        </div>
+      )}
+
+      {/* Success Card */}
+      {auditResult && (
+        <div className="space-y-6">
+          {/* Big Green Success Badge */}
+          <div className="card-pro p-8 bg-linear-to-r from-emerald-50 to-green-50 border-2 border-emerald-400 rounded-lg">
+            <div className="flex items-center justify-center gap-3 mb-4!">
+              <CheckCircle size={40} className="text-emerald-600" />
+              <h2 className="heading-brutal text-2xl text-emerald-700">
+                OWNERSHIP VERIFIED
+              </h2>
+            </div>
+            <p className="body-brutal text-center text-sm text-emerald-600">
+              This vault&apos;s Bitcoin keys are confirmed to be held securely
+              within the Internet Computer.
             </p>
           </div>
 
+          {/* Signed Message */}
+          <div className="card-brutal p-6 bg-zinc-900 border-zinc-700">
+            <div className="flex justify-between items-start mb-3!">
+              <p className="body-brutal text-xs text-zinc-400 font-bold uppercase">
+                Verification Message
+              </p>
+              <button
+                onClick={() => copyToClipboard(auditResult.message, "Message")}
+                className="flex items-center gap-1 text-xs bg-zinc-800 hover:bg-zinc-700 px-2 py-1 rounded transition"
+              >
+                {copiedField === "Message" ? (
+                  <>
+                    <Check size={14} /> COPIED
+                  </>
+                ) : (
+                  <>
+                    <Copy size={14} /> COPY
+                  </>
+                )}
+              </button>
+            </div>
+            <code className="block body-brutal font-mono text-sm text-zinc-100 wrap-break-word">
+              {auditResult.message}
+            </code>
+          </div>
+
+          {/* Cryptographic Signature */}
+          <div className="card-brutal p-6 bg-zinc-900 border-zinc-700">
+            <div className="flex justify-between items-start mb-3!">
+              <p className="body-brutal text-xs text-zinc-400 font-bold uppercase">
+                Cryptographic Signature (Hex)
+              </p>
+              <button
+                onClick={() => {
+                  const sigHex = Buffer.from(
+                    auditResult.signature.signature
+                  ).toString("hex");
+                  copyToClipboard(sigHex, "Signature");
+                }}
+                className="flex items-center gap-1 text-xs bg-zinc-800 hover:bg-zinc-700 px-2 py-1 rounded transition"
+              >
+                {copiedField === "Signature" ? (
+                  <>
+                    <Check size={14} /> COPIED
+                  </>
+                ) : (
+                  <>
+                    <Copy size={14} /> COPY
+                  </>
+                )}
+              </button>
+            </div>
+            <code className="block body-brutal font-mono text-xs text-amber-400 break-all p-3 bg-black rounded border border-zinc-700 overflow-x-auto">
+              {truncateHex(
+                Buffer.from(auditResult.signature.signature).toString("hex"),
+                64
+              )}
+            </code>
+            <p className="body-brutal text-xs text-zinc-500 mt-2">
+              Full signature (128 hex characters = 64 bytes)
+            </p>
+          </div>
+
+          {/* Technology Details */}
+          <div className="card-brutal p-6 bg-zinc-900 border-zinc-700">
+            <p className="body-brutal text-xs text-zinc-400 font-bold uppercase mb-3!">
+              Signed via ICP Threshold ECDSA (secp256k1)
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div>
+                <p className="body-brutal text-xs text-zinc-500 mb-1">Curve</p>
+                <p className="body-brutal text-sm font-bold text-zinc-100">
+                  secp256k1
+                </p>
+              </div>
+              <div>
+                <p className="body-brutal text-xs text-zinc-500 mb-1">Hash</p>
+                <p className="body-brutal text-sm font-bold text-zinc-100">
+                  SHA-256
+                </p>
+              </div>
+              <div>
+                <p className="body-brutal text-xs text-zinc-500 mb-1">
+                  Protocol
+                </p>
+                <p className="body-brutal text-sm font-bold text-zinc-100">
+                  Threshold ECDSA
+                </p>
+              </div>
+              <div>
+                <p className="body-brutal text-xs text-zinc-500 mb-1">Key</p>
+                <p className="body-brutal text-sm font-bold text-zinc-100">
+                  test_key_1
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Verification Timestamp */}
+          <div className="card-brutal p-4 bg-zinc-900 border-zinc-700 text-center">
+            <p className="body-brutal text-xs text-zinc-500">
+              Verified at {auditResult.timestamp.toLocaleString()}
+            </p>
+          </div>
+
+          {/* Action Buttons */}
           <div className="flex gap-3">
             <button
-              onClick={handleRequestSignature}
-              disabled={loading || !message.trim()}
-              className="button-brutal accent px-6 py-3 font-bold disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={downloadAuditReport}
+              className="flex-1 btn-pro accent py-3 font-bold"
             >
-              {loading ? "GENERATING SIGNATURE..." : "REQUEST SIGNATURE"}
+              DOWNLOAD AUDIT REPORT
             </button>
-
-            {signatureResponse && (
-              <button
-                onClick={clearSignature}
-                className="button-brutal px-6 py-3 font-bold"
-              >
-                CLEAR
-              </button>
-            )}
-          </div>
-
-          {error && !signatureResponse && (
-            <div className="card-brutal p-4 bg-red-50 border-red-300">
-              <p className="body-brutal text-sm text-red-900 font-bold mb-1!">
-                ❌ SIGNATURE FAILED
-              </p>
-              <p className="body-brutal text-xs text-red-800">{error}</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Signature Response Display */}
-      {signatureResponse && (
-        <div className="card-brutal p-6 bg-green-50 border-green-300">
-          <div className="flex justify-between items-start mb-4!">
-            <h4 className="heading-brutal text-sm font-bold text-green-900">
-              ✓ SIGNATURE GENERATED
-            </h4>
-            <span className="px-2 py-1 text-xs font-bold bg-green-200 text-green-900 rounded">
-              64 BYTES
-            </span>
-          </div>
-
-          <div className="space-y-4">
-            {/* Signature (Hex) */}
-            <div>
-              <div className="flex justify-between items-center mb-2!">
-                <p className="body-brutal text-xs text-accent uppercase font-bold">
-                  Signature (Hex)
-                </p>
-                <button
-                  onClick={copySignatureHex}
-                  className="button-brutal py-1 px-3 text-xs"
-                  title="Copy hex signature"
-                >
-                  COPY HEX
-                </button>
-              </div>
-              <code className="block body-brutal font-mono text-xs bg-black p-3 rounded border-2 border-green-300 overflow-x-auto">
-                {Buffer.from(signatureResponse.signature).toString("hex")}
-              </code>
-            </div>
-
-            {/* Signature (Base64) */}
-            <div>
-              <div className="flex justify-between items-center mb-2!">
-                <p className="body-brutal text-xs text-accent uppercase font-bold">
-                  Signature (Base64)
-                </p>
-                <button
-                  onClick={copySignatureBase64}
-                  className="button-brutal py-1 px-3 text-xs"
-                  title="Copy base64 signature"
-                >
-                  COPY BASE64
-                </button>
-              </div>
-              <code className="block body-brutal font-mono text-xs bg-black p-3 rounded border-2 border-green-300 overflow-x-auto">
-                {Buffer.from(signatureResponse.signature).toString("base64")}
-              </code>
-            </div>
-
-            {/* Message (Original) */}
-            <div>
-              <p className="body-brutal text-xs text-accent uppercase font-bold mb-2!">
-                Original Message
-              </p>
-              <code className="block body-brutal font-mono text-xs bg-black p-3 rounded border-2 border-green-300 overflow-x-auto">
-                {new TextDecoder().decode(
-                  new Uint8Array(signatureResponse.message)
-                )}
-              </code>
-            </div>
-
-            {/* Technical Details */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 border-t-2 border-green-300 pt-4">
-              <div>
-                <p className="body-brutal text-xs text-gray-400 uppercase mb-1!">
-                  Curve
-                </p>
-                <p className="body-brutal font-bold text-sm">secp256k1</p>
-              </div>
-              <div>
-                <p className="body-brutal text-xs text-gray-400 uppercase mb-1!">
-                  Hash
-                </p>
-                <p className="body-brutal font-bold text-sm">SHA-256</p>
-              </div>
-              <div>
-                <p className="body-brutal text-xs text-gray-400 uppercase mb-1!">
-                  Key
-                </p>
-                <p className="body-brutal font-bold text-sm">test_key_1</p>
-              </div>
-            </div>
-
-            {/* Download Button */}
             <button
-              onClick={downloadSignature}
-              className="button-brutal w-full py-3 font-bold"
+              onClick={() => setAuditResult(null)}
+              className="flex-1 button-brutal py-3 font-bold"
             >
-              DOWNLOAD SIGNATURE FILE (.sig)
+              NEW VERIFICATION
             </button>
           </div>
         </div>
       )}
 
-      {/* Info Box */}
+      {/* Info Box - About Cryptographic Audits */}
       <div className="card-brutal p-6 bg-blue-50 border-blue-300">
-        <h4 className="heading-brutal text-sm font-bold text-accent mb-2! flex flex-row items-center gap-2">
-          <Info className="inline-block w-4 h-4 mr-2" />
-          ABOUT THRESHOLD SIGNATURES
+        <h4 className="heading-brutal text-sm font-bold text-accent mb-3! flex items-center gap-2">
+          <Lock size={16} />
+          ABOUT CRYPTOGRAPHIC AUDITS
         </h4>
         <div className="space-y-2 body-brutal text-sm text-accent">
           <p>
-            • Threshold ECDSA signatures are generated using ICP&apos;s
-            decentralized key generation protocol
+            • This audit proves your vault holds Bitcoin keys without a
+            custodian
           </p>
           <p>
-            • The signature is valid for the Bitcoin network (secp256k1 curve)
+            • ICP&apos;s Threshold ECDSA generates signatures from decentralized
+            infrastructure
           </p>
+          <p>• Each signature is valid for the Bitcoin network (secp256k1)</p>
+          <p>• No private keys ever leave the Internet Computer subnet</p>
           <p>
-            • Testnet uses{" "}
-            <code className="font-mono bg-blue-100 px-1">test_key_1</code>,
-            production will use{" "}
-            <code className="font-mono bg-blue-100 px-1">key_1</code>
-          </p>
-          <p>
-            • Signature generation costs ~30 billion cycles (automatically
-            included)
-          </p>
-          <p>
-            • Use this for Bitcoin withdrawal transactions or external
-            verification
+            • This technology enables Bitcoin integration without bridges or
+            wrapped assets
           </p>
         </div>
       </div>

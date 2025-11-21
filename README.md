@@ -1,96 +1,95 @@
-# 🏰 **IRONCLAD VAULT**
+# ⚡ **IRONCLAD PROTOCOL**
 
-## **Bitcoin Savings Vault with Auto-Reinvest Engine — Powered by ICP, ckBTC & Threshold ECDSA**
+## **The First Liquid Vesting & Inheritance Layer for Bitcoin**
 
-Brutalist UI • Real Bitcoin Integration • Fully Typed (0 `any`)
-Production Ready • Secured
+Institutional-Grade DeFi Infrastructure • Cryptographic Ownership Proof • Non-Custodial
+Powered by ICP, ckBTC & Threshold ECDSA
 
-![IRONCLAD VAULT Logo](public/ironclad-vault-logo.png)
+![IRONCLAD PROTOCOL Logo](public/ironclad-vault-logo.png)
 
 ---
 
 ## 🚀 **Overview**
 
-**IRONCLAD VAULT** is a non-custodial Bitcoin Savings Vault platform that enables users to:
+**IRONCLAD PROTOCOL** is an institutional-grade DeFi infrastructure that enables:
 
-- Deposit Bitcoin (via **ckBTC**) into vaults
-- Enable the **Auto-Reinvest Engine** to compound returns
-- Automatically grow a vault position through configured strategies
-- Verify deposits and withdrawals using **Bitcoin transaction proofs**
-- Sign Bitcoin messages using **threshold ECDSA**
-- List and sell vaults via a decentralized **on-chain marketplace**
+- **Liquid Vesting**: Time-lock Bitcoin with tradeable zero-coupon bonds
+- **Dead Man Switch**: Automated inheritance protocol with Proof of Life
+- **Bond Marketplace**: Trade illiquid time-locked positions for instant liquidity
+- **Cryptographic Ownership**: Trustless auditability via ICP Threshold ECDSA
+- **Auto-Roll Strategy**: Automated vault renewal for disciplined long-term holding
 
-This project is built with production-grade principles using **Next.js** and **strict TypeScript**, with end-to-end integration across the entire vault lifecycle.
+This protocol is built with institutional-grade security principles using **Next.js** and **strict TypeScript**, providing a complete DeFi infrastructure for Bitcoin custody and inheritance.
 
-The mission is simple:
-**Transform Bitcoin into a secure, automated, and programmable savings product.**
+The mission is clear:
+**Transform Bitcoin custody into a programmable, liquid, and inheritable asset class.**
 
 ---
 
-## 💎 **Key Features**
+## 💎 **Protocol Features**
 
-## 🔐 **1. Bitcoin Savings Vaults**
+## 🔐 **1. Liquid Vesting Vaults**
 
-- Create vaults with deposit targets and configurable lock durations
-- Deposit ckBTC and lock funds with real-time status
-- Unlock and withdraw once the lock period ends
-- Professional event history with icons, filters, and timeline
+- Create time-locked Bitcoin positions with configurable maturity dates
+- Deposit ckBTC into cryptographically secured vaults
+- Unlock and withdraw upon maturity with full auditability
+- Comprehensive event history with cryptographic proof timestamps
 
-## 🔁 **2. Auto-Reinvest Engine**
+## 🔁 **2. Auto-Roll Strategy**
 
-- Enable/disable auto-reinvest
+- Enable automated vault renewal upon maturity
 - Configurable parameters:
 
-  - Frequency: hourly / daily
-  - Percentage to reinvest
-  - Minimum threshold to trigger reinvest
+  - Lock duration: 30 days to 5 years
+  - Automatic renewal cycles
+  - On-chain execution tracking
 
-- Shows execution counts, next run timestamps, and plan status
-- Supports manual and forced reinvest execution
+- Real-time execution status and next cycle timestamps
+- Manual execution override with instant settlement
 
-## 🧾 **3. Bitcoin Transaction Proofs**
+## 🧾 **3. Cryptographic Transaction Proofs**
 
-- Deposit & withdrawal proofs
-- Proof card:
+- Deposit & withdrawal verification
+- Proof verification:
 
-  - TxID (copyable)
-  - Confirmations count
-  - Status badges (Pending / Confirmed)
-  - Error & loading states
+  - Transaction ID (on-chain verifiable)
+  - Network confirmations
+  - Cryptographic status validation
+  - Real-time state updates
 
-- Real Bitcoin network data
+- Direct Bitcoin network integration
 
-## 🧠 **4. Threshold ECDSA (Advanced Mode)**
+## 🧠 **4. Threshold ECDSA Signatures**
 
-- Sign Bitcoin messages via the canister (threshold ECDSA)
-- Output formats:
+- Sign Bitcoin messages via decentralized threshold cryptography
+- Signature formats:
 
-  - Hex signature
-  - Base64 signature
+  - Hexadecimal encoding
+  - Base64 encoding
 
-- Copy and download `.sig` files
-- Includes a technical explainer describing the curve, hash function, and key usage
+- Export and verify `.sig` files
+- Technical documentation for curve, hash function, and key derivation
 
-## 🛒 **5. Vault Marketplace**
+## 🛒 **5. Zero-Coupon Bond Market**
 
-- List vaults for sale
-- Buy vaults from other users
-- Owner-aware UI, safe actions
-- Unlock conditions required before listing
+- List time-locked positions for immediate liquidity
+- Purchase discounted Bitcoin from bond sellers
+- Ownership verification with cryptographic proofs
+- Maturity validation before listing eligibility
 
-## 🛰️ **6. Network Mode Switching**
+## 🛰️ **6. Dead Man Switch Protocol**
 
-- Mock mode (free, safe for dev)
-- ckBTC Mainnet mode (real Bitcoin, cycle costs)
-- Warning banners + confirmation dialogs
-- Controlled via settings page
+- Automated inheritance with 180-day inactivity timeout
+- Proof of Life verification system
+- Beneficiary designation and automated transfer
+- On-chain validation with cryptographic timestamping
 
-## 🧩 **7. Fully Typed & Stable Architecture**
+## 🧩 **7. Institutional-Grade Architecture**
 
-- Strict TypeScript (no loose typing)
-- Strict DTOs, enums, and generated actor types
-- Unified client via `ironcladClient`
-- Comprehensive service layer
+- Strict TypeScript with zero tolerance for loose typing
+- Type-safe DTOs, enums, and generated actor interfaces
+- Unified client abstraction via `ironcladClient`
+- Comprehensive service layer with error handling
 
 ---
 
@@ -118,59 +117,6 @@ Every interaction is:
 ✔ Strongly typed
 ✔ Properly error-handled
 ✔ UI-friendly (loading, error, and empty states)
-
----
-
-## 📁 **Folder Structure**
-
-```text
-├── app
-│   ├── landing
-│   ├── vault
-│   │   ├── [id]
-│   │   │   ├── _components
-│   │   │   │   ├── VaultDetailMain.tsx
-│   │   │   │   └── VaultDetailSection.tsx
-│   │   │   └── page.tsx
-│   │   ├── create-vault
-│   │   ├── marketplace
-│   │   ├── withdraw-vaults
-│   │   ├── test
-│   │   └── page.tsx
-│   ├── settings
-│   ├── dashboard
-│   ├── vault-debug
-│   └── layout.tsx
-│
-├── components
-│   ├── layout
-│   ├── navigation
-│   ├── ui
-│   └── wallet
-│
-├── hooks
-│   ├── ironclad
-│   └── useMyVaults.ts (removed)
-│
-├── lib
-│   ├── ic
-│   │   ├── config.ts
-│   │   ├── ironcladActor.ts
-│   │   └── ironcladClient.ts
-│   ├── ironclad-service.ts
-│   ├── toastUtils.ts
-│   └── vaultUtils.ts
-│
-├── declarations
-│   ├── ironclad_vault_backend
-│   └── internet_identity
-│
-├── docs
-│   ├── ICP_INTEGRATION_COMPLETE.md
-│   ├── MODULE-*.md
-│   ├── IMPLEMENTATION_STATUS.md
-│   └── TESTING_CHECKLIST.md
-```
 
 ---
 
@@ -288,31 +234,22 @@ NEXT_PUBLIC_CANISTER_ID_IRONCLAD_VAULT_BACKEND=<your-backend-id>
 
 ---
 
-## 📚 **Documentation**
-
-All in `/docs`:
-
-- **INTEGRATION_COMPLETE.md** — Integration summary and deployment checklist
-- **IMPLEMENTATION_JOURNAL.md** — Development journal and changelog
-- **PROJECT_SUMMARY.txt** — High-level summary, achievements, and impact
-
----
-
 ## 🏁 **Conclusion**
 
-**IRONCLAD VAULT** is a full-stack Bitcoin savings product with:
+**IRONCLAD PROTOCOL** is institutional-grade DeFi infrastructure for Bitcoin with:
 
-- Time-locked ckBTC vaults
-- Auto-reinvest system
-- Live Bitcoin proofs
+- Liquid vesting positions
+- Zero-coupon bond marketplace
+- Dead Man Switch inheritance protocol
+- Cryptographic ownership proofs
 - Threshold ECDSA signing
-- Marketplace trading
+- Auto-Roll strategy system
 - Zero `any`, fully typed
-- Brutalist pro-grade UI
+- Cypherpunk-grade security
 - Production ready
 
-Built with precision.
-Designed for security.
-Made for real users.
+Built for institutions.
+Designed for sovereignty.
+Secured by cryptography.
 
 ---

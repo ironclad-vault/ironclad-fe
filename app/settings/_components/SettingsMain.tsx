@@ -70,7 +70,7 @@ export default function SettingsMain() {
   const handleSwitchToCkbtc = async () => {
     if (
       !confirm(
-        "⚠️ WARNING: This will enable real ckBTC testnet ledger calls. " +
+        "WARNING: This will enable real ckBTC testnet ledger calls. " +
           "Only use with test funds. Continue?"
       )
     ) {
@@ -104,9 +104,9 @@ export default function SettingsMain() {
 
       {/* Header */}
       <div className="mb-8! card-pro border-accent py-8 px-6">
-        <h1 className="text-heading text-5xl mb-2!">SETTINGS</h1>
+        <h1 className="text-heading text-5xl mb-2!">PROTOCOL SETTINGS</h1>
         <p className="text-body text-white">
-          Configure Ironclad Vault system settings and network mode
+          Configure network mode and inheritance protocol parameters
         </p>
       </div>
 
@@ -114,11 +114,11 @@ export default function SettingsMain() {
       <div className="space-y-8">
         <div className="card-pro p-8">
           <h2 className="text-heading text-3xl mb-6! pb-4 border-b-2 border-accent">
-            NETWORK MODE
+            NETWORK CONFIGURATION
           </h2>
           <p className="text-body text-white mb-6!">
-            Choose between Mock mode (for testing) and ckBTC Mainnet mode (real
-            blockchain operations).
+            Select operational mode: Mock (testing) or ckBTC Mainnet (live
+            operations with real cryptographic signatures).
           </p>
 
           {loading && (
@@ -361,10 +361,10 @@ export default function SettingsMain() {
             {/* Help Text */}
             <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
               <p className="text-body text-sm text-accent">
-                <strong>How It Works:</strong> Click &quot;Proof of Life&quot;
-                regularly to prove you&apos;re alive and reset the 180-day
-                timer. If the timer expires, your designated beneficiary can
-                claim your vault.
+                <strong>Dead Man Switch Protocol:</strong> Execute Proof of Life
+                verification to reset the 180-day inactivity timer. Timer
+                expiration triggers automated beneficiary transfer. This is a
+                cryptographic inheritance mechanism.
               </p>
             </div>
           </div>

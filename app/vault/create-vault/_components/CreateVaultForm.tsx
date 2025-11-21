@@ -6,6 +6,7 @@ import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
 import { useVaults } from "@/hooks/ironclad/useVaults";
 import { useWallet } from "@/components/wallet/useWallet";
 import { getVaultStatus } from "@/lib/vaultUtils";
+import { AlertCircle } from "lucide-react";
 
 function CreateVaultFormContent() {
   const router = useRouter();
@@ -117,13 +118,13 @@ function CreateVaultFormContent() {
   return (
     <div className="card-pro p-8 flex flex-col gap-8">
       <h3 className="text-heading text-4xl">
-        {mode === "complete" ? "COMPLETE DEPOSIT" : "CREATE NEW VAULT"}
+        {mode === "complete" ? "COMPLETE DEPOSIT" : "MINT BOND POSITION"}
       </h3>
 
       {mode === "complete" && existingVault && (
         <div className="rounded-lg border-2 border-blue-400 bg-blue-50 p-6">
           <p className="text-heading text-sm text-accent mb-3!">
-            VAULT #{existingVault.id.toString()}
+            POSITION #{existingVault.id.toString()}
           </p>
           <div className="text-body text-sm text-accent space-y-1">
             <p>
@@ -163,7 +164,7 @@ function CreateVaultFormContent() {
         <>
           <div className="mb-6!">
             <label className="text-body text-sm font-bold mb-2! block">
-              LOCK DURATION
+              VESTING DURATION
             </label>
             <select
               className="input-brutal"
@@ -184,8 +185,9 @@ function CreateVaultFormContent() {
               <option value="60:months">5 YEARS</option>
             </select>
             {durationUnit === "seconds" && (
-              <p className="text-body text-xs text-orange-600 mt-1 font-bold">
-                ⚠️ TESTING MODE: Vault will unlock in {lockDuration} seconds
+              <p className="text-body text-xs text-orange-600 mt-1 font-bold flex items-center gap-1">
+                <AlertCircle size={14} />
+                TESTING MODE: Position unlocks in {lockDuration} seconds
               </p>
             )}
           </div>
@@ -203,7 +205,7 @@ function CreateVaultFormContent() {
               disabled={loading}
             />
             <p className="text-body text-xs text-gray-400 mt-1">
-              Principal ID who can claim this vault if you become inactive.
+              Principal ID for Dead Man Switch inheritance protocol.
             </p>
           </div>
 
@@ -230,7 +232,7 @@ function CreateVaultFormContent() {
             onClick={handleCreateVault}
             disabled={loading}
           >
-            {loading ? "CREATING..." : "CREATE VAULT"}
+            {loading ? "MINTING..." : "MINT BOND POSITION"}
           </button>
         </>
       ) : createdVault ? (
@@ -238,11 +240,11 @@ function CreateVaultFormContent() {
           {mode === "create" && (
             <div className="mb-4!">
               <label className="text-body text-sm font-bold mb-2! block">
-                VAULT CREATED
+                BOND POSITION MINTED
               </label>
               <div className="rounded-lg border-2 border-green-400 bg-green-50 p-6">
                 <p className="text-body font-bold text-green-800 mb-2! text-lg">
-                  ✓ Vault ID: {createdVault.vaultId.toString()}
+                  ✓ Position ID: {createdVault.vaultId.toString()}
                 </p>
                 <p className="text-body text-sm text-green-700">
                   Expected Deposit: {createdVault.expectedDeposit.toString()}{" "}

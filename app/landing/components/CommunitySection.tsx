@@ -105,25 +105,32 @@ export default function CommunitySection() {
           <div ref={descRef} className="flex flex-col space-y-8">
             <div className="space-y-4">
               <p className="text-body text-lg text-zinc-400 leading-relaxed">
-                The first liquid vesting protocol on Bitcoin. Trade time-locked
-                positions, enforce discipline, and secure your legacy with
-                on-chain inheritance.
+                Institutional-grade liquid vesting infrastructure for Bitcoin.
+                Time-locked positions with tradeable bonds, automated inheritance
+                protocol, and cryptographic ownership proofs.
               </p>
 
               <ul className="space-y-3 text-sm text-zinc-400">
                 <li className="flex items-start gap-3">
                   <span className="text-orange-500 font-bold mt-1">•</span>
-                  <span>Non-custodial vaults with time-lock discipline</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-orange-500 font-bold mt-1">•</span>
                   <span>
-                    Trade positions as zero-coupon bonds on secondary market
+                    Liquid Vesting: Time-lock discipline with bond market
+                    liquidity
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
                   <span className="text-orange-500 font-bold mt-1">•</span>
-                  <span>Automatic inheritance transfer protocol</span>
+                  <span>
+                    Zero-Coupon Bonds: Trade positions for instant liquidity or
+                    discounted Bitcoin
+                  </span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="text-orange-500 font-bold mt-1">•</span>
+                  <span>
+                    Dead Man Switch: Automated inheritance with 180-day Proof of
+                    Life
+                  </span>
                 </li>
               </ul>
             </div>
@@ -134,7 +141,7 @@ export default function CommunitySection() {
                 href="/vault"
                 className="flex items-center justify-center gap-2 bg-orange-500 text-white rounded-lg px-8 py-3 font-semibold hover:bg-orange-600 transition-colors duration-200 whitespace-nowrap"
               >
-                <span>Access Protocol</span>
+                <span>Launch Terminal</span>
                 <ArrowRight className="w-4 h-4" />
               </TransitionButton>
 
@@ -158,8 +165,8 @@ export default function CommunitySection() {
               Join the Protocol
             </h3>
             <p className="text-body text-zinc-400">
-              Connect with the community and stay updated on the latest
-              developments.
+              Join institutional operators, developers, and Bitcoin holders
+              building the future of vesting infrastructure.
             </p>
           </div>
 

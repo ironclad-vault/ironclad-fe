@@ -6,16 +6,26 @@ import { useWallet } from "@/components/wallet/useWallet";
 import { useAutoReinvest } from "@/hooks/ironclad/useAutoReinvest";
 import TransitionButton from "@/components/navigation/TransitionButton";
 import BTCAmount from "@/components/ui/BTCAmount";
+import { PortfolioChart } from "@/components/ui/PortfolioChart";
 import type { Vault } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 import type { AutoReinvestConfigDTO } from "@/lib/ironclad-service";
-import { Clock, Lock, Hourglass, Unlock, Timer } from "lucide-react";
+import {
+  Clock,
+  Lock,
+  Hourglass,
+  Unlock,
+  Timer,
+  X,
+  RecycleIcon,
+  Recycle,
+  Pause,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import {
   getVaultStatus,
   getVaultStatusLabel,
   getVaultStatusColor,
   formatVaultDate,
-  formatSats,
 } from "@/lib/vaultUtils";
 import { getErrorMessage } from "@/lib/toastUtils";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
@@ -69,15 +79,15 @@ function VaultCard({
   ): string => {
     switch (status) {
       case "Active":
-        return "bg-blue-50 text-blue-700";
+        return "bg-[rgba(247,147,26,0.15)] text-[#f7931a] border border-[#f7931a]";
       case "Paused":
-        return "bg-zinc-100 text-zinc-700";
+        return "bg-[rgba(39,39,42,0.5)] text-[#a1a1aa] border border-[#27272a]";
       case "Error":
-        return "bg-red-50 text-red-700";
+        return "bg-[rgba(239,68,68,0.15)] text-[#ef4444] border border-[#ef4444]";
       case "Cancelled":
-        return "bg-amber-50 text-amber-700";
+        return "bg-[rgba(160,174,192,0.15)] text-[#a1a1aa] border border-[#a1a1aa]";
       default:
-        return "bg-zinc-100 text-zinc-700";
+        return "bg-[rgba(39,39,42,0.5)] text-[#a1a1aa] border border-[#27272a]";
     }
   };
 
@@ -116,7 +126,7 @@ function VaultCard({
     <div className="card-pro relative overflow-hidden">
       <div className="flex justify-between items-start mb-4!">
         <h3 className="heading-brutal text-xl font-semibold">
-          Vault #{vault.id.toString()}
+          Position #{vault.id.toString()}
         </h3>
         <span
           className={`px-3 py-1 text-xs font-semibold rounded-full flex items-center gap-2 ${statusColor}`}
@@ -140,22 +150,22 @@ function VaultCard({
 
       {/* Auto-Reinvest Plan Badge */}
       {autoReinvestConfig && (
-        <div className="mb-5! pb-4 border-b border-zinc-100">
+        <div className="mb-5! pb-4 border-b border-accent">
           {autoReinvestConfig.planStatus === "Active" && (
             <div
-              className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor(
+              className={`px-3 py-2 text-xs font-semibold rounded-md ${getAutoReinvestBadgeColor(
                 "Active"
               )}`}
             >
               <p className="flex items-center gap-1 mb-1!">
-                📅 Auto-Reinvest Active
+                <Recycle /> AUTO-ROLL ACTIVE
               </p>
               <p className="text-xs opacity-75">
-                Execution #{Number(autoReinvestConfig.executionCount)}
+                Cycle #{Number(autoReinvestConfig.executionCount)}
               </p>
               {nextCycleTimestamp && nextCycleTimestamp > 0 && (
                 <p className="text-xs opacity-75">
-                  Next: {formatNextCycleTime(nextCycleTimestamp)}
+                  Next renewal: {formatNextCycleTime(nextCycleTimestamp)}
                 </p>
               )}
             </div>
@@ -163,12 +173,15 @@ function VaultCard({
 
           {autoReinvestConfig.planStatus === "Paused" && (
             <div
-              className={`px-3 py-2 text-xs font-semibold rounded-full ${getAutoReinvestBadgeColor(
+              className={`px-3 py-2 text-xs font-semibold rounded-md ${getAutoReinvestBadgeColor(
                 "Paused"
               )}`}
             >
-              <p className="flex items-center gap-1">⏸️ Auto-Reinvest Paused</p>
-              <p className="text-xs opacity-75">Scheduled but waiting</p>
+              <p className="flex items-center gap-1">
+                {" "}
+                <Pause /> AUTO-ROLL PAUSED
+              </p>
+              <p className="text-xs opacity-75">Strategy pending activation</p>
             </div>
           )}
 
@@ -179,11 +192,12 @@ function VaultCard({
               )}`}
             >
               <p className="flex items-center gap-1 mb-1!">
-                ❌ Auto-Reinvest Error
+                <X size={14} />
+                AUTO-ROLL ERROR
               </p>
               {autoReinvestConfig.errorMessage && (
                 <p className="text-xs opacity-75">
-                  Reason: {autoReinvestConfig.errorMessage}
+                  Issue: {autoReinvestConfig.errorMessage}
                 </p>
               )}
             </div>
@@ -195,10 +209,8 @@ function VaultCard({
                 "Cancelled"
               )}`}
             >
-              <p className="flex items-center gap-1">
-                🛑 Auto-Reinvest Cancelled
-              </p>
-              <p className="text-xs opacity-75">Plan ended</p>
+              <p className="flex items-center gap-1">🛑 AUTO-ROLL DISABLED</p>
+              <p className="text-xs opacity-75">Strategy ended</p>
             </div>
           )}
         </div>
@@ -233,7 +245,7 @@ function VaultCard({
         </div>
 
         {status === "ActiveLocked" && timeRemaining && (
-          <div className="bg-blue-50 px-3 py-2 rounded-lg border border-blue-200">
+          <div className="bg-black/50 px-3 py-2 rounded-lg border border-accent">
             <p className="text-xs font-semibold text-accent flex flex-row items-center gap-1">
               <Timer className="w-4 h-4" /> {timeRemaining.days}d{" "}
               {timeRemaining.hours}h {timeRemaining.minutes}m remaining
@@ -373,12 +385,12 @@ export default function MyVaultsMain() {
       const result = await toast.promise(
         ironcladClient.vaults.unlock(vaultId, identity),
         {
-          loading: `Unlocking vault #${vaultId.toString()}...`,
+          loading: `Unlocking position #${vaultId.toString()}...`,
           success: (res) => {
             if ("Err" in res) {
               throw new Error(res.Err);
             }
-            return `Vault #${vaultId.toString()} unlocked successfully!`;
+            return `Position #${vaultId.toString()} unlocked successfully!`;
           },
           error: (err) => `Failed to unlock: ${getErrorMessage(err)}`,
         }
@@ -405,7 +417,7 @@ export default function MyVaultsMain() {
         <div className="card-brutal brutal-border border-2 p-12 text-center">
           <h2 className="heading-brutal text-4xl mb-4!">CONNECT YOUR WALLET</h2>
           <p className="body-brutal text-lg text-accent">
-            Connect your wallet to view and manage your vaults
+            Connect your wallet to view and manage your positions
           </p>
         </div>
       )}
@@ -436,7 +448,7 @@ export default function MyVaultsMain() {
               suppressTransition
               className="button-brutal accent w-full py-4 text-lg font-bold hover-lift"
             >
-              + MINT NEW BOND
+              + MINT BOND POSITION
             </TransitionButton>
 
             {/* Auto-refresh toggle */}
@@ -489,14 +501,15 @@ export default function MyVaultsMain() {
                 NO ACTIVE POSITIONS
               </h2>
               <p className="body-brutal text-lg text-accent mb-8!">
-                Mint a new Bond or buy discounted BTC on the market.
+                Mint a bond position or acquire discounted Bitcoin on the
+                marketplace.
               </p>
               <TransitionButton
                 href="/vault/create-vault"
                 suppressTransition
                 className="button-brutal accent px-8 py-4 text-lg font-bold hover-lift"
               >
-                MINT BOND
+                MINT BOND POSITION
               </TransitionButton>
             </div>
           )}
@@ -504,6 +517,9 @@ export default function MyVaultsMain() {
           {/* Vaults Grid */}
           {!loading && vaults.length > 0 && (
             <>
+              {/* Portfolio Chart - Shows only if vaults exist */}
+              <PortfolioChart vaults={vaults} />
+
               {/* Needs Unlock */}
               {needsUnlockVaults.length > 0 && (
                 <div className="mb-12!">

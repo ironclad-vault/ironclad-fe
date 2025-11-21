@@ -24,7 +24,7 @@ export default function Header() {
               </div>
             </div>
             <div className="heading-brutal text-2xl text-white group-hover:text-orange-500 transition-colors duration-300">
-              BITCOIN
+              IRONCLAD
             </div>
           </Link>
 
@@ -49,8 +49,8 @@ export default function Header() {
             href="/vault"
             className="flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base px-4 sm:px-6 py-2 sm:py-3 font-black bg-orange-500 text-black hover:bg-orange-600 rounded-md transition-all duration-200 hover:shadow-lg hover:shadow-orange-500/50"
           >
-            <span className="hidden sm:inline">DASHBOARD</span>
-            <span className="sm:hidden">DASH</span>
+            <span className="hidden sm:inline">TERMINAL</span>
+            <span className="sm:hidden">TERM</span>
             <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
           </TransitionButton>
         </div>

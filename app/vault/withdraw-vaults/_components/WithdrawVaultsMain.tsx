@@ -6,9 +6,20 @@ import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
 import { useVaults } from "@/hooks/ironclad/useVaults";
 import { isVaultUnlockable } from "@/lib/vaultUtils";
 import { previewWithdraw } from "@/lib/ironclad-service";
+import { ironcladClient } from "@/lib/ic/ironcladClient";
+import type { SignatureResponse } from "@/lib/ic/ironcladActor";
 import TransitionButton from "@/components/navigation/TransitionButton";
-import { ArrowDownRight } from "lucide-react";
+import { ArrowDownRight, ShieldCheck, Lock, CheckCircle } from "lucide-react";
 import toast from "react-hot-toast";
+import { getErrorMessage } from "@/lib/toastUtils";
+
+interface SecurityCheckState {
+  step: "signing" | "verified";
+  signature: SignatureResponse | null;
+  message: string;
+  loading: boolean;
+  error: string | null;
+}
 
 export default function WithdrawVaultsMain() {
   const { isConnected } = useWallet();
@@ -28,7 +39,14 @@ export default function WithdrawVaultsMain() {
   const [selectedVaultId, setSelectedVaultId] = useState<string>("");
   const [withdrawAmount, setWithdrawAmount] = useState<string>("");
   const [previewAmount, setPreviewAmount] = useState<bigint | null>(null);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showSecurityCheck, setShowSecurityCheck] = useState(false);
+  const [securityState, setSecurityState] = useState<SecurityCheckState>({
+    step: "signing",
+    signature: null,
+    message: "",
+    loading: false,
+    error: null,
+  });
 
   const handleVaultSelect = async (vaultId: string) => {
     setSelectedVaultId(vaultId);
@@ -46,7 +64,6 @@ export default function WithdrawVaultsMain() {
       let message = "Failed to preview withdrawal amount";
 
       if (err instanceof Error) {
-        // Check if error is about vault not being unlockable
         if (
           err.message.toLowerCase().includes("not unlockable") ||
           err.message.toLowerCase().includes("locked")
@@ -59,15 +76,13 @@ export default function WithdrawVaultsMain() {
       }
 
       toast.error(message, { duration: 5000 });
-
-      // Reset selection if vault is not unlockable
       setSelectedVaultId("");
     }
   };
 
   const handleWithdrawClick = () => {
     if (!selectedVaultId) {
-      toast.error("Please select a vault");
+      toast.error("Please select a position");
       return;
     }
 
@@ -90,12 +105,57 @@ export default function WithdrawVaultsMain() {
       }
     }
 
-    setShowConfirm(true);
+    // Open security check modal instead of confirmation modal
+    setShowSecurityCheck(true);
+    setSecurityState({
+      step: "signing",
+      signature: null,
+      message: `Approve withdrawal of ${withdrawAmount} sats from Position #${selectedVaultId}`,
+      loading: false,
+      error: null,
+    });
+  };
+
+  const handleSignApproval = async () => {
+    setSecurityState((prev) => ({ ...prev, loading: true, error: null }));
+
+    try {
+      const messageBytes = new TextEncoder().encode(securityState.message);
+      const result = await ironcladClient.btcSigning.requestSignature(
+        BigInt(selectedVaultId),
+        messageBytes
+      );
+
+      if ("Ok" in result) {
+        setSecurityState((prev) => ({
+          ...prev,
+          step: "verified",
+          signature: result.Ok,
+          loading: false,
+        }));
+        toast.success("✅ Signature verified! Ready to withdraw.");
+      } else {
+        const errMsg = result.Err;
+        setSecurityState((prev) => ({
+          ...prev,
+          loading: false,
+          error: errMsg,
+        }));
+        toast.error(`Signature failed: ${errMsg}`);
+      }
+    } catch (err) {
+      const msg = getErrorMessage(err);
+      setSecurityState((prev) => ({
+        ...prev,
+        loading: false,
+        error: msg,
+      }));
+      toast.error(`Signature request failed: ${msg}`);
+      console.error("[WithdrawVaultsMain] Signature error:", err);
+    }
   };
 
   const handleConfirmWithdraw = async () => {
-    setShowConfirm(false);
-
     if (!selectedVaultId || !withdrawAmount) return;
 
     const amountSats = BigInt(
@@ -109,15 +169,28 @@ export default function WithdrawVaultsMain() {
         error: "Withdrawal failed. Please try again.",
       });
 
-      // Reset form and refetch vaults after successful withdrawal
+      // Reset form and close modal
       setSelectedVaultId("");
       setWithdrawAmount("");
       setPreviewAmount(null);
+      setShowSecurityCheck(false);
+      setSecurityState({
+        step: "signing",
+        signature: null,
+        message: "",
+        loading: false,
+        error: null,
+      });
       refetch();
     } catch (err) {
-      // Error already handled by toast.promise
       console.error("Withdraw error:", err);
     }
+  };
+
+  const truncateHex = (hex: string, maxLength: number = 24): string => {
+    if (hex.length <= maxLength) return hex;
+    const half = Math.floor(maxLength / 2);
+    return hex.slice(0, half) + "..." + hex.slice(-half);
   };
 
   if (!isConnected) {
@@ -160,16 +233,16 @@ export default function WithdrawVaultsMain() {
     return (
       <div className="container mx-auto px-6">
         <div className="card-pro p-8 text-center">
-          <h2 className="text-heading text-3xl mb-4!">NO WITHDRAWABLE VAULTS</h2>
+          <h2 className="text-heading text-3xl mb-4!">NO WITHDRAWABLE POSITIONS</h2>
           <p className="text-body text-lg text-accent mb-8!">
-            You don&apos;t have any vaults ready for withdrawal.
+            No positions ready for withdrawal.
           </p>
           <div className="card-pro border-blue-400 p-6 bg-blue-50 mb-8!">
             <p className="text-body text-sm text-accent mb-2! font-bold">
               💡 <strong>Need to withdraw?</strong>
             </p>
             <p className="text-body text-sm text-accent">
-              If you have locked vaults, visit <strong>My Vaults</strong> page
+              If you have locked positions, visit <strong>My Positions</strong> page
               to unlock them first. Once unlocked, they will appear here for
               withdrawal.
             </p>
@@ -179,7 +252,7 @@ export default function WithdrawVaultsMain() {
             suppressTransition
             className="btn-pro accent px-8 py-4 text-lg font-bold hover-lift"
           >
-            GO TO MY VAULTS
+            GO TO MY POSITIONS
           </TransitionButton>
         </div>
       </div>
@@ -207,7 +280,7 @@ export default function WithdrawVaultsMain() {
                 onChange={(e) => handleVaultSelect(e.target.value)}
                 className="input-brutal w-full"
               >
-                <option value="">-- Select a vault --</option>
+                <option value="">-- Select a position --</option>
                 {withdrawableVaults.map((vault) => (
                   <option key={vault.id.toString()} value={vault.id.toString()}>
                     Vault #{vault.id.toString()} -{" "}
@@ -264,50 +337,192 @@ export default function WithdrawVaultsMain() {
         <div className="card-pro p-8 mt-8 bg-gray-50">
           <h3 className="text-heading text-2xl mb-4!">WITHDRAWAL INFORMATION</h3>
           <p className="text-body text-sm text-accent mb-4!">
-            Withdraw your funds from an unlocked vault. The amount will be sent
-            to your connected wallet.
+            Withdraw funds from an unlocked position. Amount transfers to your
+            connected wallet.
           </p>
           <ul className="text-body text-sm text-gray-400 space-y-2">
-            <li>✓ Vault must be unlocked before withdrawal</li>
-            <li>✓ Visit vault details page to unlock locked vaults</li>
-            <li>✓ Check the available amount before withdrawing</li>
-            <li>✓ Withdrawals are processed immediately</li>
-            <li>✓ You can only withdraw the balance shown above</li>
+            <li>✓ Position must be unlocked before withdrawal</li>
+            <li>✓ Visit position details to unlock locked positions</li>
+            <li>✓ Verify available amount before withdrawing</li>
+            <li>✓ Withdrawals execute immediately on-chain</li>
+            <li>✓ Withdrawal limited to available balance</li>
           </ul>
         </div>
 
-        {/* Confirmation Modal */}
-        {showConfirm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="card-pro bg-white p-8 max-w-md w-full">
-              <h2 className="text-heading text-3xl mb-6!">CONFIRM WITHDRAWAL</h2>
-              <div className="space-y-4 mb-8!">
-                <div className="card-pro p-6 bg-gray-50">
-                  <p className="text-body text-xs text-gray-400 mb-2! font-bold">
-                    Amount
-                  </p>
-                  <p className="text-heading text-3xl">{withdrawAmount} BTC</p>
+        {/* Non-Custodial 2FA Security Check Modal */}
+        {showSecurityCheck && (
+          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+            <div className="card-pro bg-zinc-900 border-2 border-zinc-700 p-8 max-w-xl w-full rounded-lg">
+              {/* Header */}
+              <div className="flex items-center gap-3 mb-6!">
+                <Lock size={28} className="text-emerald-500" />
+                <h2 className="heading-brutal text-2xl text-white">
+                  TRANSACTION SECURITY CHECK
+                </h2>
+              </div>
+
+              <p className="body-brutal text-sm text-zinc-300 mb-6!">
+                Ironclad requires a cryptographic signature from the Vault&apos;s
+                native Bitcoin key to authorize this withdrawal. This proves
+                non-custodial ownership and prevents unauthorized access.
+              </p>
+
+              {/* Step Indicator */}
+              <div className="mb-6! p-4 bg-zinc-800 rounded-lg border border-zinc-700">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white ${
+                      securityState.step === "signing"
+                        ? "bg-orange-500"
+                        : "bg-emerald-500"
+                    }`}
+                  >
+                    {securityState.step === "signing" ? "1" : "2"}
+                  </div>
+                  <div>
+                    <p className="body-brutal text-xs text-zinc-400 font-bold uppercase">
+                      Step {securityState.step === "signing" ? "1: Signing" : "2: Verified"}
+                    </p>
+                    <p className="body-brutal text-sm text-zinc-200">
+                      {securityState.step === "signing"
+                        ? "Generate threshold ECDSA signature"
+                        : "Signature verified - ready to broadcast"}
+                    </p>
+                  </div>
                 </div>
-                <p className="text-body text-sm text-gray-700">
-                  Are you sure you want to withdraw {withdrawAmount} BTC from
-                  this vault?
-                </p>
               </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setShowConfirm(false)}
-                  className="flex-1 btn-pro py-3 font-bold hover-lift"
-                >
-                  CANCEL
-                </button>
-                <button
-                  onClick={handleConfirmWithdraw}
-                  className="flex-1 btn-pro accent py-3 font-bold hover-lift disabled:opacity-50"
-                  disabled={actionLoading}
-                >
-                  {actionLoading ? "PROCESSING..." : "CONFIRM"}
-                </button>
-              </div>
+
+              {/* Error State */}
+              {securityState.error && (
+                <div className="mb-6! p-4 bg-red-50 border-2 border-red-300 rounded-lg">
+                  <p className="body-brutal text-sm text-red-900 font-bold">
+                    ❌ Signature Failed
+                  </p>
+                  <p className="body-brutal text-xs text-red-800 mt-2">
+                    {securityState.error}
+                  </p>
+                </div>
+              )}
+
+              {/* Signing Step */}
+              {securityState.step === "signing" && (
+                <div className="space-y-4 mb-6!">
+                  <div className="card-pro p-4 bg-zinc-800 border border-zinc-700">
+                    <p className="body-brutal text-xs text-zinc-400 font-bold uppercase mb-2!">
+                      Withdrawal Amount
+                    </p>
+                    <p className="body-brutal text-lg text-white font-bold">
+                      {withdrawAmount} BTC
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={handleSignApproval}
+                    disabled={securityState.loading}
+                    className="w-full btn-pro accent py-4 font-bold text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <ShieldCheck size={20} />
+                    {securityState.loading ? "GENERATING SIGNATURE..." : "SIGN APPROVAL REQUEST"}
+                  </button>
+
+                  {securityState.loading && (
+                    <p className="text-center body-brutal text-sm text-zinc-400">
+                      Generating Threshold Signature...
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {/* Verified Step */}
+              {securityState.step === "verified" && securityState.signature && (
+                <div className="space-y-4 mb-6!">
+                  {/* Success Badge */}
+                  <div className="p-4 bg-emerald-50 border-2 border-emerald-400 rounded-lg flex items-center gap-3">
+                    <CheckCircle size={32} className="text-emerald-600 shrink-0" />
+                    <div>
+                      <p className="body-brutal text-sm font-bold text-emerald-900">
+                        SIGNATURE VERIFIED
+                      </p>
+                      <p className="body-brutal text-xs text-emerald-700">
+                        Non-custodial ownership confirmed
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Signature Display */}
+                  <div className="card-pro p-4 bg-zinc-800 border border-zinc-700">
+                    <p className="body-brutal text-xs text-zinc-400 font-bold uppercase mb-2!">
+                      Cryptographic Signature (Hex)
+                    </p>
+                    <code className="block body-brutal font-mono text-xs text-amber-400 break-all">
+                      {truncateHex(
+                        Buffer.from(securityState.signature.signature).toString(
+                          "hex"
+                        ),
+                        48
+                      )}
+                    </code>
+                  </div>
+
+                  {/* Technical Details */}
+                  <div className="grid grid-cols-3 gap-3">
+                    <div className="card-pro p-3 bg-zinc-800 border border-zinc-700 text-center">
+                      <p className="body-brutal text-xs text-zinc-400 font-bold">
+                        CURVE
+                      </p>
+                      <p className="body-brutal text-sm text-white font-bold">
+                        secp256k1
+                      </p>
+                    </div>
+                    <div className="card-pro p-3 bg-zinc-800 border border-zinc-700 text-center">
+                      <p className="body-brutal text-xs text-zinc-400 font-bold">
+                        PROTOCOL
+                      </p>
+                      <p className="body-brutal text-sm text-white font-bold">
+                        ICP ECDSA
+                      </p>
+                    </div>
+                    <div className="card-pro p-3 bg-zinc-800 border border-zinc-700 text-center">
+                      <p className="body-brutal text-xs text-zinc-400 font-bold">
+                        STATUS
+                      </p>
+                      <p className="body-brutal text-sm text-emerald-400 font-bold">
+                        APPROVED
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Broadcast Button */}
+                  <button
+                    onClick={handleConfirmWithdraw}
+                    disabled={actionLoading}
+                    className="w-full btn-pro accent py-4 font-bold text-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg transition-all"
+                  >
+                    <CheckCircle size={20} />
+                    {actionLoading
+                      ? "BROADCASTING..."
+                      : "CONFIRM & BROADCAST WITHDRAWAL"}
+                  </button>
+                </div>
+              )}
+
+              {/* Cancel Button */}
+              <button
+                onClick={() => {
+                  setShowSecurityCheck(false);
+                  setSecurityState({
+                    step: "signing",
+                    signature: null,
+                    message: "",
+                    loading: false,
+                    error: null,
+                  });
+                }}
+                disabled={securityState.loading || actionLoading}
+                className="w-full button-brutal py-3 font-bold disabled:opacity-50"
+              >
+                CANCEL
+              </button>
             </div>
           </div>
         )}

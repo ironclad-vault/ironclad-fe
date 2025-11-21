@@ -17,8 +17,8 @@ import { getErrorMessage } from "@/lib/toastUtils";
 type PlanStatus = "Active" | "Cancelled" | "Error" | "Paused";
 
 /**
- * Hook for managing auto-reinvest configurations with multi-cycle support
- * Tracks plan status (Active, Cancelled, Error), next cycles, and execution count
+ * Hook for managing auto-roll strategy configurations with multi-cycle support
+ * Tracks strategy status (Active, Cancelled, Error), next cycles, and execution count
  */
 export function useAutoReinvest() {
   const [configs, setConfigs] = useState<readonly AutoReinvestConfigDTO[]>([]);
@@ -112,9 +112,9 @@ export function useAutoReinvest() {
       await toast.promise(
         scheduleAutoReinvest({ vaultId, newLockDuration }),
         {
-          loading: 'Scheduling auto-reinvest plan...',
-          success: 'Auto-reinvest plan scheduled successfully!',
-          error: (err) => `Failed to schedule: ${getErrorMessage(err)}`,
+          loading: 'Enabling auto-roll strategy...',
+          success: 'Auto-roll strategy enabled successfully!',
+          error: (err) => `Failed to enable: ${getErrorMessage(err)}`,
         }
       );
       
@@ -138,9 +138,9 @@ export function useAutoReinvest() {
       await toast.promise(
         cancelAutoReinvest({ vaultId }),
         {
-          loading: 'Cancelling auto-reinvest plan...',
-          success: 'Auto-reinvest plan cancelled successfully!',
-          error: (err) => `Failed to cancel: ${getErrorMessage(err)}`,
+          loading: 'Disabling auto-roll strategy...',
+          success: 'Auto-roll strategy disabled successfully!',
+          error: (err) => `Failed to disable: ${getErrorMessage(err)}`,
         }
       );
       
@@ -164,9 +164,9 @@ export function useAutoReinvest() {
       const result = await toast.promise(
         executeAutoReinvest({ vaultId }),
         {
-          loading: 'Executing auto-reinvest plan...',
-          success: 'Plan executed successfully! Next cycle scheduled.',
-          error: (err) => `Execution failed: ${getErrorMessage(err)}`,
+          loading: 'Executing auto-roll renewal...',
+          success: 'Renewal executed successfully! Next cycle scheduled.',
+          error: (err) => `Renewal failed: ${getErrorMessage(err)}`,
         }
       );
       
@@ -182,7 +182,7 @@ export function useAutoReinvest() {
     }
   };
 
-  // NEW: Retry failed plan
+  // Retry failed strategy
   const retryPlan = async (vaultId: bigint): Promise<boolean> => {
     setLoading(true);
     setError(null);
@@ -191,8 +191,8 @@ export function useAutoReinvest() {
       await toast.promise(
         retryFailedPlan({ vaultId }),
         {
-          loading: 'Retrying auto-reinvest plan...',
-          success: 'Plan retry successful! Next cycle scheduled.',
+          loading: 'Retrying auto-roll strategy...',
+          success: 'Strategy retry successful! Next cycle scheduled.',
           error: (err) => `Failed to retry: ${getErrorMessage(err)}`,
         }
       );

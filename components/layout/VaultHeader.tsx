@@ -32,10 +32,10 @@ export default function VaultHeader() {
   }, [open]);
 
   const menuItems = [
-    { href: "/vault", label: "MY VAULTS" },
-    { href: "/vault/create-vault", label: "CREATE VAULT" },
+    { href: "/vault", label: "MY POSITIONS" },
+    { href: "/vault/create-vault", label: "MINT BOND" },
     { href: "/vault/withdraw-vaults", label: "WITHDRAW" },
-    { href: "/vault/marketplace", label: "MARKETPLACE" },
+    { href: "/vault/marketplace", label: "BOND MARKET" },
     { href: "/settings", label: "SETTINGS" },
   ];
 

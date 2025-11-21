@@ -5,10 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const protocolLinks = [
-  { label: 'Bond Market', href: '/vault' },
-  { label: 'My Vaults', href: '/vault' },
+  { label: 'Bond Market', href: '/vault/marketplace' },
+  { label: 'My Positions', href: '/vault' },
   { label: 'Analytics', href: '#' },
-  { label: 'Network Status', href: '#' },
+  { label: 'Protocol Status', href: '#' },
 ];
 
 const resourcesLinks = [
@@ -47,7 +47,8 @@ export default function Footer() {
               <span className="text-heading text-xl font-black text-white">IRONCLAD</span>
             </Link>
             <p className="text-sm text-zinc-400 leading-relaxed max-w-xs">
-              The First Liquid Vesting Protocol on Bitcoin.
+              Institutional-Grade Liquid Vesting & Inheritance Protocol for
+              Bitcoin.
             </p>
           </div>
 

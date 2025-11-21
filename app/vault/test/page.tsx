@@ -10,6 +10,7 @@ import { useMarketplace } from "@/hooks/ironclad/useMarketplace";
 import VaultHeader from "@/components/layout/VaultHeader";
 import TransitionWrapper from "../../transition-wrapper";
 import { RootKeyWarning } from "@/components/wallet/RootKeyWarning";
+import { CheckCircle, X, Shield } from "lucide-react";
 
 export default function TestPage() {
   const { isConnected, principal, walletType } = useWallet();
@@ -132,11 +133,15 @@ export default function TestPage() {
                 <div>
                   <p className="text-zinc-400">Status:</p>
                   <p
-                    className={`text-lg font-bold ${
+                    className={`text-lg font-bold flex items-center gap-2 ${
                       isConnected ? "text-green-500" : "text-red-500"
                     }`}
                   >
-                    {isConnected ? "✅ Connected" : "❌ Not Connected"}
+                    {isConnected ? (
+                      <><CheckCircle size={20} /> Connected</>
+                    ) : (
+                      <><X size={20} /> Not Connected</>
+                    )}
                   </p>
                 </div>
                 <div>
@@ -227,8 +232,9 @@ export default function TestPage() {
 
                 {/* Create Vault Test */}
                 <div className="card-brutal mb-6! p-6">
-                  <h2 className="heading-brutal text-2xl mb-4!">
-                    🔐 TEST CREATE VAULT
+                  <h2 className="heading-brutal text-2xl mb-4! flex items-center gap-2">
+                    <Shield size={28} />
+                    TEST CREATE VAULT
                   </h2>
                   <div className="space-y-4">
                     <div>
@@ -290,7 +296,12 @@ export default function TestPage() {
                               Vault #{config.vaultId.toString()}
                             </p>
                             <p className="text-sm">
-                              Enabled: {config.enabled ? "✅" : "❌"}
+                              Enabled:{" "}
+                              {config.enabled ? (
+                                <CheckCircle size={14} className="inline text-green-500" />
+                              ) : (
+                                <X size={14} className="inline text-red-500" />
+                              )}
                             </p>
                             <p className="text-sm">
                               New Lock Duration:{" "}

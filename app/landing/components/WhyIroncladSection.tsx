@@ -11,48 +11,48 @@ const features = [
   {
     title: "ZERO-COUPON BONDS",
     description:
-      "Access instant liquidity by selling your locked positions on the secondary market. Buyers earn yield through discounted Bitcoin.",
+      "Convert time-locked positions into tradeable bonds. Sellers access instant liquidity. Buyers acquire discounted Bitcoin with guaranteed maturity value.",
     icon: Zap,
-    benefits: ["Instant liquidity", "Secondary market", "Discounted entry"],
+    benefits: ["Instant liquidity", "Discounted Bitcoin", "Guaranteed maturity"],
   },
   {
     title: "LIQUID VESTING",
     description:
-      "Time-lock your BTC to enforce holding discipline, but remain liquid via our bond marketplace. No more dead capital.",
+      "Enforce holding discipline through time-locks while maintaining liquidity via the bond marketplace. Dead capital becomes active capital.",
     icon: Clock,
-    benefits: ["Holding discipline", "Market liquidity", "Active capital"],
+    benefits: ["Time-lock discipline", "Market liquidity", "Active capital"],
   },
   {
     title: "DEAD MAN SWITCH",
     description:
-      "Native inheritance protocol. If you become inactive, ownership of your vaults automatically transfers to your designated beneficiary.",
+      "Automated inheritance protocol. 180-day inactivity timeout triggers beneficiary transfer. Proof of Life verification resets the timer.",
     icon: Shield,
     benefits: [
-      "Auto inheritance",
-      "Beneficiary transfer",
-      "Asset protection",
+      "180-day timeout",
+      "Auto-transfer",
+      "Proof of Life",
     ],
   },
   {
-    title: "INTERNET COMPUTER",
+    title: "THRESHOLD CRYPTOGRAPHY",
     description:
-      "Built on the most advanced blockchain platform with unlimited compute.",
+      "Built on Internet Computer Protocol with unlimited compute and native Bitcoin integration via threshold ECDSA signatures.",
     icon: Globe,
-    benefits: ["Unlimited compute", "Bitcoin integration", "Web3 speed"],
+    benefits: ["Threshold ECDSA", "Bitcoin integration", "ICP infrastructure"],
   },
   {
-    title: "ZERO TRUST",
+    title: "NON-CUSTODIAL",
     description:
-      "No intermediaries or custodians. Direct smart contract interaction for full control.",
+      "Zero intermediaries. Direct smart contract interaction. You maintain complete sovereignty over your Bitcoin at all times.",
     icon: Zap,
-    benefits: ["No intermediaries", "Direct control", "Self-custody"],
+    benefits: ["No intermediaries", "Full sovereignty", "Self-custody"],
   },
   {
     title: "CENSORSHIP RESISTANT",
     description:
-      "Deployed on a decentralized network that cannot be taken down or censored.",
+      "Deployed on decentralized infrastructure. Protocol cannot be taken down, censored, or modified by any single party.",
     icon: Ban,
-    benefits: ["Decentralized", "No censorship", "Immutable"],
+    benefits: ["Decentralized", "Immutable", "Unstoppable"],
   },
 ];
 
@@ -136,10 +136,11 @@ export default function WhyIroncladSection() {
         {/* Section Title */}
         <div ref={titleRef} className="text-center mb-16! card-pro border-orange-500 py-12 px-6">
           <h2 className="text-heading text-5xl md:text-7xl mb-4! text-white">
-            PROTOCOL FEATURES
+            PROTOCOL ARCHITECTURE
           </h2>
           <p className="text-body text-lg max-w-3xl mx-auto text-zinc-400">
-            DeFi-grade vesting and inheritance infrastructure for Bitcoin holders.
+            Institutional-grade infrastructure for liquid vesting and
+            cryptographic inheritance.
           </p>
         </div>
 
@@ -149,12 +150,12 @@ export default function WhyIroncladSection() {
           className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-20!"
         >
           {[
-            "LIQUID",
-            "VESTING",
+            "LIQUID VESTING",
             "INHERITANCE",
-            "YIELD-BEARING",
-            "ON-CHAIN",
-            "BITCOIN-NATIVE",
+            "ZERO-COUPON",
+            "THRESHOLD-ECDSA",
+            "NON-CUSTODIAL",
+            "CYPHERPUNK",
           ].map((highlight, index) => (
             <div key={index} className="feature-highlight text-center group">
               <div className="px-4 py-3 bg-orange-500 border border-orange-500 rounded-lg group-hover:bg-zinc-800 group-hover:border-zinc-700 transition-all duration-300 hover:scale-110 hover-lift">

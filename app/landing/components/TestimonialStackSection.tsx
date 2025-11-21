@@ -12,31 +12,31 @@ const testimonials = [
     name: "Alex Thompson",
     role: "Bitcoin Maximalist",
     content:
-      "Ironclad has completely changed how I secure my Bitcoin. The time-locked autonomous system gives me peace of mind knowing my assets are truly untouchable until the specified date.",
+      "Ironclad's liquid vesting model solves the dead capital problem. Time-lock discipline with market liquidity. Finally, a protocol that respects Bitcoin's nature.",
   },
   {
     name: "Sarah Chen",
-    role: "Crypto Investor",
+    role: "Institutional Investor",
     content:
-      "The brutalist security approach is exactly what the Bitcoin ecosystem needs. No complex loopholes, just pure cryptographic security with time-based releases that cannot be tampered with.",
+      "The zero-coupon bond mechanism is elegant. Acquire discounted Bitcoin with guaranteed maturity. This is how DeFi should work on Bitcoin.",
   },
   {
     name: "Marcus Rodriguez",
     role: "DeFi Developer",
     content:
-      "Building on Internet Computer ensures true autonomy. Once deployed, the vault runs independently without any single point of failure. This is the future of Bitcoin custody.",
+      "Threshold ECDSA on ICP ensures true non-custody. The Dead Man Switch inheritance protocol is the first of its kind. Institutional-grade infrastructure.",
   },
   {
     name: "Emily Watson",
-    role: "Digital Security Expert",
+    role: "Security Researcher",
     content:
-      "The transparent, audited smart contracts with minimal attack surface provide security guarantees that traditional custodians simply cannot match.",
+      "Cryptographic ownership proofs with threshold signatures provide auditability that traditional custody cannot match. This is the future of Bitcoin security.",
   },
   {
     name: "David Kim",
-    role: "Long-term Bitcoin Holder",
+    role: "Long-term Holder",
     content:
-      "Finally, a solution that respects the 'not your keys, not your crypto' principle while providing institutional-grade security for long-term hodling.",
+      "The Auto-Roll strategy enforces my holding discipline while the marketplace provides an exit if needed. Not your keys, not your crypto - finally implemented correctly.",
   },
 ];
 
