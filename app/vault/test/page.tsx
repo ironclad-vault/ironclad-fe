@@ -188,7 +188,7 @@ export default function TestPage() {
                         {vaults.map((vault) => (
                           <div
                             key={vault.id.toString()}
-                            className="p-3 bg-gray-50 border border-gray-200 rounded"
+                            className="p-3 bg-zinc-800 border border-zinc-700 rounded"
                           >
                             <p className="font-bold">
                               Vault #{vault.id.toString()}
