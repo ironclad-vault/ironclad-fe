@@ -5,18 +5,20 @@ import TransitionWrapper from "@/app/transition-wrapper";
 
 export default function CreateVaultPage() {
   return (
-    <TransitionWrapper>
-      <VaultHeader />
-      <main className="min-h-screen bg-white">
-        <div className="pt-24 pb-16">
-          <div className="container mx-auto px-6">
-            <div className="mx-auto">
-              <CreateVaultForm />
+    <div className="min-h-screen flex flex-col bg-background">
+      <TransitionWrapper>
+        <VaultHeader />
+        <section className="flex flex-col items-stretch min-h-screen">
+          <main className="pt-24 pb-16 flex-1 flex flex-col gap-8">
+            <div className="container mx-auto px-6">
+              <div className="mx-auto">
+                <CreateVaultForm />
+              </div>
             </div>
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </TransitionWrapper>
+          </main>
+          <Footer />
+        </section>
+      </TransitionWrapper>
+    </div>
   );
 }
