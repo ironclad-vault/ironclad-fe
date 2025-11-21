@@ -168,11 +168,11 @@ body {
 
 .btn-pro.accent {
   background: var(--color-accent) !important;
-  color: var(--color-text-white) !important;
+  color: #000000 !important;
 }
 
 .btn-pro.accent:hover {
-  background: #D35A00 !important;
+  background: #e8851a !important;
 }
 
 .button-brutal {
