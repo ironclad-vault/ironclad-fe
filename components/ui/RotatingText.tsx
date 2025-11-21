@@ -85,18 +85,18 @@ export default function RotatingText({
   }
 
   return (
-    <div ref={containerRef} className={`rotating-text ${className}`}>
+    <div ref={containerRef} className={`rotating-text flex items-center justify-center ${className}`}>
       <span className="text-rotate-sr-only">
         {splitText} {words.join(', ')}
       </span>
-      <div className="rotating-word-container relative h-[1em]">
+      <div className="rotating-word-container relative">
         {words.map((word, index) => (
           <span
             key={index}
             ref={(el) => { wordRefs.current[index] = el }}
-            className={`rotating-word heading-brutal inline-block absolute left-0 top-0 w-full`}
+            className={`rotating-word heading-brutal absolute left-1/2 transform -translate-x-1/2 w-max`}
             data-length={getWordLength(word)}
-            style={{ width: '100%', textAlign: 'center' }}
+            style={{ textAlign: 'center' }}
           >
             {word}
           </span>
