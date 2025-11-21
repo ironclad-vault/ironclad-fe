@@ -176,9 +176,9 @@ body {
 }
 
 .button-brutal {
-  background: var(--color-text-primary) !important;
+  background: var(--color-bg-secondary) !important;
   color: var(--color-text-white) !important;
-  border: var(--border-width) solid transparent !important;
+  border: var(--border-width) solid var(--color-structure) !important;
   border-radius: 7px !important;
   padding: 10px 20px !important;
   font-weight: 600 !important;
@@ -187,6 +187,7 @@ body {
 }
 
 .button-brutal:hover {
+  border-color: var(--color-accent) !important;
   background: #27272A !important;
 }
 
