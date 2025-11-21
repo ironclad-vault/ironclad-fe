@@ -277,7 +277,7 @@ function CreateVaultFormContent() {
               </div>
 
               <div className="mt-4 bg-red-100 border-2 border-red-500 p-4">
-                <p className="body-brutal font-bold text-red-800">
+                <p className="text-body font-bold text-red-800">
                   PRODUCTION WARNING: SEND BTC ONLY. DO NOT SEND CKBTC OR OTHER
                   ASSETS.
                 </p>
@@ -287,10 +287,10 @@ function CreateVaultFormContent() {
 
           {mode === "complete" && existingVault && (
             <div className="bg-yellow-100 border-2 border-yellow-500 p-4">
-              <p className="body-brutal font-bold text-yellow-800 mb-2">
+              <p className="text-body font-bold text-yellow-800 mb-2">
                 📍 DEPOSIT INSTRUCTIONS
               </p>
-              <div className="body-brutal text-sm text-yellow-700 space-y-2">
+              <div className="text-body text-sm text-yellow-700 space-y-2">
                 <p>
                   1. Send exactly{" "}
                   <span className="font-bold">
