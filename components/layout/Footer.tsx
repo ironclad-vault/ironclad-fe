@@ -23,8 +23,8 @@ export default function Footer() {
             {/* Brand section */}
             <div className="flex flex-col space-y-6">
               <div className="space-y-3">
-                <h3 className="text-2xl md:text-3xl font-black text-accent">IRONCLAD</h3>
-                <p className="text-accent text-sm md:text-base leading-relaxed max-w-xs font-bold">
+                <h3 className="text-2xl md:text-3xl font-black text-accent footer-orange-text">IRONCLAD</h3>
+                <p className="text-accent text-sm md:text-base leading-relaxed max-w-xs font-bold footer-orange-text">
                   Bitcoin security reimagined. Time-locked autonomy powered by smart contracts.
                 </p>
               </div>
@@ -62,25 +62,25 @@ export default function Footer() {
 
             {/* Quick Links */}
             <div className="space-y-6">
-              <h4 className="text-lg font-black text-accent">EXPLORE</h4>
+              <h4 className="text-lg font-black text-accent footer-orange-text">EXPLORE</h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#how-it-works" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                  <a href="#how-it-works" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                     How It Works
                   </a>
                 </li>
                 <li>
-                  <a href="#features" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                  <a href="#features" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href="#testimonials" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                  <a href="#testimonials" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                     Testimonials
                   </a>
                 </li>
                 <li>
-                  <a href="/vault" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                  <a href="/vault" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                     Dashboard
                   </a>
                 </li>
@@ -89,25 +89,25 @@ export default function Footer() {
 
             {/* Info Links */}
             <div className="space-y-6">
-              <h4 className="text-lg font-black text-accent">RESOURCES</h4>
+              <h4 className="text-lg font-black text-accent footer-orange-text">RESOURCES</h4>
               <ul className="space-y-3">
                 <li>
-                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                     Documentation
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                     Security Audit
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                     Privacy Policy
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold">
+                  <a href="#" className="text-accent hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                     Terms of Service
                   </a>
                 </li>
@@ -121,27 +121,27 @@ export default function Footer() {
           {/* Bottom section */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <p className="text-accent text-lg md:text-xl font-black">
+              <p className="text-accent text-lg md:text-xl font-black footer-orange-text">
                 BUILT ON THE INTERNET COMPUTER | IRONCLAD
               </p>
-              <p className="text-accent text-sm md:text-base max-w-2xl font-bold">
+              <p className="text-accent text-sm md:text-base max-w-2xl font-bold footer-orange-text">
                 Decentralized Bitcoin custody powered by autonomous smart contracts. Your fortress, your rules, your Bitcoin.
               </p>
             </div>
 
             {/* Bottom bar */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-8 border-t border-accent">
-              <p className="text-accent text-xs md:text-sm font-bold">
+              <p className="text-accent text-xs md:text-sm font-bold footer-orange-text">
                 © {currentYear} Ironclad. Built with cryptographic proof.
               </p>
               <div className="flex gap-6 text-accent text-xs md:text-sm">
-                <a href="#" className="hover:text-white transition-colors duration-300 font-bold">
+                <a href="#" className="hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                   Status
                 </a>
-                <a href="#" className="hover:text-white transition-colors duration-300 font-bold">
+                <a href="#" className="hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                   Roadmap
                 </a>
-                <a href="#" className="hover:text-white transition-colors duration-300 font-bold">
+                <a href="#" className="hover:text-white transition-colors duration-300 font-bold footer-orange-text">
                   Community
                 </a>
               </div>
