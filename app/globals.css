@@ -117,25 +117,25 @@ body {
 }
 
 .card-brutal {
-  background: var(--color-bg-white) !important;
+  background: var(--color-bg-secondary) !important;
   border: var(--border-width) solid var(--color-structure) !important;
   border-radius: 10px !important;
   padding: 28px !important;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
+  box-shadow: 0 0 0 1px rgba(247, 147, 26, 0.05) inset !important;
   transition: all 0.2s !important;
 }
 
 .card-brutal:hover {
-  border-color: var(--color-text-secondary) !important;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08) inset !important;
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 0 1px rgba(247, 147, 26, 0.1) inset !important;
 }
 
 .card-brutal-dark {
-  background: var(--color-structure-light) !important;
+  background: var(--color-bg-secondary) !important;
   border: var(--border-width) solid var(--color-structure) !important;
   border-radius: 10px !important;
   padding: 28px !important;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05) inset !important;
+  box-shadow: 0 0 0 1px rgba(247, 147, 26, 0.05) inset !important;
 }
 
 .btn-pro {
