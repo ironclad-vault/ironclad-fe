@@ -268,6 +268,65 @@ export default function SettingsMain() {
           )}
         </div>
 
+        {/* Inheritance Protocol Section */}
+        <div className="card-pro p-8">
+          <h2 className="heading-brutal text-3xl mb-6 pb-4 border-b-2 border-accent">
+            INHERITANCE PROTOCOL
+          </h2>
+
+          <div className="space-y-6">
+            {/* Status Row */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-label mb-2">DEAD MAN SWITCH STATUS</p>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-3 h-3 bg-emerald-500 rounded-full"></span>
+                  <span className="text-heading text-lg">ACTIVE</span>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-label mb-2">INACTIVITY TIMEOUT</p>
+                <p className="heading-brutal text-lg text-emerald-600">180 DAYS</p>
+              </div>
+            </div>
+
+            {/* Info Rows */}
+            <div className="bg-zinc-50 p-6 rounded-lg border border-zinc-200 space-y-3">
+              <div>
+                <p className="text-label mb-1">LAST PROOF OF LIFE</p>
+                <p className="text-body text-sm text-zinc-700">
+                  {lastProofOfLife
+                    ? lastProofOfLife.toLocaleString("id-ID")
+                    : "Not recorded"}
+                </p>
+              </div>
+              <div>
+                <p className="text-label mb-1">BENEFICIARY CLAIM AVAILABLE IN</p>
+                <p className="text-body text-sm text-zinc-700">
+                  180 Days (Default)
+                </p>
+              </div>
+            </div>
+
+            {/* Ping Button */}
+            <button
+              onClick={handlePing}
+              disabled={pingingAlive}
+              className="btn-pro w-full py-4 font-bold text-lg bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            >
+              <Activity className="w-5 h-5" />
+              {pingingAlive ? "SENDING PING..." : "PROOF OF LIFE (PING)"}
+            </button>
+
+            {/* Help Text */}
+            <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+              <p className="text-body text-sm text-blue-900">
+                <strong>How It Works:</strong> Click "Proof of Life" regularly to prove you&apos;re alive and reset the 180-day timer. If the timer expires, your designated beneficiary can claim your vault.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* Additional Settings Placeholder */}
         <div className="card-pro p-8 bg-gray-50">
           <h2 className="text-heading text-3xl mb-4">ADDITIONAL SETTINGS</h2>
