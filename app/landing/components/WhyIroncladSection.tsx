@@ -149,11 +149,11 @@ export default function WhyIroncladSection() {
           className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-5xl mx-auto mb-20"
         >
           {[
-            "TRUSTLESS",
-            "AUTONOMOUS",
-            "SECURE",
-            "TRANSPARENT",
-            "CENSORSHIP-RESISTANT",
+            "LIQUID",
+            "VESTING",
+            "INHERITANCE",
+            "YIELD-BEARING",
+            "ON-CHAIN",
             "BITCOIN-NATIVE",
           ].map((highlight, index) => (
             <div key={index} className="feature-highlight text-center group">
