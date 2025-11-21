@@ -16,7 +16,6 @@ const steps = [
     description:
       "Connect your Bitcoin wallet using Internet Identity for secure, decentralized access.",
     icon: Wallet,
-    iconColor: "text-accent",
   },
   {
     number: "02",
@@ -24,7 +23,6 @@ const steps = [
     description:
       "Transfer your Bitcoin to the vault address. Your funds are immediately secured on-chain.",
     icon: ArrowDown,
-    iconColor: "text-accent",
   },
   {
     number: "03",
@@ -32,7 +30,6 @@ const steps = [
     description:
       "Set your time-lock parameters. Once deployed, the vault runs autonomously and cannot be altered.",
     icon: Lock,
-    iconColor: "text-accent",
   },
 ];
 
