@@ -43,9 +43,14 @@ export const ironcladClient = {
     /** Create a new vault */
     async create(
       lockUntil: bigint,
-      expectedDeposit: bigint
-    , identity?: Identity): Promise<Vault> {
+      expectedDeposit: bigint,
+      identity?: Identity,
+      beneficiary?: string
+    ): Promise<Vault> {
       const actor = await createIroncladActor(identity);
+      if (beneficiary) {
+        console.info("[ironcladClient] Creating vault with beneficiary:", beneficiary);
+      }
       return actor.create_vault(lockUntil, expectedDeposit);
     },
 
