@@ -188,16 +188,16 @@ export default function WithdrawVaultsMain() {
     <div className="container mx-auto px-6 bg-background min-h-screen py-8">
       <div>
         {/* Main Withdraw Card */}
-        <div className="card-brutal brutal-border border-2 p-8">
+        <div className="card-pro p-8">
           <div className="flex items-center gap-3 mb-6 pb-4 border-b-2 border-accent">
             <ArrowDownRight className="text-accent w-8 h-8 font-bold" />
-            <h1 className="heading-brutal text-4xl">WITHDRAW</h1>
+            <h1 className="text-heading text-4xl">WITHDRAW</h1>
           </div>
 
           <div className="space-y-6">
             {/* Vault Selection */}
             <div>
-              <label className="body-brutal text-sm font-bold mb-3 block">
+              <label className="text-body text-sm font-bold mb-3 block">
                 SELECT VAULT
               </label>
               <select
