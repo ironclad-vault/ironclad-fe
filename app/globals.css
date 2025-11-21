@@ -305,7 +305,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .section-divider {
   height: var(--border-width);
-  background: linear-gradient(to right, transparent, var(--color-text-primary), transparent);
+  background: linear-gradient(to right, transparent, var(--color-structure), transparent);
   margin: 2rem 0;
 }
 
