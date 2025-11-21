@@ -133,8 +133,8 @@ export default function WithdrawVaultsMain() {
   if (vaultsLoading) {
     return (
       <div className="container mx-auto px-6">
-        <div className="card-brutal brutal-border border-2 p-8 text-center">
-          <p className="body-brutal text-lg text-gray-700">
+        <div className="card-pro p-8 text-center">
+          <p className="text-body text-lg text-gray-700">
             Loading withdrawable vaults...
           </p>
         </div>
