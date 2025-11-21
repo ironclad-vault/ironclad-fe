@@ -41,6 +41,23 @@ function VaultCard({
   // Check if vault needs unlock button
   const needsUnlock = isTimeExpired && status === "ActiveLocked";
 
+  // Calculate progress percentage for time-lock progress bar
+  const calculateProgress = () => {
+    // Assuming vault was created at lock_until - timeRemaining
+    // For simplicity, we'll use lock_until as the end and estimate start as 2 weeks before
+    const lockTimestamp = Number(vault.lock_until);
+    const estStartTimestamp = lockTimestamp - (14 * 24 * 60 * 60); // Estimate 2 weeks before lock
+    const currentTimestamp = now.getTime() / 1000;
+
+    const totalDuration = lockTimestamp - estStartTimestamp;
+    const elapsed = currentTimestamp - estStartTimestamp;
+    const percentage = Math.max(0, Math.min(100, (elapsed / totalDuration) * 100));
+
+    return percentage;
+  };
+
+  const progressPercentage = status === "ActiveLocked" ? calculateProgress() : 100;
+
   // Get badge color based on plan status
   const getAutoReinvestBadgeColor = (status: "Active" | "Cancelled" | "Error" | "Paused"): string => {
     switch (status) {
