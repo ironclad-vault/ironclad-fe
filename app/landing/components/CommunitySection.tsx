@@ -1,93 +1,55 @@
-"use client";
+'use client';
 
-import { useLayoutEffect, useRef } from "react";
-import { gsap } from "gsap";
+import { useLayoutEffect, useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   useScrollReveal,
   useScrollRevealStagger,
-} from "@/components/ui/useScrollReveal";
-import { ArrowRight, Github, Twitter, MessageCircle } from "lucide-react";
-import GlitchText from "@/components/ui/animated/GlitchText";
-import Link from "next/link";
-import Image from "next/image";
-import TransitionButton from "@/components/navigation/TransitionButton";
+} from '@/components/ui/useScrollReveal';
+import { ArrowRight, Github, Twitter, MessageCircle, Mail } from 'lucide-react';
+import GlitchText from '@/components/ui/animated/GlitchText';
+import Image from 'next/image';
+import TransitionButton from '@/components/navigation/TransitionButton';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function CommunitySection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const logoRef = useRef<HTMLDivElement>(null);
-  const titleRef = useScrollReveal<HTMLDivElement>({ y: 60, delay: 0 });
-  const taglineRef = useScrollReveal<HTMLDivElement>({ y: 40, delay: 0.3 });
-  const ctaRef = useScrollReveal<HTMLDivElement>({
-    y: 40,
-    delay: 0.6,
-    scale: 0.9,
-  });
-  const socialRef = useScrollRevealStagger<HTMLDivElement>(".social-link", {
-    y: 30,
+  const contentRef = useRef<HTMLDivElement>(null);
+  const logoRef = useScrollReveal<HTMLDivElement>({ y: 40, opacity: 0, delay: 0 });
+  const titleRef = useScrollReveal<HTMLDivElement>({ y: 40, delay: 0.1 });
+  const descRef = useScrollReveal<HTMLDivElement>({ y: 40, delay: 0.2 });
+  const ctaRef = useScrollReveal<HTMLDivElement>({ y: 40, delay: 0.3 });
+  const socialRef = useScrollRevealStagger<HTMLDivElement>('.social-link', {
+    y: 20,
     opacity: 0,
-    stagger: 0.1,
-    delay: 0.9,
+    stagger: 0.08,
+    delay: 0.4,
   });
 
   useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+    if (!sectionRef.current || !contentRef.current) return;
 
     const ctx = gsap.context(() => {
-      // Logo entrance animation - fluid elastic entrance
-      if (logoRef.current) {
+      // Smooth scale entrance for logo - no rotation
+      const logo = logoRef.current;
+      if (logo) {
         gsap.fromTo(
-          logoRef.current,
-          {
-            scale: 0.3,
-            rotation: -200,
-            opacity: 0,
-          },
+          logo,
+          { scale: 0.9, opacity: 0 },
           {
             scale: 1,
-            rotation: 0,
             opacity: 1,
-            duration: 1.5,
-            ease: "elastic.out(1.2, 0.4)",
+            duration: 0.8,
+            ease: 'power3.out',
             scrollTrigger: {
-              trigger: logoRef.current,
-              start: "top 80%",
-              toggleActions: "play none none reverse",
+              trigger: logo,
+              start: 'top 85%',
+              toggleActions: 'play none none reverse',
             },
           }
         );
-      }
-
-      // Floating particles animation - smooth and continuous
-      const section = sectionRef.current;
-      if (section) {
-        const particles = section.querySelectorAll(".particle");
-        particles.forEach((particle, index) => {
-          gsap.to(particle, {
-            y: "random(-120, -220)",
-            x: "random(-60, 60)",
-            rotation: "random(-360, 360)",
-            duration: "random(4, 8)",
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: index * 0.25,
-          });
-        });
-      }
-
-      // CTA button pulse effect - smooth and subtle
-      const ctaButton = sectionRef.current?.querySelector(".cta-primary");
-      if (ctaButton) {
-        gsap.to(ctaButton, {
-          boxShadow: [
-            "0 0 0px rgba(247, 147, 26, 0)",
-            "0 0 25px rgba(247, 147, 26, 0.4)",
-            "0 0 0px rgba(247, 147, 26, 0)",
-          ],
-          duration: 2.5,
-          repeat: -1,
-          ease: "sine.inOut",
-        });
       }
     }, sectionRef);
 
