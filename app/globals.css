@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
-/* High-End Fintech Design System - Ironclad */
+/* Dark Bitcoin Minimalist Design System - Ironclad */
 :root {
-  /* Color Palette - Zinc (Neutral, Mature, Comfortable) */
-  --color-bg-primary: #FAFAFA;
-  --color-bg-secondary: #F5F5F5;
-  --color-text-primary: #18181B;
-  --color-text-secondary: #71717A;
-  --color-structure: #E4E4E7;
-  --color-structure-light: #F4F4F5;
-  --color-accent: #EA580C;
+  /* Color Palette - Dark Bitcoin (High Contrast, Premium) */
+  --color-bg-primary: #09090b;
+  --color-bg-secondary: #18181b;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #a1a1aa;
+  --color-structure: #27272a;
+  --color-structure-light: #3f3f46;
+  --color-accent: #F7931A;
   --color-text-white: #FFFFFF;
-  --color-bg-white: #FFFFFF;
-  --color-unlocked: #00FF00;
+  --color-bg-white: #18181b;
+  --color-unlocked: #10b981;
 
   /* Typography */
   --font-heading: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif;
