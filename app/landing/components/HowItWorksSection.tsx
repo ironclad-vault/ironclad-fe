@@ -146,7 +146,7 @@ export default function HowItWorks() {
         {/* Steps Pipeline */}
         <div className="relative">
           {/* Connecting Line */}
-          <div className="hidden md:block absolute top-12 left-0 right-0 h-1 bg-gradient-to-r from-zinc-200 via-orange-500 to-zinc-200 connecting-line" />
+          <div className="hidden md:block absolute top-12 left-0 right-0 h-1 bg-gradient-to-r from-zinc-800 via-orange-500 to-zinc-800 connecting-line" />
 
           {/* Cards Grid */}
           <div
