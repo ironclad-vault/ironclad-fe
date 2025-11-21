@@ -116,7 +116,7 @@ export default function TestimonialStackSection() {
           <h2 className="text-heading text-5xl md:text-7xl mb-4">
             TRUSTED BY USERS
           </h2>
-          <p className="text-body text-lg max-w-3xl mx-auto text-gray-700">
+          <p className="text-body text-lg max-w-3xl mx-auto text-zinc-600">
             Real experiences from Bitcoin enthusiasts, developers, and security
             experts who have secured their assets with Ironclad.
           </p>
