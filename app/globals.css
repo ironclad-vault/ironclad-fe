@@ -47,14 +47,14 @@ body {
 .text-heading {
   font-family: var(--font-heading) !important;
   font-weight: 700 !important;
-  letter-spacing: -0.025em !important;
+  letter-spacing: -0.03em !important;
   line-height: 1.2 !important;
 }
 
 .heading-brutal {
   font-family: var(--font-heading) !important;
   font-weight: 700 !important;
-  letter-spacing: -0.025em !important;
+  letter-spacing: -0.03em !important;
   line-height: 1.2 !important;
 }
 
@@ -70,9 +70,19 @@ body {
   line-height: 1.6 !important;
 }
 
+.text-label {
+  font-family: var(--font-body) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: var(--color-text-secondary) !important;
+}
+
 .mono-brutal {
   font-family: var(--font-mono) !important;
   font-weight: 400 !important;
+  font-variant-numeric: tabular-nums !important;
 }
 
 /* Border Styles */
