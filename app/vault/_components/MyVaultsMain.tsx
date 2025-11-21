@@ -170,15 +170,13 @@ function VaultCard({
       <div className="space-y-4 text-body text-sm mb-5">
         <div className="flex justify-between items-baseline">
           <span className="text-label">BALANCE</span>
-          <span className="font-semibold text-right tabular-nums">{formatSats(vault.balance)}</span>
+          <BTCAmount sats={vault.balance} showLabel={true} className="text-right" />
         </div>
 
         {vault.expected_deposit && (
           <div className="flex justify-between items-baseline">
             <span className="text-label">EXPECTED DEPOSIT</span>
-            <span className="font-semibold text-right tabular-nums">
-              {formatSats(vault.expected_deposit)}
-            </span>
+            <BTCAmount sats={vault.expected_deposit} showLabel={true} className="text-right" />
           </div>
         )}
 
