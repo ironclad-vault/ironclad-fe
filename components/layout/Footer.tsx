@@ -121,27 +121,27 @@ export default function Footer() {
           {/* Bottom section */}
           <div className="space-y-6">
             <div className="space-y-4">
-              <p className="text-heading text-lg md:text-xl font-black">
+              <p className="text-accent text-lg md:text-xl font-black">
                 BUILT ON THE INTERNET COMPUTER | IRONCLAD
               </p>
-              <p className="text-gray-200 text-sm md:text-base max-w-2xl font-medium">
+              <p className="text-accent text-sm md:text-base max-w-2xl font-bold">
                 Decentralized Bitcoin custody powered by autonomous smart contracts. Your fortress, your rules, your Bitcoin.
               </p>
             </div>
 
             {/* Bottom bar */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-8 border-t border-gray-800">
-              <p className="text-gray-300 text-xs md:text-sm font-medium">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pt-8 border-t border-accent">
+              <p className="text-accent text-xs md:text-sm font-bold">
                 © {currentYear} Ironclad. Built with cryptographic proof.
               </p>
-              <div className="flex gap-6 text-gray-300 text-xs md:text-sm">
-                <a href="#" className="hover:text-accent transition-colors duration-300 font-medium">
+              <div className="flex gap-6 text-accent text-xs md:text-sm">
+                <a href="#" className="hover:text-white transition-colors duration-300 font-bold">
                   Status
                 </a>
-                <a href="#" className="hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="hover:text-white transition-colors duration-300 font-bold">
                   Roadmap
                 </a>
-                <a href="#" className="hover:text-accent transition-colors duration-300 font-medium">
+                <a href="#" className="hover:text-white transition-colors duration-300 font-bold">
                   Community
                 </a>
               </div>
