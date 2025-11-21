@@ -49,8 +49,8 @@ export default function Header() {
             href="/vault"
             className="button-brutal accent flex items-center space-x-1 sm:space-x-2 text-sm sm:text-base px-3 sm:px-5 py-2 sm:py-3 font-bold hover-lift"
           >
-            <span className="hidden sm:inline">LAUNCH APP</span>
-            <span className="sm:hidden">LAUNCH</span>
+            <span className="hidden sm:inline">DASHBOARD</span>
+            <span className="sm:hidden">DASH</span>
             <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4" />
           </TransitionButton>
         </div>
