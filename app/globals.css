@@ -315,7 +315,8 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Responsive improvements */
 @media (max-width: 768px) {
-  .heading-brutal {
-    letter-spacing: 0.02em !important;
+  .heading-brutal,
+  .text-heading {
+    letter-spacing: -0.025em !important;
   }
 }
