@@ -46,7 +46,7 @@ function StepCard({ step, index }: { step: (typeof steps)[0]; index: number }) {
       {/* Card */}
       <div className="relative bg-zinc-900 ring-1 ring-zinc-800 rounded-2xl p-8 h-full shadow-sm hover:shadow-md hover:ring-orange-500 transition-all duration-300 hover:-translate-y-1">
         {/* Step Indicator Badge */}
-        <div className="absolute -top-4 -left-4 w-12 h-12 bg-zinc-900 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+        <div className="absolute -top-4 -left-4 w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
           <div className="flex flex-col items-center justify-center">
             <Icon className="w-5 h-5 text-white" />
             <span className="text-xs font-bold text-white mt-0.5">{step.number}</span>
