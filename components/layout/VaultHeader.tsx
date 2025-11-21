@@ -88,8 +88,8 @@ export default function VaultHeader() {
                   href={item.href}
                   className={`heading-brutal text-sm px-1 py-0 transition-colors duration-150 ${
                     isActive
-                      ? "text-accent underline font-bold"
-                      : "text-black hover:underline hover:text-accent"
+                      ? "text-orange-500 underline font-bold"
+                      : "text-zinc-300 hover:underline hover:text-orange-500"
                   }`}
                 >
                   {item.label}
