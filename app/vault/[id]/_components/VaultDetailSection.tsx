@@ -73,7 +73,7 @@ const getStatusColor = (vault: VaultDTO): string => {
 };
 
 export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
-  const { isConnected } = useWallet();
+  const { isConnected, identity } = useWallet();
   const { unlockVault, loading: actionLoading } = useVaultActions();
   const {
     configs,
@@ -110,7 +110,8 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
         setError(null);
         const id = BigInt(vaultId);
 
-        const vaultData = await getVault({ vaultId: id });
+        // CRITICAL: Pass identity to fetch with correct caller context
+        const vaultData = await getVault({ vaultId: id, actor: identity ? await (await import('@/lib/ic/ironcladActor')).createIroncladActor(identity) : undefined });
         if (!vaultData) {
           setError("Vault not found");
           setLoading(false);
@@ -118,7 +119,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
         }
         setVault(vaultData);
 
-        const vaultEvents = await getVaultEvents({ vaultId: id });
+        const vaultEvents = await getVaultEvents({ vaultId: id, actor: identity ? await (await import('@/lib/ic/ironcladActor')).createIroncladActor(identity) : undefined });
         setEvents(vaultEvents);
       } catch (err) {
         const msg =
@@ -130,7 +131,7 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
     };
 
     fetchData();
-  }, [isConnected, vaultId]);
+  }, [isConnected, vaultId, identity]);
 
   const handleUnlock = async () => {
     if (!vault) return;

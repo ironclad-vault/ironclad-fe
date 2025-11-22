@@ -4,15 +4,11 @@
  * Remote (non-local): can use signed Identity (for real testnet/mainnet later)
  */
 
-import {
-  Actor,
-  HttpAgent,
-  type ActorSubclass,
-  type Identity,
-} from "@dfinity/agent";
+import { Actor, type Identity } from "@dfinity/agent";
 import { idlFactory } from "@/declarations/ironclad_vault_backend";
 import type { _SERVICE } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 import { IC_CONFIG } from "./config";
+import { getAgent } from "./agent";
 
 export type { _SERVICE as IroncladService } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 export type {
@@ -31,79 +27,27 @@ export type {
 } from "@/declarations/ironclad_vault_backend/ironclad_vault_backend.did";
 
 export type IroncladActor = ActorSubclass<_SERVICE>;
+import { type ActorSubclass } from "@dfinity/agent";
 
-const IC_HOST = IC_CONFIG.host;
 const IRONCLAD_CANISTER_ID = IC_CONFIG.ironcladCanisterId;
 
-// singleton anonymous agent (dipakai di local & fallback remote)
-let agentPromise: Promise<HttpAgent> | null = null;
-
-function isLocalHost(host: string): boolean {
-  return (
-    host.includes("127.0.0.1") ||
-    host.includes("localhost")
-  );
-}
-
 /**
- * Anonymous agent (no identity), dengan root key untuk local replica.
- */
-async function getAnonymousAgent(): Promise<HttpAgent> {
-  if (!agentPromise) {
-    agentPromise = (async () => {
-      const agent = new HttpAgent({ host: IC_HOST });
-
-      if (isLocalHost(IC_HOST) && process.env.NODE_ENV !== "production") {
-        await agent.fetchRootKey();
-        console.info("[Ironclad Actor] 🔑 Root key fetched for local replica");
-      }
-
-      console.info(
-        "[Ironclad Actor] Using anonymous agent for host:",
-        IC_HOST,
-      );
-
-      return agent;
-    })();
-  }
-
-  return agentPromise;
-}
-
-/**
- * Main factory: Jika identity diberikan, gunakan signed agent.
- * Jika tidak ada identity, gunakan anonymous agent.
+ * Main factory: Creates or reuses an agent for the Ironclad Actor.
+ * Uses a singleton agent to share root key status across the app.
  */
 export async function createIroncladActor(
   identity?: Identity,
 ): Promise<IroncladActor> {
-  const isLocal = isLocalHost(IC_HOST);
-
-  let agent: HttpAgent;
+  // Get the singleton agent (handles root key fetching automatically)
+  const agent = await getAgent(identity);
 
   if (identity) {
-    // Gunakan signed agent dengan identity yang diberikan
-    agent = new HttpAgent({ host: IC_HOST, identity });
-    
-    // Fetch root key untuk local development
-    if (isLocal && process.env.NODE_ENV !== "production") {
-      await agent.fetchRootKey();
-      console.info("[Ironclad Actor] 🔑 Root key fetched for local replica (signed agent)");
-    }
-    
     console.info(
       "[Ironclad Actor] Using SIGNED agent with identity:",
-      identity.getPrincipal().toString(),
-      "for host:",
-      IC_HOST,
+      identity.getPrincipal().toString()
     );
   } else {
-    // Fallback ke anonymous agent jika tidak ada identity
-    agent = await getAnonymousAgent();
-    console.info(
-      "[Ironclad Actor] Using anonymous agent for host:",
-      IC_HOST,
-    );
+    console.debug("[Ironclad Actor] Using agent (potentially anonymous or cached identity)");
   }
 
   return Actor.createActor<_SERVICE>(idlFactory, {

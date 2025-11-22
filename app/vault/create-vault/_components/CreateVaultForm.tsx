@@ -7,9 +7,12 @@ import { useVaults } from "@/hooks/ironclad/useVaults";
 import { useWallet } from "@/components/wallet/useWallet";
 import { useNetworkMode } from "@/hooks/ironclad/useNetworkMode";
 import { useCkbtcSync } from "@/hooks/ironclad/useCkbtcSync";
+import { useUserBalance } from "@/hooks/ironclad/useUserBalance";
+import { WalletBalance } from "@/components/wallet/WalletBalance";
 import { getVaultStatus } from "@/lib/vaultUtils";
 import { IC_CONFIG } from "@/lib/ic/config";
 import type { VaultDTO } from "@/lib/ironclad-service";
+import toast from "react-hot-toast";
 import { 
   AlertCircle, 
   Copy, 
@@ -27,10 +30,11 @@ function CreateVaultFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const vaultIdParam = searchParams.get("vaultId");
-  const { createVault, mockDeposit, loading, error } = useVaultActions();
+  const { createVault, realDeposit, mockDeposit, loading, error } = useVaultActions();
   const { vaults, refetch: refetchVaults } = useVaults();
   const { isConnected } = useWallet();
   const { mode: networkMode } = useNetworkMode();
+  const { refetch: refetchBalance } = useUserBalance();
 
   // Determine if we're in CkBTC mode
   const isCkbtcMode = networkMode && "CkBTCMainnet" in networkMode;
@@ -146,6 +150,62 @@ function CreateVaultFormContent() {
     }
   };
 
+  /**
+   * NEW: Handle real ICRC-1 deposit
+   * Executes actual blockchain transfer to vault canister
+   */
+  const handleRealDeposit = async () => {
+    if (!createdVault) return;
+
+    const amount = BigInt(depositAmount);
+    
+    // DEBUG: Log vault subaccount before conversion
+    console.log("[CreateVaultForm] Vault ID:", createdVault.id.toString());
+    console.log("[CreateVaultForm] ckbtcSubaccountHex:", createdVault.ckbtcSubaccountHex);
+    
+    // CRITICAL: Convert vault subaccount from hex string to Uint8Array
+    let vaultSubaccount: Uint8Array | undefined;
+    if (createdVault.ckbtcSubaccountHex) {
+      // Convert hex string (e.g., "0x1234...") to Uint8Array
+      const hexStr = createdVault.ckbtcSubaccountHex.replace(/^0x/, '');
+      const bytes = new Uint8Array(hexStr.length / 2);
+      for (let i = 0; i < hexStr.length; i += 2) {
+        bytes[i / 2] = parseInt(hexStr.substr(i, 2), 16);
+      }
+      vaultSubaccount = bytes;
+      console.log("[CreateVaultForm] Converted subaccount bytes:", Array.from(vaultSubaccount));
+    } else {
+      console.warn("[CreateVaultForm] WARNING: No ckbtcSubaccountHex found!");
+    }
+    
+    console.log("[CreateVaultForm] Calling realDeposit with:", {
+      vaultId: createdVault.id.toString(),
+      amount: amount.toString(),
+      hasSubaccount: !!vaultSubaccount,
+    });
+    
+    const result = await realDeposit(createdVault.id, amount, vaultSubaccount);
+
+    if (result.success) {
+      // Refresh user balance after transfer
+      await refetchBalance();
+      
+      // NOTE: Sync is now done automatically in realDeposit hook
+      // No need to call syncCkbtcBalance manually
+
+      // Refresh vaults list to show updated status
+      await refetchVaults();
+
+      setTimeout(() => {
+        router.push("/vault");
+      }, 1500);
+    } else {
+      // Deposit failed
+      console.error("[CreateVaultForm] Deposit failed:", result.error);
+      toast.error(`Deposit failed: ${result.error}`);
+    }
+  };
+
   const handleSyncCkbtcBalance = async () => {
     if (!createdVault) return;
 
@@ -189,6 +249,11 @@ function CreateVaultFormContent() {
 
   return (
     <div className="card-pro p-8 flex flex-col gap-8">
+      {/* User Balance Display - NEW */}
+      <div className="bg-zinc-900 border-2 border-zinc-800 rounded-lg p-6">
+        <WalletBalance showRefresh={true} />
+      </div>
+
       <h3 className="text-heading text-4xl">
         {mode === "complete" ? "COMPLETE DEPOSIT" : "MINT BOND POSITION"}
       </h3>
@@ -385,8 +450,58 @@ function CreateVaultFormContent() {
               </button>
             </>
           ) : (
-            // CKBTC MODE: Real deposit with address display
+            // CKBTC MODE: Real deposit with ICRC-1 transfer
             <>
+              {mode === "complete" && (
+                <div className="mb-4!">
+                  <label className="text-body text-sm font-bold mb-2! block">
+                    DEPOSIT AMOUNT (SATS)
+                  </label>
+                  <input
+                    type="number"
+                    className="input-brutal"
+                    value={depositAmount}
+                    onChange={(e) => setDepositAmount(e.target.value)}
+                    disabled={loading}
+                    min="1"
+                    step="1"
+                  />
+                  <p className="text-body text-xs text-gray-400 mt-1">
+                    {(parseInt(depositAmount || "0") / 100000000).toFixed(8)}{" "}
+                    BTC
+                  </p>
+                  <p className="text-body text-xs text-blue-600 mt-1">
+                    Expected: {createdVault.expectedDeposit.toLocaleString()}{" "}
+                    sats
+                  </p>
+                </div>
+              )}
+
+              {/* REAL DEPOSIT BUTTON - NEW */}
+              <button
+                className="btn-pro w-full mb-4! bg-green-600 text-white hover:bg-green-700 font-bold"
+                onClick={handleRealDeposit}
+                disabled={loading || parseInt(depositAmount || "0") <= 0}
+              >
+                {loading
+                  ? "PROCESSING TRANSACTION..."
+                  : mode === "complete"
+                  ? "💰 DEPOSIT CKBTC (REAL TRANSACTION)"
+                  : "💰 DEPOSIT CKBTC NOW"}
+              </button>
+
+              <div className="bg-yellow-50 border-2 border-yellow-400 p-4 rounded-lg mb-4">
+                <p className="text-body text-sm text-yellow-800 font-bold flex items-center gap-2">
+                  <Lightbulb className="w-5 h-5" />
+                  REAL BLOCKCHAIN TRANSACTION
+                </p>
+                <p className="text-body text-xs text-yellow-700 mt-2">
+                  Clicking the button above will execute a real ICRC-1 transfer on the Internet Computer. 
+                  Your wallet balance will decrease by the amount + 10 e8s network fee.
+                </p>
+              </div>
+
+              {/* Address display for manual transfer (alternative method) */}
               {(() => {
                 const ckbtcSubaccountHex = getCkbtcSubaccountHex(createdVault);
                 const canisterId = IC_CONFIG.ironcladCanisterId;

@@ -10,6 +10,7 @@ import React, {
 import { AuthClient } from "@dfinity/auth-client";
 // identity type imported above
 import { Principal } from "@dfinity/principal";
+import { getAgent, resetAgent } from "@/lib/ic/agent";
 
 /**
  * Wallet Provider - Supports multiple authentication methods
@@ -103,6 +104,10 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
             setPrincipalText(principal.toString());
             setWalletType("test");
             setIdentity(testIdentity);
+            
+            // Initialize agent
+            await getAgent(testIdentity);
+            
             console.log("[Wallet] Test session restored:", principal.toString());
           } else {
             // Test seed missing, clear session
@@ -114,6 +119,18 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           if (isAuthenticated) {
             const identity = authClient.getIdentity();
             const principal = identity.getPrincipal();
+
+            // CRITICAL FIX: Initialize agent and fetch root key if needed
+            try {
+              await getAgent(identity);
+              console.info("[Wallet] ✅ Agent initialized and root key check complete");
+            } catch (error) {
+              console.error("[Wallet] ❌ Failed to initialize agent:", error);
+              // Clear session on persistent failure
+              localStorage.removeItem(WALLET_TYPE_KEY);
+              localStorage.removeItem(PRINCIPAL_KEY);
+              return;
+            }
 
             setIsConnected(true);
             setPrincipal(principal);
@@ -167,6 +184,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
           setWalletType("test");
           setIdentity(testIdentity);
 
+          // Initialize agent
+          await getAgent(testIdentity);
+
           localStorage.setItem(WALLET_TYPE_KEY, "test");
           localStorage.setItem(PRINCIPAL_KEY, principal.toString());
           localStorage.setItem("ironclad_test_identity_seed", testSeed);
@@ -199,6 +219,16 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
                 try {
                   const identity = authClient.getIdentity();
                   const principal = identity.getPrincipal();
+
+                  // CRITICAL FIX: Initialize agent and fetch root key if needed
+                  try {
+                    await getAgent(identity);
+                    console.info("[Wallet] ✅ Agent initialized and root key check complete");
+                  } catch (error) {
+                    console.error("[Wallet] ❌ Failed to initialize agent:", error);
+                    reject(new Error("Failed to initialize agent for local development"));
+                    return;
+                  }
 
                   setIsConnected(true);
                   setPrincipal(principal);
@@ -252,6 +282,9 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
       setPrincipalText(null);
       setWalletType(null);
       setIdentity(null);
+      
+      // Reset global agent
+      resetAgent();
 
       localStorage.removeItem(WALLET_TYPE_KEY);
       localStorage.removeItem(PRINCIPAL_KEY);

@@ -4,13 +4,16 @@ import { useState } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
 import { createVault as createVaultService, type VaultDTO } from "@/lib/ironclad-service";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
-import type { Vault } from "@/lib/ic/ironcladActor";
+import { transferCkbtc } from "@/lib/ic/ckbtcLedger";
+import { IC_CONFIG } from "@/lib/ic/config";
+import { Principal } from "@dfinity/principal";
+import type { Vault, CkbtcSyncResult } from "@/lib/ic/ironcladActor";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "@/lib/toastUtils";
 
 /**
  * Hook for vault actions (create, deposit, unlock, withdraw)
- * Phase 1: Uses anonymous canister calls (no wallet identity)
+ * UPDATED: Uses real ICRC-1 transfers instead of mock deposits
  */
 export function useVaultActions() {
   const { identity } = useWallet();
@@ -55,6 +58,91 @@ export function useVaultActions() {
     }
   };
 
+  /**
+   * REAL DEPOSIT: Execute actual ICRC-1 transfer to vault backend canister
+   * CRITICAL: Must transfer to backend canister + vault subaccount, not main account!
+   * This replaces the old mockDeposit function
+   */
+  const handleRealDeposit = async (
+    vaultId: bigint,
+    amount: bigint,
+    vaultSubaccount?: Uint8Array // CRITICAL: Vault subaccount (from ckbtc_subaccount field)
+  ): Promise<{ success: boolean; txIndex?: bigint; error?: string; syncResult?: CkbtcSyncResult }> => {
+    setLoading(true);
+    setError(null);
+
+    if (!identity) {
+      const msg = "Identity required for deposit";
+      setError(msg);
+      setLoading(false);
+      return { success: false, error: msg };
+    }
+
+    try {
+      // Step 1: Execute ICRC-1 transfer to the backend canister + vault subaccount
+      const backendCanisterId = IC_CONFIG.ironcladCanisterId;
+      const backendPrincipal = Principal.fromText(backendCanisterId);
+
+      console.info(
+        `[useVaultActions] Transferring ${amount} e8s to vault ${vaultId.toString()} (subaccount: ${vaultSubaccount ? 'set' : 'not set'})`
+      );
+
+      // CRITICAL FIX: Transfer to backend + vault subaccount
+      // Backend checks balance at canister_self() + vault.ckbtc_subaccount
+      const txIndex = await toast.promise(
+        transferCkbtc(
+          {
+            owner: backendPrincipal,
+            subaccount: vaultSubaccount, // CRITICAL: Vault subaccount for self-custody
+          },
+          amount,
+          identity
+        ),
+        {
+          loading: "Transferring ckBTC to vault...",
+          success: "Transfer successful! Confirming deposit...",
+          error: (err) => `Transfer failed: ${getErrorMessage(err)}`,
+        }
+      );
+
+      console.info(`[useVaultActions] Transfer successful. TX Index: ${txIndex}`);
+
+      // Step 2: Call backend to sync vault balance from ledger
+      console.info(`[useVaultActions] Syncing vault balance from ledger...`);
+      
+      const syncResult = await toast.promise(
+        ironcladClient.ckbtc.syncVault(vaultId, identity),
+        {
+          loading: "Confirming deposit on blockchain...",
+          success: "Deposit confirmed! Vault updated.",
+          error: (err) => `Sync failed: ${getErrorMessage(err)}`,
+        }
+      );
+
+      if ("Err" in syncResult) {
+        throw new Error(syncResult.Err);
+      }
+
+      console.info(
+        `[useVaultActions] Vault synced successfully:`,
+        syncResult.Ok
+      );
+
+      return { success: true, txIndex, syncResult: syncResult.Ok };
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setError(msg);
+      console.error("[useVaultActions] Real deposit failed:", msg);
+      return { success: false, error: msg };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /**
+   * LEGACY: Keep mock deposit for backward compatibility
+   * @deprecated Use handleRealDeposit for real blockchain transactions
+   */
   const handleMockDeposit = async (
     vaultId: bigint,
     amount: bigint
@@ -214,7 +302,8 @@ export function useVaultActions() {
 
   return {
     createVault: handleCreateVault,
-    mockDeposit: handleMockDeposit,
+    realDeposit: handleRealDeposit, // NEW: Real ICRC-1 deposits
+    mockDeposit: handleMockDeposit, // LEGACY: Keep for backward compatibility
     unlockVault: handleUnlockVault,
     withdrawVault: handleWithdrawVault,
     pingAlive: handlePingAlive,
