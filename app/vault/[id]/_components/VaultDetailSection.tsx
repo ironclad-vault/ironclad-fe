@@ -2,7 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
-import { getVault, getVaultEvents } from "@/lib/ironclad-service";
+import {
+  getVault,
+  getVaultEvents,
+  decryptDigitalWill,
+} from "@/lib/ironclad-service";
 import type { VaultDTO, VaultEventDTO } from "@/lib/ironclad-service";
 import { formatVaultDate, formatSats } from "@/lib/vaultUtils";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
@@ -21,6 +25,7 @@ import {
   AlertCircle,
   CheckCircle,
   Calendar,
+  LockIcon,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
@@ -87,6 +92,11 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
   >("overview");
   const [newLockDuration, setNewLockDuration] = useState<string>("2592000"); // 30 days default
   const [eventFilter, setEventFilter] = useState<string>("all"); // Event filter state
+
+  // Digital Will state
+  const [decryptedWill, setDecryptedWill] = useState<string | null>(null);
+  const [revealLoading, setRevealLoading] = useState(false);
+  const [revealError, setRevealError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -196,6 +206,34 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
       if (updatedVault) {
         setVault(updatedVault);
       }
+    }
+  };
+
+  const handleRevealWill = async () => {
+    if (!vault || !vault.encryptedNote) {
+      toast.error("No encrypted note available");
+      return;
+    }
+
+    setRevealLoading(true);
+    setRevealError(null);
+
+    try {
+      // Use the decryptDigitalWill function which handles key retrieval and decryption
+      const decrypted = await decryptDigitalWill({
+        vaultId: BigInt(vault.id),
+        encryptedNote: vault.encryptedNote,
+      });
+
+      setDecryptedWill(decrypted);
+      toast.success("Digital Will revealed successfully");
+    } catch (err) {
+      const errorMsg =
+        err instanceof Error ? err.message : "Failed to reveal Digital Will";
+      setRevealError(errorMsg);
+      toast.error(errorMsg);
+    } finally {
+      setRevealLoading(false);
     }
   };
 
@@ -511,6 +549,55 @@ export default function VaultDetailMain({ vaultId }: VaultDetailMainProps) {
                       proofType="withdraw"
                     />
                   </div>
+                </div>
+
+                {/* Digital Will Section */}
+                <div className="card-brutal p-6 bg-zinc-50 border-2 border-zinc-300">
+                  <h3 className="heading-brutal text-lg mb-4! flex items-center gap-2">
+                    <LockIcon /> DIGITAL WILL
+                  </h3>
+
+                  {vault.encryptedNote ? (
+                    <div className="space-y-4">
+                      <p className="body-brutal text-sm text-zinc-300 mb-4!">
+                        This position includes an encrypted inheritance message
+                        that can be revealed by authorized beneficiaries.
+                      </p>
+
+                      {!decryptedWill && !revealError && (
+                        <button
+                          onClick={handleRevealWill}
+                          disabled={revealLoading}
+                          className="button-brutal w-full py-3 font-bold bg-[#f7931a] hover:bg-[#f7931a]/90 text-white disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          {revealLoading ? "REVEALING..." : "REVEAL WILL"}
+                        </button>
+                      )}
+
+                      {decryptedWill !== null && (
+                        <div className="card-brutal p-4 bg-white border-2 border-zinc-300">
+                          <p className="body-brutal text-xs uppercase font-bold text-white mb-2">
+                            Decrypted Message:
+                          </p>
+                          <div className="body-brutal text-sm text-white whitespace-pre-wrap wrap-break-word">
+                            {decryptedWill || "(Empty message)"}
+                          </div>
+                        </div>
+                      )}
+
+                      {revealError && (
+                        <div className="card-brutal p-4 bg-red-50 border-2 border-red-300">
+                          <p className="body-brutal text-sm font-bold text-red-900">
+                            Access Denied: {revealError}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="body-brutal text-sm text-zinc-600">
+                      No Digital Will message configured for this position.
+                    </p>
+                  )}
                 </div>
               </div>
             )}

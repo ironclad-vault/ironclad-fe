@@ -115,6 +115,25 @@ export function ConnectWalletButton() {
             )}
 
             <div className="space-y-3">
+              {/* Test Mode - Local Development Only */}
+              {process.env.NEXT_PUBLIC_LOCAL_TEST_MODE === "true" && (
+                <button
+                  onClick={() => handleConnect("test")}
+                  disabled={isConnecting}
+                  className="w-full p-4 border-2 border-green-300 bg-green-50 rounded-lg hover:border-green-600 hover:bg-green-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-green-200 rounded-lg flex items-center justify-center">
+                      <span className="text-2xl">🧪</span>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="font-semibold text-gray-900">Test Mode</h3>
+                      <p className="text-sm text-gray-600">Local development (no II needed)</p>
+                    </div>
+                  </div>
+                </button>
+              )}
+
               {/* Internet Identity */}
               <button
                 onClick={() => handleConnect("ii")}

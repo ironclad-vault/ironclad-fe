@@ -1,3 +1,8 @@
+type NetworkMode = variant {
+    Mock;
+    CkBTCMainnet;
+};
+
 type VaultStatus = variant {
     PendingDeposit;
     ActiveLocked;
@@ -9,17 +14,19 @@ type Vault = record {
     id: nat64;
     owner: principal;
     btc_address: text;
+    ckbtc_subaccount: opt blob;
     expected_deposit: nat64;
     btc_deposit_txid: opt text;
     btc_withdraw_txid: opt text;
     lock_until: nat64;
     status: VaultStatus;
     balance: nat64;
+    beneficiary: opt principal;      // NEW: designated heir
+    last_keep_alive: nat64;          // NEW: timestamp of last owner activity
+    inheritance_timeout: nat64;      // NEW: seconds of inactivity before claim
+    encrypted_note: opt text;        // NEW: Digital Will encrypted message (hex-encoded)
     created_at: nat64;
     updated_at: nat64;
-    beneficiary: opt principal;
-    last_keep_alive: nat64;
-    inheritance_timeout: nat64;
 };
 
 type VaultEvent = record {
@@ -29,6 +36,13 @@ type VaultEvent = record {
     notes: text;
 };
 
+type AutoReinvestPlanStatus = variant {
+    Active;
+    Cancelled;
+    Error;
+    Paused;
+};
+
 type AutoReinvestConfig = record {
     vault_id: nat64;
     owner: principal;
@@ -36,6 +50,17 @@ type AutoReinvestConfig = record {
     enabled: bool;
     created_at: nat64;
     updated_at: nat64;
+    plan_status: AutoReinvestPlanStatus;
+    error_message: opt text;
+    next_cycle_timestamp: nat64;
+    execution_count: nat64;
+};
+
+type PlanStatusResponse = record {
+    plan_status: AutoReinvestPlanStatus;
+    error_message: opt text;
+    next_cycle_timestamp: nat64;
+    execution_count: nat64;
 };
 
 type ListingStatus = variant {
@@ -55,8 +80,25 @@ type MarketListing = record {
     updated_at: nat64;
 };
 
+type CkbtcSyncResult = record {
+    vault: Vault;
+    synced_balance: nat64;
+    mode: NetworkMode;
+};
+
+type BitcoinTxProof = record {
+    txid: text;
+    confirmed: bool;
+    confirmations: nat32;
+};
+
+type SignatureResponse = record {
+    message: blob;
+    signature: blob;
+};
+
 service : {
-    create_vault: (nat64, nat64, opt principal) -> (Vault);
+    create_vault: (nat64, nat64, opt principal, opt text, opt text) -> (Vault);
     get_my_vaults: () -> (vec Vault) query;
     get_vault: (nat64) -> (opt Vault) query;
     get_vault_events: (nat64) -> (vec VaultEvent) query;
@@ -72,11 +114,21 @@ service : {
     get_auto_reinvest_config: (nat64) -> (opt AutoReinvestConfig) query;
     get_my_auto_reinvest_configs: () -> (vec AutoReinvestConfig) query;
     execute_auto_reinvest: (nat64) -> (variant { Ok: Vault; Err: text });
+    get_plan_status: (nat64) -> (variant { Ok: PlanStatusResponse; Err: text }) query;
+    retry_failed_plan: (nat64) -> (variant { Ok: AutoReinvestConfig; Err: text });
     create_listing: (nat64, nat64) -> (variant { Ok: MarketListing; Err: text });
     cancel_listing: (nat64) -> (variant { Ok: MarketListing; Err: text });
     get_active_listings: () -> (vec MarketListing) query;
     get_my_listings: () -> (vec MarketListing) query;
     buy_listing: (nat64) -> (variant { Ok: Vault; Err: text });
-    ping_alive: (nat64) -> (variant { Ok: null; Err: text });
+    set_mode_mock: () -> ();
+    set_mode_ckbtc_mainnet: () -> ();
+    get_mode_query: () -> (NetworkMode) query;
+    sync_vault_balance_from_ckbtc: (nat64) -> (variant { Ok: CkbtcSyncResult; Err: text });
+    get_deposit_proof: (nat64) -> (variant { Ok: BitcoinTxProof; Err: text }) query;
+    get_withdraw_proof: (nat64) -> (variant { Ok: BitcoinTxProof; Err: text }) query;
+    request_btc_signature: (nat64, blob) -> (variant { Ok: SignatureResponse; Err: text });
+    get_digital_will_key: (nat64) -> (variant { Ok: text; Err: text });
+    ping_alive: (nat64) -> (variant { Ok: Vault; Err: text });
     claim_inheritance: (nat64) -> (variant { Ok: Vault; Err: text });
 }

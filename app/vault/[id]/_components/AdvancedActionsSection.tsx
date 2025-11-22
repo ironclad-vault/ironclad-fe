@@ -52,7 +52,7 @@ export function AdvancedActionsSection({
           signature: result.Ok,
           timestamp: new Date(),
         });
-        toast.success("✅ Ownership verified successfully!");
+        toast.success("Ownership verified successfully!");
       } else {
         const errMsg = result.Err;
         setError(errMsg);

@@ -9,7 +9,7 @@ import { previewWithdraw } from "@/lib/ironclad-service";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { SignatureResponse } from "@/lib/ic/ironcladActor";
 import TransitionButton from "@/components/navigation/TransitionButton";
-import { ArrowDownRight, ShieldCheck, Lock, CheckCircle } from "lucide-react";
+import { ArrowDownRight, ShieldCheck, Lock, CheckCircle, Lightbulb, XCircle } from "lucide-react";
 import toast from "react-hot-toast";
 import { getErrorMessage } from "@/lib/toastUtils";
 
@@ -133,7 +133,7 @@ export default function WithdrawVaultsMain() {
           signature: result.Ok,
           loading: false,
         }));
-        toast.success("✅ Signature verified! Ready to withdraw.");
+        toast.success("Signature verified! Ready to withdraw.");
       } else {
         const errMsg = result.Err;
         setSecurityState((prev) => ({
@@ -238,8 +238,9 @@ export default function WithdrawVaultsMain() {
             No positions ready for withdrawal.
           </p>
           <div className="card-pro border-blue-400 p-6 bg-blue-50 mb-8!">
-            <p className="text-body text-sm text-accent mb-2! font-bold">
-              💡 <strong>Need to withdraw?</strong>
+            <p className="text-body text-sm text-accent mb-2! font-bold flex items-center gap-2">
+              <Lightbulb className="w-5 h-5" />
+              <strong>Need to withdraw?</strong>
             </p>
             <p className="text-body text-sm text-accent">
               If you have locked positions, visit <strong>My Positions</strong> page
@@ -395,8 +396,9 @@ export default function WithdrawVaultsMain() {
               {/* Error State */}
               {securityState.error && (
                 <div className="mb-6! p-4 bg-red-50 border-2 border-red-300 rounded-lg">
-                  <p className="body-brutal text-sm text-red-900 font-bold">
-                    ❌ Signature Failed
+                  <p className="body-brutal text-sm text-red-900 font-bold flex items-center gap-2">
+                    <XCircle className="w-5 h-5" />
+                    Signature Failed
                   </p>
                   <p className="body-brutal text-xs text-red-800 mt-2">
                     {securityState.error}

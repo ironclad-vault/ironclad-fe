@@ -9,6 +9,7 @@ export const idlFactory = ({ IDL }) => {
     'id' : IDL.Nat64,
     'status' : VaultStatus,
     'last_keep_alive' : IDL.Nat64,
+    'encrypted_note' : IDL.Opt(IDL.Text),
     'updated_at' : IDL.Nat64,
     'balance' : IDL.Nat64,
     'btc_deposit_txid' : IDL.Opt(IDL.Text),
@@ -112,7 +113,13 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'create_vault' : IDL.Func(
-        [IDL.Nat64, IDL.Nat64, IDL.Opt(IDL.Principal)],
+        [
+          IDL.Nat64,
+          IDL.Nat64,
+          IDL.Opt(IDL.Principal),
+          IDL.Opt(IDL.Text),
+          IDL.Opt(IDL.Text),
+        ],
         [Vault],
         [],
       ),
@@ -131,6 +138,11 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Nat64],
         [IDL.Variant({ 'Ok' : BitcoinTxProof, 'Err' : IDL.Text })],
         ['query'],
+      ),
+    'get_digital_will_key' : IDL.Func(
+        [IDL.Nat64],
+        [IDL.Variant({ 'Ok' : IDL.Text, 'Err' : IDL.Text })],
+        [],
       ),
     'get_mode_query' : IDL.Func([], [NetworkMode], ['query']),
     'get_my_auto_reinvest_configs' : IDL.Func(

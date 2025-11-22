@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useWallet } from "@/components/wallet/useWallet";
+import { createVault as createVaultService, type VaultDTO } from "@/lib/ironclad-service";
 import { ironcladClient } from "@/lib/ic/ironcladClient";
 import type { Vault } from "@/lib/ic/ironcladActor";
 import toast from "react-hot-toast";
@@ -19,26 +20,31 @@ export function useVaultActions() {
   const handleCreateVault = async (
     lockUntil: number,
     expectedDeposit: bigint,
-    beneficiary?: string
-  ): Promise<Vault | null> => {
+    beneficiary?: string,
+    willMessage?: string
+  ): Promise<VaultDTO | null> => {
     setLoading(true);
     setError(null);
 
     try {
-      const vault = await toast.promise(
-        ironcladClient.vaults.create(
-          BigInt(lockUntil),
+      // Use the service layer which handles encryption
+      const vaultDTO = await toast.promise(
+        createVaultService({
+          lockUntil,
           expectedDeposit,
-          identity ?? undefined,
-          beneficiary
-        ),
+          beneficiary,
+          willMessage,
+          identity: identity ?? undefined, // Pass identity from wallet
+        }),
         {
           loading: "Creating vault...",
           success: "Bond position minted successfully!",
           error: (err) => `Failed to create vault: ${getErrorMessage(err)}`,
         }
       );
-      return vault;
+      
+      // Return the VaultDTO directly - it already has ckbtcSubaccountHex
+      return vaultDTO;
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       setError(msg);

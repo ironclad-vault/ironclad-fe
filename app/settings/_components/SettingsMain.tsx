@@ -213,9 +213,9 @@ export default function SettingsMain() {
               <button
                 onClick={handleSwitchToMock}
                 disabled={loading || !!isMockMode}
-                className={`btn-pro w-full py-4 font-bold text-lg ${
-                  isMockMode ? "bg-blue-600" : ""
-                } disabled:opacity-50 disabled:cursor-not-allowed`}
+                className={`btn-pro ${
+                  isMockMode ? "accent" : ""
+                } w-full py-4 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed`}
               >
                 {isMockMode ? "ACTIVE" : "SWITCH TO MOCK"}
               </button>

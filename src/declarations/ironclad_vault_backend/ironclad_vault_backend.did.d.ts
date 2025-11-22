@@ -60,6 +60,10 @@ export interface Vault {
    * NEW: designated heir
    */
   'last_keep_alive' : bigint,
+  /**
+   * NEW: seconds of inactivity before claim
+   */
+  'encrypted_note' : [] | [string],
   'updated_at' : bigint,
   'balance' : bigint,
   'btc_deposit_txid' : [] | [string],
@@ -67,7 +71,7 @@ export interface Vault {
   'beneficiary' : [] | [Principal],
   'btc_withdraw_txid' : [] | [string],
   /**
-   * NEW: seconds of inactivity before claim
+   * NEW: Digital Will encrypted message (hex-encoded)
    */
   'created_at' : bigint,
   /**
@@ -111,7 +115,10 @@ export interface _SERVICE {
     { 'Ok' : MarketListing } |
       { 'Err' : string }
   >,
-  'create_vault' : ActorMethod<[bigint, bigint, [] | [Principal]], Vault>,
+  'create_vault' : ActorMethod<
+    [bigint, bigint, [] | [Principal], [] | [string], [] | [string]],
+    Vault
+  >,
   'execute_auto_reinvest' : ActorMethod<
     [bigint],
     { 'Ok' : Vault } |
@@ -122,6 +129,11 @@ export interface _SERVICE {
   'get_deposit_proof' : ActorMethod<
     [bigint],
     { 'Ok' : BitcoinTxProof } |
+      { 'Err' : string }
+  >,
+  'get_digital_will_key' : ActorMethod<
+    [bigint],
+    { 'Ok' : string } |
       { 'Err' : string }
   >,
   'get_mode_query' : ActorMethod<[], NetworkMode>,

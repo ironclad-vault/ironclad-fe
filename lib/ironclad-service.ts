@@ -15,6 +15,8 @@ import {
   SignatureResponse,
 } from "./ic/ironcladActor";
 import { Principal } from "@dfinity/principal";
+import { vaultCryptoService } from "./vaultCryptoService";
+import type { Identity } from "@dfinity/agent";
 
 // Define Result type locally (Candid pattern)
 type Result<T> = { Ok: T } | { Err: string };
@@ -51,6 +53,11 @@ export interface VaultDTO {
   beneficiary: string | null;
   lastKeepAlive: number;
   inheritanceTimeout: number;
+  /**
+   * Digital Will: Encrypted message (base64) that can be revealed
+   * after inheritance timeout or by beneficiary.
+   */
+  encryptedNote: string | null;
 }
 
 export interface VaultEventDTO {
@@ -189,6 +196,8 @@ function mapVault(raw: Vault): VaultDTO {
       raw.beneficiary.length > 0 ? raw.beneficiary[0]!.toString() : null,
     lastKeepAlive: Number(raw.last_keep_alive),
     inheritanceTimeout: Number(raw.inheritance_timeout),
+    encryptedNote:
+      raw.encrypted_note.length > 0 ? raw.encrypted_note[0]! : null,
   };
 }
 
@@ -362,21 +371,50 @@ export async function createVault({
   lockUntil,
   expectedDeposit,
   beneficiary,
+  willMessage,
   actor,
+  identity,
 }: {
   lockUntil: number;
   expectedDeposit: bigint;
   beneficiary?: string;
+  willMessage?: string;
   actor?: IroncladActor;
+  identity?: Identity;
 }): Promise<VaultDTO> {
-  const actorInstance = await getActorOrThrow(actor);
+  // Create actor with identity
+  const actorInstance = actor ?? await getIroncladActor(identity);
+  
+  console.log("[createVault] Creating vault with identity:", 
+    identity ? identity.getPrincipal().toString() : "anonymous");
+  
   const beneficiaryOpt: [] | [Principal] = beneficiary
     ? [Principal.fromText(beneficiary)]
     : [];
+
+  // Digital Will: Encrypt on frontend, store ciphertext and key on backend
+  let encryptedNoteOpt: [] | [string] = [];
+  let secureKeyOpt: [] | [string] = [];
+  
+  if (willMessage && willMessage.trim()) {
+    console.log("[createVault] Encrypting Digital Will message on frontend");
+    try {
+      const { ciphertext, keyHex } = await vaultCryptoService.generateKeyAndEncrypt(willMessage);
+      encryptedNoteOpt = [ciphertext];
+      secureKeyOpt = [keyHex];
+      console.log("[createVault] Digital Will encrypted successfully");
+    } catch (error) {
+      console.error("[createVault] Failed to encrypt Digital Will:", error);
+      throw new Error("Failed to encrypt Digital Will message");
+    }
+  }
+
   const vault = await actorInstance.create_vault(
     BigInt(lockUntil),
     expectedDeposit,
-    beneficiaryOpt
+    beneficiaryOpt,
+    encryptedNoteOpt,
+    secureKeyOpt
   );
   return mapVault(vault);
 }
@@ -403,8 +441,11 @@ export async function mockDepositVault({
  * Get all vaults owned by the caller
  * NOTE: Returns plain Array<Vault>, NOT Result
  */
-export async function getMyVaults(actor?: IroncladActor): Promise<VaultDTO[]> {
-  const actorInstance = await getActorOrThrow(actor);
+export async function getMyVaults(
+  actor?: IroncladActor,
+  identity?: Identity
+): Promise<VaultDTO[]> {
+  const actorInstance = actor ?? await getIroncladActor(identity);
   const vaults = await actorInstance.get_my_vaults();
   return vaults.map(mapVault);
 }
@@ -813,3 +854,50 @@ export async function requestBtcSignature({
   const raw = unwrapResult(result);
   return mapSignatureResponse(raw);
 }
+
+// ============================================================================
+// Digital Will Service Functions
+// ============================================================================
+
+/**
+ * Get the decryption key for a vault's Digital Will
+ * Only accessible by owner (always) or beneficiary (after inheritance timeout)
+ * 
+ * @returns Hex-encoded decryption key for the vault's encrypted_note
+ * @throws Error if access is denied (inheritance conditions not met)
+ */
+export async function getDigitalWillKey({
+  vaultId,
+  actor,
+}: {
+  vaultId: bigint;
+  actor?: IroncladActor;
+}): Promise<string> {
+  const actorInstance = await getActorOrThrow(actor);
+  const result = await actorInstance.get_digital_will_key(vaultId);
+  return unwrapResult(result);
+}
+
+/**
+ * Decrypt a Digital Will message
+ * Convenience function that fetches the key and decrypts in one call
+ * 
+ * @returns Decrypted plaintext message
+ */
+export async function decryptDigitalWill({
+  vaultId,
+  encryptedNote,
+  actor,
+}: {
+  vaultId: bigint;
+  encryptedNote: string;
+  actor?: IroncladActor;
+}): Promise<string> {
+  // Get the decryption key from backend (access controlled)
+  const keyHex = await getDigitalWillKey({ vaultId, actor });
+  
+  // Decrypt using the key
+  const plaintext = await vaultCryptoService.decrypt(encryptedNote, keyHex);
+  return plaintext;
+}
+

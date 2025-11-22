@@ -48,18 +48,32 @@ export const ironcladClient = {
     async create(
       lockUntil: bigint,
       expectedDeposit: bigint,
-      identity?: Identity,
-      beneficiary?: string
+      beneficiary?: string,
+      encryptedNote?: string,
+      secureKey?: string,
+      identity?: Identity
     ): Promise<Vault> {
       const actor = await createIroncladActor(identity);
       const beneficiaryOpt: [] | [Principal] = beneficiary
         ? [Principal.fromText(beneficiary)]
         : [];
+      const encryptedNoteOpt: [] | [string] = encryptedNote ? [encryptedNote] : [];
+      const secureKeyOpt: [] | [string] = secureKey ? [secureKey] : [];
       console.info(
         "[ironcladClient] Creating vault with beneficiary:",
-        beneficiaryOpt
+        beneficiaryOpt,
+        "encrypted note:",
+        encryptedNote ? "provided" : "none",
+        "secure key:",
+        secureKey ? "provided" : "none"
       );
-      return actor.create_vault(lockUntil, expectedDeposit, beneficiaryOpt);
+      return actor.create_vault(
+        lockUntil,
+        expectedDeposit,
+        beneficiaryOpt,
+        encryptedNoteOpt,
+        secureKeyOpt
+      );
     },
 
     /** Mock deposit to a vault (for testing) */
@@ -151,6 +165,15 @@ export const ironcladClient = {
       } else {
         throw new Error(result.Err || "Failed to claim inheritance");
       }
+    },
+
+    /** Get Digital Will decryption key (access controlled) */
+    async getDigitalWillKey(
+      vaultId: bigint,
+      identity?: Identity
+    ): Promise<{ Ok: string } | { Err: string }> {
+      const actor = await createIroncladActor(identity);
+      return actor.get_digital_will_key(vaultId);
     },
   },
 

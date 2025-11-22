@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clear Ironclad Storage</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    button {
+      background: #dc2626;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+    button:hover {
+      background: #b91c1c;
+    }
+    button.success {
+      background: #16a34a;
+    }
+    button.success:hover {
+      background: #15803d;
+    }
+    .info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+      color: #1e40af;
+    }
+    .storage-info {
+      background: #f9fafb;
+      padding: 15px;
+      border-radius: 6px;
+      margin: 20px 0;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    .storage-info div {
+      margin: 5px 0;
+      padding: 5px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .storage-info div:last-child {
+      border-bottom: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧹 Clear Ironclad Storage</h1>
+    
+    <div class="info">
+      <strong>Why use this?</strong><br>
+      If you're seeing certificate verification errors with Internet Identity,
+      it's likely because you have an old session stored. This tool will clear
+      all Ironclad-related data from your browser.
+    </div>
+
+    <div class="storage-info" id="storageInfo">
+      Loading storage info...
+    </div>
+
+    <button onclick="clearStorage()">Clear All Storage</button>
+    <button onclick="clearIIOnly()" style="background: #f59e0b;">Clear II Session Only</button>
+    <button class="success" onclick="refreshPage()">Refresh Page</button>
+
+    <div id="result"></div>
+  </div>
+
+  <script>
+    function displayStorageInfo() {
+      const info = document.getElementById('storageInfo');
+      const keys = [
+        'ironclad_wallet_type',
+        'ironclad_principal',
+        'ironclad_test_identity_seed'
+      ];
+      
+      let html = '<strong>Current Storage:</strong><br>';
+      keys.forEach(key => {
+        const value = localStorage.getItem(key);
+        if (value) {
+          html += `<div><strong>${key}:</strong> ${value.substring(0, 50)}${value.length > 50 ? '...' : ''}</div>`;
+        }
+      });
+      
+      // Check IndexedDB for AuthClient
+      if (window.indexedDB) {
+        html += '<div><strong>IndexedDB:</strong> Checking for auth-client-db...</div>';
+      }
+      
+      info.innerHTML = html;
+    }
+
+    function clearStorage() {
+      try {
+        // Clear localStorage
+        localStorage.removeItem('ironclad_wallet_type');
+        localStorage.removeItem('ironclad_principal');
+        localStorage.removeItem('ironclad_test_identity_seed');
+        
+        // Clear all ic-* keys (Internet Identity)
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('ic-') || key.includes('identity')) {
+            localStorage.removeItem(key);
+          }
+        });
+
+        // Clear IndexedDB (AuthClient storage)
+        if (window.indexedDB) {
+          indexedDB.deleteDatabase('auth-client-db');
+        }
+
+        document.getElementById('result').innerHTML = 
+          '<div style="background: #dcfce7; color: #166534; padding: 15px; border-radius: 6px; margin-top: 20px;">' +
+          '✅ All storage cleared successfully!<br>' +
+          'Please close all browser tabs and reopen http://localhost:3000' +
+          '</div>';
+        
+        setTimeout(displayStorageInfo, 100);
+      } catch (error) {
+        document.getElementById('result').innerHTML = 
+          '<div style="background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 6px; margin-top: 20px;">' +
+          '❌ Error: ' + error.message +
+          '</div>';
+      }
+    }
+
+    function clearIIOnly() {
+      try {
+        // Only clear II-related storage
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith('ic-') || key.includes('identity')) {
+            localStorage.removeItem(key);
+          }
+        });
+
+        // Clear IndexedDB (AuthClient storage)
+        if (window.indexedDB) {
+          indexedDB.deleteDatabase('auth-client-db');
+        }
+
+        // Keep test mode data
+        const walletType = localStorage.getItem('ironclad_wallet_type');
+        if (walletType === 'ii') {
+          localStorage.removeItem('ironclad_wallet_type');
+          localStorage.removeItem('ironclad_principal');
+        }
+
+        document.getElementById('result').innerHTML = 
+          '<div style="background: #fef3c7; color: #92400e; padding: 15px; border-radius: 6px; margin-top: 20px;">' +
+          '✅ Internet Identity session cleared!<br>' +
+          'Test mode data preserved. Refresh the page.' +
+          '</div>';
+        
+        setTimeout(displayStorageInfo, 100);
+      } catch (error) {
+        document.getElementById('result').innerHTML = 
+          '<div style="background: #fee2e2; color: #991b1b; padding: 15px; border-radius: 6px; margin-top: 20px;">' +
+          '❌ Error: ' + error.message +
+          '</div>';
+      }
+    }
+
+    function refreshPage() {
+      window.location.reload();
+    }
+
+    // Display storage info on load
+    displayStorageInfo();
+  </script>
+</body>
+</html>

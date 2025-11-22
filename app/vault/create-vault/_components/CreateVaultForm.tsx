@@ -5,8 +5,23 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useVaultActions } from "@/hooks/ironclad/useVaultActions";
 import { useVaults } from "@/hooks/ironclad/useVaults";
 import { useWallet } from "@/components/wallet/useWallet";
+import { useNetworkMode } from "@/hooks/ironclad/useNetworkMode";
+import { useCkbtcSync } from "@/hooks/ironclad/useCkbtcSync";
 import { getVaultStatus } from "@/lib/vaultUtils";
-import { AlertCircle } from "lucide-react";
+import { IC_CONFIG } from "@/lib/ic/config";
+import type { VaultDTO } from "@/lib/ironclad-service";
+import { 
+  AlertCircle, 
+  Copy, 
+  RefreshCw, 
+  MapPin, 
+  Shield, 
+  AlertTriangle, 
+  CheckCircle, 
+  Lightbulb,
+  Globe,
+  Beaker
+} from "lucide-react";
 
 function CreateVaultFormContent() {
   const router = useRouter();
@@ -15,6 +30,11 @@ function CreateVaultFormContent() {
   const { createVault, mockDeposit, loading, error } = useVaultActions();
   const { vaults, refetch: refetchVaults } = useVaults();
   const { isConnected } = useWallet();
+  const { mode: networkMode } = useNetworkMode();
+
+  // Determine if we're in CkBTC mode
+  const isCkbtcMode = networkMode && "CkBTCMainnet" in networkMode;
+  const isMockMode = !isCkbtcMode;
 
   const [lockDuration, setLockDuration] = useState<string>("6");
   const [durationUnit, setDurationUnit] = useState<"months" | "seconds">(
@@ -22,10 +42,15 @@ function CreateVaultFormContent() {
   );
   const [depositAmount, setDepositAmount] = useState<string>("100000");
   const [beneficiary, setBeneficiary] = useState<string>("");
-  const [createdVault, setCreatedVault] = useState<{
-    vaultId: bigint;
-    expectedDeposit: bigint;
-  } | null>(null);
+  const [willMessage, setWillMessage] = useState<string>("");
+  const [createdVault, setCreatedVault] = useState<VaultDTO | null>(null);
+
+  // Use CkBTC sync hook when vault is created
+  const {
+    loading: syncLoading,
+    error: syncError,
+    sync: syncCkbtcBalance,
+  } = useCkbtcSync(createdVault?.id ?? BigInt(0));
 
   // Compute existing vault and mode from URL params
   const { existingVault, mode } = useMemo(() => {
@@ -50,10 +75,34 @@ function CreateVaultFormContent() {
   useEffect(() => {
     if (mode === "complete" && existingVault && !createdVault) {
       setDepositAmount(existingVault.expected_deposit.toString());
-      setCreatedVault({
-        vaultId: existingVault.id,
+      // Convert Vault to VaultDTO-like object for display (inline to avoid dependency issues)
+      let ckbtcSubaccountHex: string | null = null;
+      if (existingVault.ckbtc_subaccount && existingVault.ckbtc_subaccount.length > 0) {
+        const subData = existingVault.ckbtc_subaccount[0];
+        if (subData) {
+          const bytes = subData instanceof Uint8Array ? subData : new Uint8Array(subData as unknown as ArrayBuffer);
+          ckbtcSubaccountHex = "0x" + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+      }
+      const vaultDTO: VaultDTO = {
+        id: existingVault.id,
+        owner: existingVault.owner.toString(),
+        status: existingVault.status as unknown as VaultDTO['status'],
+        balance: existingVault.balance,
         expectedDeposit: existingVault.expected_deposit,
-      });
+        createdAt: Number(existingVault.created_at),
+        updatedAt: Number(existingVault.updated_at),
+        lockUntil: Number(existingVault.lock_until),
+        btcAddress: existingVault.btc_address,
+        btcDepositTxid: existingVault.btc_deposit_txid?.[0] ?? null,
+        btcWithdrawTxid: existingVault.btc_withdraw_txid?.[0] ?? null,
+        ckbtcSubaccountHex,
+        beneficiary: existingVault.beneficiary?.[0]?.toString() ?? null,
+        lastKeepAlive: Number(existingVault.last_keep_alive),
+        inheritanceTimeout: Number(existingVault.inheritance_timeout),
+        encryptedNote: existingVault.encrypted_note?.[0] ?? null,
+      };
+      setCreatedVault(vaultDTO);
     }
   }, [mode, existingVault, createdVault]);
 
@@ -74,13 +123,11 @@ function CreateVaultFormContent() {
     const vault = await createVault(
       lockUntil,
       expectedDeposit,
-      beneficiary || undefined
+      beneficiary || undefined,
+      willMessage || undefined
     );
     if (vault) {
-      setCreatedVault({
-        vaultId: vault.id,
-        expectedDeposit: vault.expected_deposit || expectedDeposit,
-      });
+      setCreatedVault(vault); // createVault returns VaultDTO which is already DTO type
     }
   };
 
@@ -88,7 +135,7 @@ function CreateVaultFormContent() {
     if (!createdVault) return;
 
     const amount = BigInt(depositAmount);
-    const vault = await mockDeposit(createdVault.vaultId, amount);
+    const vault = await mockDeposit(createdVault.id, amount);
 
     if (vault) {
       await refetchVaults();
@@ -97,6 +144,31 @@ function CreateVaultFormContent() {
         router.push("/vault");
       }, 1500);
     }
+  };
+
+  const handleSyncCkbtcBalance = async () => {
+    if (!createdVault) return;
+
+    await syncCkbtcBalance();
+
+    // Check if sync was successful (no error)
+    if (!syncError) {
+      await refetchVaults();
+      setTimeout(() => {
+        router.push("/vault");
+      }, 1500);
+    }
+  };
+
+  const handleCopyAddress = (address: string) => {
+    navigator.clipboard.writeText(address);
+    // Could add a toast notification here
+  };
+
+  // Get ckBTC subaccount hex from VaultDTO
+  const getCkbtcSubaccountHex = (vault: VaultDTO | null): string | null => {
+    if (!vault) return null;
+    return vault.ckbtcSubaccountHex ?? null;
   };
 
   const formatDate = (timestamp: bigint) => {
@@ -176,7 +248,7 @@ function CreateVaultFormContent() {
               }}
               disabled={loading}
             >
-              <option value="3:seconds">🧪 3 SECONDS (TESTING)</option>
+              <option value="3:seconds">⚗ 3 SECONDS (TESTING)</option>
               <option value="1:months">1 MONTH</option>
               <option value="3:months">3 MONTHS</option>
               <option value="6:months">6 MONTHS</option>
@@ -206,6 +278,24 @@ function CreateVaultFormContent() {
             />
             <p className="text-body text-xs text-gray-400 mt-1">
               Principal ID for Dead Man Switch inheritance protocol.
+            </p>
+          </div>
+
+          <div className="mb-6!">
+            <label className="text-body text-sm font-bold mb-2! block">
+              DIGITAL WILL MESSAGE (OPTIONAL)
+            </label>
+            <textarea
+              className="input-brutal bg-[#09090B] border-zinc-800 text-white min-h-[120px] resize-y"
+              value={willMessage}
+              onChange={(e) => setWillMessage(e.target.value)}
+              placeholder="Enter a message to be revealed after inheritance timeout..."
+              disabled={loading}
+              rows={5}
+            />
+            <p className="text-body text-xs text-gray-400 mt-1">
+              Encrypted message revealed only after Dead Man Switch activation
+              or to designated beneficiary.
             </p>
           </div>
 
@@ -244,56 +334,236 @@ function CreateVaultFormContent() {
               </label>
               <div className="rounded-lg border-2 border-green-400 bg-green-50 p-6">
                 <p className="text-body font-bold text-green-800 mb-2! text-lg">
-                  ✓ Position ID: {createdVault.vaultId.toString()}
+                  ✓ Position ID: {createdVault.id.toString()}
                 </p>
                 <p className="text-body text-sm text-green-700">
-                  Expected Deposit: {createdVault.expectedDeposit.toString()}{" "}
-                  sats
+                  Expected Deposit: {createdVault.expectedDeposit.toString()} sats
                 </p>
               </div>
             </div>
           )}
 
-          {mode === "complete" && (
-            <div className="mb-4!">
-              <label className="text-body text-sm font-bold mb-2! block">
-                DEPOSIT AMOUNT (SATS)
-              </label>
-              <input
-                type="number"
-                className="input-brutal"
-                value={depositAmount}
-                onChange={(e) => setDepositAmount(e.target.value)}
-                disabled={loading}
-                min="1"
-                step="1"
-              />
-              <p className="text-body text-xs text-gray-400 mt-1">
-                {(parseInt(depositAmount || "0") / 100000000).toFixed(8)} BTC
-              </p>
-              <p className="text-body text-xs text-blue-600 mt-1">
-                Expected: {createdVault.expectedDeposit.toLocaleString()} sats
-              </p>
-            </div>
+          {/* CONDITIONAL DEPOSIT UI BASED ON NETWORK MODE */}
+          {isMockMode ? (
+            // MOCK MODE: Manual deposit amount input
+            <>
+              {mode === "complete" && (
+                <div className="mb-4!">
+                  <label className="text-body text-sm font-bold mb-2! block">
+                    DEPOSIT AMOUNT (SATS)
+                  </label>
+                  <input
+                    type="number"
+                    className="input-brutal"
+                    value={depositAmount}
+                    onChange={(e) => setDepositAmount(e.target.value)}
+                    disabled={loading}
+                    min="1"
+                    step="1"
+                  />
+                  <p className="text-body text-xs text-gray-400 mt-1">
+                    {(parseInt(depositAmount || "0") / 100000000).toFixed(8)}{" "}
+                    BTC
+                  </p>
+                  <p className="text-body text-xs text-blue-600 mt-1">
+                    Expected: {createdVault.expectedDeposit.toLocaleString()}{" "}
+                    sats
+                  </p>
+                </div>
+              )}
+
+              <button
+                className="btn-pro w-full mb-4! bg-blue-600 text-white hover:bg-blue-700"
+                onClick={handleMockDeposit}
+                disabled={loading || parseInt(depositAmount || "0") <= 0}
+              >
+                {loading
+                  ? "DEPOSITING..."
+                  : mode === "complete"
+                  ? "COMPLETE DEPOSIT"
+                  : "MOCK DEPOSIT (DEV ONLY)"}
+              </button>
+            </>
+          ) : (
+            // CKBTC MODE: Real deposit with address display
+            <>
+              {(() => {
+                const ckbtcSubaccountHex = getCkbtcSubaccountHex(createdVault);
+                const canisterId = IC_CONFIG.ironcladCanisterId;
+                
+                return (
+                  <div className="mb-6!">
+                    <label className="text-body text-sm font-bold mb-2! flex items-center gap-2 text-blue-600">
+                      <MapPin className="w-5 h-5" />
+                      DEPOSIT INSTRUCTIONS (ckTESTBTC / ICP NETWORK)
+                    </label>
+
+                    {ckbtcSubaccountHex ? (
+                      <div className="space-y-4">
+                        {/* Canister ID Display */}
+                        <div>
+                          <label className="text-body text-xs font-bold mb-1 block text-zinc-600">
+                            DESTINATION CANISTER ID:
+                          </label>
+                          <div className="relative">
+                            <div className="input-brutal font-mono text-sm break-all pr-12 bg-[#09090B] border-zinc-800 text-white">
+                              {canisterId}
+                            </div>
+                            <button
+                              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-zinc-800 rounded"
+                              onClick={() => handleCopyAddress(canisterId)}
+                              title="Copy canister ID"
+                            >
+                              <Copy size={18} className="text-zinc-400" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Subaccount Display */}
+                        <div>
+                          <label className="text-body text-xs font-bold mb-1 block text-zinc-600">
+                            VAULT SUBACCOUNT (HEX):
+                          </label>
+                          <div className="relative">
+                            <div className="input-brutal font-mono text-xs break-all pr-12 bg-[#09090B] border-zinc-800 text-white">
+                              {ckbtcSubaccountHex}
+                            </div>
+                            <button
+                              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-zinc-800 rounded"
+                              onClick={() => handleCopyAddress(ckbtcSubaccountHex)}
+                              title="Copy subaccount"
+                            >
+                              <Copy size={18} className="text-zinc-400" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Instructions */}
+                        <div className="bg-blue-50 border-2 border-blue-400 p-4 rounded-lg">
+                          <p className="text-body text-sm text-blue-800 font-bold mb-2">
+                            HOW TO DEPOSIT ckTESTBTC:
+                          </p>
+                          <ol className="text-body text-sm text-blue-700 space-y-2 list-decimal list-inside">
+                            <li>
+                              Open your ICP wallet (NNS, Plug, or any ICRC-1 compatible wallet)
+                            </li>
+                            <li>
+                              Send{" "}
+                              <span className="font-bold">
+                                {(
+                                  Number(createdVault.expectedDeposit) /
+                                  100000000
+                                ).toFixed(8)}{" "}
+                                ckTESTBTC
+                              </span>{" "}
+                              to:
+                              <div className="ml-6 mt-1 space-y-1">
+                                <div className="text-xs">
+                                  <span className="font-bold">Canister:</span> {canisterId}
+                                </div>
+                                <div className="text-xs">
+                                  <span className="font-bold">Subaccount:</span> {ckbtcSubaccountHex}
+                                </div>
+                              </div>
+                            </li>
+                            <li>
+                              Wait for ICP network confirmation (~2-5 seconds)
+                            </li>
+                            <li>
+                              Click &quot;Sync Balance&quot; below to verify the deposit
+                            </li>
+                          </ol>
+                        </div>
+
+                        {/* Expected Deposit Info */}
+                        <div className="bg-zinc-100 border-2 border-zinc-400 p-3 rounded-lg">
+                          <p className="text-body text-xs text-zinc-600">
+                            Expected Deposit:{" "}
+                            <span className="font-bold">
+                              {createdVault.expectedDeposit.toLocaleString()}{" "}
+                              sats
+                            </span>{" "}
+                            ={" "}
+                            <span className="font-bold">
+                              {(
+                                Number(createdVault.expectedDeposit) /
+                                100000000
+                              ).toFixed(8)}{" "}
+                              ckTESTBTC
+                            </span>
+                          </p>
+                        </div>
+
+                        {/* Technical Note */}
+                        <div className="bg-purple-50 border border-purple-300 p-3 rounded-lg">
+                          <p className="text-body text-xs text-purple-700 flex items-start gap-2">
+                            <Shield className="w-4 h-4 mt-0.5 shrink-0" />
+                            <span><span className="font-bold">SELF-CUSTODY:</span>{" "}
+                            Funds are sent to the Ironclad Vault canister (not your wallet).</span>
+                            The canister holds the funds in trust until unlock time.
+                          </p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-yellow-50 border-2 border-yellow-400 p-4 rounded-lg">
+                        <p className="text-body text-sm text-yellow-800 flex items-center gap-2">
+                          <AlertTriangle className="w-5 h-5 shrink-0" />
+                          No ckBTC subaccount found. This vault may not
+                          support ckBTC deposits yet.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* Sync Balance Button */}
+              <button
+                className="btn-pro w-full mb-4! bg-green-600 text-white hover:bg-green-700 flex items-center justify-center gap-2"
+                onClick={handleSyncCkbtcBalance}
+                disabled={syncLoading || !getCkbtcSubaccountHex(createdVault)}
+              >
+                <RefreshCw
+                  size={18}
+                  className={syncLoading ? "animate-spin" : ""}
+                />
+                {syncLoading
+                  ? "SCANNING LEDGER..."
+                  : "SYNC BALANCE FROM LEDGER"}
+              </button>
+
+              {/* Sync Error Display */}
+              {syncError && (
+                <div className="bg-red-50 border-2 border-red-400 p-4 rounded-lg mb-4">
+                  <p className="text-body text-sm text-red-800 font-bold">
+                    SYNC ERROR: {syncError}
+                  </p>
+                  {syncError.includes("not found") && (
+                    <div className="mt-3 p-3 bg-yellow-50 border border-yellow-300 rounded text-sm text-yellow-900">
+                      <p className="font-bold mb-1 flex items-center gap-2">
+                        <Lightbulb className="w-4 h-4" />
+                        Solution for local development:
+                      </p>
+                      <p className="mb-2">The ckBTC ledger canister is not available locally. You have two options:</p>
+                      <ol className="list-decimal ml-5 space-y-1">
+                        <li><strong>Switch to Mock Mode:</strong> Go to Settings and click &quot;SWITCH TO MOCK&quot; to test without the real ledger</li>
+                        <li><strong>Deploy to testnet:</strong> Deploy your canister to ICP testnet where the real ckTESTBTC ledger is available</li>
+                      </ol>
+                    </div>
+                  )}
+                </div>
+              )}
+            </>
           )}
 
-          <button
-            className="btn-pro w-full mb-4! bg-blue-600 text-white hover:bg-blue-700"
-            onClick={handleMockDeposit}
-            disabled={loading || parseInt(depositAmount || "0") <= 0}
-          >
-            {loading
-              ? "DEPOSITING..."
-              : mode === "complete"
-              ? "COMPLETE DEPOSIT"
-              : "MOCK DEPOSIT (DEV ONLY)"}
-          </button>
+          {/* WARNING MESSAGES - CONDITIONAL BASED ON NETWORK MODE */}
 
-          {mode === "create" && (
+          {mode === "create" && isMockMode && (
             <>
               <div className="bg-yellow-100 border-2 border-yellow-500 p-4">
-                <p className="text-body font-bold text-yellow-800 mb-2!">
-                  DEVELOPMENT MODE
+                <p className="text-body font-bold text-yellow-800 mb-2! flex items-center gap-2">
+                  <Beaker className="w-5 h-5" />
+                  DEVELOPMENT MODE - MOCK DEPOSITS
                 </p>
                 <p className="text-body text-sm text-yellow-700">
                   In production, you would send Bitcoin to a generated address.
@@ -303,39 +573,103 @@ function CreateVaultFormContent() {
               </div>
 
               <div className="mt-4 bg-red-100 border-2 border-red-500 p-4">
-                <p className="text-body font-bold text-red-800">
-                  PRODUCTION WARNING: SEND BTC ONLY. DO NOT SEND CKBTC OR OTHER
-                  ASSETS.
+                <p className="text-body font-bold text-red-800 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 shrink-0" />
+                  PRODUCTION WARNING: SEND BTC ONLY. DO NOT SEND CKBTC OR
+                  OTHER ASSETS.
                 </p>
               </div>
             </>
           )}
 
-          {mode === "complete" && existingVault && (
+          {mode === "create" && isCkbtcMode && (
+            <>
+              <div className="bg-blue-100 border-2 border-blue-500 p-4">
+                <p className="text-body font-bold text-blue-800 mb-2! flex items-center gap-2">
+                  <Globe className="w-5 h-5" />
+                  MAINNET MODE - REAL DEPOSITS
+                </p>
+                <p className="text-body text-sm text-blue-700">
+                  You are in <span className="font-bold">CkBTC Mainnet</span>{" "}
+                  mode. Send real ckBTC to the address shown above on the ICP
+                  network.
+                </p>
+              </div>
+
+              <div className="mt-4 bg-green-100 border-2 border-green-500 p-4">
+                <p className="text-body font-bold text-green-800 flex items-center gap-2">
+                  <CheckCircle className="w-5 h-5" />
+                  PRODUCTION: SEND CKBTC ON ICP NETWORK
+                </p>
+                <p className="text-body text-sm text-green-700 mt-1">
+                  Only send ckBTC tokens. Do not send native BTC or other
+                  assets.
+                </p>
+              </div>
+            </>
+          )}
+
+          {mode === "complete" && existingVault && isMockMode && (
             <div className="bg-yellow-100 border-2 border-yellow-500 p-4">
               <p className="text-body font-bold text-yellow-800 mb-2!">
-                📍 DEPOSIT INSTRUCTIONS
+                📍 MOCK DEPOSIT INSTRUCTIONS
               </p>
               <div className="text-body text-sm text-yellow-700 space-y-2">
                 <p>
-                  1. Send exactly{" "}
+                  1. Enter amount in sats (Expected:{" "}
                   <span className="font-bold">
                     {createdVault.expectedDeposit.toLocaleString()} sats
-                  </span>{" "}
-                  to:
+                  </span>
+                  )
                 </p>
-                <p className="font-mono text-xs bg-white p-2 border border-yellow-300 break-all">
-                  {existingVault.btc_address}
-                </p>
-                <p>2. Wait for blockchain confirmation</p>
+                <p>2. Click &quot;COMPLETE DEPOSIT&quot; to simulate</p>
                 <p>
                   3. Vault status will change to{" "}
                   <span className="font-bold">Locked</span>
                 </p>
-                <p className="text-xs mt-2 text-yellow-600">
-                  ⚠️ For development: Use &quot;COMPLETE DEPOSIT&quot; button
-                  above to simulate
+                <div className="mt-2 pt-2 border-t border-yellow-400">
+                  <p className="text-xs text-yellow-600 font-bold">
+                    BTC Address (for reference):
+                  </p>
+                  <p className="font-mono text-xs bg-white p-2 border border-yellow-300 break-all mt-1">
+                    {existingVault.btc_address}
+                  </p>
+                  <p className="text-xs mt-1 text-yellow-600">
+                    ⚠️ In production, you would send real BTC to this address.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {mode === "complete" && existingVault && isCkbtcMode && (
+            <div className="bg-blue-100 border-2 border-blue-500 p-4">
+              <p className="text-body font-bold text-blue-800 mb-2!">
+                📍 CKBTC DEPOSIT STATUS
+              </p>
+              <div className="text-body text-sm text-blue-700 space-y-2">
+                <p>
+                  1. ckBTC sent to the subaccount address will be detected
+                  automatically
                 </p>
+                <p>
+                  2. Click &quot;Sync Balance&quot; to check for incoming
+                  transfers
+                </p>
+                <p>
+                  3. Once deposit is confirmed, vault status will change to{" "}
+                  <span className="font-bold">Locked</span>
+                </p>
+                <div className="mt-2 pt-2 border-t border-blue-400">
+                  <p className="text-xs text-blue-600">
+                    Expected: {createdVault.expectedDeposit.toLocaleString()}{" "}
+                    sats ={" "}
+                    {(
+                      Number(createdVault.expectedDeposit) / 100000000
+                    ).toFixed(8)}{" "}
+                    ckBTC
+                  </p>
+                </div>
               </div>
             </div>
           )}

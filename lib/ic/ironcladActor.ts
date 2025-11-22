@@ -71,8 +71,8 @@ async function getAnonymousAgent(): Promise<HttpAgent> {
 }
 
 /**
- * Main factory: local → selalu anonymous.
- * Remote → signed kalau identity ada, anonymous kalau nggak.
+ * Main factory: Jika identity diberikan, gunakan signed agent.
+ * Jika tidak ada identity, gunakan anonymous agent.
  */
 export async function createIroncladActor(
   identity?: Identity,
@@ -81,21 +81,27 @@ export async function createIroncladActor(
 
   let agent: HttpAgent;
 
-  if (isLocal) {
-    // LOCAL DEV: JANGAN pakai identity sama sekali
-    agent = await getAnonymousAgent();
-  } else if (identity) {
-    // REMOTE + signed
+  if (identity) {
+    // Gunakan signed agent dengan identity yang diberikan
     agent = new HttpAgent({ host: IC_HOST, identity });
+    
+    // Fetch root key untuk local development
+    if (isLocal && process.env.NODE_ENV !== "production") {
+      await agent.fetchRootKey();
+      console.info("[Ironclad Actor] 🔑 Root key fetched for local replica (signed agent)");
+    }
+    
     console.info(
-      "[Ironclad Actor] Using SIGNED agent for remote host:",
+      "[Ironclad Actor] Using SIGNED agent with identity:",
+      identity.getPrincipal().toString(),
+      "for host:",
       IC_HOST,
     );
   } else {
-    // REMOTE tanpa identity → anonymous
+    // Fallback ke anonymous agent jika tidak ada identity
     agent = await getAnonymousAgent();
     console.info(
-      "[Ironclad Actor] Using anonymous agent for remote host:",
+      "[Ironclad Actor] Using anonymous agent for host:",
       IC_HOST,
     );
   }
