@@ -38,6 +38,13 @@ const IRONCLAD_CANISTER_ID = IC_CONFIG.ironcladCanisterId;
 export async function createIroncladActor(
   identity?: Identity,
 ): Promise<IroncladActor> {
+  // DEBUGGING: Cek apakah ID terbaca
+  if (!IRONCLAD_CANISTER_ID) {
+    console.error("❌ FATAL: Ironclad Canister ID is UNDEFINED in config!");
+    console.log("Config dump:", IC_CONFIG);
+    throw new Error("Ironclad Canister ID not configured");
+  }
+
   // Get the singleton agent (handles root key fetching automatically)
   const agent = await getAgent(identity);
 
@@ -49,6 +56,11 @@ export async function createIroncladActor(
   } else {
     console.debug("[Ironclad Actor] Using agent (potentially anonymous or cached identity)");
   }
+
+  console.info(
+    "[Ironclad Actor] Creating actor for canister:",
+    IRONCLAD_CANISTER_ID
+  );
 
   return Actor.createActor<_SERVICE>(idlFactory, {
     agent,
